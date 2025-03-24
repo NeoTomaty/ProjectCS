@@ -28,10 +28,10 @@ public class PlayerMoveUp : MonoBehaviour
 
     void Update()
     {
-        //水平方向の入力を取得
+        //キーボードとコントローラーの水平方向の入力を取得
         float moveHorizontal = Input.GetAxis("Horizontal");
 
-        //垂直方向の入力を取得
+        //キーボードとコントローラーの垂直方向の入力を取得
         float moveVertical = Input.GetAxis("Vertical");
 
         //移動ベクトルを作成
