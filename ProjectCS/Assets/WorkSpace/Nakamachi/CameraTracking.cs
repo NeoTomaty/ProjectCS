@@ -11,35 +11,22 @@ using UnityEngine;
 
 public class CameraTracking : MonoBehaviour
 {
-    //プレイヤーオブジェクトを格納する変数
     private GameObject player;
-
-    //カメラのy軸方向のオフセット
-    public float yOffset;
-
-    //カメラのz軸方向のオフセット
-    public float zOffset;
+    public float yOffset; //y軸方向のオフセット
+    public float zOffset; //z軸方向のオフセット
 
     // Start is called before the first frame update
     void Start()
     {
-        //"Player"という名前のオブジェクトをシーンから探してplayerに格納
         player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        //プレイヤーの現在のx座標を取得
         float x = player.transform.position.x;
-
-        //プレイヤーの現在のy座標を取得
         float y = player.transform.position.y;
-
-        //プレイヤーの現在のz座標を取得
         float z = player.transform.position.z;
-
-        //カメラの位置をプレイヤーの位置にオフセットを加えた位置に設定
         transform.position = new Vector3(x, y + yOffset, z + zOffset);
     }
 }
