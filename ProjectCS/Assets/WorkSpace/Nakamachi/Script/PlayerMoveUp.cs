@@ -1,9 +1,8 @@
-//ファイル名:PlayerMoveUp.cs
+//スクリプト名:PlayerMoveUp.cs
 //作成者:中町雷我
-//作成日:2025/03/24
-//更新履歴:
-//2025/03/24:初版作成
-//概要:プレイヤーをWASDで動かし、壁に当たると加速していく機能を実装
+//最終更新日:2025/03/24
+//[Log]
+//2025/03/24　中町雷我　プレイヤーをWASDで動かし、壁に当たると加速していく機能を実装
 
 using System.Collections;
 using System.Collections.Generic;
