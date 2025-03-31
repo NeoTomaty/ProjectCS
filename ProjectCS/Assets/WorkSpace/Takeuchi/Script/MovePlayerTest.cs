@@ -7,7 +7,7 @@
 //======================================================
 using UnityEngine;
 
-public class MovePlayer : MonoBehaviour
+public class MovePlayerTest : MonoBehaviour
 {
     public float MaxSpeed = 5.0f;  // Å‘åˆÚ“®‘¬“x
     public float TurnSpeed = 300.0f; // ‰ñ“]‘¬“x
