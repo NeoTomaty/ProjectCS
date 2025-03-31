@@ -3,6 +3,7 @@
 //最終更新日:2025/03/24
 //[Log]
 //2025/03/24　中町雷我　プレイヤーをWASDで動かし、壁に当たると加速していく機能を実装
+//2025/03/31　中町雷我　壁に当たると加速量が+5ずつあがる
 
 using System.Collections;
 using System.Collections.Generic;
@@ -11,33 +12,36 @@ using UnityEngine;
 public class PlayerMoveUp : MonoBehaviour
 {
     //プレイヤーの移動速度を設定する変数
-    public float speed = 5.0f;
+    public float Speed = 5.0f;
 
     //初期速度を保存する変数
-    private float initialSpeed;
+    private float InitialSpeed;
 
     //衝突状態を管理する変数
-    private bool collided = false;
+    private bool Collided = false;
 
     void Start()
     {
         //初期速度を保存
-        initialSpeed = speed;
+        InitialSpeed = Speed;
+
+        //初期速度をデバッグログに出力
+        Debug.Log("初期速度: " + Speed);
     }
 
     void Update()
     {
         //キーボードとコントローラーの水平方向の入力を取得
-        float moveHorizontal = Input.GetAxis("Horizontal");
+        float MoveHorizontal = Input.GetAxis("Horizontal");
 
         //キーボードとコントローラーの垂直方向の入力を取得
-        float moveVertical = Input.GetAxis("Vertical");
+        float MoveVertical = Input.GetAxis("Vertical");
 
         //移動ベクトルを作成
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        Vector3 Movement = new Vector3(MoveHorizontal, 0.0f, MoveVertical);
 
         //プレイヤーを移動させる
-        transform.Translate(movement * speed * Time.deltaTime);
+        transform.Translate(Movement * Speed * Time.deltaTime);
     }
 
     //衝突が発生したときに呼び出される
@@ -47,7 +51,10 @@ public class PlayerMoveUp : MonoBehaviour
         if (collision.gameObject.tag == "Wall")
         {
             //衝突状態をtrueに設定
-            collided = true;
+            Collided = true;
+
+            //壁に衝突したことをデバッグログに出力
+            Debug.Log("壁に衝突");
         }
     }
 
@@ -55,13 +62,16 @@ public class PlayerMoveUp : MonoBehaviour
     void OnCollisionExit(Collision collision)
     {
         //衝突したオブジェクトのタグがWallで、衝突状態がtrueのとき
-        if (collision.gameObject.tag == "Wall" && collided)
+        if (collision.gameObject.tag == "Wall" && Collided)
         {
-            //移動速度を10.0f増加させる
-            speed += 10.0f;
+            //移動速度を5.0f増加させる
+            Speed += 5.0f;
+
+            //加速量をデバッグログに出力
+            Debug.Log("加速量: " + Speed);
 
             //衝突状態をfalseに設定
-            collided = false;
+            Collided = false;
         }
     }
 }
