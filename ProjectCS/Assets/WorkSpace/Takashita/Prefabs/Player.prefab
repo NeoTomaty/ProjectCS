@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3943404572096005784}
   - component: {fileID: 2693352334119193582}
   - component: {fileID: 2946462142280788705}
+  - component: {fileID: 1368332585905943784}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -151,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b831209e703c1640a1b8686acea5d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
+  PlayerSpeedManager: {fileID: 0}
 --- !u!114 &2693352334119193582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,4 +178,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b64ab1d43f6272489028c3e1d6b2f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftRightMoveSpeed: 5
+  PlayerSpeedManager: {fileID: 0}
+  MovePlayer: {fileID: 0}
+  TurnSpeed: 100
+--- !u!114 &1368332585905943784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8231111cba2f2c24b9d8d26d36874d94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JumpForce: 10
+  GroundCheckRadius: 0.2
