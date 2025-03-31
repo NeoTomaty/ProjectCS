@@ -9,23 +9,18 @@
 // 03/31 高下 左右移動処理追加
 //====================================================
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class LRMovePlayer : MonoBehaviour
 {
     public PlayerSpeedManager PlayerSpeedManager; // 速度管理クラス
+    public MovePlayer MovePlayer; // プレイヤー移動クラス
 
     [SerializeField]
     private float TurnSpeed = 100.0f; // カーブの回転速度
 
-    private Vector3 MoveDirection;    // 現在の進行方向
-
-    // 他のスクリプトから進行方向を取得するためのプロパティ                                  
-    public Vector3 GetMoveDirection => MoveDirection;
-
     void Start()
     {
-        MoveDirection = transform.forward; // 初期の進行方向
-
         if (PlayerSpeedManager == null)
         {
             Debug.LogWarning("AutoMovePlayerスクリプトがアタッチされていません。");
@@ -45,12 +40,12 @@ public class LRMovePlayer : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             // 左カーブ
-            MoveDirection = Quaternion.Euler(0, -rotationAmount, 0) * MoveDirection;
+            MovePlayer.SetMoveDirection(Quaternion.Euler(0, -rotationAmount, 0) * MovePlayer.GetMoveDirection);
         }
         if (Input.GetKey(KeyCode.D))
         {
             // 右カーブ
-            MoveDirection = Quaternion.Euler(0, rotationAmount, 0) * MoveDirection;
+            MovePlayer.SetMoveDirection(Quaternion.Euler(0, rotationAmount, 0) * MovePlayer.GetMoveDirection);
         }
     }
 }
