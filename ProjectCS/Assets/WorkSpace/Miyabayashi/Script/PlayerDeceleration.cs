@@ -1,9 +1,13 @@
 //======================================================
 // [スクリプト名]PlayerDeceleration
 // 作成者：宮林朋輝
-// 最終更新日：3/31
+// 最終更新日：4/1
 // 
 // [Log]
+// 3/31 宮林　スクリプト作成
+// 3/31 宮林　減速処理仮実装
+// 4/1  宮林  コントローラー操作追加
+// 4/1  宮林　減速処理実装
 //======================================================
 using UnityEngine;
 
@@ -13,7 +17,7 @@ public class PlayerDeceleration : MonoBehaviour
     //プレイヤーの移動速度を設定する変数
     public float Deceleration = 5.0f;//減速量
 
-    float CurrentSpeed;//現在の速度
+    public PlayerSpeedManager PlayerSpeedManager; // 速度管理クラス
 
     private bool isHoldingKey = false;
     private float HoldTime = 0.0f;
@@ -23,8 +27,7 @@ public class PlayerDeceleration : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //ここでプレイヤーの初期速度を受け取る
-
+       
     }
 
     // Update is called once per frame
@@ -33,16 +36,17 @@ public class PlayerDeceleration : MonoBehaviour
         //ここで現在の速度を受け取る
 
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S)||Input.GetAxis("Vertical") < -0.1f)
         {
             // キーを押した瞬間の処理
-            if (CurrentSpeed > Deceleration)
+            if ( PlayerSpeedManager.GetPlayerSpeed> Deceleration)
             {
-                CurrentSpeed -= Deceleration;//減速
+                //減速
+               PlayerSpeedManager.SetDecelerationValue(Deceleration);
             }
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) || Input.GetAxis("Vertical") < -0.1f)
         {
             if (!isHoldingKey)
             {
@@ -55,15 +59,16 @@ public class PlayerDeceleration : MonoBehaviour
 
             if (HoldTime >= DecelerationsInterval)
             {
-                if (CurrentSpeed > Deceleration)
+                if (PlayerSpeedManager.GetPlayerSpeed > Deceleration)
                 {
-                    CurrentSpeed -= Deceleration;
+                    //減速
+                    PlayerSpeedManager.SetDecelerationValue(Deceleration);
                 }
                 HoldTime = 0.0f; // 減速後にリセット
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyUp(KeyCode.S) || Input.GetAxis("Vertical") < -0.1f)
         {
             // キーを離した時の処理
             isHoldingKey = false;
