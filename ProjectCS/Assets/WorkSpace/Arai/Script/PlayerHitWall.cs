@@ -6,6 +6,7 @@
 // [Log]
 // 3/31　荒井　プレイヤーが壁に衝突した際の挙動を作成
 // 3/31　荒井　移動の仮スクリプトを自作し動作を確認
+// 4/01　荒井　Playerオブジェクトの本スクリプトに対応
 //======================================================
 
 using UnityEngine;
@@ -17,16 +18,16 @@ public class PlayerHitWall : MonoBehaviour
 
     // プレイヤーの移動方向と速度にアクセスするための変数
     // 同じオブジェクトにアタッチされているスクリプトであるという想定での実装
-    TestMovePlayer testMovePlayer;  //テスト用の仮スクリプト
+    MovePlayer MovePlayerScript;    //実際のスクリプト
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        testMovePlayer = GetComponent<TestMovePlayer>();
+        MovePlayerScript = GetComponent<MovePlayer>();
 
-        if (testMovePlayer == null)
+        if (MovePlayerScript == null)
         {
-            Debug.LogError("プレイヤー >> TestMovePlayerスクリプトが見つかりません");
+            Debug.LogError("プレイヤー >> MovePlayerスクリプトが見つかりません");
         }
     }
 
@@ -38,7 +39,7 @@ public class PlayerHitWall : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (testMovePlayer == null) return;
+        if (MovePlayerScript == null) return;
 
         // 衝突したオブジェクトのタグをチェック
         if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "BrokenWall")
@@ -46,7 +47,7 @@ public class PlayerHitWall : MonoBehaviour
             Debug.Log("プレイヤー >> 壁に当たりました");
 
             // プレイヤーの移動ベクトルを取得
-            Vector3 PlayerMoveDirection = testMovePlayer.moveDirection;  // 仮
+            Vector3 PlayerMoveDirection = MovePlayerScript.GetMoveDirection;
 
             // 壁の接触面の法線ベクトルを取得
             Vector3 Normal = collision.contacts[0].normal;
@@ -55,10 +56,10 @@ public class PlayerHitWall : MonoBehaviour
             Vector3 Reflect = Vector3.Reflect(PlayerMoveDirection, Normal);
 
             // 反射ベクトルをプレイヤーに適用
-            testMovePlayer.moveDirection = Reflect; // 仮
+            MovePlayerScript.SetMoveDirection(Reflect);
 
             // プレイヤーを加速
-            testMovePlayer.speed += Acceleration;   // 仮
+            MovePlayerScript.PlayerSpeedManager.SetAccelerationValue(Acceleration);
         }
     }
 }

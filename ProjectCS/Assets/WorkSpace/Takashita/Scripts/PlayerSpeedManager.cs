@@ -6,6 +6,7 @@
 // 
 // [Log]
 // 03/31 高下 スクリプト作成 
+// 04/01 荒井 SetAccelerationValue関数をprivateからpublicに変更
 //====================================================
 using UnityEngine;
 
@@ -18,7 +19,7 @@ public class PlayerSpeedManager : MonoBehaviour
     public float GetPlayerSpeed => PlayerSpeed;
 
     // プレイヤーの速度の加算関数
-    void SetAccelerationValue(float AccelerationValue)
+    public void SetAccelerationValue(float AccelerationValue)
     {
         PlayerSpeed += AccelerationValue;
         Debug.Log("PlayerSpeed速度加算値：" + AccelerationValue);
