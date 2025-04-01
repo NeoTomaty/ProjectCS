@@ -6,6 +6,8 @@
 // 
 // [Log]
 // 03/31 高下 スクリプト作成 
+// 04/01 宮林　SetAccelerationValueをpublicに変更
+// 04/01 宮林  SetDecelerationValueを追加
 //====================================================
 using UnityEngine;
 
@@ -18,9 +20,14 @@ public class PlayerSpeedManager : MonoBehaviour
     public float GetPlayerSpeed => PlayerSpeed;
 
     // プレイヤーの速度の加算関数
-    void SetAccelerationValue(float AccelerationValue)
+    public void SetAccelerationValue(float AccelerationValue)
     {
         PlayerSpeed += AccelerationValue;
         Debug.Log("PlayerSpeed速度加算値：" + AccelerationValue);
+    }
+    public void SetDecelerationValue(float DecelerationValue)
+    {
+        PlayerSpeed -= DecelerationValue;
+        Debug.Log("PlayerSpeed速度減算値：" + DecelerationValue);
     }
 }

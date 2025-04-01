@@ -4,6 +4,7 @@
 // 最終更新日：3/31
 // 
 // [Log]
+// 3/31  宮林　スクリプト作成
 //======================================================
 using UnityEngine;
 
@@ -30,7 +31,7 @@ public class AutoRapidMove : MonoBehaviour
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 targetPosition.position,
-                speed * Time.deltaTime // フレームレートに依存しない移動
+                speed * Time.deltaTime 
             );
             yield return null;
         }
