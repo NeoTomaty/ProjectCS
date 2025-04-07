@@ -1,19 +1,20 @@
 //======================================================
 // [PlayerHitWall]
 // 作成者：荒井修
-// 最終更新日：03/31
+// 最終更新日：4/07
 // 
 // [Log]
-// 3/31　荒井　プレイヤーが壁に衝突した際の挙動を作成
-// 3/31　荒井　移動の仮スクリプトを自作し動作を確認
-// 4/01　荒井　Playerオブジェクトの本スクリプトに対応
+// 03/31　荒井　プレイヤーが壁に衝突した際の挙動を作成
+// 03/31　荒井　移動の仮スクリプトを自作し動作を確認
+// 04/01　荒井　Playerオブジェクトの本スクリプトに対応
+// 04/07　荒井　Tooltip記述をコメントに変更
 //======================================================
 
 using UnityEngine;
 
 public class PlayerHitWall : MonoBehaviour
 {
-    [Tooltip("壁に衝突した際の加速量")]
+    // 壁に衝突した際の加速量
     [SerializeField] private float Acceleration = 1.0f;
 
     // プレイヤーの移動方向と速度にアクセスするための変数
@@ -44,8 +45,6 @@ public class PlayerHitWall : MonoBehaviour
         // 衝突したオブジェクトのタグをチェック
         if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "BrokenWall")
         {
-            Debug.Log("プレイヤー >> 壁に当たりました");
-
             // プレイヤーの移動ベクトルを取得
             Vector3 PlayerMoveDirection = MovePlayerScript.GetMoveDirection;
 
