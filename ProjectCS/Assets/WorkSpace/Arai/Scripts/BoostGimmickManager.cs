@@ -1,16 +1,19 @@
 //======================================================
-// [SpeedBooster]
+// [BoostGimmickManager]
 // 作成者：荒井修
-// 最終更新日：04/07
+// 最終更新日：04/08
 // 
 // [Log]
 // 04/07　荒井　プレイヤーとの衝突で作動し、一定時間で効果が終了するように仮組み
 // 04/07　荒井　実際にプレイヤーの速度を変化させて確認
+// 04/08　荒井　一度使ったら無効化されるように実装
+// 04/08　荒井　マネージャーオブジェクトにアタッチする管理クラスへ変更
+// 04/08　荒井　加速が重複して発動しないように修正
 //======================================================
 
 using UnityEngine;
 
-public class SpeedBooster : MonoBehaviour
+public class BoostGimmickManager : MonoBehaviour
 {
     // プレイヤーの速度管理クラス
     [SerializeField] private PlayerSpeedManager PlayerSpeedManager;
@@ -18,9 +21,28 @@ public class SpeedBooster : MonoBehaviour
     // ギミック作動時の加速量
     [SerializeField] private float AccelerationForGimmick = 500.0f;
 
-    // ギミックの継続時間
-    [SerializeField] private float GimmickDurationSeconds = 5.0f;
+    // ギミックの継続時間上限
+    [SerializeField] private float GimmickDurationSecondsLimit = 5.0f;
     private float GimmickTimer = 0.0f;
+
+    public void AddGimmickDuration(float addTime)
+    {
+        if (addTime <= 0.0f) return;
+
+        // ギミックの効果が作動し始めた時だけ加速
+        if (GimmickTimer <= 0.0f)
+        {
+            GimmickTimer = 0.0f;
+            PlayerSpeedManager.SetAccelerationValue(AccelerationForGimmick);
+        }
+
+        // ギミックの効果時間を追加
+        GimmickTimer += addTime;
+        if (GimmickTimer > GimmickDurationSecondsLimit)
+        {
+            GimmickTimer = GimmickDurationSecondsLimit;
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,7 +53,7 @@ public class SpeedBooster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GimmickTimer <= 0.0f) return;
+        if (GimmickTimer <= 0.0f) return;
 
         GimmickTimer -= Time.deltaTime;
 
@@ -40,19 +62,6 @@ public class SpeedBooster : MonoBehaviour
         {
             // プレイヤーを減速させる
             PlayerSpeedManager.SetAccelerationValue(-AccelerationForGimmick);
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        // 衝突したオブジェクトのタグをチェック
-        if (collision.gameObject.tag == "Player")
-        {
-            // プレイヤーを加速させる
-            PlayerSpeedManager.SetAccelerationValue(AccelerationForGimmick);
-
-            // ギミックの効果時間を設定
-            GimmickTimer = GimmickDurationSeconds;
         }
     }
 }
