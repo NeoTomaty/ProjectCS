@@ -12,6 +12,7 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class PlayerHitWall : MonoBehaviour
 {
@@ -22,8 +23,15 @@ public class PlayerHitWall : MonoBehaviour
     private float MaxVelocityY = 50.0f;  // Y軸最大の速さ
     [SerializeField]
     private float MinVelocityY = -50.0f; // Y軸最小の速さ
+    [SerializeField]
+    private float InputAcceptDuration = 1.0f;// 壁に衝突後の入力受付時間
+    private float InputAcceptTimer = 0.0f;   // 入力受付の経過時間
+    [Tooltip("入力による加速を実行するかどうか")]
+    [SerializeField]
+    private bool IsInputEnabled = true;
 
     private bool IsJumpReflect = false;  // ジャンプ時の壁反射で力を加えるかどうか
+    private bool IsHitWall = false;      // 壁に衝突したかどうか
 
     private Rigidbody Rb;    // プレイヤーのRigidbody
 
@@ -42,7 +50,43 @@ public class PlayerHitWall : MonoBehaviour
         }
     }
 
-   
+    private void Update()
+    {
+        if (!IsHitWall) return;
+
+        if (InputAcceptTimer > 0.0f)
+        {
+            InputAcceptTimer -= Time.deltaTime;
+
+            // ジャンプの入力チェック
+            bool AccelerationInputDetected = false;
+
+            // ゲームパッドが接続されている場合、Bボタン（仮）を優先
+            if (Gamepad.current != null)
+            {
+                AccelerationInputDetected = Input.GetKeyDown(KeyCode.JoystickButton1);
+            }
+            // ゲームパッドが接続されていない場合、エンターキー（仮）を使用
+            else
+            {
+                AccelerationInputDetected = Input.GetKeyDown(KeyCode.Return);
+            }
+
+            // 加速処理
+            if(AccelerationInputDetected)
+            {
+                // プレイヤーを加速
+                MovePlayerScript.PlayerSpeedManager.SetAccelerationValue(Acceleration);
+                Debug.Log("加速成功");
+            }
+        }
+        else
+        {
+            IsHitWall = false;
+        }
+    }
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (MovePlayerScript == null) return;
@@ -51,6 +95,18 @@ public class PlayerHitWall : MonoBehaviour
         if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "BrokenWall")
         {
             Debug.Log("プレイヤー >> 壁に当たりました");
+            
+            // 入力による加速をしないのなら、そのまま加速処理を実行
+            if (!IsInputEnabled)
+            {
+                // プレイヤーを加速
+                MovePlayerScript.PlayerSpeedManager.SetAccelerationValue(Acceleration);
+            }
+            else
+            {
+                IsHitWall = true;
+                InputAcceptTimer = InputAcceptDuration;
+            }
 
             // プレイヤーの移動ベクトルを取得
             Vector3 PlayerMoveDirection = MovePlayerScript.GetMoveDirection;
@@ -63,9 +119,6 @@ public class PlayerHitWall : MonoBehaviour
 
             // 反射ベクトルをプレイヤーに適用
             MovePlayerScript.SetMoveDirection(Reflect);
-
-            // プレイヤーを加速
-            MovePlayerScript.PlayerSpeedManager.SetAccelerationValue(Acceleration);
 
             // ヒットストップ実行
             MovePlayerScript.StartHitStop();
