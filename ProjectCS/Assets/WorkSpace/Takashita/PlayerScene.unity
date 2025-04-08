@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 1782375036}
-  Offset: {x: 0, y: 10, z: -20}
+  Offset: {x: 0, y: 12, z: -20}
   SmoothSpeed: 5
 --- !u!1001 &425363115
 PrefabInstance:
@@ -302,7 +302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1368332585905943784, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       propertyPath: GravityScale
-      value: -198
+      value: -196
       objectReference: {fileID: 0}
     - target: {fileID: 1368332585905943784, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       propertyPath: GroundCheckRadius
@@ -310,7 +310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2693352334119193582, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       propertyPath: PlayerSpeed
-      value: 60
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 2946462142280788705, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       propertyPath: Player
@@ -318,7 +318,7 @@ PrefabInstance:
       objectReference: {fileID: 1782375029}
     - target: {fileID: 2946462142280788705, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       propertyPath: TurnSpeed
-      value: 2000
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 2946462142280788705, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       propertyPath: MovePlayer
@@ -412,6 +412,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4771069639461031155, guid: b883a481c041c894aad4ba49046f3711, type: 3}
+      propertyPath: Acceleration
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6838755633707204601, guid: b883a481c041c894aad4ba49046f3711, type: 3}
+      propertyPath: Deceleration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6838755633707204601, guid: b883a481c041c894aad4ba49046f3711, type: 3}
+      propertyPath: PlayerSpeedManager
+      value: 
+      objectReference: {fileID: 1782375029}
     - target: {fileID: 7594584885162362816, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       propertyPath: m_Mass
       value: 1

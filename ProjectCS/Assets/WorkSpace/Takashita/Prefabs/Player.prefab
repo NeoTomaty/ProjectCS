@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 2693352334119193582}
   - component: {fileID: 2946462142280788705}
   - component: {fileID: 1368332585905943784}
+  - component: {fileID: 4771069639461031155}
+  - component: {fileID: 6838755633707204601}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -166,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeed: 5
+  MaxPlayerSpeed: 500
 --- !u!114 &2946462142280788705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,3 +198,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpForce: 10
   GroundCheckRadius: 0.2
+  GravityScale: -9.8
+--- !u!114 &4771069639461031155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b30931f9f7b3ba847b1e0a81377c7c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Acceleration: 10
+--- !u!114 &6838755633707204601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30113872c1efea94e885d49ed945d9f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Deceleration: 5
+  PlayerSpeedManager: {fileID: 0}
+  DecelerationsInterval: 1
