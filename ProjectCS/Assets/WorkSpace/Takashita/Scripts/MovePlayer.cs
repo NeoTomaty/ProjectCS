@@ -17,12 +17,17 @@ public class MovePlayer : MonoBehaviour
     public PlayerSpeedManager PlayerSpeedManager; // 速度管理クラス
    
     private Vector3 MoveDirection;    // 現在の進行方向
-
-    [SerializeField]
-    float RayDistance = 10.0f;
-
     // 他のスクリプトから進行方向を取得するためのプロパティ                                  
     public Vector3 GetMoveDirection => MoveDirection;
+
+    [SerializeField]
+    private float RayDistance = 10.0f;
+    [SerializeField]
+    private float HitStopDuration = 0.1f;  // ヒットストップの時間
+    private float HitStopTimer = 0.0f;  // ヒットストップのタイマー
+
+    private bool IsHitStopActive = false; // ヒットストップ中かどうか
+    public bool GetIsHitStopActive => IsHitStopActive;
 
     // 他のスクリプトから進行方向を設定するためのセッター
     public void SetMoveDirection(Vector3 NewDirection)
@@ -44,6 +49,21 @@ public class MovePlayer : MonoBehaviour
 
     void Update()
     {
+       
+        if (IsHitStopActive)
+        {
+            // ヒットストップが有効な場合、移動を止める
+            if (HitStopTimer > 0.0f)
+            {
+                HitStopTimer -= Time.deltaTime;  // タイマーを減少
+                return;  // ヒットストップ中は移動を停止
+            }
+            else
+            {
+                IsHitStopActive = false;
+            }
+        }
+
         if (PlayerSpeedManager == null) return;
 
         // レイキャストで壁を検出
@@ -72,5 +92,12 @@ public class MovePlayer : MonoBehaviour
 
         // 向きを進行方向に合わせる
         transform.forward = MoveDirection;
+    }
+
+    // ヒットストップを実行する
+    public void StartHitStop()
+    {
+        HitStopTimer = HitStopDuration;
+        IsHitStopActive = true;
     }
 }

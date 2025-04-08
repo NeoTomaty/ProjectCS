@@ -67,6 +67,9 @@ public class PlayerHitWall : MonoBehaviour
             // プレイヤーを加速
             MovePlayerScript.PlayerSpeedManager.SetAccelerationValue(Acceleration);
 
+            // ヒットストップ実行
+            MovePlayerScript.StartHitStop();
+
             if (!IsJumpReflect) return;
 
             // 壁反射後の力の方向をVelocityに応じて決定する
