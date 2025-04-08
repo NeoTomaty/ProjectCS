@@ -27,7 +27,7 @@ public class LRMovePlayer : MonoBehaviour
     {
         if (PlayerSpeedManager == null)
         {
-            Debug.LogWarning("AutoMovePlayerスクリプトがアタッチされていません。");
+            Debug.LogWarning("MovePlayerスクリプトがアタッチされていません。");
         }
     }
 
