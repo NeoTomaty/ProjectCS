@@ -38,7 +38,7 @@ public class MovePlayer : MonoBehaviour
 
         if (PlayerSpeedManager == null)
         {
-            Debug.LogWarning("AutoMovePlayerスクリプトがアタッチされていません。");
+            Debug.LogWarning("MovePlayerスクリプトがアタッチされていません。");
         }
     }
 
