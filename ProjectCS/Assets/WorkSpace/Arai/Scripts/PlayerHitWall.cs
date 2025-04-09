@@ -1,21 +1,14 @@
 //======================================================
 // [PlayerHitWall]
 // 作成者：荒井修
-<<<<<<< HEAD:ProjectCS/Assets/WorkSpace/Arai/Scripts/PlayerHitWall.cs
-// 最終更新日：4/07
-=======
 // 最終更新日：04/08
->>>>>>> 0722a15c18f14d9d7c606093145b759313198c29:ProjectCS/Assets/WorkSpace/Arai/Script/PlayerHitWall.cs
 // 
 // [Log]
 // 03/31　荒井　プレイヤーが壁に衝突した際の挙動を作成
 // 03/31　荒井　移動の仮スクリプトを自作し動作を確認
 // 04/01　荒井　Playerオブジェクトの本スクリプトに対応
-<<<<<<< HEAD:ProjectCS/Assets/WorkSpace/Arai/Scripts/PlayerHitWall.cs
 // 04/07　荒井　Tooltip記述をコメントに変更
-=======
 // 04/08　髙下　壁反射の仕様を変更
->>>>>>> 0722a15c18f14d9d7c606093145b759313198c29:ProjectCS/Assets/WorkSpace/Arai/Script/PlayerHitWall.cs
 //======================================================
 
 using UnityEngine;
@@ -102,8 +95,6 @@ public class PlayerHitWall : MonoBehaviour
         // 衝突したオブジェクトのタグをチェック
         if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "BrokenWall")
         {
-<<<<<<< HEAD:ProjectCS/Assets/WorkSpace/Arai/Scripts/PlayerHitWall.cs
-=======
             Debug.Log("プレイヤー >> 壁に当たりました");
             
             // 入力による加速をしないのなら、そのまま加速処理を実行
@@ -118,7 +109,6 @@ public class PlayerHitWall : MonoBehaviour
                 InputAcceptTimer = InputAcceptDuration;
             }
 
->>>>>>> origin/Takashita:ProjectCS/Assets/WorkSpace/Arai/Script/PlayerHitWall.cs
             // プレイヤーの移動ベクトルを取得
             Vector3 PlayerMoveDirection = MovePlayerScript.GetMoveDirection;
 
