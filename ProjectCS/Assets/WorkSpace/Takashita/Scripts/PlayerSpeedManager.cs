@@ -14,7 +14,11 @@ using UnityEngine;
 public class PlayerSpeedManager : MonoBehaviour
 {
     [SerializeField]
-    private float PlayerSpeed = 100.0f; // プレイヤーの速度値
+    private float PlayerSpeed = 100.0f;    // プレイヤーの速度値
+    [SerializeField]
+    private float MaxPlayerSpeed = 500.0f; // プレイヤーの速度最大値
+    [SerializeField]
+    private float MinPlayerSpeed = 120.0f; // プレイヤーの速度最小値
 
     // PlayerSpeed取得
     public float GetPlayerSpeed => PlayerSpeed;
@@ -23,12 +27,13 @@ public class PlayerSpeedManager : MonoBehaviour
     public void SetAccelerationValue(float AccelerationValue)
     {
         PlayerSpeed += AccelerationValue;
-        Debug.Log("PlayerSpeed速度加算値：" + AccelerationValue);
+        PlayerSpeed = Mathf.Clamp(PlayerSpeed, MinPlayerSpeed, MaxPlayerSpeed); // 速度を制限
     }
 
+    // プレイヤーの速度の減算関数
     public void SetDecelerationValue(float DecelerationValue)
     {
         PlayerSpeed -= DecelerationValue;
-        Debug.Log("PlayerSpeed速度加算値：" + DecelerationValue);
+        PlayerSpeed = Mathf.Clamp(PlayerSpeed, MinPlayerSpeed, MaxPlayerSpeed); // 速度を制限
     }
 }
