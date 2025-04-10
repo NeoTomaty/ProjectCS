@@ -633,6 +633,7 @@ GameObject:
   - component: {fileID: 1514962260}
   - component: {fileID: 1514962259}
   - component: {fileID: 1514962264}
+  - component: {fileID: 1514962265}
   m_Layer: 0
   m_Name: enemy
   m_TagString: Untagged
@@ -657,6 +658,9 @@ MonoBehaviour:
   - {fileID: 1678950986}
   - {fileID: 454732684}
   chaseRadius: 2
+  health: 100
+  scoreValue: 100
+  hitEffect: {fileID: 0}
 --- !u!65 &1514962260
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -768,6 +772,33 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!54 &1514962265
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514962258}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1678950982
 GameObject:
   m_ObjectHideFlags: 0
@@ -999,7 +1030,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca977c8484ccf954dbe2055596f9238a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
 --- !u!114 &1869699190
 MonoBehaviour:
   m_ObjectHideFlags: 0

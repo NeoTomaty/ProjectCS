@@ -1,3 +1,10 @@
+//======================================================
+// EnemyAI2_1スクリプト
+// 作成者：宮林
+// 最終更新日：4/7
+// 
+// [Log]4/10 宮林　敵2.1の要素追加
+//======================================================
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +17,10 @@ public class EnemyAI2_1 : MonoBehaviour
     public float chaseRadius = 0.5f; // プレイヤーを追尾する距離 (メートル単位)
     private bool isChasing = false; // 追尾状態
     private bool isStopped = false; // 停止フラグ（攻撃を受けたかどうか）
+
+    public int health = 100;
+    public int scoreValue = 100;
+    public GameObject hitEffect;
 
     void Start()
     {
@@ -35,7 +46,7 @@ public class EnemyAI2_1 : MonoBehaviour
         {
             // プレイヤーが半径外に出た場合巡回再開
             isChasing = false;
-            MoveToNextWaypoint();
+            ReturnToClosestWaypoint(); // 一番近い巡回ポイントに戻る
         }
 
         // 巡回ポイント到達時に次のポイントへ移動
@@ -45,12 +56,74 @@ public class EnemyAI2_1 : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            Vector3 forceDirection = (transform.position - collision.transform.position).normalized;
+            float forceMagnitude = collision.relativeVelocity.magnitude + 5f;
+            rb.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
+
+            if (hitEffect != null)
+            {
+                Instantiate(hitEffect, transform.position, Quaternion.identity);
+            }
+
+            // スコアを加算
+            GameManager.Instance.AddScore(scoreValue);
+            // 5秒後に自分を消す
+            Invoke(nameof(Die), 5f);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
+
+
     void MoveToNextWaypoint()
     {
         if (waypoints.Length == 0) return; // 巡回ポイントがない場合は処理しない
         agent.SetDestination(waypoints[currentWaypoint].position); // 次の巡回ポイントを設定
-        currentWaypoint = (currentWaypoint + 1) % waypoints.Length; // 次の巡回ポイントを設定（ループ）
+        currentWaypoint = (currentWaypoint + 1) % waypoints.Length; // 次の巡回ポイントを設定
     }
+
+    void ReturnToClosestWaypoint()
+    {
+        if (waypoints.Length == 0) return; // 巡回ポイントがない場合は処理しない
+
+        // 一番近い巡回ポイントを探す
+        float closestDistance = Mathf.Infinity;
+        int closestWaypoint = 0;
+
+        for (int i = 0; i < waypoints.Length; i++)
+        {
+            float distance = Vector3.Distance(transform.position, waypoints[i].position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestWaypoint = i;
+            }
+        }
+
+        // 一番近い巡回ポイントを設定
+        currentWaypoint = closestWaypoint;
+        agent.SetDestination(waypoints[currentWaypoint].position);
+    }
+
+
+
 
     public void OnAttacked()
     {
