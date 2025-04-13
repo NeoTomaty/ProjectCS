@@ -9,9 +9,9 @@
 
 using UnityEngine;
 
+// プレイヤーを追跡するカメラにアタッチ
 public class ChangeCameraFOV : MonoBehaviour
 {
-    // プレイヤーを追跡するカメラにアタッチ
 
     [SerializeField] private Camera Camera;
     [SerializeField] private PlayerSpeedManager PlayerSpeedManager;
