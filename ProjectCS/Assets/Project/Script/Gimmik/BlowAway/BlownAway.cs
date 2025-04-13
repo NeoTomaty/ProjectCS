@@ -3,9 +3,11 @@ using UnityEngine;
 public class BlownAway : MonoBehaviour
 {
     public float forceMultiplier = 2000.0f;
-    public float maxHitStop = 1.0f;
+    public float maxHitStop = 2.0f;
     public float forceMultiplierY = 500.0f;
     public float ySpeedMultiplier = 100.0f;
+
+    public float scaleIncreasePerHit = 1.1f; // ヒットごとにスケール10%アップ
 
     private Rigidbody rb;
 
@@ -22,7 +24,7 @@ public class BlownAway : MonoBehaviour
             if (playerRb == null) return;
 
             // プレイヤー速度を取得
-            Vector3 playerVelocity = playerRb.linearVelocity; // linearVelocity → velocity に変更
+            Vector3 playerVelocity = playerRb.linearVelocity;
             float speed = Mathf.Max(playerVelocity.magnitude, 1f) * 5f;
 
             // 押し返す方向（XZ）
@@ -30,27 +32,29 @@ public class BlownAway : MonoBehaviour
             flatDir.y = 0;
             flatDir = flatDir.normalized;
 
-            // Y方向成分（固定 + 速度依存）
+            // Y方向成分
             float yForce = forceMultiplierY + (speed * ySpeedMultiplier) * 100f;
 
-            // 最終的な力を構成
+            // 最終的な力
             Vector3 force = (flatDir * speed * forceMultiplier) + (Vector3.up * yForce);
-
             rb.AddForce(force, ForceMode.Impulse);
 
-            float stopTime = Mathf.Clamp(speed * 0.15f, 0.5f, maxHitStop);
-            StartCoroutine(HitStop(speed));
+            // スケールアップ（累積）
+            transform.localScale *= scaleIncreasePerHit;
 
-            Debug.Log("Hit! Speed: " + speed + " → Force: " + force);
+            // スケールに応じてヒットストップ時間を強調（例：scale 1.5 → 1.5倍）
+            float scaleFactor = transform.localScale.magnitude / new Vector3(1, 1, 1).magnitude; // 元スケールとの比率
+            float stopTime = Mathf.Clamp(speed * 0.15f * scaleFactor, 0.5f, maxHitStop);
+
+            StartCoroutine(HitStop(stopTime));
+
+            Debug.Log($"Hit! Speed: {speed}, Scale: {transform.localScale}, HitStop: {stopTime}");
         }
     }
 
-    System.Collections.IEnumerator HitStop(float speed)
+    System.Collections.IEnumerator HitStop(float duration)
     {
         Time.timeScale = 0f;
-
-        float normalizedSpeed = Mathf.InverseLerp(1f, 20f, speed);
-        float duration = Mathf.Lerp(0.5f, maxHitStop, normalizedSpeed);
 
         Vector3 originalPosition = transform.localPosition;
         float timer = 0f;
@@ -62,7 +66,6 @@ public class BlownAway : MonoBehaviour
             float offsetY = Random.Range(-shakeStrength, shakeStrength);
 
             transform.localPosition = originalPosition + new Vector3(offsetX, offsetY, 0);
-
             timer += Time.unscaledDeltaTime;
             yield return null;
         }

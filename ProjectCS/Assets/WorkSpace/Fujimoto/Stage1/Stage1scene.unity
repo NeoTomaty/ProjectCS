@@ -136,7 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b30931f9f7b3ba847b1e0a81377c7c6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Acceleration: 1
 --- !u!114 &1058076014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeed: 100
+  MaxPlayerSpeed: 500
+  MinPlayerSpeed: 120
 --- !u!114 &1058076015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,9 +178,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b64ab1d43f6272489028c3e1d6b2f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeedManager: {fileID: 0}
-  MovePlayer: {fileID: 0}
+  PlayerSpeedManager: {fileID: 1058076014}
+  MovePlayer: {fileID: 1058076017}
   TurnSpeed: 100
+  TurnResponse: 1
 --- !u!114 &1058076017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,6 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeedManager: {fileID: 1058076014}
+  RayDistance: 10
+  HitStopDuration: 0.1
 --- !u!54 &1058076018
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -232,8 +236,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbb236b71105e994d870695538c85aa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  moveDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &1058076023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,11 +248,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35e843f806fe034194b3d6594cde371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxSpeed: 5
-  TurnSpeed: 300
-  CameraTransform: {fileID: 0}
-  Acceleration: 1
-  Deceleration: 1
+--- !u!4 &1058076027 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2724542709577174702, guid: ae704bec78ee39140a4764ff8ae138a2, type: 3}
+  m_PrefabInstance: {fileID: 2029200095677770891}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1092067199
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -418,10 +420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2129851bf28e24249bcc57b7b7f9e296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMultiplier: 10
-  maxHitStop: 0.3
-  forceMultiplierY: 1
-  ySpeedMultiplier: 0.1
 --- !u!1 &1665527029 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 631549025385859602, guid: 4346da12f64b1d34698dce7af8874efe, type: 3}
@@ -556,6 +554,7 @@ GameObject:
   - component: {fileID: 2026743241}
   - component: {fileID: 2026743240}
   - component: {fileID: 2026743239}
+  - component: {fileID: 2026743242}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -637,6 +636,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+--- !u!114 &2026743242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026743238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bd75f32c8863304992dc4b62bf39102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 1058076027}
+  Offset: {x: 0, y: 2, z: -5}
+  SmoothSpeed: 5
 --- !u!1001 &2029200095677770891
 PrefabInstance:
   m_ObjectHideFlags: 0
