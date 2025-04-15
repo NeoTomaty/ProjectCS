@@ -6,7 +6,7 @@
 // 
 // [Log]
 // 04/13 高下 スクリプト作成
-// 
+// 04/15 竹内 初期サイズの修正
 // 
 //====================================================
 using UnityEngine;
@@ -27,7 +27,9 @@ public class SweetSizeUp : MonoBehaviour
 
     void Start()
     {
-        transform.localScale = new Vector3(MinSize, MinSize, MinSize);
+        // 初期サイズの決定
+        Vector3 scale = transform.localScale;
+        scale *= MinSize;
 
         BoxCollider Box = GetComponent<BoxCollider>(); // ボックスコライダー取得
         if(!Box)

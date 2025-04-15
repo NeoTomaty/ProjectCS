@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 4727665498126996010}
   - component: {fileID: 4101561620321043984}
   - component: {fileID: 3095244054957471975}
-  - component: {fileID: 8181784638504054240}
   - component: {fileID: 1158241096710083265}
+  - component: {fileID: 8181784638504054240}
+  - component: {fileID: 3373413605072562624}
   m_Layer: 0
-  m_Name: Furniture
+  m_Name: Snack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,8 +32,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4, y: 75.6, z: 142.9}
-  m_LocalScale: {x: 10, y: 10, z: 10}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -110,22 +111,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8181784638504054240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1779649352305782782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f7157f7fbf04cd499bad70c28de8be8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forceMultiplier: 2000
-  maxHitStop: 1
-  forceMultiplierY: 500
-  ySpeedMultiplier: 100
 --- !u!54 &1158241096710083265
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -153,3 +138,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8181784638504054240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779649352305782782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f7157f7fbf04cd499bad70c28de8be8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinHitStopTime: 0.5
+  MaxHitStopTime: 1
+  MinUpwardForce: 50
+  MaxUpwardForce: 200
+  MinRandomXYRange: 0.2
+  MaxRandomXYRange: 1
+--- !u!114 &3373413605072562624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779649352305782782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6baa9239e2ea7514788e635463f43722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxSize: 50
+  MinSize: 10
+  SizeUpAmount: 10
+  ColliderSizeMultiplier: 1
