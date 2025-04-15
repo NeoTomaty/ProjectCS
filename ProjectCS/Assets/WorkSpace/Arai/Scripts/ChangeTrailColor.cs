@@ -10,13 +10,13 @@
 
 using UnityEngine;
 
+// Trail Rendererで作成した帯の色を変更するクラス
+// プレイヤーにTrail Rendererと共にアタッチ
 public class ChangeTrailColor : MonoBehaviour
 {
-    // Trail Rendererで作成した帯の色を変更するクラス
-    // プレイヤーにTrail Rendererと共にアタッチ
 
-    [SerializeField] private PlayerSpeedManager PlayerSpeedManager; // プレイヤーの速度管理クラスの参照
     [SerializeField] private TrailRenderer TrailRenderer;           // トレイルレンダラーの参照
+    [SerializeField] private PlayerSpeedManager PlayerSpeedManager; // プレイヤーの速度管理クラスの参照
 
     // 色の設定
     [SerializeField] private Color LowSpeedColor = Color.blue;      // 低速時

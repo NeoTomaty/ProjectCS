@@ -434,6 +434,25 @@ MonoBehaviour:
   AlphaValue: 0.5
   LowToMiddleSpeedThreshold: 200
   MiddleToHighSpeedThreshold: 400
+--- !u!114 &349187639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349187601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48ebeaef9c4af6419c6605cb11a5631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SparkPrefab: {fileID: 5239839811527919053, guid: 96e14026d344e2d4e9ddb5acb88014b2, type: 3}
+  PlayerSpeedManager: {fileID: 349187606}
+  LowSpeedColor: {r: 0, g: 0, b: 1, a: 1}
+  MiddleSpeedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  HighSpeedColor: {r: 1, g: 0, b: 0, a: 1}
+  LowToMiddleSpeedThreshold: 200
+  MiddleToHighSpeedThreshold: 400
 --- !u!114 &426877186 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
@@ -584,6 +603,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4584313306017835350, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       insertIndex: -1
       addedObject: {fileID: 349187638}
+    - targetCorrespondingSourceObject: {fileID: 4584313306017835350, guid: b883a481c041c894aad4ba49046f3711, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 349187639}
   m_SourcePrefab: {fileID: 100100000, guid: b883a481c041c894aad4ba49046f3711, type: 3}
 --- !u!1 &618722606
 GameObject:
