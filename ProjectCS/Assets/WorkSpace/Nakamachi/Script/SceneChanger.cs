@@ -1,6 +1,6 @@
 //SceneChanger.cs
 //作成者:中町雷我
-//最終更新日:2025/04/11
+//最終更新日:2025/04/15
 //[Log]
 //04/11　中町　TestResultSceneからTestGameSceneに遷移する処理
 //04/15　中町　Enterキーでもシーン遷移できるようにする処理追加
