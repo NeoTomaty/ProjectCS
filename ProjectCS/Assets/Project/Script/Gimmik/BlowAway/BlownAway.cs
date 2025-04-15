@@ -1,48 +1,79 @@
+//====================================================
+// スクリプト名：BlownAway
+// 作成者：藤本
+// 最終更新日：04/13
+// 
+// [Log]
+// 04/13 高下 OnCollisionEnter内で飛ばし方を修正
+// 
+// 
+//====================================================
 using UnityEngine;
 
 public class BlownAway : MonoBehaviour
 {
-    public float forceMultiplier = 2000.0f;
-    public float maxHitStop = 1.0f;
-    public float forceMultiplierY = 500.0f;
-    public float ySpeedMultiplier = 100.0f;
+    [SerializeField]
+    private float MinHitStopTime = 0.5f;    // ヒットストップ時間（最小）
+    [SerializeField]
+    private float MaxHitStopTime = 1.0f;    // ヒットストップ時間（最大）
+    [SerializeField]
+    private float MinUpwardForce = 50.0f;  // 真上への力（最小）
+    [SerializeField]
+    private float MaxUpwardForce = 200.0f; // 真上への力（最大）
+    [SerializeField]
+    private float MinRandomXYRange = 0.2f; // ランダムに加えるXY軸の範囲（最小）
+    [SerializeField]
+    private float MaxRandomXYRange = 1.0f; // ランダムに加えるXY軸の範囲（最大）
 
-    private Rigidbody rb;
+    private Rigidbody Rb;
+    private SweetSizeUp SweetSizeUpScript;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        Rb = GetComponent<Rigidbody>();
+
+        // SweetSizeUpスクリプトを取得
+        SweetSizeUpScript = GetComponent<SweetSizeUp>();
+        if (!SweetSizeUpScript)
+        {
+            Debug.LogError("SweetSizeUpがアタッチされていません");
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (!collision.gameObject.CompareTag("Player")) return;
+      
+        // PlayerSpeedManagerスクリプトを取得
+        PlayerSpeedManager PlayerSpeedManager = collision.gameObject.GetComponent<PlayerSpeedManager>();
+        if (!PlayerSpeedManager)
         {
-            Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
-            if (playerRb == null) return;
-
-            // プレイヤー速度を取得
-            Vector3 playerVelocity = playerRb.linearVelocity; // linearVelocity → velocity に変更
-            float speed = Mathf.Max(playerVelocity.magnitude, 1f) * 5f;
-
-            // 押し返す方向（XZ）
-            Vector3 flatDir = (transform.position - collision.transform.position);
-            flatDir.y = 0;
-            flatDir = flatDir.normalized;
-
-            // Y方向成分（固定 + 速度依存）
-            float yForce = forceMultiplierY + (speed * ySpeedMultiplier) * 100f;
-
-            // 最終的な力を構成
-            Vector3 force = (flatDir * speed * forceMultiplier) + (Vector3.up * yForce);
-
-            rb.AddForce(force, ForceMode.Impulse);
-
-            float stopTime = Mathf.Clamp(speed * 0.15f, 0.5f, maxHitStop);
-            StartCoroutine(HitStop(speed));
-
-            Debug.Log("Hit! Speed: " + speed + " → Force: " + force);
+            Debug.LogWarning("PlayerSpeedManager取得失敗");
+            return;
         }
+        // プレイヤーの現在の速度割合を取得
+        float SpeedRatio = PlayerSpeedManager.GetSpeedRatio();
+        // 現在のお菓子の大きさの割合を取得する
+        float ScaleRatio = SweetSizeUpScript.GetScaleRatio();
+
+        // 真上方向に力を加える
+        Vector3 UpwardDirection = Vector3.up * Mathf.Lerp(MinUpwardForce, MaxUpwardForce, SpeedRatio);
+
+        // ランダムなXY方向のベクトルを生成
+        float RandomAngle = Random.Range(0.0f, 2.0f * Mathf.PI); // ランダムな角度
+        Vector3 RandomDirection = new Vector3(Mathf.Cos(RandomAngle), 0.0f, Mathf.Sin(RandomAngle));
+
+        // ランダム方向ベクトルを指定した距離になるようにスケーリング
+        RandomDirection = RandomDirection.normalized * Mathf.Lerp(MinRandomXYRange, MaxRandomXYRange, ScaleRatio);
+
+        // 最終的な力の方向
+        Vector3 ForceDirection = UpwardDirection + RandomDirection;
+
+        // Rigidbodyに力を加える
+        Rb.AddForce(ForceDirection, ForceMode.Impulse);
+
+        // ヒットストップを開始する
+        StartCoroutine(HitStop(Mathf.Lerp(MinHitStopTime, MaxHitStopTime, SpeedRatio)));
     }
 
     System.Collections.IEnumerator HitStop(float speed)
@@ -50,7 +81,7 @@ public class BlownAway : MonoBehaviour
         Time.timeScale = 0f;
 
         float normalizedSpeed = Mathf.InverseLerp(1f, 20f, speed);
-        float duration = Mathf.Lerp(0.5f, maxHitStop, normalizedSpeed);
+        float duration = Mathf.Lerp(0.5f, MaxHitStopTime, normalizedSpeed);
 
         Vector3 originalPosition = transform.localPosition;
         float timer = 0f;
@@ -69,5 +100,7 @@ public class BlownAway : MonoBehaviour
 
         transform.localPosition = originalPosition;
         Time.timeScale = 1f;
+
+        SweetSizeUpScript.ScaleUpSweet(); // お菓子のスケールアップ
     }
 }
