@@ -6,7 +6,7 @@
 // 
 // [Log]
 // 04/13 高下 スクリプト作成
-// 04/15 竹内 初期サイズの修正
+// 04/15 竹内 初期サイズの修正（サイズアップを倍率に）
 // 
 //====================================================
 using UnityEngine;
@@ -19,7 +19,7 @@ public class SweetSizeUp : MonoBehaviour
     [SerializeField]
     private float MinSize = 10.0f;      // お菓子の最小（初期）サイズ
     [SerializeField]
-    private float SizeUpAmount = 10.0f; // 一度のサイズアップ量
+    private float SizeUpAmount = 10.0f; // 一度のサイズアップ倍率
     [SerializeField]
     private float ColliderSizeMultiplier = 1.0f; // 当たり判定のサイズ倍率
 
@@ -46,7 +46,7 @@ public class SweetSizeUp : MonoBehaviour
         Vector3 CurrentScale = transform.localScale;
 
         // スケールアップ後のサイズ（各軸ごとに計算）
-        Vector3 NewScale = CurrentScale + new Vector3(SizeUpAmount, SizeUpAmount, SizeUpAmount);
+        Vector3 NewScale = CurrentScale * SizeUpAmount;
 
         // MaxSize を超えないように制限
         NewScale.x = Mathf.Min(NewScale.x, MaxSize);

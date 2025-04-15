@@ -6,6 +6,7 @@
 // [Log]
 //======================================================
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class CameraFunction : MonoBehaviour
@@ -48,8 +49,10 @@ public class CameraFunction : MonoBehaviour
             pitch = Mathf.Lerp(pitch, targetPitch, AutoCorrectSpeed * Time.deltaTime);
         }
 
+        bool rtPressed = Gamepad.current != null && Gamepad.current.rightTrigger.ReadValue() > 0.5f;
+
         // Rキー押下中は敵を自然に見る視点へ移動 + 回転
-        if (Input.GetKey(KeyCode.R) && Target != null)
+        if ((Input.GetKey(KeyCode.R) || rtPressed) && Target != null)
         {
             Vector3 viewDir = (Target.position - Player.position).normalized;
 
