@@ -426,8 +426,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74fb075e058a77248b526121575f6c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeedManager: {fileID: 349187606}
-  trailRenderer: {fileID: 349187630}
+  PlayerSpeedManager: {fileID: 349187606}
+  TrailRenderer: {fileID: 349187630}
   LowSpeedColor: {r: 0, g: 0, b: 1, a: 1}
   MiddleSpeedColor: {r: 1, g: 1, b: 0, a: 1}
   HighSpeedColor: {r: 1, g: 0, b: 0, a: 1}
@@ -864,6 +864,7 @@ GameObject:
   - component: {fileID: 946110162}
   - component: {fileID: 946110161}
   - component: {fileID: 946110164}
+  - component: {fileID: 946110165}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -960,6 +961,25 @@ MonoBehaviour:
   Target: {fileID: 349187612}
   Offset: {x: 0, y: 20, z: -40}
   SmoothSpeed: 5
+--- !u!114 &946110165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946110160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e18773fce769f41835a7459c1ca1bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Camera: {fileID: 946110162}
+  PlayerSpeedManager: {fileID: 349187606}
+  MinFOV: 90
+  MaxFOV: 110
+  FOVLerpSpeed: 1
+  MinSpeed: 120
+  MaxSpeed: 500
 --- !u!114 &1113528608 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}

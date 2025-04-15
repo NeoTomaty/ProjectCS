@@ -13,9 +13,10 @@ using UnityEngine;
 public class ChangeTrailColor : MonoBehaviour
 {
     // Trail Rendererで作成した帯の色を変更するクラス
+    // プレイヤーにTrail Rendererと共にアタッチ
 
-    [SerializeField] private PlayerSpeedManager playerSpeedManager; // プレイヤーの速度管理クラスの参照
-    [SerializeField] private TrailRenderer trailRenderer;           // トレイルレンダラーの参照
+    [SerializeField] private PlayerSpeedManager PlayerSpeedManager; // プレイヤーの速度管理クラスの参照
+    [SerializeField] private TrailRenderer TrailRenderer;           // トレイルレンダラーの参照
 
     // 色の設定
     [SerializeField] private Color LowSpeedColor = Color.blue;      // 低速時
@@ -35,7 +36,7 @@ public class ChangeTrailColor : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (trailRenderer == null) return;
+        if (TrailRenderer == null) return;
 
         gradient = new Gradient();
 
@@ -56,17 +57,17 @@ public class ChangeTrailColor : MonoBehaviour
         gradient.SetKeys(colorKeys, alphaKeys);
 
         // 適用
-        trailRenderer.colorGradient = gradient;
+        TrailRenderer.colorGradient = gradient;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerSpeedManager == null) return;
-        if (trailRenderer == null) return;
+        if (PlayerSpeedManager == null) return;
+        if (TrailRenderer == null) return;
 
         // プレイヤーの速度を取得
-        float PlayerSpeed = playerSpeedManager.GetPlayerSpeed;
+        float PlayerSpeed = PlayerSpeedManager.GetPlayerSpeed;
 
         // プレイヤーの速度に応じて色を変更
         if (PlayerSpeed < LowToMiddleSpeedThreshold)
@@ -88,6 +89,6 @@ public class ChangeTrailColor : MonoBehaviour
         gradient.SetKeys(colorKeys, alphaKeys);
 
         // 適用
-        trailRenderer.colorGradient = gradient;
+        TrailRenderer.colorGradient = gradient;
     }
 }
