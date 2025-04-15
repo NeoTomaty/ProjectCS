@@ -1,7 +1,7 @@
 //======================================================
 // [PlayerHitWall]
 // 作成者：荒井修
-// 最終更新日：04/08
+// 最終更新日：04/11
 // 
 // [Log]
 // 03/31　荒井　プレイヤーが壁に衝突した際の挙動を作成
@@ -9,11 +9,13 @@
 // 04/01　荒井　Playerオブジェクトの本スクリプトに対応
 // 04/07　荒井　Tooltip記述をコメントに変更
 // 04/08　髙下　壁反射の仕様を変更
+// 04/11　中町　GoalWallに衝突したときにTestResultSceneにシーン遷移する処理追加
 //======================================================
 
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement; // シーン管理を追加
 
 public class PlayerHitWall : MonoBehaviour
 {
@@ -149,6 +151,12 @@ public class PlayerHitWall : MonoBehaviour
 
             // 壁反射時のAddForceを有効にする
             IsJumpReflect = true;
+        }
+        // GoalWallに衝突したとき、リザルトシーンに移動
+        else if(collision.gameObject.tag=="GoalWall")
+        {
+            Debug.Log("プレイヤー>>ゴールに到達しました");
+            SceneManager.LoadScene("TestResultScene");
         }
     }
 }
