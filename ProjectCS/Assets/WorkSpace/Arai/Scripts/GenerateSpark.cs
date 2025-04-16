@@ -1,11 +1,12 @@
 //======================================================
 // [GenerateSpark]
 // 作成者：荒井修
-// 最終更新日：04/13
+// 最終更新日：04/16
 // 
 // [Log]
 // 04/13　荒井　衝突時に火花を生成するように実装
 // 04/13　荒井　プレイヤーの速度が閾値を跨いだ時に色が変わるように実装
+// 04/16　荒井　パーティクルのパラメータを設定できるように変更
 //======================================================
 
 using UnityEngine;
@@ -16,6 +17,11 @@ public class GenerateSpark : MonoBehaviour
 
     [SerializeField] private GameObject SparkPrefab;
     [SerializeField] private PlayerSpeedManager PlayerSpeedManager;
+
+    // パーティクルの設定
+    [SerializeField] private float ParticleDuration = 0.05f;    // パーティクルの継続時間
+    [SerializeField] private float ParticleSpeed = 30.0f;       // パーティクルの速度
+    [SerializeField] private float ParticleSize = 0.2f;         // パーティクルのサイズ
 
     // 色の設定
     [SerializeField] private Color LowSpeedColor = Color.blue;      // 低速時
@@ -29,7 +35,7 @@ public class GenerateSpark : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -73,6 +79,9 @@ public class GenerateSpark : MonoBehaviour
 
         // 色を適用
         ParticleSystem.MainModule EffectMainModule = SparkEffect.GetComponent<ParticleSystem>().main;
+        EffectMainModule.duration = ParticleDuration;
+        EffectMainModule.startSpeed = ParticleSpeed;
+        EffectMainModule.startSize = ParticleSize;
         EffectMainModule.startColor = SparkColor;
 
         // 一定時間後に火花を消す
