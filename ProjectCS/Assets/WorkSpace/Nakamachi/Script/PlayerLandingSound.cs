@@ -3,28 +3,40 @@
 //最終更新日:2025/04/15
 //[Log]
 //04/15　中町　Playerが着地したときの効果音処理
+//04/16　中町　着地したら一回だけ鳴らす処理に修正
 
 using UnityEngine;
 
 public class PlayerLandingSound : MonoBehaviour
 {
-    public AudioSource LandingSound;
-    private bool IsGrounded;
-    private bool WasGrounded;
+    public AudioClip LandingSound;
+    private AudioSource AudioSource;
+    private bool HasLanded = false;
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        //地面にいるかどうかをチェック
-        IsGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
+        AudioSource = GetComponent<AudioSource>();
+    }
 
-        //着地したとき
-        if(!WasGrounded&&IsGrounded)
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") && !HasLanded)
         {
-            LandingSound.Play();
+            HasLanded = true;
+            PlayLandingSound();
         }
+    }
 
-        //前のフレームの状態を更新
-        WasGrounded = IsGrounded;
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            HasLanded = false;
+        }
+    }
+
+    void PlayLandingSound()
+    {
+        AudioSource.PlayOneShot(LandingSound);
     }
 }
