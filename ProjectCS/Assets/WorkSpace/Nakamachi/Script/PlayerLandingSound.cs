@@ -9,6 +9,7 @@ using UnityEngine;
 
 public class PlayerLandingSound : MonoBehaviour
 {
+<<<<<<< HEAD
     //着地音のAudioClipを設定するための変数
     public AudioClip LandingSound;
 
@@ -45,14 +46,43 @@ public class PlayerLandingSound : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             //プレイヤーが地面から離れたとき
+=======
+    public AudioClip LandingSound;
+    private AudioSource AudioSource;
+    private bool HasLanded = false;
+
+    void Start()
+    {
+        AudioSource = GetComponent<AudioSource>();
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") && !HasLanded)
+        {
+            HasLanded = true;
+            PlayLandingSound();
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+>>>>>>> 1b187f82e094883f53bfb20f149ad173c04766b6
             HasLanded = false;
         }
     }
 
+<<<<<<< HEAD
     //着地音を再生するメソッド
     void PlayLandingSound()
     {
         //AudioSourceコンポーネントを使用して着地音を再生
+=======
+    void PlayLandingSound()
+    {
+>>>>>>> 1b187f82e094883f53bfb20f149ad173c04766b6
         AudioSource.PlayOneShot(LandingSound);
     }
 }
