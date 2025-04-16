@@ -18,6 +18,9 @@ GameObject:
   - component: {fileID: 2946462142280788705}
   - component: {fileID: 1368332585905943784}
   - component: {fileID: 6838755633707204601}
+  - component: {fileID: 3659676806870951451}
+  - component: {fileID: 3884130562277590331}
+  - component: {fileID: 6929782871356562867}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -36,7 +39,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -153,9 +156,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b831209e703c1640a1b8686acea5d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeedManager: {fileID: 0}
+  PlayerSpeedManager: {fileID: 2693352334119193582}
   RayDistance: 10
-  HitStopDuration: 0.1
+  HitStopDuration: 0.02
 --- !u!114 &2693352334119193582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,8 +172,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeed: 5
-  MaxPlayerSpeed: 500
-  MinPlayerSpeed: 120
+  MaxPlayerSpeed: 100
+  MinPlayerSpeed: 1
 --- !u!114 &2946462142280788705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,10 +186,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b64ab1d43f6272489028c3e1d6b2f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeedManager: {fileID: 0}
-  MovePlayer: {fileID: 0}
-  TurnSpeed: 100
-  TurnResponse: 1
+  PlayerSpeedManager: {fileID: 2693352334119193582}
+  MovePlayer: {fileID: 3943404572096005784}
+  TurnSpeed: 10
+  TurnResponse: 0.5
 --- !u!114 &1368332585905943784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,9 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8231111cba2f2c24b9d8d26d36874d94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JumpForce: 10
-  GroundCheckRadius: 0.2
-  GravityScale: -9.8
+  JumpForce: 25
+  GroundCheckRadius: 5
+  GravityScale: -50
 --- !u!114 &6838755633707204601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +217,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30113872c1efea94e885d49ed945d9f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deceleration: 5
-  PlayerSpeedManager: {fileID: 0}
+  Deceleration: 0.1
+  PlayerSpeedManager: {fileID: 2693352334119193582}
   DecelerationsInterval: 1
+--- !u!114 &3659676806870951451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2faf95863f471224797d3f5730bdcb97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Acceleration: 3
+  MaxVelocityY: 50
+  MinVelocityY: -50
+  InputAcceptDuration: 1
+  IsInputEnabled: 0
+--- !u!114 &3884130562277590331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3d495c64e95e4843a18f8815b4d6a7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetPosition: {fileID: 4616531718173721844}
+  speed: 100
+--- !u!114 &6929782871356562867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a32c646a1bc4b7e46a756743f89fdd7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LifeManager: {fileID: 0}
+  TagName: Enemy
