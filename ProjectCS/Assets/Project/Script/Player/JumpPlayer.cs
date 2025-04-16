@@ -19,7 +19,7 @@ public class JumpPlayer : MonoBehaviour
     [SerializeField]
     private float GroundCheckRadius = 0.2f; // 地面判定半径
     [SerializeField]
-    private float GravityScale = -9.8f;     // 重力の大きさ
+    private Vector3 GravityScale = new Vector3(0.0f, -9.8f, 0.0f);     // 重力の大きさ
 
     private Rigidbody Rb;    // プレイヤーのRigidbody
     private bool IsGrounded; // 地面に接しているかどうか
@@ -30,11 +30,13 @@ public class JumpPlayer : MonoBehaviour
     void Start()
     {
         Rb = GetComponent<Rigidbody>(); // Rigidbodyを取得
-        Physics.gravity = new Vector3(0, GravityScale, 0); // 重力設定
     }
    
     void Update()
     {
+        // 重力方向に加速させる
+        Rb.AddForce(GravityScale, ForceMode.Acceleration);
+
         // 地面に接しているか確認
         IsGrounded = CheckIfGrounded();
 
