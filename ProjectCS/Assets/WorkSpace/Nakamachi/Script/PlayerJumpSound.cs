@@ -1,26 +1,42 @@
-//PlayerJumpSound.cs
+//PlayerLandingSound.cs
 //作成者:中町雷我
-//最終更新日:2025/04/15
+//最終更新日:2025/04/16
 //[Log]
 //04/15　中町　Playerがジャンプしたときの効果音処理
+//04/16　中町　ジャンプしたら一回だけ鳴らす処理に修正
 
 using UnityEngine;
 
 public class PlayerJumpSound : MonoBehaviour
 {
-    public AudioSource JumpSound;
-    private bool IsGrounded;
+    public AudioClip JumpSound;
+    private AudioSource AudioSource;
+    private bool IsGrounded = true;
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        //地面にいるかどうかをチェック
-        IsGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
+        AudioSource = GetComponent<AudioSource>();
+    }
 
-        //ジャンプしたとき
-        if(IsGrounded&&Input.GetButtonDown("Jump"))
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") && IsGrounded)
         {
-            JumpSound.Play();
+            IsGrounded = false;
+            PlayJumpSound();
         }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            IsGrounded = true;
+        }
+    }
+
+    void PlayJumpSound()
+    {
+        AudioSource.PlayOneShot(JumpSound);
     }
 }
