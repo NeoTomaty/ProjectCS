@@ -66,13 +66,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0ae0e5a18b392184898317a590f79d40, type: 3}
+  m_Texture: {fileID: 2800000, guid: 0e18735b66c54c246b3c03374110271f, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
     y: 0
     width: 1
-    height: 1
+    height: 0.16666667
 --- !u!114 &8863059987598273660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,8 +86,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeedManager: {fileID: 0}
-  LowSpeedScale: 1.9
-  HighSpeedScale: 1.1
+  SpeedLineImage: {fileID: 0}
+  TotalFrame: 6
+  AnimationDuration: 0.02
+  LowSpeedScale: 5
+  HighSpeedScale: 2.5
   ScaleLerpSpeed: 3
   PlayerLowSpeed: 120
   PlayerHighSpeed: 500
