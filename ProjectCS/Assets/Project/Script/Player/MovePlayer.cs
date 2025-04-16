@@ -77,7 +77,8 @@ public class MovePlayer : MonoBehaviour
                 // レイが壁に衝突した場合、その地点に移動
                 // めり込んだ分を押し戻すため、衝突点から移動方向の反対方向に少しずらす
                 Vector3 PushBackDirection = -MoveDirection.normalized;  // 反対方向
-                transform.position = hit.point + PushBackDirection * 0.1f;  // 0.1fは押し戻しの距離
+                float radius = GetComponent<SphereCollider>().radius;
+                transform.position = hit.point + PushBackDirection * radius;  // プレイヤー半径分の押し戻し
             }
             else
             {
