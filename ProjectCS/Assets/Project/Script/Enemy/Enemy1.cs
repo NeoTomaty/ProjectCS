@@ -4,7 +4,8 @@
 // �ŏI�X�V���F4/01
 //
 // [Log]
-// 3/31  �X�e�@�X�N���v�g�쐬
+// 3/31  スクリプト作成　森脇
+// 4/16  エフェクト発生位置修正　森脇
 //======================================================
 
 using UnityEngine;
@@ -39,9 +40,11 @@ public class Enemy1 : MonoBehaviour
             float forceMagnitude = collision.relativeVelocity.magnitude + 5f;
             rb.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
 
-            if (hitEffect != null)
+            if (hitEffect != null && collision.contacts.Length > 0)
             {
-                Instantiate(hitEffect, transform.position, Quaternion.identity);
+                // ★ぶつかった位置に出す（最初の接触点を使う）
+                Vector3 hitPosition = collision.contacts[0].point;
+                Instantiate(hitEffect, hitPosition, Quaternion.identity);
             }
 
             // スコアを加算
