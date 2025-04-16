@@ -1,6 +1,6 @@
 //PlayerLandingSound.cs
 //作成者:中町雷我
-//最終更新日:2025/04/15
+//最終更新日:2025/04/16
 //[Log]
 //04/15　中町　Playerが着地したときの効果音処理
 //04/16　中町　着地したら一回だけ鳴らす処理に修正
@@ -9,14 +9,13 @@ using UnityEngine;
 
 public class PlayerLandingSound : MonoBehaviour
 {
-<<<<<<< HEAD
     //着地音のAudioClipを設定するための変数
     public AudioClip LandingSound;
 
     //AudioSourceコンポーネントを保持するための変数
     private AudioSource AudioSource;
 
-    //プレイヤーが着地したかどうかを判定するための変数
+    //着地したかどうかを判定するためのフラグ
     private bool HasLanded = false;
 
     void Start()
@@ -25,64 +24,32 @@ public class PlayerLandingSound : MonoBehaviour
         AudioSource = GetComponent<AudioSource>();
     }
 
-    //プレイヤーが地面に着地したときに呼ばれるメソッド
+    //衝突が発生したときの処理
     void OnCollisionEnter(Collision collision)
     {
         //衝突したオブジェクトがGroundタグを持っていて、まだ着地していないとき
         if (collision.gameObject.CompareTag("Ground") && !HasLanded)
         {
-            //プレイヤーが着地したとき
-            HasLanded = true;
+            //このオブジェクトがPlayerタグを持っている場合
+            if (gameObject.CompareTag("Player"))
+            {
+                //着地音を再生
+                AudioSource.PlayOneShot(LandingSound);
 
-            //着地音を再生
-            PlayLandingSound();
+                //着地したとき
+                HasLanded = true;
+            }
         }
     }
 
-    //プレイヤーが地面から離れたときに呼ばれるメソッド
+    //衝突が終了したときの処理
     void OnCollisionExit(Collision collision)
     {
-        //衝突したオブジェクトがGroundタグを持っているとき
+        //衝突が終了したオブジェクトがGroundタグを持っているとき
         if (collision.gameObject.CompareTag("Ground"))
         {
-            //プレイヤーが地面から離れたとき
-=======
-    public AudioClip LandingSound;
-    private AudioSource AudioSource;
-    private bool HasLanded = false;
-
-    void Start()
-    {
-        AudioSource = GetComponent<AudioSource>();
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground") && !HasLanded)
-        {
-            HasLanded = true;
-            PlayLandingSound();
-        }
-    }
-
-    void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
->>>>>>> 1b187f82e094883f53bfb20f149ad173c04766b6
+            //着地フラグをリセット
             HasLanded = false;
         }
-    }
-
-<<<<<<< HEAD
-    //着地音を再生するメソッド
-    void PlayLandingSound()
-    {
-        //AudioSourceコンポーネントを使用して着地音を再生
-=======
-    void PlayLandingSound()
-    {
->>>>>>> 1b187f82e094883f53bfb20f149ad173c04766b6
-        AudioSource.PlayOneShot(LandingSound);
     }
 }
