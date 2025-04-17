@@ -2,7 +2,8 @@
 //作成者:中町雷我
 //最終更新日:2025/04/17
 //[Log]
-//04/17　中町　Playerが動いているときの効果音処理
+//04/17　中町　Playerが走っているときの効果音処理
+//04/17　中町　Playerのスピードの効果音処理
 
 using UnityEngine;
 
@@ -11,23 +12,36 @@ public class PlayerMovementSound : MonoBehaviour
     //走る音のオーディオクリップ
     public AudioClip RunningSound;
 
-    //オーディオソースコンポーネント
-    private AudioSource audioSource;
+    //スピード音のオーディオクリップ
+    public AudioClip SpeedSound;
+
+    //走る音用のオーディオソース
+    private AudioSource RunningAudioSource;
+
+    //スピード音用のオーディオソース
+    private AudioSource SpeedAudioSource;
 
     //プレイヤーが地面に触れているかどうかを示すフラグ
     private bool IsGrounded;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    //プレイヤーの速度を取得するためのリジッドボディ
+    private Rigidbody PlayerRigidbody;
+
+
     void Start()
     {
-        //オーディオソースコンポーネントを取得
-        audioSource = GetComponent<AudioSource>();
+        //走る音用のオーディオソースコンポーネントを追加
+        RunningAudioSource = gameObject.AddComponent<AudioSource>();
+        RunningAudioSource.clip = RunningSound;
+        RunningAudioSource.loop = true;
 
-        //オーディオソースに走る音のクリップを設定
-        audioSource.clip = RunningSound;
+        //スピード音用のオーディオソースコンポーネントを追加
+        SpeedAudioSource = gameObject.AddComponent<AudioSource>();
+        SpeedAudioSource.clip = SpeedSound;
+        SpeedAudioSource.loop = true;
 
-        //ループ再生を有効にする
-        audioSource.loop = true;
+        //プレイヤーのリジッドボディを取得
+        PlayerRigidbody = GetComponent<Rigidbody>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -39,7 +53,7 @@ public class PlayerMovementSound : MonoBehaviour
             IsGrounded = true;
 
             //走る音を再生
-            audioSource.Play();
+            RunningAudioSource.Play();
         }
     }
 
@@ -52,18 +66,38 @@ public class PlayerMovementSound : MonoBehaviour
             IsGrounded = false;
 
             //走る音を停止
-            audioSource.Stop();
+            RunningAudioSource.Stop();
+
+            //スピード音を停止
+            SpeedAudioSource.Stop();
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //地面に触れていて、かつ音が再生されていないとき
-        if (IsGrounded&&!audioSource.isPlaying)
+        //地面に触れていて、かつ走る音が再生されていないとき
+        if (IsGrounded && !RunningAudioSource.isPlaying)
         {
             //走る音を再生
-            audioSource.Play();
+            RunningAudioSource.Play();
+        }
+
+        //地面に触れていて、かつプレイヤーの速度が一定の値を超えているとき
+        if (IsGrounded && PlayerRigidbody.linearVelocity.magnitude > 5.0f)
+        {
+            //スピード音が再生されていないときに再生
+            if (!SpeedAudioSource.isPlaying)
+            {
+                SpeedAudioSource.Play();
+            }
+        }
+        else
+        {
+            //プレイヤーの速度が一定の値以下のとき、スピード音を停止
+            if (SpeedAudioSource.isPlaying)
+            {
+                SpeedAudioSource.Stop();
+            }
         }
     }
 }
