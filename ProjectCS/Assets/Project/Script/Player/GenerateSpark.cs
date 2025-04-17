@@ -7,6 +7,7 @@
 // 04/13　荒井　衝突時に火花を生成するように実装
 // 04/13　荒井　プレイヤーの速度が閾値を跨いだ時に色が変わるように実装
 // 04/16　荒井　パーティクルのパラメータを設定できるように変更
+// 04/17　荒井　パーティクルの継続時間の指定を廃止
 //======================================================
 
 using UnityEngine;
@@ -19,7 +20,6 @@ public class GenerateSpark : MonoBehaviour
     [SerializeField] private PlayerSpeedManager PlayerSpeedManager;
 
     // パーティクルの設定
-    [SerializeField] private float ParticleDuration = 0.05f;    // パーティクルの継続時間
     [SerializeField] private float ParticleSpeed = 30.0f;       // パーティクルの速度
     [SerializeField] private float ParticleSize = 0.2f;         // パーティクルのサイズ
 
@@ -79,7 +79,6 @@ public class GenerateSpark : MonoBehaviour
 
         // 色を適用
         ParticleSystem.MainModule EffectMainModule = SparkEffect.GetComponent<ParticleSystem>().main;
-        EffectMainModule.duration = ParticleDuration;
         EffectMainModule.startSpeed = ParticleSpeed;
         EffectMainModule.startSize = ParticleSize;
         EffectMainModule.startColor = SparkColor;
