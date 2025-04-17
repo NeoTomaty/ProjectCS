@@ -6,6 +6,7 @@
 // [Log]
 // 3/31  スクリプト作成　森脇
 // 4/16  エフェクト発生位置修正　森脇
+// 4/17  プレイヤーの速度を+5する処理を追加　森脇
 //======================================================
 
 using UnityEngine;
@@ -45,6 +46,13 @@ public class Enemy1 : MonoBehaviour
                 // ★ぶつかった位置に出す（最初の接触点を使う）
                 Vector3 hitPosition = collision.contacts[0].point;
                 Instantiate(hitEffect, hitPosition, Quaternion.identity);
+            }
+
+            // ▼ プレイヤーの速度を+5する処理を追加
+            PlayerSpeedManager playerSpeedManager = collision.gameObject.GetComponent<PlayerSpeedManager>();
+            if (playerSpeedManager != null)
+            {
+                playerSpeedManager.SetAccelerationValue(5f);
             }
 
             // スコアを加算
