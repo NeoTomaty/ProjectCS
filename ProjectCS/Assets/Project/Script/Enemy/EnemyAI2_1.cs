@@ -71,9 +71,9 @@ public class EnemyAI2_1 : MonoBehaviour
             }
 
             // ƒXƒRƒA‚ğ‰ÁZ
-            GameManager.Instance.AddScore(scoreValue);
+            //GameManager.Instance.AddScore(scoreValue);
             // 5•bŒã‚É©•ª‚ğÁ‚·
-            Invoke(nameof(Die), 5f);
+            //Invoke(nameof(Die), 5f);
         }
     }
 
