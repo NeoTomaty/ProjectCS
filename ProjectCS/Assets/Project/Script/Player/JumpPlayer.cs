@@ -6,7 +6,7 @@
 // 
 // [Log]
 // 04/01 高下 スクリプト作成 
-// 
+// 04/21 高下 重力関連を別スクリプト(ObjectGravity)に移動させました
 // 
 //====================================================
 using UnityEngine;
@@ -18,8 +18,6 @@ public class JumpPlayer : MonoBehaviour
     private float JumpForce = 10.0f;        // ジャンプ力
     [SerializeField]
     private float GroundCheckRadius = 0.2f; // 地面判定半径
-    [SerializeField]
-    private Vector3 GravityScale = new Vector3(0.0f, -9.8f, 0.0f);     // 重力の大きさ
 
     private Rigidbody Rb;    // プレイヤーのRigidbody
     private bool IsGrounded; // 地面に接しているかどうか
@@ -34,9 +32,6 @@ public class JumpPlayer : MonoBehaviour
    
     void Update()
     {
-        // 重力方向に加速させる
-        Rb.AddForce(GravityScale, ForceMode.Acceleration);
-
         // 地面に接しているか確認
         IsGrounded = CheckIfGrounded();
 
