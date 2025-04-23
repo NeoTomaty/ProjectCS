@@ -10,6 +10,7 @@
 // 04/07　荒井　Tooltip記述をコメントに変更
 // 04/08　髙下　壁反射の仕様を変更
 // 04/11　中町　GoalWallに衝突したときにTestResultSceneにシーン遷移する処理追加
+// 04/23　竹内　プレイヤーがPlayerタグに触れたときも加速するように対応
 //======================================================
 
 using UnityEngine;
@@ -95,7 +96,7 @@ public class PlayerHitWall : MonoBehaviour
         if (MovePlayerScript == null) return;
 
         // 衝突したオブジェクトのタグをチェック
-        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "BrokenWall")
+        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "BrokenWall" || collision.gameObject.tag == "Player")
         {
             Debug.Log("プレイヤー >> 壁に当たりました");
             
