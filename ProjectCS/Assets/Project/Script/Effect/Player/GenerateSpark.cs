@@ -1,13 +1,14 @@
 //======================================================
 // [GenerateSpark]
 // 作成者：荒井修
-// 最終更新日：04/16
+// 最終更新日：04/18
 // 
 // [Log]
 // 04/13　荒井　衝突時に火花を生成するように実装
 // 04/13　荒井　プレイヤーの速度が閾値を跨いだ時に色が変わるように実装
 // 04/16　荒井　パーティクルのパラメータを設定できるように変更
 // 04/17　荒井　パーティクルの継続時間の指定を廃止
+// 04/18　荒井　着地との区別方法を変更
 //======================================================
 
 using UnityEngine;
@@ -48,13 +49,13 @@ public class GenerateSpark : MonoBehaviour
     {
         if (SparkPrefab == null) return;
 
-        // 地面との衝突は無視
-        if (collision.gameObject.tag == "Ground") return;
-
         // 衝突地点の座標と法線を取得
         ContactPoint ContactPoint = collision.contacts[0];
         Vector3 HitPosition = ContactPoint.point;
         Vector3 HitNormal = ContactPoint.normal;
+
+        // 衝突地点の法線が上向きなら着地扱いにする
+        if (HitNormal == Vector3.up) return;
 
         // 火花を生成
         GameObject SparkEffect = Instantiate(SparkPrefab, HitPosition, Quaternion.LookRotation(HitNormal));
