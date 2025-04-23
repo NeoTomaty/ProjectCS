@@ -5,7 +5,7 @@
 // 
 // [Log]
 // 04/13 高下 OnCollisionEnter内で飛ばし方を修正
-// 
+// 04/21 高下 重力関連を別スクリプト(ObjectGravity)に移動させました
 // 
 //====================================================
 using UnityEngine;
@@ -28,8 +28,6 @@ public class BlownAway : MonoBehaviour
     private float MinRandomXYRange = 0.2f; // ランダムに加えるXY軸の範囲（最小）
     [SerializeField]
     private float MaxRandomXYRange = 1.0f; // ランダムに加えるXY軸の範囲（最大）
-    [SerializeField]
-    private Vector3 GravityScale = new Vector3(0.0f, -9.8f, 0.0f); // 重力の大きさ
 
     private Rigidbody Rb;
     private SweetSizeUp SweetSizeUpScript;
@@ -44,12 +42,6 @@ public class BlownAway : MonoBehaviour
         {
             Debug.LogError("SweetSizeUpがアタッチされていません");
         }
-    }
-
-    void Update()
-    {
-        // 重力方向に加速させる
-        Rb.AddForce(GravityScale, ForceMode.Acceleration);
     }
 
     void OnCollisionEnter(Collision collision)
