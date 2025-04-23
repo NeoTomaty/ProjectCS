@@ -21,6 +21,10 @@ public class BlownAway : MonoBehaviour
     [SerializeField]
     private float MaxUpwardForce = 200.0f; // 真上への力（最大）
     [SerializeField]
+    private float MinForwardForce = 100.0f;// 前方方向の最小力
+    [SerializeField]
+    private float MaxForwardForce = 300.0f;// 前方方向の最大力
+    [SerializeField]
     private float MinRandomXYRange = 0.2f; // ランダムに加えるXY軸の範囲（最小）
     [SerializeField]
     private float MaxRandomXYRange = 1.0f; // ランダムに加えるXY軸の範囲（最大）
@@ -67,6 +71,10 @@ public class BlownAway : MonoBehaviour
         // 真上方向に力を加える
         Vector3 UpwardDirection = Vector3.up * Mathf.Lerp(MinUpwardForce, MaxUpwardForce, SpeedRatio);
 
+        // プレイヤーの前方方向を取得（向いている方向）
+        Vector3 PlayerForward = collision.transform.forward;
+        Vector3 ForwardForce = PlayerForward * Mathf.Lerp(MinForwardForce, MaxForwardForce, ScaleRatio);
+
         // ランダムなXY方向のベクトルを生成
         float RandomAngle = Random.Range(0.0f, 2.0f * Mathf.PI); // ランダムな角度
         Vector3 RandomDirection = new Vector3(Mathf.Cos(RandomAngle), 0.0f, Mathf.Sin(RandomAngle));
@@ -75,7 +83,7 @@ public class BlownAway : MonoBehaviour
         RandomDirection = RandomDirection.normalized * Mathf.Lerp(MinRandomXYRange, MaxRandomXYRange, ScaleRatio);
 
         // 最終的な力の方向
-        Vector3 ForceDirection = UpwardDirection + RandomDirection;
+        Vector3 ForceDirection = UpwardDirection + RandomDirection + ForwardForce;
 
         // Rigidbodyに力を加える
         Rb.AddForce(ForceDirection, ForceMode.Impulse);
