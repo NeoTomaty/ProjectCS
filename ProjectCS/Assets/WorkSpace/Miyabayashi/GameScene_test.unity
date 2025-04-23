@@ -845,6 +845,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &349187648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349187601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1ba6a85110b07f47b923c0f3ed25fef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &532787371
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1002,6 +1014,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4584313306017835350, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       insertIndex: -1
       addedObject: {fileID: 349187647}
+    - targetCorrespondingSourceObject: {fileID: 4584313306017835350, guid: b883a481c041c894aad4ba49046f3711, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 349187648}
   m_SourcePrefab: {fileID: 100100000, guid: b883a481c041c894aad4ba49046f3711, type: 3}
 --- !u!1 &618722606
 GameObject:
@@ -1786,7 +1801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9406bb527c40cb49b3235b83c8b8f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdown: 5
+  countdown: 180
   timeText: {fileID: 1588534141}
   nextSceneName: ResultScene
 --- !u!114 &1588534141
