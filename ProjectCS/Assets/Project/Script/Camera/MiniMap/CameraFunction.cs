@@ -4,10 +4,10 @@
 // 最終更新日：3/31
 // 
 // [Log]
+// 04/23 高下 入力に関する仕様変更(PlayerInput(InputActionAsset))
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 
 public class CameraFunction : MonoBehaviour
 {
@@ -25,6 +25,24 @@ public class CameraFunction : MonoBehaviour
     private float yaw = 0f;     // 横方向
     private float pitch = 20f;  // 縦方向
 
+    [SerializeField]
+    private PlayerInput PlayerInput;      // プレイヤーの入力を管理するcomponent
+    private InputAction LookTargetAction; // ターゲット用のInputAction
+    private InputAction RotateAction;     // 回転用のInputAction
+    private Vector2 RotateInput;          // 入力された値を保持する（回転用）
+
+    private void Start()
+    {
+        if(!PlayerInput)
+        {
+            Debug.LogError("追尾対象プレイヤーのPlayerInputがアタッチされていません");
+        }
+
+        // 対応するInputActionを取得
+        LookTargetAction = PlayerInput.actions["LookTargetSnack"];
+        RotateAction = PlayerInput.actions["RotateCamera"];
+    }
+
     void LateUpdate()
     {
         if (Player == null) return;
@@ -32,10 +50,10 @@ public class CameraFunction : MonoBehaviour
         bool isManual = false;
 
         // キー操作でカメラの回転
-        if (Input.GetKey(KeyCode.J)) { yaw -= RotationSpeed * Time.deltaTime; isManual = true; }
-        if (Input.GetKey(KeyCode.L)) { yaw += RotationSpeed * Time.deltaTime; isManual = true; }
-        if (Input.GetKey(KeyCode.I)) { pitch += RotationSpeed * Time.deltaTime; isManual = true; }
-        if (Input.GetKey(KeyCode.K)) { pitch -= RotationSpeed * Time.deltaTime; isManual = true; }
+        if (RotateInput.x < -0.5f) { yaw -= RotationSpeed * Time.deltaTime; isManual = true; }
+        if (RotateInput.x > 0.5f) { yaw += RotationSpeed * Time.deltaTime; isManual = true; }
+        if (RotateInput.y > 0.5f) { pitch += RotationSpeed * Time.deltaTime; isManual = true; }
+        if (RotateInput.y < -0.5f) { pitch -= RotationSpeed * Time.deltaTime; isManual = true; }
 
         // 範囲内に収める
         pitch = Mathf.Clamp(pitch, VerticalMin, VerticalMax);
@@ -49,10 +67,10 @@ public class CameraFunction : MonoBehaviour
             pitch = Mathf.Lerp(pitch, targetPitch, AutoCorrectSpeed * Time.deltaTime);
         }
 
-        bool rtPressed = Gamepad.current != null && Gamepad.current.rightTrigger.ReadValue() > 0.5f;
+        bool rtPressed = LookTargetAction.ReadValue<float>() > 0.5f;
 
         // Rキー押下中は敵を自然に見る視点へ移動 + 回転
-        if ((Input.GetKey(KeyCode.R) || rtPressed) && Target != null)
+        if (rtPressed && Target != null)
         {
             Vector3 viewDir = (Target.position - Player.position).normalized;
 
@@ -81,6 +99,40 @@ public class CameraFunction : MonoBehaviour
             {
                 transform.LookAt(Player.position + Vector3.up * 1.5f);
             }
+        }
+    }
+
+    private void OnEnable()
+    {
+        // カメラ回転アクション
+        PlayerInput.actions["RotateCamera"].performed += OnRotate;
+
+        // 入力終了時
+        PlayerInput.actions["RotateCamera"].canceled += OnRotate;
+    }
+
+    private void OnDisable()
+    {
+        if (PlayerInput != null && PlayerInput.actions != null)
+        {
+            // イベント登録解除
+            PlayerInput.actions["RotateCamera"].performed -= OnRotate;
+            PlayerInput.actions["RotateCamera"].canceled -= OnRotate;
+        }
+    }
+
+    // 入力イベント（押された/離された）で呼ばれる
+    public void OnRotate(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            // 入力が行われた
+            RotateInput = context.ReadValue<Vector2>();
+        }
+        else if (context.canceled)
+        {
+            // 入力がキャンセルされた
+            RotateInput = Vector2.zero;
         }
     }
 }

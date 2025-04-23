@@ -9,6 +9,7 @@
 // 03/31 高下 左右移動処理追加
 // 04/01 コントローラー操作追加
 // 04/08 左右移動を速度に依存させる
+// 04/23 高下 入力に関する仕様変更(PlayerInput(InputActionAsset))
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,11 +19,19 @@ public class LRMovePlayer : MonoBehaviour
     public PlayerSpeedManager PlayerSpeedManager; // 速度管理クラス
     public MovePlayer MovePlayer; // プレイヤー移動クラス
 
-
-
     [SerializeField] private float TurnSpeed = 100.0f;  // カーブの回転速度
     [SerializeField] private float TurnResponse = 1.0f; // カーブのしやすさ
 
+    private PlayerInput PlayerInput; // プレイヤーの入力を管理するcomponent
+    private InputAction TurnAction;  // 左右移動用のInputAction
+    private void Awake()
+    {
+        // 自分にアタッチされているPlayerInputを取得
+        PlayerInput = GetComponent<PlayerInput>();
+
+        // 対応するInputActionを取得
+        TurnAction = PlayerInput.actions["LRTurn"];
+    }
     void Start()
     {
         if (PlayerSpeedManager == null)
@@ -46,22 +55,7 @@ public class LRMovePlayer : MonoBehaviour
         float rotationAmount = TurnSpeed * (speed * TurnResponse) * Time.deltaTime;
 
         // プレイヤーの左右移動方向を示す変数
-        float moveX = 0.0f;
-
-        // ゲームパッドが接続されているか確認
-        if (Gamepad.current != null)
-        {
-            // ゲームパッドの左スティック入力を優先
-            moveX = Gamepad.current.leftStick.ReadValue().x;
-        }
-        else
-        {
-            // ゲームパッドが接続されていない場合、キーボードの入力を使用
-            if (Input.GetKey(KeyCode.A)) moveX = -1.0f;
-            if (Input.GetKey(KeyCode.D)) moveX = 1.0f;
-        }
-
-
+        float moveX = TurnAction.ReadValue<float>();
 
         // 回転処理（左右）
         if (Mathf.Abs(moveX) > 0.1f)    // 絶対値より大きな値の場合
