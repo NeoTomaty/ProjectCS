@@ -6,7 +6,11 @@
 // 
 // [Log]
 // 04/01 高下 スクリプト作成 
+<<<<<<< HEAD:ProjectCS/Assets/Project/Script/Player/Jump/JumpPlayer.cs
 // 04/16 竹内 ジャンプ回数を制御する処理を追加
+=======
+// 04/21 高下 重力関連を別スクリプト(ObjectGravity)に移動させました
+>>>>>>> dc80a4f9b3ae7b2c27f909c00a0c8f66ba447284:ProjectCS/Assets/Project/Script/Player/JumpPlayer.cs
 // 
 //====================================================
 using UnityEngine;
@@ -18,8 +22,6 @@ public class JumpPlayer : MonoBehaviour
     private float JumpForce = 10.0f;        // ジャンプ力
     [SerializeField]
     private float GroundCheckRadius = 0.2f; // 地面判定半径
-    [SerializeField]
-    private Vector3 GravityScale = new Vector3(0.0f, -9.8f, 0.0f);     // 重力の大きさ
 
     [SerializeField]
     private int MaxJumpNum = 1;     // ジャンプの最大回数
@@ -41,9 +43,14 @@ public class JumpPlayer : MonoBehaviour
    
     void Update()
     {
+<<<<<<< HEAD:ProjectCS/Assets/Project/Script/Player/Jump/JumpPlayer.cs
         // 重力方向に加速させる
         Rb.AddForce(GravityScale, ForceMode.Acceleration);
 
+=======
+        // 地面に接しているか確認
+        IsGrounded = CheckIfGrounded();
+>>>>>>> dc80a4f9b3ae7b2c27f909c00a0c8f66ba447284:ProjectCS/Assets/Project/Script/Player/JumpPlayer.cs
 
         // ジャンプの入力チェック
         bool jumpInputDetected = false;

@@ -299,6 +299,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LifeManager: {fileID: 1822633680}
   TagName: Enemy
+--- !u!114 &349187630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349187601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a3a5fa8560d7bd459f3f089965ba8af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LandingSmokePrefab: {fileID: 3020712771200198005, guid: 1b3c144e9c701864b987fbfeb3ca38fe, type: 3}
+  MovePlayer: {fileID: 349187607}
+  PlayerSpeedManager: {fileID: 349187606}
+  EffectSize: 0.7
+  EffectPositionCorrection: 0.1
 --- !u!1001 &532787371
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -440,6 +457,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4584313306017835350, guid: b883a481c041c894aad4ba49046f3711, type: 3}
       insertIndex: -1
       addedObject: {fileID: 349187629}
+    - targetCorrespondingSourceObject: {fileID: 4584313306017835350, guid: b883a481c041c894aad4ba49046f3711, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 349187630}
   m_SourcePrefab: {fileID: 100100000, guid: b883a481c041c894aad4ba49046f3711, type: 3}
 --- !u!1 &618722606
 GameObject:
