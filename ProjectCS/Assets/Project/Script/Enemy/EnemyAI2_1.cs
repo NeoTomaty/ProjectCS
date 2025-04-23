@@ -10,6 +10,10 @@ using UnityEngine.AI;
 
 public class EnemyAI2_1 : MonoBehaviour
 {
+    [Header("移動設定")]
+    public float moveSpeed = 3.5f;
+    private int direction = 1; // 巡回方向（進むか戻るか）
+
     public Transform[] waypoints; // 巡回ポイント
     private int currentWaypoint = 0; // 現在の巡回ポイント
     private NavMeshAgent agent;
@@ -27,6 +31,7 @@ public class EnemyAI2_1 : MonoBehaviour
         agent = GetComponent<NavMeshAgent>(); // NavMeshAgentを取得
         player = GameObject.FindGameObjectWithTag("Player").transform; // プレイヤーをタグで取得
         MoveToNextWaypoint(); // 最初の巡回ポイントに移動開始
+        agent.speed = moveSpeed;
     }
 
     void Update()
@@ -94,9 +99,24 @@ public class EnemyAI2_1 : MonoBehaviour
 
     void MoveToNextWaypoint()
     {
-        if (waypoints.Length == 0) return; // 巡回ポイントがない場合は処理しない
-        agent.SetDestination(waypoints[currentWaypoint].position); // 次の巡回ポイントを設定
-        currentWaypoint = (currentWaypoint + 1) % waypoints.Length; // 次の巡回ポイントを設定
+        if (waypoints.Length == 0) return;
+
+        agent.SetDestination(waypoints[currentWaypoint].position);
+
+        // 次の巡回ポイントに向けてインデックスを更新
+        currentWaypoint += direction;
+
+        // 端に来たら方向を反転
+        if (currentWaypoint >= waypoints.Length)
+        {
+            currentWaypoint = waypoints.Length - 2;
+            direction = -1;
+        }
+        else if (currentWaypoint < 0)
+        {
+            currentWaypoint = 1;
+            direction = 1;
+        }
     }
 
     void ReturnToClosestWaypoint()
