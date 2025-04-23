@@ -6,11 +6,8 @@
 // 
 // [Log]
 // 04/01 高下 スクリプト作成 
-<<<<<<< HEAD:ProjectCS/Assets/Project/Script/Player/Jump/JumpPlayer.cs
 // 04/16 竹内 ジャンプ回数を制御する処理を追加
-=======
 // 04/21 高下 重力関連を別スクリプト(ObjectGravity)に移動させました
->>>>>>> dc80a4f9b3ae7b2c27f909c00a0c8f66ba447284:ProjectCS/Assets/Project/Script/Player/JumpPlayer.cs
 // 
 //====================================================
 using UnityEngine;
@@ -43,14 +40,6 @@ public class JumpPlayer : MonoBehaviour
    
     void Update()
     {
-<<<<<<< HEAD:ProjectCS/Assets/Project/Script/Player/Jump/JumpPlayer.cs
-        // 重力方向に加速させる
-        Rb.AddForce(GravityScale, ForceMode.Acceleration);
-
-=======
-        // 地面に接しているか確認
-        IsGrounded = CheckIfGrounded();
->>>>>>> dc80a4f9b3ae7b2c27f909c00a0c8f66ba447284:ProjectCS/Assets/Project/Script/Player/JumpPlayer.cs
 
         // ジャンプの入力チェック
         bool jumpInputDetected = false;
