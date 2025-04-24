@@ -20,7 +20,7 @@ public class ResultChange : MonoBehaviour
     void Update()
     {
         // Aボタン or エンターキーで開く
-        if (!menuOpen && (Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.Return)))
+        if (!menuOpen && (Input.GetKey(KeyCode.JoystickButton0) || Input.GetKey(KeyCode.Return)))
         {
             OpenMenu();
         }
