@@ -608,6 +608,10 @@ PrefabInstance:
       value: PlayModeManager
       objectReference: {fileID: 0}
     - target: {fileID: 6952572893027737168, guid: 60b5410502601ed418f9e9a303813893, type: 3}
+      propertyPath: Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6952572893027737168, guid: 60b5410502601ed418f9e9a303813893, type: 3}
       propertyPath: PlayerCamera1
       value: 
       objectReference: {fileID: 946110160}
@@ -1508,8 +1512,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839c4b7de2477974b950e31b7d2c796d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RespawnPosition: {x: 0, y: 10, z: 0}
+  RespawnPositionY: 0
   Stage: {fileID: 471311318}
+  WallThickness: 2
 --- !u!1 &1750600996
 GameObject:
   m_ObjectHideFlags: 0
