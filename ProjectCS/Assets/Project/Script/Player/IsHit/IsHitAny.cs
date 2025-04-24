@@ -3,6 +3,9 @@
 // 作成者：荒井修
 // 最終更新日：04/11
 // 
+// 内容：プレイヤーが何かにあたった際の処理
+// 　　　プレイヤーオブジェクトにアタッチする
+// 
 // [Log]
 // 03/31　荒井　プレイヤーが壁に衝突した際の挙動を作成
 // 03/31　荒井　移動の仮スクリプトを自作し動作を確認
@@ -11,14 +14,14 @@
 // 04/08　髙下　壁反射の仕様を変更
 // 04/11　中町　GoalWallに衝突したときにTestResultSceneにシーン遷移する処理追加
 // 04/23　竹内　プレイヤーがPlayerタグに触れたときも加速するように対応
+// 04/24　竹内　スクリプト名を改名
 //======================================================
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement; // シーン管理を追加
 
-public class PlayerHitWall : MonoBehaviour
+public class IsHitAny : MonoBehaviour
 {
     // 壁に衝突した際の加速量
     [SerializeField] private float Acceleration = 1.0f;
