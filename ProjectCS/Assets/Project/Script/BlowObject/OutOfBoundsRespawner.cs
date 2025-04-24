@@ -5,6 +5,7 @@
 // 
 // [Log]
 // 04/22　荒井　ステージ外に出た瞬間に自分自身の複製を生成するように実装
+// 04/22　荒井　リスポーン位置がランダムになるように変更
 //======================================================
 using UnityEngine;
 
@@ -13,13 +14,33 @@ using UnityEngine;
 // 飛ばすオブジェクトにアタッチ
 public class OutOfBoundsRespawner : MonoBehaviour
 {
-    [SerializeField] private Vector3 RespawnPosition;   // リスポーン位置
+    [SerializeField] private float RespawnPositionY;    // リスポーン位置
+    private Vector3 RespawnPosition;                    // リスポーン位置
     private GameObject RespawnObject;                   // リスポーン対象
 
     [SerializeField] private GameObject Stage;  // ステージ
     private Rect StageRect;                     // ステージの判定矩形
 
     private bool IsRespawnComplete = false; // リスポーン完了フラグ
+
+    [SerializeField] private float WallThickness = 2.0f;    // 壁の厚さ
+
+    // ランダムな座標を計算
+    private void CalcRandomPosition()
+    {
+        // 壁を除いたランダム生成領域を定義
+        float MinX = StageRect.xMin + WallThickness;
+        float MaxX = StageRect.xMax - WallThickness;
+        float MinY = StageRect.yMin + WallThickness;
+        float MaxY = StageRect.yMax - WallThickness;
+
+        // 範囲内でランダムな座標を生成
+        float RandomX = Random.Range(MinX, MaxX);
+        float RandomY = Random.Range(MinY, MaxY);
+
+        // リスポーン位置を設定
+        RespawnPosition = new Vector3(RandomX, RespawnPositionY, RandomY); // Y座標は元のオブジェクトのY座標を使用
+    }
 
     // ステージ内判定
     private bool IsInsideStage()
@@ -44,6 +65,9 @@ public class OutOfBoundsRespawner : MonoBehaviour
     // リスポーン処理
     private void Respawn()
     {
+        // リスポーン位置を計算
+        CalcRandomPosition();
+
         // リスポーン対象を複製
         GameObject RespawnedObject = Instantiate(RespawnObject, RespawnPosition, Quaternion.identity);
 
