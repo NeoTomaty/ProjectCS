@@ -1,34 +1,49 @@
 //======================================================
 // SceneTransitionスクリプト
 // 作成者：宮林
-// 最終更新日：4/22
+// 最終更新日：4/25
 // 
 // [Log]4/22 宮林　コントローラーのボタンを押したときに遷移する
-//
+//      4/25 宮林　フェード処理対応
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
-public class SceneTransiton : MonoBehaviour
+public class SceneTransition : MonoBehaviour
 {
+    public string sceneName; // 遷移先のシーン名
 
-    // インスペクタビューから設定するシーン名
-    public string sceneName;
-    // Update is called once per frame
-    void Update()
+    private bool isTransitioning = false;
+
+    private void Update()
     {
+        if (isTransitioning) return;
 
-        //XboxコントローラーのAボタンが押されたかどうかをチェック
+        // Xbox コントローラーの A ボタン
         if (Gamepad.current != null && Gamepad.current.aButton.wasPressedThisFrame)
         {
-            SceneManager.LoadScene(sceneName);
+            StartSceneTransition();
         }
 
-        //Enterキーが押されたかどうかをチェック
+        // キーボードの Enter キー
         if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            SceneManager.LoadScene(sceneName);
+            StartSceneTransition();
+        }
+    }
+
+    private void StartSceneTransition()
+    {
+        isTransitioning = true;
+
+        FadeManager fade = Object.FindFirstObjectByType<FadeManager>();
+        if (fade != null)
+        {
+            fade.FadeToScene(sceneName);
+        }
+        else
+        {
+            Debug.LogWarning("FadeManager が見つかりませんでした。CanvasにFadeManagerを付けたか確認してね！");
         }
     }
 }
