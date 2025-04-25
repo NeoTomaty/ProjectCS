@@ -1,12 +1,12 @@
 //====================================================
 // スクリプト名：BlownAway
 // 作成者：藤本
-// 最終更新日：04/13
+// 最終更新日：04/24
 // 
 // [Log]
 // 04/13 高下 OnCollisionEnter内で飛ばし方を修正
 // 04/21 高下 重力関連を別スクリプト(ObjectGravity)に移動させました
-// 
+// 04/24 藤本 ポイント計算を開始するためのコードを追記しました
 //====================================================
 using UnityEngine;
 
@@ -79,6 +79,13 @@ public class BlownAway : MonoBehaviour
 
         // Rigidbodyに力を加える
         Rb.AddForce(ForceDirection, ForceMode.Impulse);
+
+        // ポイント計算開始
+        FlyingPoint flyingPoint = GetComponent<FlyingPoint>();
+        if (flyingPoint != null)
+        {
+            flyingPoint.Launch(collision.transform); // プレイヤーを渡す
+        }
 
         // ヒットストップを開始する
         StartCoroutine(HitStop(Mathf.Lerp(MinHitStopTime, MaxHitStopTime, SpeedRatio)));
