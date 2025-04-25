@@ -24,7 +24,7 @@ using UnityEngine.InputSystem.Users;
 //  8. PlayerInputのBehaviorに「InvokeUnityEvents」を設定（プレイヤーオブジェクト側の設定）
 //  9. Player1InputとPlayer2InputそれぞれのプレイヤーのPlayerInputを設定
 
-public class PlayModeManager : MonoBehaviour
+public class PlayModeManager_Copy : MonoBehaviour
 {
     public enum PlayMode
     {
