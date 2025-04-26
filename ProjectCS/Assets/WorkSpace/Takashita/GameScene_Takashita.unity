@@ -800,7 +800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 932418156}
-  Target: {fileID: 0}
+  Target: {fileID: 2041148598}
   Distance: 10
   RotationSpeed: 90
   VerticalMin: -80
@@ -1063,6 +1063,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 932418155}
   Target: {fileID: 2041148590}
+  NormalColor: {r: 1, g: 0.3, b: 0.3, a: 0.2}
+  LiftingPartlColor: {r: 0.3, g: 0.3, b: 1, a: 0.2}
 --- !u!54 &1340593063
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1693,6 +1695,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GravityScale: {x: 0, y: -9.8, z: 0}
+--- !u!4 &2041148598 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7554536379738216804, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+  m_PrefabInstance: {fileID: 2015483260}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2137319564
 GameObject:
   m_ObjectHideFlags: 0
