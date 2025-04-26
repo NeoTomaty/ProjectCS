@@ -6,7 +6,7 @@
 // 
 // [Log]
 // 04/26 高下 スクリプト作成
-//
+// 04/26 高下 リフティングパートに移行した際に、エリア内の色が変わる処理を追加
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
@@ -27,6 +27,13 @@ public class LiftingAreaManager : MonoBehaviour
 
     PlayerStateManager PlayerState = null; // プレイヤーの状態管理コンポーネント
 
+    private Renderer ObjectRenderer;
+
+    [SerializeField]
+    private Color NormalColor = new Color(1.0f, 0.3f, 0.3f, 0.2f); // 通常時の色
+    [SerializeField]
+    private Color LiftingPartlColor = new Color(1f, 1f, 1f, 0.2f); // リフティングパート時の色
+
     void Start()
     {
         if (!Player) Debug.LogError("プレイヤーオブジェクトが設定されていません");
@@ -34,6 +41,9 @@ public class LiftingAreaManager : MonoBehaviour
 
         PlayerState = Player.GetComponent<PlayerStateManager>();
         if(!PlayerState) Debug.LogError("プレイヤーオブジェクトにPlayerStateManagerがアタッチされていません");
+
+        ObjectRenderer = GetComponent<Renderer>();
+        ObjectRenderer.material.SetColor("_Color", NormalColor);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -54,6 +64,7 @@ public class LiftingAreaManager : MonoBehaviour
         if(IsPlayerContacting && IsTargetContacting)
         {
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.LiftingPart);
+            ObjectRenderer.material.SetColor("_Color", LiftingPartlColor);
         }
     }
 
@@ -64,7 +75,7 @@ public class LiftingAreaManager : MonoBehaviour
         {
             IsPlayerContacting = false;
         }
-
+            
         // プレイヤーがエリア外に出たかどうか判定
         if (other.gameObject == Target)
         {
@@ -75,6 +86,7 @@ public class LiftingAreaManager : MonoBehaviour
         if(!IsPlayerContacting || !IsTargetContacting)
         {
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.Normal);
+            ObjectRenderer.material.SetColor("_Color", NormalColor);
         }
     }
 }
