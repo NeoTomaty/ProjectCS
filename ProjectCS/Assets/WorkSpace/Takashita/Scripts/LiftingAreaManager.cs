@@ -7,6 +7,7 @@
 // [Log]
 // 04/26 高下 スクリプト作成
 // 04/26 高下 リフティングパートに移行した際に、エリア内の色が変わる処理を追加
+// 04/27 高下 落下地点に応じてオブジェクトを再配置するSetFallPointを追加
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
@@ -88,5 +89,13 @@ public class LiftingAreaManager : MonoBehaviour
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.Normal);
             ObjectRenderer.material.SetColor("_Color", NormalColor);
         }
+    }
+
+    // ターゲットの落下地点にエリアを配置する
+    public void SetFallPoint(Vector3 fallPoint)
+    {
+        // エリアのY座標を調整
+        fallPoint.y += transform.localScale.y - 0.1f;
+        transform.position = fallPoint;
     }
 }
