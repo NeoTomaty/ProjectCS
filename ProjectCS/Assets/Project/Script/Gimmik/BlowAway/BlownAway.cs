@@ -1,12 +1,13 @@
 //====================================================
 // スクリプト名：BlownAway
 // 作成者：藤本
-// 最終更新日：04/24
+// 最終更新日：04/27
 // 
 // [Log]
 // 04/13 高下 OnCollisionEnter内で飛ばし方を修正
 // 04/21 高下 重力関連を別スクリプト(ObjectGravity)に移動させました
 // 04/24 藤本 ポイント計算を開始するためのコードを追記しました
+// 04/27 荒井 リフティングパートに関する処理を追加しました
 //====================================================
 using UnityEngine;
 
@@ -28,6 +29,8 @@ public class BlownAway : MonoBehaviour
     private float MinRandomXYRange = 0.2f; // ランダムに加えるXY軸の範囲（最小）
     [SerializeField]
     private float MaxRandomXYRange = 1.0f; // ランダムに加えるXY軸の範囲（最大）
+    [SerializeField]
+    private LiftingJump LiftingJump; // リフティングジャンプのスクリプト
 
     private Rigidbody Rb;
     private SweetSizeUp SweetSizeUpScript;
@@ -77,8 +80,17 @@ public class BlownAway : MonoBehaviour
         // 最終的な力の方向
         Vector3 ForceDirection = UpwardDirection + RandomDirection + ForwardForce;
 
+        // ゲージによる補正
+        if(LiftingJump != null)
+        {
+            ForceDirection *= LiftingJump.GetForce;
+            // プレイヤーのリフティングパートを終了する
+            LiftingJump.FinishLiftingJump();
+        }
+
         // Rigidbodyに力を加える
         Rb.AddForce(ForceDirection, ForceMode.Impulse);
+
 
         // ポイント計算開始
         FlyingPoint flyingPoint = GetComponent<FlyingPoint>();

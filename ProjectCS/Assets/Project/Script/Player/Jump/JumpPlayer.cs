@@ -2,12 +2,13 @@
 // スクリプト名：JumpPlayer
 // 作成者：高下
 // 内容：プレイヤーのジャンプ処理
-// 最終更新日：04/01
+// 最終更新日：04/27
 // 
 // [Log]
 // 04/01 高下 スクリプト作成 
 // 04/21 高下 重力関連を別スクリプト(ObjectGravity)に移動させました
 // 04/23 高下 入力に関する仕様変更(PlayerInput(InputActionAsset))
+// 04/27 荒井 リフティングジャンプへの分岐を追加
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,6 +29,9 @@ public class JumpPlayer : MonoBehaviour
     private PlayerInput PlayerInput; // プレイヤーの入力を管理するcomponent
     private InputAction JumpAction;  // ジャンプ用のInputAction
 
+    private PlayerStateManager PlayerStateManager; // プレイヤーの状態を管理するクラス
+    private LiftingJump LiftingJump; // リフティングジャンプのクラス
+
     private void Awake()
     {
         // 自分にアタッチされている PlayerInput を取得
@@ -36,6 +40,8 @@ public class JumpPlayer : MonoBehaviour
     void Start()
     {
         Rb = GetComponent<Rigidbody>(); // Rigidbodyを取得
+        PlayerStateManager = GetComponent<PlayerStateManager>(); // PlayerStateManagerを取得
+        LiftingJump = GetComponent<LiftingJump>(); // LiftingJumpを取得
 
         // 対応するInputActionを取得
         JumpAction = PlayerInput.actions["Jump"];
@@ -95,7 +101,17 @@ public class JumpPlayer : MonoBehaviour
         // 入力が完了（ボタンが押された瞬間）かつ地面に接地しているときにジャンプを実行
         if (context.performed && IsGrounded)
         {
-            Jump();
+            switch(PlayerStateManager.GetLiftingState())
+            {
+                case PlayerStateManager.LiftingState.Normal:
+                    // 通常状態のとき
+                    Jump();
+                    break;
+                case PlayerStateManager.LiftingState.LiftingPart:
+                    // リフティングパートのとき
+                    LiftingJump.StartLiftingJump();
+                    break;
+            }
         }
     }
 }

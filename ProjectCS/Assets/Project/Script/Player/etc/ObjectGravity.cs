@@ -6,7 +6,7 @@
 // 
 // [Log]
 // 04/21 高下 スクリプト作成 
-// 
+// 04/27 荒井 アクティブフラグを追加 
 // 
 //====================================================
 using UnityEngine;
@@ -18,6 +18,8 @@ public class ObjectGravity : MonoBehaviour
 
     private Rigidbody Rb;    // オブジェクトのRigidbody
 
+    public bool IsActive = true;
+
     void Start()
     {
         Rb = GetComponent<Rigidbody>(); // Rigidbodyを取得
@@ -25,6 +27,7 @@ public class ObjectGravity : MonoBehaviour
 
     void Update()
     {
+        if (!IsActive) return;
         // 重力方向に加速させる
         Rb.AddForce(GravityScale, ForceMode.Acceleration);
     }
