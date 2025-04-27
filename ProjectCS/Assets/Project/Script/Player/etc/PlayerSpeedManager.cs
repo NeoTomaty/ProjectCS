@@ -2,13 +2,14 @@
 // スクリプト名：PlayerSpeedManager
 // 作成者：高下
 // 内容：プレイヤーの速度管理
-// 最終更新日：04/13
+// 最終更新日：04/27
 // 
 // [Log]
 // 03/31 高下 スクリプト作成 
 // 04/01 荒井 SetAccelerationValue関数をprivateからpublicに変更
 // 04/01 竹内 SetDecelerationValue関数を追加
 // 04/13 高下 GetSpeedRatio関数追加
+// 04/27 荒井 SetOverAccelerationValue関数追加
 //====================================================
 using UnityEngine;
 
@@ -36,6 +37,12 @@ public class PlayerSpeedManager : MonoBehaviour
     {
         PlayerSpeed -= DecelerationValue;
         PlayerSpeed = Mathf.Clamp(PlayerSpeed, MinPlayerSpeed, MaxPlayerSpeed); // 速度を制限
+    }
+
+    // プレイヤーの速度を限界を超えて加算する関数
+    public void SetOverAccelerationValue(float AccelerationValue)
+    {
+        PlayerSpeed += AccelerationValue;
     }
 
     // プレイヤーの速度割合を取得

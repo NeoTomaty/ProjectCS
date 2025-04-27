@@ -15,6 +15,7 @@
 // 04/11　中町　GoalWallに衝突したときにTestResultSceneにシーン遷移する処理追加
 // 04/23　竹内　プレイヤーがPlayerタグに触れたときも加速するように対応
 // 04/24　竹内　スクリプト名を改名
+// 04/27　荒井　リフティングパートに関する処理を追加
 //======================================================
 
 using UnityEngine;
@@ -42,6 +43,8 @@ public class IsHitAny : MonoBehaviour
 
     private Rigidbody Rb;    // プレイヤーのRigidbody
 
+    private LiftingJump LiftingJumpScript; // リフティングジャンプのスクリプト
+
     // プレイヤーの移動方向と速度にアクセスするための変数
     // 同じオブジェクトにアタッチされているスクリプトであるという想定での実装
     MovePlayer MovePlayerScript;    //実際のスクリプト
@@ -50,6 +53,7 @@ public class IsHitAny : MonoBehaviour
     {
         MovePlayerScript = GetComponent<MovePlayer>();
         Rb = GetComponent<Rigidbody>(); // Rigidbodyを取得
+        LiftingJumpScript = GetComponent<LiftingJump>(); // LiftingJumpを取得
 
         if (MovePlayerScript == null)
         {
@@ -155,6 +159,8 @@ public class IsHitAny : MonoBehaviour
 
             // 壁反射時のAddForceを有効にする
             IsJumpReflect = true;
+
+            LiftingJumpScript.ResetGaugeValue();
         }
         // GoalWallに衝突したとき、リザルトシーンに移動
         else if(collision.gameObject.tag=="GoalWall")
