@@ -8,6 +8,7 @@
 // 04/27　荒井　キー・ボタン入力で止められるように変更
 // 04/27　荒井　ゲージの中心がオブジェクトの座標とずれないように修正
 // 04/27　荒井　他スクリプトと合わせて動作するように修正
+// 04/28　荒井　ゲージを止めた後の待機時間を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
@@ -16,27 +17,26 @@ using UnityEngine.InputSystem.LowLevel;
 // GuageUIにアタッチ
 public class GaugeController : MonoBehaviour
 {
-    // ゲージのUIとしてのパラメータ
-    [SerializeField] private RectTransform GaugeRectTransform;
+    [SerializeField] private RectTransform GaugeRectTransform;  // ゲージのUIとしてのパラメータ
 
-    // 親オブジェクト
-    [SerializeField] private RectTransform ParentRectTransform;
+    [SerializeField] private RectTransform ParentRectTransform; // 親オブジェクト
 
-    // ゲージ量
-    private float GaugeValue = 0.0f;
+    private float GaugeValue = 0.0f;    // ゲージ量
     public float GetGaugeValue => GaugeValue;
 
-    // ゲージの増減速度
-    [SerializeField] private float GaugeSpeed = 0.5f;
+    
+    [SerializeField] private float GaugeSpeed = 0.5f;   // ゲージの増減速度
 
-    // ゲージの横幅
-    private const float GaugeWidth = 100.0f;
+    private const float GaugeWidth = 100.0f;    // ゲージの横幅
 
     // ゲージの増減を止める入力
     [SerializeField] private KeyCode StopKey = KeyCode.Return;              // キー
     [SerializeField] private KeyCode StopBottun = KeyCode.JoystickButton1;  // ボタン
 
-    private bool IsStop = false; // ゲージ増減を止めるフラグ
+    private bool IsStop = false;    // ゲージ増減を止めるフラグ
+
+    [SerializeField] private float StandTime = 0.5f;    // ゲージを止めた後の待機時間
+    private float TimeCount = 0f;
 
     // ゲージ増減のモード
     private enum GaugeMode
@@ -78,13 +78,22 @@ public class GaugeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (IsStop) return;
+        if (IsStop)
+        {
+            TimeCount += Time.unscaledDeltaTime;
+
+            if (TimeCount > StandTime)
+            {
+                Stop();
+            }
+
+            return;
+        }
 
         if (Input.GetKeyDown(StopKey) || Input.GetKeyDown(StopBottun))
         {
             // ゲージの増減を止める
             IsStop = true;
-            Stop();
         }
 
         // ゲージの増減処理
