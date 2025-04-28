@@ -7,6 +7,7 @@
 // 04/26　荒井　キーを入力したらターゲットに向かってぶっ飛んでいくように実装
 // 04/27　荒井　ターゲットに近づいたらスローモーションが始まるように実装
 // 04/27　荒井　他スクリプトと合わせて動作するように修正
+// 04/28　荒井　ジャンプ時の移動をtransformからAddForceに変更
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,15 +20,13 @@ public class LiftingJump : MonoBehaviour
 
     private MovePlayer MovePlayer; // プレイヤーの移動スクリプトの参照
 
-    private PlayerSpeedManager PlayerSpeedManager; // プレイヤーの速度管理スクリプトの参照
-
     private ObjectGravity ObjectGravityScript;
 
     [SerializeField] private GaugeController GaugeController; // ゲージコントローラーの参照
 
     [SerializeField] private float JumpSpeed = 10f; // ジャンプの速度
 
-    [SerializeField] private float BaseSpeed = 20f; // 衝突後の移動速度
+    //[SerializeField] private float BaseSpeed = 20f; // 衝突後の移動速度
 
     [SerializeField] private float BaseForce = 10f; // 衝突後の力
     public float GetForce => BaseForce * GaugeController.GetGaugeValue;
@@ -52,10 +51,9 @@ public class LiftingJump : MonoBehaviour
 
         // プレイヤーから目標地点へのベクトルを計算
         Vector3 JumpDirection = (TargetObject.transform.position - transform.position);
-        // 移動ベクトルを設定
-        MovePlayer.SetMoveDirection(JumpDirection.normalized);
-        // 移動速度を設定
-        PlayerSpeedManager.SetOverAccelerationValue(JumpSpeed);
+
+        GetComponent<Rigidbody>().AddForce(JumpDirection.normalized * JumpSpeed, ForceMode.Impulse);
+
         IsJumping = true;
     }
 
@@ -63,8 +61,6 @@ public class LiftingJump : MonoBehaviour
     public void FinishLiftingJump()
     {
         ObjectGravityScript.IsActive = true;
-
-        PlayerSpeedManager.SetDecelerationValue(JumpSpeed);
 
         IsJumping = false;
 
@@ -101,7 +97,6 @@ public class LiftingJump : MonoBehaviour
     void Start()
     {
         MovePlayer=GetComponent<MovePlayer>();
-        PlayerSpeedManager = GetComponent<PlayerSpeedManager>();
         ObjectGravityScript = GetComponent<ObjectGravity>();
     }
 
