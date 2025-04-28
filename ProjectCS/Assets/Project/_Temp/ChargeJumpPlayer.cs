@@ -20,6 +20,11 @@ public class ChargeJumpPlayer : MonoBehaviour
 
     [SerializeField] private float groundCheckRadius = 0.2f;
 
+    [Header("ジャンプ倍率設定")]
+    [SerializeField] private float ChargeBluePower = 1.0f; // 押してる間は0.8倍！
+    [SerializeField] private float ChargeYellowPower = 1.5f; // 押してる間は0.8倍！
+    [SerializeField] private float ChargeRedPower = 2.0f; // 押してる間は0.8倍！
+
     [Header("チャージ設定")]
     [SerializeField] private float chargeYellowTime = 1.0f;
 
@@ -28,6 +33,7 @@ public class ChargeJumpPlayer : MonoBehaviour
 
     [Header("スピード設定")]
     [SerializeField] private float chargingSpeedMultiplier = 0.8f; // 押してる間は0.8倍！
+
 
     [SerializeField] private ParticleSystem chargeEffectPrefab; // プレハブを指定！
     private ParticleSystem chargeEffectInstance; // インスタンスを保存する用
@@ -46,6 +52,7 @@ public class ChargeJumpPlayer : MonoBehaviour
     private float originalSpeed;
     private bool isOverheated = false; // オーバーヒートしたか
 
+    public float JumpPower = 0.0f;
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -125,10 +132,10 @@ public class ChargeJumpPlayer : MonoBehaviour
             isCharging = false;
             isOverheated = false;
 
-            if (speedManager != null)
-            {
-                SetSpeedDirectly(originalSpeed); // スピードも元に戻す
-            }
+            //if (speedManager != null)
+            //{
+            //    SetSpeedDirectly(originalSpeed); // スピードも元に戻す
+            //}
             return;
         }
 
@@ -137,19 +144,19 @@ public class ChargeJumpPlayer : MonoBehaviour
         // チャージ時間によってジャンプ倍率決定
         if (chargeTimer >= chargeRedTime)
         {
-            jumpMultiplier = 2.0f;
+            jumpMultiplier = ChargeRedPower;
         }
         else if (chargeTimer >= chargeYellowTime)
         {
-            jumpMultiplier = 1.5f;
+            jumpMultiplier = ChargeYellowPower;
         }
         else
         {
-            jumpMultiplier = 1.0f;
+            jumpMultiplier = ChargeBluePower;
         }
 
-        float jumpPower = baseJumpForce * jumpMultiplier;
-        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+        JumpPower = baseJumpForce * jumpMultiplier;
+        rb.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
         Debug.Log($"ジャンプ成功！倍率: {jumpMultiplier}倍, チャージ時間: {chargeTimer:F2}秒");
 
         if (speedManager != null)
@@ -188,6 +195,7 @@ public class ChargeJumpPlayer : MonoBehaviour
     // 押した瞬間（チャージ開始）
     private void OnJumpStarted(InputAction.CallbackContext context)
     {
+     
         if (isGrounded)
         {
             isCharging = true;

@@ -1,5 +1,5 @@
 //======================================================
-// ClearConditionsスクリプト
+// CheckClearCountスクリプト
 // 作成者：宮林
 // 最終更新日：4/11
 // 
@@ -8,7 +8,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ClearConditions : MonoBehaviour
+public class CheckClearCount : MonoBehaviour
 {
     [Header("クリア条件")]
     public int clearCondition = 10; // クリア条件のリフティング回数
