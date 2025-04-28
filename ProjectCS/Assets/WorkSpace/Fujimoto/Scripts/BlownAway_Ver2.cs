@@ -32,6 +32,9 @@ public class BlownAway_Ver2 : MonoBehaviour
     [SerializeField]
     private Transform RespawnArea;         // 移動させる範囲オブジェト
 
+    [SerializeField]
+    private LiftingJump LiftingJump; // リフティングジャンプのスクリプト
+
     private Rigidbody Rb;
     private SweetSizeUp SweetSizeUpScript;
 
@@ -98,6 +101,14 @@ public class BlownAway_Ver2 : MonoBehaviour
 
         // Rigidbodyに力を加える
         Rb.AddForce(ForceDirection, ForceMode.Impulse);
+
+        // ゲージによる補正
+        if (LiftingJump != null)
+        {
+            ForceDirection *= LiftingJump.GetForce;
+            // プレイヤーのリフティングパートを終了する
+            LiftingJump.FinishLiftingJump();
+        }
 
         // ポイント計算開始
         FlyingPoint flyingPoint = GetComponent<FlyingPoint>();
