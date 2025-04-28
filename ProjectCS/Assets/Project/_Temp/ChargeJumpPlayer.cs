@@ -125,10 +125,10 @@ public class ChargeJumpPlayer : MonoBehaviour
             isCharging = false;
             isOverheated = false;
 
-            if (speedManager != null)
-            {
-                SetSpeedDirectly(originalSpeed); // スピードも元に戻す
-            }
+            //if (speedManager != null)
+            //{
+            //    SetSpeedDirectly(originalSpeed); // スピードも元に戻す
+            //}
             return;
         }
 
@@ -188,6 +188,7 @@ public class ChargeJumpPlayer : MonoBehaviour
     // 押した瞬間（チャージ開始）
     private void OnJumpStarted(InputAction.CallbackContext context)
     {
+     
         if (isGrounded)
         {
             isCharging = true;
