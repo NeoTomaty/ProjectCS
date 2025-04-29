@@ -8,6 +8,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class GameOverConditions : MonoBehaviour
 {
     [Header("ゲームオーバー判定に必要なリフティング回数")]
