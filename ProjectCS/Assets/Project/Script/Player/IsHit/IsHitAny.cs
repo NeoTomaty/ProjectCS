@@ -16,6 +16,8 @@
 // 04/23　竹内　プレイヤーがPlayerタグに触れたときも加速するように対応
 // 04/24　竹内　スクリプト名を改名
 // 04/27　荒井　リフティングパートに関する処理を追加
+// 04/30　竹内　Playerタグ及びGoalWallタグに当たった際の挙動を削除
+// 04/30　竹内　RespawnAreaタグに当たった際の挙動を追加
 //======================================================
 
 using UnityEngine;
@@ -25,18 +27,24 @@ using UnityEngine.SceneManagement; // シーン管理を追加
 public class IsHitAny : MonoBehaviour
 {
     // 壁に衝突した際の加速量
+    [Header("壁に衝突したときの加速度")]
     [SerializeField] private float Acceleration = 1.0f;
 
+    [Header("Y方向の速度")]
     [SerializeField]
     private float MaxVelocityY = 50.0f;  // Y軸最大の速さ
     [SerializeField]
     private float MinVelocityY = -50.0f; // Y軸最小の速さ
+
+
+    [Header("ボタン入力による加速を実行するかどうか")]
+    [SerializeField]
+    private bool IsInputEnabled = true;
+    [Header("ボタン入力まわりの設定")]
     [SerializeField]
     private float InputAcceptDuration = 1.0f;// 壁に衝突後の入力受付時間
     private float InputAcceptTimer = 0.0f;   // 入力受付の経過時間
-    [Tooltip("入力による加速を実行するかどうか")]
-    [SerializeField]
-    private bool IsInputEnabled = true;
+
 
     private bool IsJumpReflect = false;  // ジャンプ時の壁反射で力を加えるかどうか
     private bool IsHitWall = false;      // 壁に衝突したかどうか
@@ -97,13 +105,13 @@ public class IsHitAny : MonoBehaviour
         }
     }
 
-
+    // 衝突した際の処理
     private void OnCollisionEnter(Collision collision)
     {
         if (MovePlayerScript == null) return;
 
         // 衝突したオブジェクトのタグをチェック
-        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "BrokenWall" || collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "BrokenWall")
         {
             Debug.Log("プレイヤー >> 壁に当たりました");
             
@@ -162,11 +170,17 @@ public class IsHitAny : MonoBehaviour
 
             LiftingJumpScript.ResetGaugeValue();
         }
-        // GoalWallに衝突したとき、リザルトシーンに移動
-        else if(collision.gameObject.tag=="GoalWall")
+
+    }
+
+    // 衝突した際の処理（is Trigger）
+    private void OnTriggerEnter(Collider other)
+    {
+        // 衝突したオブジェクトのタグをチェック
+        if (other.gameObject.tag == "Respawn")
         {
-            Debug.Log("プレイヤー>>ゴールに到達しました");
-            SceneManager.LoadScene("TestResultScene");
+
         }
     }
+
 }
