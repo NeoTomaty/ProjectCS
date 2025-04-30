@@ -7,6 +7,7 @@
 // 04/21 高下 重力関連を別スクリプト(ObjectGravity)に移動させました
 // 04/24 藤本 ポイント計算を開始するためのコードを追記しました
 // 04/28 竹内 SweetSizeUpが関与する箇所を抹消
+// 04/29 荒井 吹っ飛ばしにジャンプのパワーによる補正を追加
 //====================================================
 using UnityEngine;
 
@@ -103,7 +104,7 @@ public class BlownAway_Ver2 : MonoBehaviour
         // ゲージによる補正
         if (LiftingJump != null)
         {
-            ForceDirection *= LiftingJump.GetForce;
+            ForceDirection *= LiftingJump.GetForce * LiftingJump.GetJumpPower;
             // プレイヤーのリフティングパートを終了する
             LiftingJump.FinishLiftingJump();
         }

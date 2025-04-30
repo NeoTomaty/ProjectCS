@@ -2,13 +2,14 @@
 // スクリプト名：ChargeJumpPlayer
 // 作成者：宮林
 // 内容：プレイヤーのジャンプ処理
-// 最終更新日：04/27
+// 最終更新日：04/29
 //
 // [Log]
 // 04/26　宮林　スクリプト作成
 // 04/26  宮林　高下君のスクリプトコピー
 // 04/26　宮林　長押しジャンプの追加
 // 04/27　森脇　エフェクト制御の追加
+// 04/29　荒井　チャージ後のジャンプ処理にリフティングジャンプへの分岐を追加
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -52,6 +53,9 @@ public class ChargeJumpPlayer : MonoBehaviour
     private float originalSpeed;
     private bool isOverheated = false; // オーバーヒートしたか
 
+    private PlayerStateManager PlayerStateManager;
+    private LiftingJump LiftingJump;
+
     public float JumpPower = 0.0f;
     private void Awake()
     {
@@ -81,6 +85,9 @@ public class ChargeJumpPlayer : MonoBehaviour
         {
             Debug.LogError("PlayerSpeedManagerが見つかりません！");
         }
+
+        PlayerStateManager = GetComponent<PlayerStateManager>();
+        LiftingJump = GetComponent<LiftingJump>();
     }
 
     private void Update()
@@ -155,9 +162,20 @@ public class ChargeJumpPlayer : MonoBehaviour
             jumpMultiplier = ChargeBluePower;
         }
 
-        JumpPower = baseJumpForce * jumpMultiplier;
-        rb.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
-        Debug.Log($"ジャンプ成功！倍率: {jumpMultiplier}倍, チャージ時間: {chargeTimer:F2}秒");
+        switch (PlayerStateManager.GetLiftingState())
+        {
+            case PlayerStateManager.LiftingState.Normal:
+                // 通常状態
+                JumpPower = baseJumpForce * jumpMultiplier;
+                rb.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
+                Debug.Log($"ジャンプ成功！倍率: {jumpMultiplier}倍, チャージ時間: {chargeTimer:F2}秒");
+                break;
+            case PlayerStateManager.LiftingState.LiftingPart:
+                // リフティング状態
+                LiftingJump.SetJumpPower(jumpMultiplier);
+                LiftingJump.StartLiftingJump();
+                break;
+        }
 
         if (speedManager != null)
         {
