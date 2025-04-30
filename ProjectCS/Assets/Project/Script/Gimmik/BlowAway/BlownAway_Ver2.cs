@@ -49,9 +49,11 @@ public class BlownAway_Ver2 : MonoBehaviour
         FallPoint = GetComponent<FallPointCalculator>();
     }
 
-    private void Update()
+    void OnTriggerEnter(Collider other)
     {
-        if (transform.position.y > 70f)
+        Debug.Log($"接触: {other.name}");
+
+        if (other.CompareTag("Respawn"))
         {
             MoveToRandomXZInRespawnArea();
         }
@@ -169,6 +171,9 @@ public class BlownAway_Ver2 : MonoBehaviour
 
         transform.position = new Vector3(randomX, y, randomZ);
         Rb.linearVelocity = Vector3.zero; // 速度もリセット
+
+        Vector3 newPos = new Vector3(randomX, y, randomZ);
+        Debug.Log($"リスポーン座標: {newPos}");
 
         Debug.LogWarning("高さ10f");
 
