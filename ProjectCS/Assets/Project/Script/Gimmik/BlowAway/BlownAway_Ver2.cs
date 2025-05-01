@@ -44,7 +44,9 @@ public class BlownAway_Ver2 : MonoBehaviour
 
     private Rigidbody Rb;
 
-
+    [SerializeField]
+    [Header("クリア条件を管理しているオブジェクト")]
+    private ClearConditions ClearConditionsScript; // リフティング回数管理のスクリプト
 
     void Start()
     {
@@ -67,8 +69,11 @@ public class BlownAway_Ver2 : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Player")) return;
 
+
         // 飛ぶ先の位置を決定
         //MoveToRandomXZInRespawnArea();
+
+        ClearConditionsScript.CheckLiftingCount();
 
         // PlayerSpeedManagerスクリプトを取得
         PlayerSpeedManager PlayerSpeedManager = collision.gameObject.GetComponent<PlayerSpeedManager>();
