@@ -46,12 +46,19 @@ public class IsHitAny : MonoBehaviour
     private float InputAcceptTimer = 0.0f;   // 入力受付の経過時間
 
 
+    // ワープ先の座標
+    [Header("リスポーン先の座標")]
+    [SerializeField]
+    public Vector3 warpPosition = new Vector3(0, 0, 0);
+
+
     private bool IsJumpReflect = false;  // ジャンプ時の壁反射で力を加えるかどうか
     private bool IsHitWall = false;      // 壁に衝突したかどうか
 
     private Rigidbody Rb;    // プレイヤーのRigidbody
 
     private LiftingJump LiftingJumpScript; // リフティングジャンプのスクリプト
+
 
     // プレイヤーの移動方向と速度にアクセスするための変数
     // 同じオブジェクトにアタッチされているスクリプトであるという想定での実装
@@ -179,7 +186,8 @@ public class IsHitAny : MonoBehaviour
         // 衝突したオブジェクトのタグをチェック
         if (other.gameObject.tag == "Respawn")
         {
-
+            // オブジェクトの位置をwarpPositionに変更する
+            transform.position = warpPosition;
         }
     }
 

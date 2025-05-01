@@ -17,7 +17,8 @@ public class MiniMapCamera : MonoBehaviour
     [SerializeField] private Transform target;                          // 追従対象
     [Header("カメラの相対距離")]
     [SerializeField] private Vector3 offset = new Vector3(0, 10, 0);    // 追従時の相対位置
-
+    [Header("ミニマップを表示するまでの高さ")]
+    [SerializeField] private float toggleHeight = 100;    // カメラを表示させる高さ
 
     private Camera miniMapCamera;    // このスクリプトがアタッチされているミニマップカメラ
 
@@ -53,13 +54,13 @@ public class MiniMapCamera : MonoBehaviour
     private void FollowTarget()
     {
         transform.position = target.position + offset;
-        transform.rotation = Quaternion.Euler(90f, 0f, 0f); // 真上から見下ろすような角度
+        transform.rotation = Quaternion.Euler(0f, 90f, 0f); // 真横からの角度
     }
 
     // 条件に応じてミニマップをON/OFFする
     private void ToggleMiniMap()
     {
-        if (target.position.y > 100)
+        if (target.position.y > toggleHeight)
         {
             miniMapCamera.enabled = true;
         }
