@@ -9,6 +9,9 @@
 // 04/27　荒井　他スクリプトと合わせて動作するように修正
 // 04/28　荒井　ジャンプ時の移動をtransformからAddForceに変更
 // 04/29　荒井　チャージジャンプによるジャンプのパワー補正を追加
+// 05/01　荒井　ターゲット以外のオブジェクトに衝突したらリフティングジャンプを中止する処理を追加
+// 05/01　荒井　ターゲット以外のオブジェクトをすり抜ける処理を追加
+// 05/01　荒井　中止とすり抜けを切り替えるパラメータを追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,13 +20,13 @@ using UnityEngine.InputSystem;
 // プレイヤーにアタッチ
 public class LiftingJump : MonoBehaviour
 {
-    [SerializeField] GameObject TargetObject; // 目標地点
+    [SerializeField] GameObject TargetObject;   // 目標地点
 
-    private MovePlayer MovePlayer; // プレイヤーの移動スクリプトの参照
+    private MovePlayer MovePlayer;              // プレイヤーの移動スクリプトの参照
 
-    private ObjectGravity ObjectGravityScript;
+    private ObjectGravity ObjectGravityScript;  // 重力スクリプトの参照
 
-    [SerializeField] private GaugeController GaugeController; // ゲージコントローラーの参照
+    [SerializeField] private GaugeController GaugeController;   // ゲージコントローラーの参照
 
     [SerializeField] private float BaseJumpPower = 10f; // 基となるジャンプの速度
 
@@ -38,6 +41,10 @@ public class LiftingJump : MonoBehaviour
     [SerializeField] private float SlowMotionFactor = 0.1f; //スローモーションの度合い
 
     [SerializeField] private float SlowMotionDistance = 1f; // スローモーションへ移行する距離
+
+    [SerializeField] private bool IgnoreNonTargetCollisions = false;    // ターゲット以外との衝突を無視するかどうか
+
+    private Collider[] AllColliders;    // 全オブジェクトの当たり判定
 
     private bool IsJumping = false;
 
@@ -56,6 +63,21 @@ public class LiftingJump : MonoBehaviour
     // リフティングジャンプを開始する関数
     public void StartLiftingJump()
     {
+        if(IgnoreNonTargetCollisions)   // すり抜け有効時
+        {
+            Collider SelfCollider = GetComponent<Collider>();                   // 自分のコライダーを取得
+            Collider TargetCollider = TargetObject.GetComponent<Collider>();    // ターゲットのコライダーを取得
+
+            foreach (Collider col in AllColliders)
+            {
+                // 自分のコライダーと全てのコライダーの当たり判定を無視
+                Physics.IgnoreCollision(SelfCollider, col, true);
+            }
+
+            // 自分のコライダーとターゲットのコライダーの当たり判定だけ有効
+            Physics.IgnoreCollision(SelfCollider, TargetCollider, false);
+        }
+
         ObjectGravityScript.IsActive = false;
 
         // プレイヤーから目標地点へのベクトルを計算
@@ -69,6 +91,17 @@ public class LiftingJump : MonoBehaviour
     // リフティングジャンプを停止する関数
     public void FinishLiftingJump()
     {
+        if (IgnoreNonTargetCollisions)  // すり抜け有効時
+        {
+            Collider SelfCollider = GetComponent<Collider>();   // 自分のコライダーを取得
+
+            foreach (Collider col in AllColliders)
+            {
+                // 自分のコライダーと全てのコライダーの当たり判定を有効にする
+                Physics.IgnoreCollision(SelfCollider, col, false);
+            }
+        }
+
         ObjectGravityScript.IsActive = true;
 
         IsJumping = false;
@@ -105,8 +138,11 @@ public class LiftingJump : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        MovePlayer=GetComponent<MovePlayer>();
+        MovePlayer = GetComponent<MovePlayer>();
         ObjectGravityScript = GetComponent<ObjectGravity>();
+
+        // 全オブジェクトの当たり判定を取得
+        AllColliders = FindObjectsByType<Collider>(FindObjectsSortMode.None);
     }
 
     // Update is called once per frame
@@ -131,6 +167,18 @@ public class LiftingJump : MonoBehaviour
                 // ゲージを表示
                 GaugeController.Play();
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (IgnoreNonTargetCollisions) return;
+
+        // ターゲット以外のオブジェクトに衝突した場合
+        if (collision.gameObject != TargetObject)
+        {
+            // リフティングジャンプを終了
+            FinishLiftingJump();
         }
     }
 }
