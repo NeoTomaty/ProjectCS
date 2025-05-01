@@ -8,6 +8,7 @@
 // 04/24 藤本 ポイント計算を開始するためのコードを追記しました
 // 04/28 竹内 SweetSizeUpが関与する箇所を抹消
 // 04/29 荒井 吹っ飛ばしにジャンプのパワーによる補正を追加
+// 05/01 藤本 ステージ内にリスポーン
 //====================================================
 using UnityEngine;
 
@@ -35,6 +36,9 @@ public class BlownAway_Ver2 : MonoBehaviour
 
     [SerializeField]
     private LiftingJump LiftingJump; // リフティングジャンプのスクリプト
+
+    [SerializeField]
+    private Transform GroundArea;   // ステージの範囲を示すオブジェクト
 
     private FallPointCalculator FallPoint; // 落下地点を計算するスクリプト
 
@@ -153,32 +157,39 @@ public class BlownAway_Ver2 : MonoBehaviour
     // リスポーン位置
     private void MoveToRandomXZInRespawnArea()
     {
-        if (RespawnArea == null)
+        if (RespawnArea == null || GroundArea == null)
         {
             Debug.LogWarning("RespawnAreaが設定されていません");
             return;
         }
 
-        // RespawnAreaの範囲（中心＋スケール）を使ってXZ座標をランダムに決定
-        Vector3 center = RespawnArea.position;
-        Vector3 size = RespawnArea.localScale;
+        // 範囲取得
+        Vector3 respawnCenter = RespawnArea.position;
+        Vector3 respawnSize = RespawnArea.localScale;
 
-        float randomX = Random.Range(center.x - size.x / 2, center.x + size.x / 2);
-        float randomZ = Random.Range(center.z - size.z / 2, center.z + size.z / 2);
+        Vector3 groundCenter = GroundArea.position;
+        Vector3 groundSize = GroundArea.localScale;
 
-        // Y座標はRespawnAreaの高さまたは任意の高さに設定
-        float y = center.y;
+        // XとZの最小・最大を両方の範囲で共通する部分に制限
+        float minX = Mathf.Max(respawnCenter.x - respawnSize.x / 2, groundCenter.x - groundSize.x / 2);
+        float maxX = Mathf.Min(respawnCenter.x + respawnSize.x / 2, groundCenter.x + groundSize.x / 2);
 
-        transform.position = new Vector3(randomX, y, randomZ);
-        Rb.linearVelocity = Vector3.zero; // 速度もリセット
+        float minZ = Mathf.Max(respawnCenter.z - respawnSize.z / 2, groundCenter.z - groundSize.z / 2);
+        float maxZ = Mathf.Min(respawnCenter.z + respawnSize.z / 2, groundCenter.z + groundSize.z / 2);
+
+        float randomX = Random.Range(minX, maxX);
+        float randomZ = Random.Range(minZ, maxZ);
+
+        // Y座標はRespawnAreaの高さに設定
+        float y = respawnCenter.y;
 
         Vector3 newPos = new Vector3(randomX, y, randomZ);
-        Debug.Log($"リスポーン座標: {newPos}");
+        transform.position = newPos;
+        Rb.linearVelocity = Vector3.zero;
 
-        Debug.LogWarning("高さ10f");
+        Debug.Log($"リスポーン座標（グラウンド内）: {newPos}");
 
-        // 落下地点を計算
-        FallPoint.CalculateGroundPoint();
+        FallPoint?.CalculateGroundPoint();
 
     }
 }
