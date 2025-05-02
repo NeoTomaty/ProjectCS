@@ -9,6 +9,7 @@
 // 04/28 竹内 SweetSizeUpが関与する箇所を抹消
 // 04/29 荒井 吹っ飛ばしにジャンプのパワーによる補正を追加
 // 05/01 藤本 ステージ内にリスポーン
+// 05/02 荒井 リフティングジャンプの終了処理の場所を修正
 //====================================================
 using UnityEngine;
 
@@ -109,16 +110,20 @@ public class BlownAway_Ver2 : MonoBehaviour
 
         Vector3 ForceDirection = UpwardDirection;
 
-        // Rigidbodyに力を加える
-        Rb.AddForce(ForceDirection, ForceMode.Impulse);
-
         // ゲージによる補正
         if (LiftingJump != null)
         {
-            ForceDirection *= LiftingJump.GetForce * LiftingJump.GetJumpPower;
-            // プレイヤーのリフティングパートを終了する
-            LiftingJump.FinishLiftingJump();
+            if (LiftingJump.IsLiftingPart)
+            {
+                //ForceDirection *= LiftingJump.GetForce * LiftingJump.GetJumpPower;
+
+                // プレイヤーのリフティングパートを終了する
+                LiftingJump.FinishLiftingJump();    // AddForceの前に呼び出さないとスナックが飛ばない
+            }
         }
+
+        // Rigidbodyに力を加える
+        Rb.AddForce(ForceDirection, ForceMode.Impulse);
 
         // ポイント計算開始
         FlyingPoint flyingPoint = GetComponent<FlyingPoint>();
