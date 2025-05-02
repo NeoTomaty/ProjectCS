@@ -6,6 +6,7 @@
 // [Log]
 // 04/23 高下 入力に関する仕様変更(PlayerInput(InputActionAsset))
 // 04/25 高下 ターゲットにロックオンしたときと解除時に補完するように調整
+// 05/02 高下 リフティング時の強制ロックオン処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,28 +16,36 @@ public class CameraFunction : MonoBehaviour
     public Transform Player;         // プレイヤー
     public Transform Target;         // 対象
 
-    public float Distance = 5.0f;               // カメラとプレイヤーの距離
-    public float RotationSpeed = 50.0f;         // 回転速度
-    public float VerticalMin = -80.0f;          // 縦方向移動の最小値
-    public float VerticalMax = 80.0f;           // 縦方向移動の最大値
-    public float AutoCorrectSpeed = 1.5f;       // 自動補正速度
-    public float LookSmoothSpeed = 5.0f;        // 自動視線修正値
-    public float PositionSmoothSpeed = 5.0f;    // カメラ位置の補正速度
+    [SerializeField]
+    private PlayerInput PlayerInput;      // プレイヤーの入力を管理するcomponent
+
+    [Tooltip("カメラとプレイヤーの距離")]
+    [SerializeField] private float Distance = 5.0f;               // カメラとプレイヤーの距離
+    [Tooltip("カメラの高さ")]
+    [SerializeField] private float CameraHeight = 3.0f;           // カメラの高さ
+    [SerializeField] private float RotationSpeed = 50.0f;         // 回転速度
+    [SerializeField] private float VerticalMin = -80.0f;          // 縦方向移動の最小値
+    [SerializeField] private float VerticalMax = 80.0f;           // 縦方向移動の最大値
+    [SerializeField] private float AutoCorrectSpeed = 1.5f;       // 自動補正速度
+    //[SerializeField] private float LookSmoothSpeed = 5.0f;        // 自動視線修正値
+    //[SerializeField] private float PositionSmoothSpeed = 5.0f;    // カメラ位置の補正速度
 
     [Header("補完設定")]
-    public float TransitionDuration = 0.5f;       // ロックオン補完時間
-    public float ReturnDuration = 0.4f;           // 通常視点へ戻る補完時間
-    public float TransitionEndThreshold = 0.01f;  // 補完終了とみなす閾値
+    [SerializeField] private float TransitionDuration = 0.5f;       // ロックオン補完時間
+    [SerializeField] private float ReturnDuration = 0.4f;           // 通常視点へ戻る補完時間
+    [SerializeField] private float TransitionEndThreshold = 0.01f;  // 補完終了とみなす閾値
 
     [Header("ロックオン時のカメラ設定")]
-    public float LockOnDistance = 3.0f;           // ロックオン時のカメラ距離
-    public float LockOnHeight = 2.0f;             // ロックオン時の高さオフセット
+    [SerializeField] private float LockOnDistance = 3.0f;           // ロックオン時のカメラ距離
+    [SerializeField] private float LockOnHeight = 2.0f;             // ロックオン時の高さオフセット
+
+    [Header("強制ロックオン時のカメラ設定")]
+    [Tooltip("リフティングで飛ばした後のロックオン時間")]
+    [SerializeField] private float ForceLockOnTime = 2.0f;          // リフティングで飛ばした後のロックオン時間
 
     private float yaw = 0f;
     private float pitch = 20f;
 
-    [SerializeField]
-    private PlayerInput PlayerInput;      // プレイヤーの入力を管理するcomponent
     private InputAction LookTargetAction; // ターゲット用のInputAction
     private InputAction RotateAction;     // 回転用のInputAction
     private Vector2 RotateInput;          // 入力された値を保持する（回転用）
@@ -53,6 +62,10 @@ public class CameraFunction : MonoBehaviour
     private float ReturnTime = 0f;
     private Vector3 ReturnStartPos;
     private Quaternion ReturnStartRot;
+
+    // リフティング時の強制ロックオン制御用
+    private bool IsForceLockOn = false;
+    private float ForceLockOnTimeLeft = 0f;
 
     private void Start()
     {
@@ -91,17 +104,24 @@ public class CameraFunction : MonoBehaviour
             pitch = Mathf.Lerp(pitch, targetPitch, AutoCorrectSpeed * Time.deltaTime);
         }
 
+        // 強制ロックオン時の処理
+        if(IsForceLockOn)
+        {
+            ForceLockOnTimeLeft -= Time.deltaTime;
+
+            if (ForceLockOnTimeLeft < 0f)
+            {
+                IsForceLockOn = false;
+                Debug.Log("強制ロックオン終了");
+            }
+        }
+
         // === ロックオン時のカメラ制御 ===
-        if (rtPressed && Target != null)
+        if ((rtPressed || IsForceLockOn) && Target != null)
         {
             if (!IsLookingTarget)
             {
-                // ロックオン開始時の状態を保存
-                IsLookingTarget = true;
-                IsTransitioningToTarget = true;
-                TransitionTime = 0f;
-                TransitionStartPos = transform.position;
-                TransitionStartRot = transform.rotation;
+                StartLockOn(false);
             }
 
             // 目標位置と回転を計算
@@ -133,6 +153,7 @@ public class CameraFunction : MonoBehaviour
                 transform.position = desiredPos;
                 transform.rotation = desiredRot;
             }
+
         }
         //if (rtPressed && Target != null)
         //{
@@ -154,14 +175,7 @@ public class CameraFunction : MonoBehaviour
             // === RTを離した場合：通常視点に戻す補完 ===
             if (IsLookingTarget)
             {
-                // 戻り補完の初期化
-                IsLookingTarget = false;
-                IsTransitioningToTarget = false;
-                IsReturningToNormal = true;
-                ReturnTime = 0f;
-
-                ReturnStartPos = transform.position;
-                ReturnStartRot = transform.rotation;
+                StopLockOn();
             }
 
             if (IsReturningToNormal)
@@ -200,11 +214,11 @@ public class CameraFunction : MonoBehaviour
                 // 右クリックでターゲットを注視、そうでなければプレイヤーを注視
                 if (Input.GetMouseButton(1) && Target != null)
                 {
-                    transform.LookAt(Target.position + Vector3.up * 1.5f);
+                    transform.LookAt(Target.position + Vector3.up * CameraHeight);
                 }
                 else
                 {
-                    transform.LookAt(Player.position + Vector3.up * 1.5f);
+                    transform.LookAt(Player.position + Vector3.up * CameraHeight);
                 }
             }
         }
@@ -242,5 +256,39 @@ public class CameraFunction : MonoBehaviour
             // 入力がキャンセルされた
             RotateInput = Vector2.zero;
         }
+    }
+
+    public void StartLockOn(bool isForceLockOn)
+    {
+        if (Target == null || Player == null) return;
+        IsLookingTarget = true;
+        IsTransitioningToTarget = true;
+        TransitionTime = 0.0f;
+        TransitionStartPos = transform.position;
+        TransitionStartRot = transform.rotation;
+
+        // 渡された引数によって、任意ロックオンか強制ロックオンを判断
+        IsForceLockOn = isForceLockOn;
+        if(IsForceLockOn)
+        {
+            ForceLockOnTimeLeft = ForceLockOnTime;
+        }
+    }
+
+    public void StopLockOn()
+    {
+        if (!IsLookingTarget) return;
+
+        IsLookingTarget = false;
+        IsTransitioningToTarget = false;
+        IsReturningToNormal = true;
+        ReturnTime = 0.0f;
+        ReturnStartPos = transform.position;
+        ReturnStartRot = transform.rotation;
+    }
+
+    public void SetLockOnTarget(Transform target)
+    {
+        Target = target;
     }
 }
