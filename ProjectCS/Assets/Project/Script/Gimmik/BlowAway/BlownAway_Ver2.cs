@@ -11,6 +11,7 @@
 // 05/01 藤本 ステージ内にリスポーン
 // 05/02 藤本 Respawnオブジェクトをすり抜けないよう高さでも判定を取るように修正
 // 05/02 荒井 リフティングジャンプの終了処理の場所を修正
+// 05/02 高下 対象を飛ばしたときに強制的にロックオンする処理を追加
 //====================================================
 using UnityEngine;
 
@@ -42,6 +43,9 @@ public class BlownAway_Ver2 : MonoBehaviour
     [SerializeField]
     private Transform GroundArea;   // ステージの範囲を示すオブジェクト
 
+    [SerializeField] 
+    private CameraFunction CameraFunction;
+
     private FallPointCalculator FallPoint; // 落下地点を計算するスクリプト
 
     private Rigidbody Rb;
@@ -55,6 +59,8 @@ public class BlownAway_Ver2 : MonoBehaviour
         Rb = GetComponent<Rigidbody>();
 
         FallPoint = GetComponent<FallPointCalculator>();
+
+        if (!CameraFunction) Debug.LogError("CameraFunctionが設定されていません");
     }
 
     void OnTriggerEnter(Collider other)
@@ -142,6 +148,9 @@ public class BlownAway_Ver2 : MonoBehaviour
 
         // ヒットストップを開始する
         StartCoroutine(HitStop(Mathf.Lerp(MinHitStopTime, MaxHitStopTime, SpeedRatio)));
+
+        // カメラの強制ロックオン開始
+        CameraFunction.StartLockOn(true);
     }
 
     // ヒットストップ関数
