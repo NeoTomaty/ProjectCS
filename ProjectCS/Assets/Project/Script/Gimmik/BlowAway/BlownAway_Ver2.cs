@@ -74,7 +74,7 @@ public class BlownAway_Ver2 : MonoBehaviour
         // 飛ぶ先の位置を決定
         //MoveToRandomXZInRespawnArea();
 
-        ClearConditionsScript.CheckLiftingCount();
+        //ClearConditionsScript.CheckLiftingCount();
 
         // PlayerSpeedManagerスクリプトを取得
         PlayerSpeedManager PlayerSpeedManager = collision.gameObject.GetComponent<PlayerSpeedManager>();
