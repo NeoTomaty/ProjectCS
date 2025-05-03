@@ -9,6 +9,7 @@
 // 04/28 竹内 SweetSizeUpが関与する箇所を抹消
 // 04/29 荒井 吹っ飛ばしにジャンプのパワーによる補正を追加
 // 05/01 藤本 ステージ内にリスポーン
+// 05/02 藤本 Respawnオブジェクトをすり抜けないよう高さでも判定を取るように修正
 //====================================================
 using UnityEngine;
 
@@ -65,13 +66,20 @@ public class BlownAway_Ver2 : MonoBehaviour
         }
     }
 
+    // snackがRespawnオブジェクトをスレ抜けてもリスポーンする
+    void Update()
+    {
+        // Respawnオブジェクトのより高い位置にいたらリスポーン
+        if (RespawnArea && transform.position.y > RespawnArea.position.y)
+        {
+            Debug.Log($"Respawnオブジェクトの高さを超えたためリスポーン");
+            MoveToRandomXZInRespawnArea();
+        }
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("Player")) return;
-
-
-        // 飛ぶ先の位置を決定
-        //MoveToRandomXZInRespawnArea();
 
         ClearConditionsScript.CheckLiftingCount();
 

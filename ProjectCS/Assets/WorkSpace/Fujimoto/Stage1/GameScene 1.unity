@@ -964,6 +964,11 @@ MonoBehaviour:
   AutoCorrectSpeed: 1.5
   LookSmoothSpeed: 5
   PositionSmoothSpeed: 5
+  TransitionDuration: 0.5
+  ReturnDuration: 0.4
+  TransitionEndThreshold: 0.01
+  LockOnDistance: 3
+  LockOnHeight: 2
   PlayerInput: {fileID: 932418157}
 --- !u!114 &946110166
 MonoBehaviour:
@@ -1139,6 +1144,11 @@ MonoBehaviour:
   AutoCorrectSpeed: 1.5
   LookSmoothSpeed: 5
   PositionSmoothSpeed: 5
+  TransitionDuration: 0.5
+  ReturnDuration: 0.4
+  TransitionEndThreshold: 0.01
+  LockOnDistance: 3
+  LockOnHeight: 2
   PlayerInput: {fileID: 441585750}
 --- !u!114 &1229620352
 MonoBehaviour:
@@ -1698,8 +1708,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839c4b7de2477974b950e31b7d2c796d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RespawnPosition: {x: 0, y: 10, z: 0}
+  RespawnPositionY: 0
   Stage: {fileID: 471311318}
+  WallThickness: 2
 --- !u!114 &1571596427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1726,7 +1737,6 @@ MonoBehaviour:
     Score: 400
   - DistanceThreshold: 3.4028235e+38
     Score: 500
-  EvaluationDistance: 200
 --- !u!114 &1571596434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1753,7 +1763,6 @@ MonoBehaviour:
     Score: 400
   - DistanceThreshold: 3.4028235e+38
     Score: 500
-  EvaluationDistance: 10
 --- !u!1 &1750600996
 GameObject:
   m_ObjectHideFlags: 0
