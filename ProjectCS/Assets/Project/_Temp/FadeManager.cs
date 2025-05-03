@@ -52,14 +52,7 @@ public class FadeManager : MonoBehaviour
         }
     }
 
-    public IEnumerator FadeAndLoadScene(string sceneName)
-    {
-        isFading = true;
-        isInputBlocked = true; // フェード中は入力を無効にする
-        yield return StartCoroutine(FadeIn()); // 黒くする
-        SceneManager.LoadScene(sceneName);     // 黒いままシーン切り替え
-    }
-
+   
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         StartCoroutine(FadeOut()); // 新しいシーンに入ったら明るくする
@@ -69,35 +62,43 @@ public class FadeManager : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
-      
         float t = 0f;
         while (t < fadeDuration)
         {
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             fadeImage.alpha = Mathf.Clamp01(t / fadeDuration);
             yield return null;
         }
         fadeImage.alpha = 1f;
 
-        // 入力を無効化
         DisableInput();
     }
 
     private IEnumerator FadeOut()
     {
-       
         float t = fadeDuration;
         while (t > 0f)
         {
-            t -= Time.deltaTime;
+            t -= Time.unscaledDeltaTime;
             fadeImage.alpha = Mathf.Clamp01(t / fadeDuration);
             yield return null;
         }
         fadeImage.alpha = 0f;
 
-        // 入力を有効化
         EnableInput();
     }
+
+    public IEnumerator FadeAndLoadScene(string sceneName)
+    {
+        isFading = true;
+        isInputBlocked = true;
+
+        Time.timeScale = 1f; // ← ここで解除！
+
+        yield return StartCoroutine(FadeIn());
+        SceneManager.LoadScene(sceneName);
+    }
+
 
     // 入力を無効化するメソッド
     private void DisableInput()
