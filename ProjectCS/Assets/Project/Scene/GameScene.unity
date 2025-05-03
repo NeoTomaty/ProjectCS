@@ -890,19 +890,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 912450414}
   Target: {fileID: 1846973843}
+  PlayerInput: {fileID: 1007991412}
   Distance: 4
+  CameraHeight: 5
   RotationSpeed: 90
   VerticalMin: -80
   VerticalMax: 80
   AutoCorrectSpeed: 1.5
-  LookSmoothSpeed: 5
-  PositionSmoothSpeed: 5
   TransitionDuration: 0.5
   ReturnDuration: 0.4
   TransitionEndThreshold: 0.01
   LockOnDistance: 3
   LockOnHeight: 2
-  PlayerInput: {fileID: 1007991412}
+  ForceLockOnTime: 2
 --- !u!114 &946110166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -920,8 +920,6 @@ MonoBehaviour:
   MinFOV: 90
   MaxFOV: 140
   FOVLerpSpeed: 2
-  MinSpeed: 20
-  MaxSpeed: 60
 --- !u!1001 &977187318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1215,7 +1213,6 @@ MonoBehaviour:
   BaseForce: 10
   SlowMotionFactor: 0.005
   SlowMotionDistance: 10
-  IgnoreNonTargetCollisions: 0
 --- !u!114 &1007991474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2277,7 +2274,8 @@ MonoBehaviour:
   MaxRandomXYRange: 0
   RespawnArea: {fileID: 1073458115}
   LiftingJump: {fileID: 1007991453}
-  GroundArea: {fileID: 0}
+  GroundArea: {fileID: 1073458115}
+  CameraFunction: {fileID: 946110165}
   ClearConditionsScript: {fileID: 1473430702}
 --- !u!114 &1846973837
 MonoBehaviour:
