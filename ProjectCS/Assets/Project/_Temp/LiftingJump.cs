@@ -15,6 +15,8 @@
 // 05/02　荒井　リフティングジャンプ中にターゲットの動きを止める処理を追加
 // 05/03　荒井　ジャンプ時の移動をAddForceからtransformに変更
 // 05/03　荒井　スローモーションの制御方法をtimeScaleからPlayerSpeedManagerに変更
+// 05/03　荒井　スローモーションが開始された時に落ちていくようになるバグを修正
+// 05/03　荒井　リフティングジャンプ中に左右移動や減速等の操作を無効にする処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -23,15 +25,12 @@ using UnityEngine.InputSystem;
 // プレイヤーにアタッチ
 public class LiftingJump : MonoBehaviour
 {
-    [SerializeField] GameObject TargetObject;   // 目標地点
-
-    private MovePlayer MovePlayer;              // プレイヤーの移動スクリプトの参照
-
-    private PlayerSpeedManager PlayerSpeedManager; // プレイヤーの移動速度を管理するスクリプトの参照
-
-    private ObjectGravity ObjectGravityScript;  // 重力スクリプトの参照
-
+    [SerializeField] GameObject TargetObject;                   // 目標地点
     [SerializeField] private GaugeController GaugeController;   // ゲージコントローラーの参照
+    private MovePlayer MovePlayer;                              // プレイヤーの移動スクリプトの参照
+    private PlayerSpeedManager PlayerSpeedManager;              // プレイヤーの移動速度を管理するスクリプトの参照
+    private ObjectGravity ObjectGravityScript;                  // 重力スクリプトの参照
+    private PlayerInput PlayerInput;                            // プレイヤーの入力を管理するcomponent
 
     [SerializeField] private float BaseJumpPower = 10f; // 基となるジャンプの速度
 
@@ -44,10 +43,9 @@ public class LiftingJump : MonoBehaviour
     public float GetForce => BaseForce * GaugeController.GetGaugeValue;
 
     [SerializeField] private float SlowMotionFactor = 0.1f; //スローモーションの度合い
-
     [SerializeField] private float SlowMotionDistance = 1f; // スローモーションへ移行する距離
 
-    [SerializeField] private bool IgnoreNonTargetCollisions = false;    // ターゲット以外との衝突を無視するかどうか
+    private bool IgnoreNonTargetCollisions = false;    // ターゲット以外との衝突を無視するかどうか（上手く動作しなくなったためSerializeFieldから除外）
 
     private Collider[] AllColliders;    // 全オブジェクトの当たり判定
 
@@ -84,7 +82,9 @@ public class LiftingJump : MonoBehaviour
     // リフティングジャンプを開始する関数
     public void StartLiftingJump()
     {
-        if(IgnoreNonTargetCollisions)   // すり抜け有効時
+        PlayerInput.actions.Disable(); // 入力を無効にする
+
+        if (IgnoreNonTargetCollisions)   // すり抜け有効時
         {
             Collider SelfCollider = GetComponent<Collider>();                   // 自分のコライダーを取得
             Collider TargetCollider = TargetObject.GetComponent<Collider>();    // ターゲットのコライダーを取得
@@ -103,6 +103,7 @@ public class LiftingJump : MonoBehaviour
         TargetObject.GetComponent<Rigidbody>().isKinematic = true;
 
         ObjectGravityScript.IsActive = false;
+        GetComponent<Rigidbody>().Sleep();  // 自分のRigidbodyをスリープ状態にする
 
         IsJumping = true;
 
@@ -118,6 +119,8 @@ public class LiftingJump : MonoBehaviour
     // リフティングジャンプを停止する関数
     public void FinishLiftingJump()
     {
+        PlayerInput.actions.Enable(); // 入力を有効にする
+
         if (IgnoreNonTargetCollisions)  // すり抜け有効時
         {
             Collider SelfCollider = GetComponent<Collider>();   // 自分のコライダーを取得
@@ -170,6 +173,12 @@ public class LiftingJump : MonoBehaviour
         return false;
     }
 
+    private void Awake()
+    {
+        // 自分にアタッチされているPlayerInputを取得
+        PlayerInput = GetComponent<PlayerInput>();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -189,11 +198,6 @@ public class LiftingJump : MonoBehaviour
         // 上昇中
         if (IsJumping)
         {
-            // プレイヤーから目標地点へのベクトルを計算
-            Vector3 JumpDirection = (TargetObject.transform.position - transform.position);
-            // 移動ベクトルを設定
-            MovePlayer.SetMoveDirection(JumpDirection.normalized);
-
             // 一定距離までターゲットに近づいたらスローモーションを開始
             if (IsNearTargetEnter())
             {
@@ -213,6 +217,8 @@ public class LiftingJump : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (IgnoreNonTargetCollisions) return;
+
+        if (!IsJumping) return;
 
         // ターゲット以外のオブジェクトに衝突した場合
         if (collision.gameObject != TargetObject)
