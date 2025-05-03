@@ -12,6 +12,7 @@
 // 05/01　荒井　ターゲット以外のオブジェクトに衝突したらリフティングジャンプを中止する処理を追加
 // 05/01　荒井　ターゲット以外のオブジェクトをすり抜ける処理を追加
 // 05/01　荒井　中止とすり抜けを切り替えるパラメータを追加
+// 05/02　荒井　リフティングジャンプ中にターゲットの動きを止める処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -47,6 +48,7 @@ public class LiftingJump : MonoBehaviour
     private Collider[] AllColliders;    // 全オブジェクトの当たり判定
 
     private bool IsJumping = false;
+    public bool IsLiftingPart => IsJumping; // リフティングジャンプ中かどうか
 
     private bool IsNearTargetLast = false; // ターゲットに近づいたかどうか
 
@@ -78,10 +80,17 @@ public class LiftingJump : MonoBehaviour
             Physics.IgnoreCollision(SelfCollider, TargetCollider, false);
         }
 
+        // ターゲットの動きを止める
+        TargetObject.GetComponent<Rigidbody>().isKinematic = true;
+
         ObjectGravityScript.IsActive = false;
 
         // プレイヤーから目標地点へのベクトルを計算
         Vector3 JumpDirection = (TargetObject.transform.position - transform.position);
+
+        Debug.Log(transform.position);
+        Debug.Log(TargetObject.transform.position);
+        Debug.Log(JumpDirection);
 
         GetComponent<Rigidbody>().AddForce(JumpDirection.normalized * BaseJumpPower * JumpPower, ForceMode.Impulse);
 
@@ -101,6 +110,9 @@ public class LiftingJump : MonoBehaviour
                 Physics.IgnoreCollision(SelfCollider, col, false);
             }
         }
+
+        // ターゲットの動きを止めたのを解除
+        TargetObject.GetComponent<Rigidbody>().isKinematic = false;
 
         ObjectGravityScript.IsActive = true;
 
