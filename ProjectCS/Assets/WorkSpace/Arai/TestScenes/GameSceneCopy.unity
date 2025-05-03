@@ -1202,7 +1202,7 @@ MonoBehaviour:
   GaugeController: {fileID: 667970409}
   BaseJumpPower: 50
   BaseForce: 10
-  SlowMotionFactor: 0.005
+  SlowMotionFactor: 0.03
   SlowMotionDistance: 10
   IgnoreNonTargetCollisions: 0
 --- !u!114 &1007991474
@@ -2064,6 +2064,8 @@ MonoBehaviour:
   MaxRandomXYRange: 10
   RespawnArea: {fileID: 1073458115}
   LiftingJump: {fileID: 1007991453}
+  GroundArea: {fileID: 0}
+  ClearConditionsScript: {fileID: 0}
 --- !u!114 &1846973837
 MonoBehaviour:
   m_ObjectHideFlags: 0

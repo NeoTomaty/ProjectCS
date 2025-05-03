@@ -1,7 +1,7 @@
 //======================================================
 // [GaugeController]
 // 作成者：荒井修
-// 最終更新日：04/27
+// 最終更新日：05/03
 // 
 // [Log]
 // 04/26　荒井　ゲージが自動で増減するように実装
@@ -9,6 +9,7 @@
 // 04/27　荒井　ゲージの中心がオブジェクトの座標とずれないように修正
 // 04/27　荒井　他スクリプトと合わせて動作するように修正
 // 04/28　荒井　ゲージを止めた後の待機時間を追加
+// 05/03　荒井　スローモーションの制御を放棄
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
@@ -33,7 +34,9 @@ public class GaugeController : MonoBehaviour
     [SerializeField] private KeyCode StopKey = KeyCode.Return;              // キー
     [SerializeField] private KeyCode StopBottun = KeyCode.JoystickButton1;  // ボタン
 
-    private bool IsStop = false;    // ゲージ増減を止めるフラグ
+    private bool IsStop = false;        // ゲージ増減を止めるフラグ
+    private bool IsFinished = false;    // ゲージの動作が終了したかどうか
+    private bool IsFinishedLast = false; // 直前のフレームのIsFinished
 
     [SerializeField] private float StandTime = 0.5f;    // ゲージを止めた後の待機時間
     private float TimeCount = 0f;
@@ -52,21 +55,30 @@ public class GaugeController : MonoBehaviour
         GaugeValue = Value; // ゲージを初期化
     }
 
+    // ゲージの動作が終了した瞬間を返す関数
+    public bool IsFinishEnter()
+    {
+        return (IsFinished && !IsFinishedLast);
+    }
+
     public void Play()
     {
         GaugeValue = 0.0f; // ゲージを初期化
         CurrentGaugeMode = GaugeMode.Increase; // 増加モードに設定
 
         // ゲージを表示
-        this.gameObject.SetActive(true); // ゲージを表示
+        this.gameObject.SetActive(true);
+
         IsStop = false;
+        IsFinished = false; // ゲージの動作が終了していない
     }
 
     public void Stop()
     {
         // ゲージを非表示
-        this.gameObject.SetActive(false); // ゲージを非表示
-        Time.timeScale = 1.0f;
+        this.gameObject.SetActive(false);
+
+        IsFinished = true; // ゲージの動作が終了
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -78,6 +90,8 @@ public class GaugeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        IsFinishedLast = IsFinished; // 直前のフレームのIsFinishedを保存
+
         if (IsStop)
         {
             TimeCount += Time.unscaledDeltaTime;

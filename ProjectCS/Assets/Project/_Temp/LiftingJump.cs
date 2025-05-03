@@ -1,7 +1,7 @@
 //======================================================
 // [LiftingJump]
 // 作成者：荒井修
-// 最終更新日：04/29
+// 最終更新日：05/03
 // 
 // [Log]
 // 04/26　荒井　キーを入力したらターゲットに向かってぶっ飛んでいくように実装
@@ -13,6 +13,8 @@
 // 05/01　荒井　ターゲット以外のオブジェクトをすり抜ける処理を追加
 // 05/01　荒井　中止とすり抜けを切り替えるパラメータを追加
 // 05/02　荒井　リフティングジャンプ中にターゲットの動きを止める処理を追加
+// 05/03　荒井　ジャンプ時の移動をAddForceからtransformに変更
+// 05/03　荒井　スローモーションの制御方法をtimeScaleからPlayerSpeedManagerに変更
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -25,6 +27,8 @@ public class LiftingJump : MonoBehaviour
 
     private MovePlayer MovePlayer;              // プレイヤーの移動スクリプトの参照
 
+    private PlayerSpeedManager PlayerSpeedManager; // プレイヤーの移動速度を管理するスクリプトの参照
+
     private ObjectGravity ObjectGravityScript;  // 重力スクリプトの参照
 
     [SerializeField] private GaugeController GaugeController;   // ゲージコントローラーの参照
@@ -34,7 +38,7 @@ public class LiftingJump : MonoBehaviour
     private float JumpPower = 0f;
     public float GetJumpPower => JumpPower; // ジャンプ力の取得
 
-    //[SerializeField] private float BaseSpeed = 20f; // 衝突後の移動速度
+    private float BaseSpeed = 0f; // 元の移動速度
 
     [SerializeField] private float BaseForce = 10f; // 衝突後の力
     public float GetForce => BaseForce * GaugeController.GetGaugeValue;
@@ -51,6 +55,21 @@ public class LiftingJump : MonoBehaviour
     public bool IsLiftingPart => IsJumping; // リフティングジャンプ中かどうか
 
     private bool IsNearTargetLast = false; // ターゲットに近づいたかどうか
+
+    // スローモーションのオンオフを切り替える関数
+    private void SetSlowMotion(bool Enabled)
+    {
+        if (Enabled)
+        {
+            // スローモーションを開始
+            PlayerSpeedManager.SetOverSpeed((BaseJumpPower * JumpPower) * SlowMotionFactor); // スローモーション中の移動速度を設定
+        }
+        else
+        {
+            // スローモーションを終了
+            PlayerSpeedManager.SetOverSpeed(BaseJumpPower * JumpPower); // 移動速度を戻す
+        }
+    }
 
     public void ResetGaugeValue()
     {
@@ -85,16 +104,15 @@ public class LiftingJump : MonoBehaviour
 
         ObjectGravityScript.IsActive = false;
 
+        IsJumping = true;
+
         // プレイヤーから目標地点へのベクトルを計算
         Vector3 JumpDirection = (TargetObject.transform.position - transform.position);
+        MovePlayer.SetMoveDirection(JumpDirection.normalized);
 
-        Debug.Log(transform.position);
-        Debug.Log(TargetObject.transform.position);
-        Debug.Log(JumpDirection);
-
-        GetComponent<Rigidbody>().AddForce(JumpDirection.normalized * BaseJumpPower * JumpPower, ForceMode.Impulse);
-
-        IsJumping = true;
+        // プレイヤーを加速させる
+        BaseSpeed = PlayerSpeedManager.GetPlayerSpeed; // 元の移動速度を保存
+        PlayerSpeedManager.SetOverSpeed(BaseJumpPower * JumpPower);
     }
 
     // リフティングジャンプを停止する関数
@@ -121,8 +139,13 @@ public class LiftingJump : MonoBehaviour
         // ゲージを停止
         GaugeController.Stop();
 
-        // スローモーションを停止
-        Time.timeScale = 1.0f;
+        // 上昇を止める
+        Vector3 MoveDirection = MovePlayer.GetMoveDirection;    // 現在の移動方向を取得
+        MoveDirection.y = 0;                                    // Y軸の移動を無効にする
+        MovePlayer.SetMoveDirection(MoveDirection.normalized);  // 移動方向を設定
+
+        // 移動速度を元に戻す
+        PlayerSpeedManager.SetSpeed(BaseSpeed);
     }
 
     // ターゲットに近づいた瞬間を判定する関数
@@ -151,6 +174,7 @@ public class LiftingJump : MonoBehaviour
     void Start()
     {
         MovePlayer = GetComponent<MovePlayer>();
+        PlayerSpeedManager = GetComponent<PlayerSpeedManager>();
         ObjectGravityScript = GetComponent<ObjectGravity>();
 
         // 全オブジェクトの当たり判定を取得
@@ -174,10 +198,14 @@ public class LiftingJump : MonoBehaviour
             if (IsNearTargetEnter())
             {
                 // スローモーションを開始
-                Time.timeScale = SlowMotionFactor;
+                SetSlowMotion(true);
 
                 // ゲージを表示
                 GaugeController.Play();
+            }else if(GaugeController.IsFinishEnter())
+            {
+                // スローモーションを終了
+                SetSlowMotion(false);
             }
         }
     }

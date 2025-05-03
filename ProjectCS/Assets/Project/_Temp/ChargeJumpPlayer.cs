@@ -10,6 +10,7 @@
 // 04/26　宮林　長押しジャンプの追加
 // 04/27　森脇　エフェクト制御の追加
 // 04/29　荒井　チャージ後のジャンプ処理にリフティングジャンプへの分岐を追加
+// 05/03　荒井　ジャンプ時にスピードを元に戻す処理をswitch分岐内に移動
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -169,18 +170,17 @@ public class ChargeJumpPlayer : MonoBehaviour
                 JumpPower = baseJumpForce * jumpMultiplier;
                 rb.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
                 Debug.Log($"ジャンプ成功！倍率: {jumpMultiplier}倍, チャージ時間: {chargeTimer:F2}秒");
+                if (speedManager != null)
+                {
+                    // ジャンプ後スピード戻す（オーバーヒートしてない場合）
+                    SetSpeedDirectly(originalSpeed);
+                }
                 break;
             case PlayerStateManager.LiftingState.LiftingPart:
                 // リフティング状態
                 LiftingJump.SetJumpPower(jumpMultiplier);
                 LiftingJump.StartLiftingJump();
                 break;
-        }
-
-        if (speedManager != null)
-        {
-            // ジャンプ後スピード戻す（オーバーヒートしてない場合）
-            SetSpeedDirectly(originalSpeed);
         }
 
         if (chargeEffectInstance != null)

@@ -88,7 +88,15 @@ public class BlownAway_Ver2 : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Player")) return;
 
+<<<<<<< HEAD
         ClearConditionsScript.CheckLiftingCount();
+=======
+
+        // 飛ぶ先の位置を決定
+        //MoveToRandomXZInRespawnArea();
+
+        //ClearConditionsScript.CheckLiftingCount();
+>>>>>>> b05477c0f3975773307e857654df3bac1396f89f
 
         // PlayerSpeedManagerスクリプトを取得
         PlayerSpeedManager PlayerSpeedManager = collision.gameObject.GetComponent<PlayerSpeedManager>();
