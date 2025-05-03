@@ -890,7 +890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 912450414}
   Target: {fileID: 1846973843}
-  Distance: 10
+  Distance: 4
   RotationSpeed: 90
   VerticalMin: -80
   VerticalMax: 80
@@ -918,10 +918,10 @@ MonoBehaviour:
   Camera: {fileID: 946110162}
   PlayerSpeedManager: {fileID: 1007991429}
   MinFOV: 90
-  MaxFOV: 120
-  FOVLerpSpeed: 1
-  MinSpeed: 120
-  MaxSpeed: 500
+  MaxFOV: 140
+  FOVLerpSpeed: 2
+  MinSpeed: 20
+  MaxSpeed: 60
 --- !u!1001 &977187318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2277,6 +2277,7 @@ MonoBehaviour:
   MaxRandomXYRange: 0
   RespawnArea: {fileID: 1073458115}
   LiftingJump: {fileID: 1007991453}
+  GroundArea: {fileID: 0}
   ClearConditionsScript: {fileID: 1473430702}
 --- !u!114 &1846973837
 MonoBehaviour:
