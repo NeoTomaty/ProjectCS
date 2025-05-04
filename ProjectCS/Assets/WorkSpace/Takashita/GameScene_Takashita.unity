@@ -905,7 +905,6 @@ MonoBehaviour:
   BaseForce: 10
   SlowMotionFactor: 0.1
   SlowMotionDistance: 100
-  IgnoreNonTargetCollisions: 0
 --- !u!114 &932418254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1054,8 +1053,10 @@ MonoBehaviour:
   Player: {fileID: 932418156}
   Target: {fileID: 2041148598}
   PlayerInput: {fileID: 932418157}
+  PlayerSpeedManager: {fileID: 932418174}
   Distance: 7
-  CameraHeight: 3
+  MaxCameraHeight: 5
+  MinCameraHeight: 3
   RotationSpeed: 90
   VerticalMin: -80
   VerticalMax: 80

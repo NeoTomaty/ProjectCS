@@ -7,6 +7,7 @@
 // 04/23 高下 入力に関する仕様変更(PlayerInput(InputActionAsset))
 // 04/25 高下 ターゲットにロックオンしたときと解除時に補完するように調整
 // 05/02 高下 リフティング時の強制ロックオン処理を追加
+// 05/04 高下 プレイヤーの速度に応じて、カメラの高さを変更できるように調整
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,19 +17,21 @@ public class CameraFunction : MonoBehaviour
     public Transform Player;         // プレイヤー
     public Transform Target;         // 対象
 
-    [SerializeField]
-    private PlayerInput PlayerInput;      // プレイヤーの入力を管理するcomponent
+    [SerializeField] private PlayerInput PlayerInput;      // プレイヤーの入力を管理するcomponent
+    [SerializeField] private PlayerSpeedManager PlayerSpeedManager;
 
     [Tooltip("カメラとプレイヤーの距離")]
     [SerializeField] private float Distance = 5.0f;               // カメラとプレイヤーの距離
-    [Tooltip("カメラの高さ")]
-    [SerializeField] private float CameraHeight = 3.0f;           // カメラの高さ
+    [Tooltip("カメラの高さ最大値（高速時）")]
+    [SerializeField] private float MaxCameraHeight = 5.0f;        // カメラの高さ（最大）
+    [Tooltip("カメラの高さ最小値（低速時）")]
+    [SerializeField] private float MinCameraHeight = 3.0f;        // カメラの高さ（最小）
     [SerializeField] private float RotationSpeed = 50.0f;         // 回転速度
     [SerializeField] private float VerticalMin = -80.0f;          // 縦方向移動の最小値
     [SerializeField] private float VerticalMax = 80.0f;           // 縦方向移動の最大値
     [SerializeField] private float AutoCorrectSpeed = 1.5f;       // 自動補正速度
-    //[SerializeField] private float LookSmoothSpeed = 5.0f;        // 自動視線修正値
-    //[SerializeField] private float PositionSmoothSpeed = 5.0f;    // カメラ位置の補正速度
+    //[SerializeField] private float LookSmoothSpeed = 5.0f;      // 自動視線修正値
+    //[SerializeField] private float PositionSmoothSpeed = 5.0f;  // カメラ位置の補正速度
 
     [Header("補完設定")]
     [SerializeField] private float TransitionDuration = 0.5f;       // ロックオン補完時間
@@ -72,6 +75,10 @@ public class CameraFunction : MonoBehaviour
         if(!PlayerInput)
         {
             Debug.LogError("追尾対象プレイヤーのPlayerInputがアタッチされていません");
+        }
+        if (!PlayerSpeedManager)
+        {
+            Debug.LogError("プレイヤーのPlayerSpeedManagerが設定されていません");
         }
 
         // 対応するInputActionを取得
@@ -211,14 +218,16 @@ public class CameraFunction : MonoBehaviour
                 Vector3 offset = Quaternion.Euler(pitch, yaw, 0) * new Vector3(0, 0, -Distance);
                 transform.position = Player.position + offset;
 
+                float cameraHeight = Mathf.Lerp(MinCameraHeight, MaxCameraHeight, PlayerSpeedManager.GetSpeedRatio());
+
                 // 右クリックでターゲットを注視、そうでなければプレイヤーを注視
                 if (Input.GetMouseButton(1) && Target != null)
                 {
-                    transform.LookAt(Target.position + Vector3.up * CameraHeight);
+                    transform.LookAt(Target.position + Vector3.up * cameraHeight);
                 }
                 else
                 {
-                    transform.LookAt(Player.position + Vector3.up * CameraHeight);
+                    transform.LookAt(Player.position + Vector3.up * cameraHeight);
                 }
             }
         }
