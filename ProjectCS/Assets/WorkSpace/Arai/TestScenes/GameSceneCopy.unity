@@ -119,6 +119,83 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &38081045
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 47.172977
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.12783432
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862586982618611899, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301728911285531132, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: m_Name
+      value: DestructionWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441209492069213289, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: Acceleration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441209492069213289, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: IsPenetration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441209492069213289, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: RequiredSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441209492069213289, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: MovePlayerScript
+      value: 
+      objectReference: {fileID: 1007991486}
+    - target: {fileID: 8441209492069213289, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
+      propertyPath: playerSpeedManager
+      value: 
+      objectReference: {fileID: 1007991429}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ec65914dd33c7c6439c02b794764e98f, type: 3}
 --- !u!1 &71103056
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,19 +967,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 912450414}
   Target: {fileID: 1846973843}
+  PlayerInput: {fileID: 1007991412}
   Distance: 10
+  CameraHeight: 3
   RotationSpeed: 90
   VerticalMin: -80
   VerticalMax: 80
   AutoCorrectSpeed: 1.5
-  LookSmoothSpeed: 5
-  PositionSmoothSpeed: 5
   TransitionDuration: 0.5
   ReturnDuration: 0.4
   TransitionEndThreshold: 0.01
   LockOnDistance: 3
   LockOnHeight: 2
-  PlayerInput: {fileID: 1007991412}
+  ForceLockOnTime: 2
 --- !u!114 &946110166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -920,8 +997,6 @@ MonoBehaviour:
   MinFOV: 90
   MaxFOV: 120
   FOVLerpSpeed: 1
-  MinSpeed: 120
-  MaxSpeed: 500
 --- !u!1001 &977187318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1215,7 +1290,6 @@ MonoBehaviour:
   BaseForce: 10
   SlowMotionFactor: 0.005
   SlowMotionDistance: 10
-  IgnoreNonTargetCollisions: 0
 --- !u!114 &1007991474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1226,6 +1300,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80bb27cd06dbf744a8e577b72e026a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1007991486 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3943404572096005784, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+  m_PrefabInstance: {fileID: 407104758}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335305063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b831209e703c1640a1b8686acea5d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1057058962 stripped
@@ -2277,7 +2362,8 @@ MonoBehaviour:
   MaxRandomXYRange: 0
   RespawnArea: {fileID: 1073458115}
   LiftingJump: {fileID: 1007991453}
-  GroundArea: {fileID: 0}
+  GroundArea: {fileID: 2098637895}
+  CameraFunction: {fileID: 946110165}
   ClearConditionsScript: {fileID: 1473430702}
 --- !u!114 &1846973837
 MonoBehaviour:
@@ -2386,6 +2472,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6746151913271381421, guid: 7c671a079781f09489f77a8cf4de749c, type: 3}
   m_PrefabInstance: {fileID: 1636019764}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2098637895 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8532197214211260457, guid: ee3c382f038bcae46b60a1b389964ae4, type: 3}
+  m_PrefabInstance: {fileID: 977187318}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2127963034
 GameObject:
@@ -2505,3 +2596,4 @@ SceneRoots:
   - {fileID: 924729809}
   - {fileID: 1750600998}
   - {fileID: 71103057}
+  - {fileID: 38081045}
