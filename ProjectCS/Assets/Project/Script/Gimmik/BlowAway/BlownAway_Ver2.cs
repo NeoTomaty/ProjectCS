@@ -88,8 +88,6 @@ public class BlownAway_Ver2 : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Player")) return;
 
-        ClearConditionsScript.CheckLiftingCount();
-
         // 飛ぶ先の位置を決定
         //MoveToRandomXZInRespawnArea();
 
