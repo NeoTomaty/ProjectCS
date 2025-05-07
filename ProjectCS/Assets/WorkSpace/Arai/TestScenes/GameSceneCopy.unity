@@ -400,7 +400,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7554536379738216804, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 200
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7554536379738216804, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1290,6 +1290,7 @@ MonoBehaviour:
   BaseForce: 10
   SlowMotionFactor: 0.005
   SlowMotionDistance: 10
+  IgnoreNonTargetCollisions: 0
 --- !u!114 &1007991474
 MonoBehaviour:
   m_ObjectHideFlags: 0

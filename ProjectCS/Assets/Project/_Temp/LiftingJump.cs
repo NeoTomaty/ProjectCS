@@ -1,7 +1,7 @@
 //======================================================
 // [LiftingJump]
 // 作成者：荒井修
-// 最終更新日：05/03
+// 最終更新日：05/07
 // 
 // [Log]
 // 04/26　荒井　キーを入力したらターゲットに向かってぶっ飛んでいくように実装
@@ -17,6 +17,7 @@
 // 05/03　荒井　スローモーションの制御方法をtimeScaleからPlayerSpeedManagerに変更
 // 05/03　荒井　スローモーションが開始された時に落ちていくようになるバグを修正
 // 05/03　荒井　リフティングジャンプ中に左右移動や減速等の操作を無効にする処理を追加
+// 05/07　荒井　すり抜けモードが有効なのにオブジェクトをすり抜けられないバグを修正
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -45,7 +46,8 @@ public class LiftingJump : MonoBehaviour
     [SerializeField] private float SlowMotionFactor = 0.1f; //スローモーションの度合い
     [SerializeField] private float SlowMotionDistance = 1f; // スローモーションへ移行する距離
 
-    private bool IgnoreNonTargetCollisions = false;    // ターゲット以外との衝突を無視するかどうか（上手く動作しなくなったためSerializeFieldから除外）
+    [SerializeField] private bool IgnoreNonTargetCollisions = false;    // ターゲット以外との衝突を無視するかどうか
+    public bool IsIgnore => IgnoreNonTargetCollisions && IsJumping;
 
     private Collider[] AllColliders;    // 全オブジェクトの当たり判定
 

@@ -2,7 +2,7 @@
 // スクリプト名：MovePlayer
 // 作成者：高下
 // 内容：プレイヤーの自動前進移動
-// 最終更新日：04/08
+// 最終更新日：05/07
 // 
 // [Log]
 // 03/27 高下 スクリプト作成 
@@ -10,13 +10,15 @@
 // 03/31 高下 スクリプト名変更 AutoMovePlayer→MovePlayer
 // 04/08 高下 高速時の壁貫通防止処理を実装
 // 04/09 竹内 AutoRapidMove対応するようにスクリプトを修正
+// 05/07 荒井 LiftingJumpのすり抜けモードに対応するように変更
 //====================================================
 using UnityEngine;
 
 public class MovePlayer : MonoBehaviour
 {
     public PlayerSpeedManager PlayerSpeedManager; // 速度管理クラス
-   
+    private LiftingJump LiftingJump; // リフティングジャンプクラス
+
     private Vector3 MoveDirection;    // 現在の進行方向
     // 他のスクリプトから進行方向を取得するためのプロパティ                                  
     public Vector3 GetMoveDirection => MoveDirection;
@@ -46,6 +48,12 @@ public class MovePlayer : MonoBehaviour
         {
             Debug.LogWarning("MovePlayerスクリプトがアタッチされていません。");
         }
+
+        LiftingJump = GetComponent<LiftingJump>();
+        if (LiftingJump == null)
+        {
+            Debug.LogWarning("LiftingJumpスクリプトがPlayerにアタッチされていません。");
+        }
     }
 
     void Update()
@@ -68,8 +76,9 @@ public class MovePlayer : MonoBehaviour
         if (PlayerSpeedManager == null) return;
 
         // レイキャストで壁を検出
+        // すり抜けが有効な場合はレイキャストによる衝突判定を行わない
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, MoveDirection, out hit, RayDistance))
+        if (!LiftingJump.IsIgnore && Physics.Raycast(transform.position, MoveDirection, out hit, RayDistance))
         {
             // 衝突したオブジェクトのタグを確認
             if (hit.collider.CompareTag(WallTag))  // 壁タグに一致するか確認
