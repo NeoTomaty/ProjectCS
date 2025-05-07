@@ -2,10 +2,11 @@
 // スクリプト名：StageSelectManager
 // 作成者：森脇
 // 内容：ステージセレクト
-// 最終更新日：05/03
+// 最終更新日：05/07
 //
 // [Log]
 // 05/03 森脇 スクリプト作成
+// 05/07 森脇 音
 //====================================================
 
 using UnityEngine.SceneManagement;
@@ -21,6 +22,14 @@ public class StageSelectManager : MonoBehaviour
         public GameObject labelUI;
         public Collider stageCollider;
     }
+
+    [Header("Audio")]
+    public AudioSource audioSource;          // ← Inspectorでアサイン
+
+    public AudioClip selectSE;               // ← 選択音SE（カーソル移動など）
+    public AudioClip enterSE;                // ← 決定音SE（ステージ突入）
+    public AudioClip cancelSE;               // ← キャンセル音SE（戻る）
+    public AudioClip stageSelectBGMClip;    //BGM
 
     public StageData[] stages;
     public Transform cameraTransform;
@@ -41,6 +50,11 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
+        if (BGMManager.Instance != null)
+        {
+            BGMManager.Instance.PlayBGM(stageSelectBGMClip); // AudioClipを用意してInspectorで設定
+        }
+
         MovePlayerToStageInstant(currentIndex);
         UpdateStageLabels();
 
@@ -65,17 +79,7 @@ public class StageSelectManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton1)) // ESC or マルボタン
         {
-            if (fadeController != null)
-            {
-                fadeController.FadeOut(() =>
-                {
-                    SceneManager.LoadScene(backSceneName);
-                });
-            }
-            else
-            {
-                SceneManager.LoadScene(backSceneName);
-            }
+            CancelAndGoBack(); // ←共通化
         }
     }
 
@@ -110,11 +114,13 @@ public class StageSelectManager : MonoBehaviour
         {
             currentIndex = (currentIndex + 1) % stages.Length;
             StartAutoMoveToStage(currentIndex);
+            PlaySE(selectSE); // ★効果音再生
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             currentIndex = (currentIndex - 1 + stages.Length) % stages.Length;
             StartAutoMoveToStage(currentIndex);
+            PlaySE(selectSE); // ★効果音再生
         }
     }
 
@@ -152,6 +158,22 @@ public class StageSelectManager : MonoBehaviour
         }
     }
 
+    private void CancelAndGoBack()
+    {
+        PlaySE(cancelSE); // ★キャンセル音
+        if (fadeController != null)
+        {
+            fadeController.FadeOut(() =>
+            {
+                SceneManager.LoadScene(backSceneName);
+            });
+        }
+        else
+        {
+            SceneManager.LoadScene(backSceneName);
+        }
+    }
+
     private void HandleCameraFollow()
     {
         Vector3 targetPos = playerTransform.position + new Vector3(0, 2, -5);
@@ -182,6 +204,8 @@ public class StageSelectManager : MonoBehaviour
     {
         if (touchingStageIndex >= 0 && touchingStageIndex < stages.Length)
         {
+            PlaySE(enterSE); // ★決定音
+
             string sceneName = stages[touchingStageIndex].sceneName;
             if (!string.IsNullOrEmpty(sceneName))
             {
@@ -262,6 +286,14 @@ public class StageSelectManager : MonoBehaviour
                 UpdateStageLabels(); // ←★ 非表示に更新
                 return;
             }
+        }
+    }
+
+    private void PlaySE(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 }
