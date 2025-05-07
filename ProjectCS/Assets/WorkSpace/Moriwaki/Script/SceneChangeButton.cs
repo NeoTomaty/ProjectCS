@@ -4,6 +4,7 @@
 // 最終更新日：4/17
 //
 // [Log]4/16 森脇　シーンチェンジのボタンスクリプト作成
+// [Log]5/07 森脇　シーンチェンジのボタンスクリプトフェード対応
 //======================================================
 
 using UnityEngine;
@@ -11,11 +12,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneChangeButton : MonoBehaviour
 {
-    // 遷移先のシーン名（Inspectorで設定可能）
-    [SerializeField] private string sceneName;
+    [SerializeField] private string sceneName;      // 遷移先シーン名
+    [SerializeField] private FadeController fadeController;  // FadeControllerを参照
 
     public void ChangeScene()
     {
-        SceneManager.LoadScene(sceneName);
+        // フェードアウトを開始し、完了後にシーンをロード
+        fadeController.FadeOut(() =>
+        {
+            SceneManager.LoadScene(sceneName);
+        });
     }
 }
