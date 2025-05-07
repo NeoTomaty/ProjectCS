@@ -2372,8 +2372,10 @@ MonoBehaviour:
   Player: {fileID: 912450414}
   Target: {fileID: 1846973843}
   PlayerInput: {fileID: 1007991412}
+  PlayerSpeedManager: {fileID: 1007991429}
   Distance: 10
-  CameraHeight: 3
+  MaxCameraHeight: 5
+  MinCameraHeight: 3
   RotationSpeed: 90
   VerticalMin: -80
   VerticalMax: 80
@@ -2913,6 +2915,7 @@ MonoBehaviour:
   BaseForce: 10
   SlowMotionFactor: 0.005
   SlowMotionDistance: 10
+  IgnoreNonTargetCollisions: 0
 --- !u!114 &1007991474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4885,7 +4888,7 @@ MonoBehaviour:
   RespawnArea: {fileID: 1073458115}
   LiftingJump: {fileID: 1007991453}
   GroundArea: {fileID: 0}
-  CameraFunction: {fileID: 0}
+  CameraFunction: {fileID: 946110165}
   ClearConditionsScript: {fileID: 0}
 --- !u!114 &1846973837
 MonoBehaviour:
@@ -5157,6 +5160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeedManager: {fileID: 1007991429}
   speedSlider: {fileID: 1859479062}
+  speedText: {fileID: 605272402}
 --- !u!1 &1877889847
 GameObject:
   m_ObjectHideFlags: 0
