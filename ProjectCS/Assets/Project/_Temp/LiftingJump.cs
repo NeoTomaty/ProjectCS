@@ -18,6 +18,7 @@
 // 05/03　荒井　スローモーションが開始された時に落ちていくようになるバグを修正
 // 05/03　荒井　リフティングジャンプ中に左右移動や減速等の操作を無効にする処理を追加
 // 05/07　荒井　すり抜けモードが有効なのにオブジェクトをすり抜けられないバグを修正
+// 05/07　荒井　クリアカウントで多段ヒット扱いされる挙動を修正
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -102,10 +103,11 @@ public class LiftingJump : MonoBehaviour
         }
 
         // ターゲットの動きを止める
-        TargetObject.GetComponent<Rigidbody>().isKinematic = true;
+        TargetObject.GetComponent<ObjectGravity>().IsActive = false;
+        TargetObject.GetComponent<Rigidbody>().Sleep(); // ターゲットのRigidbodyをスリープ状態にする（isKinematicだと多段ヒット扱いでヒットカウントが進みすぎる）
 
         ObjectGravityScript.IsActive = false;
-        GetComponent<Rigidbody>().Sleep();  // 自分のRigidbodyをスリープ状態にする
+        GetComponent<Rigidbody>().Sleep();  // 自分のRigidbodyをスリープ状態にする（スローモーション中に落ちていく対策）
 
         IsJumping = true;
 
@@ -135,7 +137,7 @@ public class LiftingJump : MonoBehaviour
         }
 
         // ターゲットの動きを止めたのを解除
-        TargetObject.GetComponent<Rigidbody>().isKinematic = false;
+        TargetObject.GetComponent<ObjectGravity>().IsActive = true;
 
         ObjectGravityScript.IsActive = true;
 
