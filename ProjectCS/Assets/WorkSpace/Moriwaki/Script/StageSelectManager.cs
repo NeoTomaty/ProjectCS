@@ -8,97 +8,199 @@
 // 05/03 森脇 スクリプト作成
 //====================================================
 
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine;
 
 public class StageSelectManager : MonoBehaviour
 {
     [System.Serializable]
     public class StageData
     {
-        public Transform stageTransform;   // ステージの位置
-        public string sceneName;           // 遷移先のシーン名
-        public GameObject labelUI;         // ステージ名を表示するUI（Canvasなど）
+        public Transform stageTransform;
+        public string sceneName;
+        public GameObject labelUI;
+        public Collider stageCollider;
     }
 
     public StageData[] stages;
     public Transform cameraTransform;
-    public float cameraMoveSpeed = 5f;
+    public Transform playerTransform;
+
+    public float playerMoveSpeed = 3f;
+    public float cameraFollowSpeed = 5f;
+    public float stageEnterDistance = 2f;
 
     private int currentIndex = 0;
-    private Vector3 cameraTargetPosition;
-    private bool isCameraMoving = false;
+    private bool isAutoMoving = false;
+    private Vector3 autoMoveTarget;
+
+    private int touchingStageIndex = -1; // プレイヤーが現在触れているステージ（なければ -1）
+
+    public FadeController fadeController; // ← Inspectorにアサイン
+    public string backSceneName = "TitleScene"; // ← ESCで戻る用
 
     private void Start()
     {
-        MoveCameraToCurrentStage(true);
+        MovePlayerToStageInstant(currentIndex);
         UpdateStageLabels();
+
+        // フェードイン（開始時）
+        if (fadeController != null)
+        {
+            fadeController.FadeIn();
+        }
     }
 
     private void Update()
     {
+        HandleTriggerSelection();
+        HandlePlayerInput();
+        HandleAutoMove();
+        HandleCameraFollow();
+
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
+        {
+            TryEnterStage();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton1)) // ESC or マルボタン
+        {
+            if (fadeController != null)
+            {
+                fadeController.FadeOut(() =>
+                {
+                    SceneManager.LoadScene(backSceneName);
+                });
+            }
+            else
+            {
+                SceneManager.LoadScene(backSceneName);
+            }
+        }
+    }
+
+    private void UpdateCurrentStageByProximity()
+    {
+        float closestDistance = float.MaxValue;
+        int closestIndex = -1;
+
+        for (int i = 0; i < stages.Length; i++)
+        {
+            float dist = Vector3.Distance(
+                new Vector3(stages[i].stageTransform.position.x, 0, 0),
+                new Vector3(playerTransform.position.x, 0, 0)
+            );
+
+            if (dist < closestDistance)
+            {
+                closestDistance = dist;
+                closestIndex = i;
+            }
+        }
+
+        if (closestIndex != -1)
+        {
+            currentIndex = closestIndex;
+        }
+    }
+
+    private void HandleTriggerSelection()
+    {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             currentIndex = (currentIndex + 1) % stages.Length;
-            UpdateStageLabels();
+            StartAutoMoveToStage(currentIndex);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             currentIndex = (currentIndex - 1 + stages.Length) % stages.Length;
-            UpdateStageLabels();
+            StartAutoMoveToStage(currentIndex);
         }
-
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
-        {
-            LoadSelectedStage();
-        }
-
-        MoveCameraToCurrentStage(false);
     }
 
-    private void MoveCameraToCurrentStage(bool instant)
+    private void HandlePlayerInput()
     {
-        cameraTargetPosition = stages[currentIndex].stageTransform.position + new Vector3(0, 2, -5);
+        if (isAutoMoving) return;
 
-        if (instant)
+        float h = Input.GetAxisRaw("Horizontal");
+        if (Mathf.Abs(h) > 0.1f)
         {
-            cameraTransform.position = cameraTargetPosition;
-            isCameraMoving = false;
-            UpdateStageLabels(); // 即表示
+            Vector3 move = new Vector3(h, 0, 0);
+            playerTransform.position += move.normalized * playerMoveSpeed * Time.deltaTime;
+        }
+
+        UpdateCurrentStageByProximity(); // ← ここで currentIndex を更新！
+    }
+
+    private void HandleAutoMove()
+    {
+        if (!isAutoMoving) return;
+
+        Vector3 dir = autoMoveTarget - playerTransform.position;
+        dir.y = 0; // 高さは無視
+        float dist = dir.magnitude;
+
+        if (dist > 0.05f)
+        {
+            playerTransform.position += dir.normalized * playerMoveSpeed * Time.deltaTime;
         }
         else
         {
-            float distance = Vector3.Distance(cameraTransform.position, cameraTargetPosition);
+            playerTransform.position = autoMoveTarget;
+            isAutoMoving = false;
+            UpdateStageLabels();
+        }
+    }
 
-            if (distance > 0.1f)
+    private void HandleCameraFollow()
+    {
+        Vector3 targetPos = playerTransform.position + new Vector3(0, 2, -5);
+        cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPos, Time.deltaTime * cameraFollowSpeed);
+    }
+
+    private void StartAutoMoveToStage(int index)
+    {
+        autoMoveTarget = new Vector3(
+            stages[index].stageTransform.position.x,
+            playerTransform.position.y,
+            playerTransform.position.z // Z方向には移動しない（横移動のみ）
+        );
+        isAutoMoving = true;
+        HideAllLabels();
+    }
+
+    private void MovePlayerToStageInstant(int index)
+    {
+        playerTransform.position = new Vector3(
+            stages[index].stageTransform.position.x,
+            playerTransform.position.y,
+            playerTransform.position.z
+        );
+    }
+
+    private void TryEnterStage()
+    {
+        if (touchingStageIndex >= 0 && touchingStageIndex < stages.Length)
+        {
+            string sceneName = stages[touchingStageIndex].sceneName;
+            if (!string.IsNullOrEmpty(sceneName))
             {
-                isCameraMoving = true;
-                cameraTransform.position = Vector3.Lerp(cameraTransform.position, cameraTargetPosition, Time.deltaTime * cameraMoveSpeed);
-                HideAllLabels(); // 移動中はUI非表示
-            }
-            else
-            {
-                if (isCameraMoving)
+                if (fadeController != null)
                 {
-                    // 初めて到達したときだけラベル表示
-                    isCameraMoving = false;
-                    cameraTransform.position = cameraTargetPosition; // ぴったり合わせる
-                    UpdateStageLabels();
+                    fadeController.FadeOut(() =>
+                    {
+                        SceneManager.LoadScene(sceneName);
+                    });
+                }
+                else
+                {
+                    SceneManager.LoadScene(sceneName);
                 }
             }
         }
-
-        // LookAt削除済み、カメラ向きは固定
-    }
-
-    private void UpdateStageLabels()
-    {
-        for (int i = 0; i < stages.Length; i++)
+        else
         {
-            if (stages[i].labelUI != null)
-            {
-                stages[i].labelUI.SetActive(i == currentIndex);
-            }
+            Debug.Log("どのステージにも接触していません");
         }
     }
 
@@ -115,6 +217,17 @@ public class StageSelectManager : MonoBehaviour
         }
     }
 
+    private void UpdateStageLabels()
+    {
+        for (int i = 0; i < stages.Length; i++)
+        {
+            if (stages[i].labelUI != null)
+            {
+                stages[i].labelUI.SetActive(i == touchingStageIndex);
+            }
+        }
+    }
+
     private void HideAllLabels()
     {
         foreach (var stage in stages)
@@ -122,6 +235,32 @@ public class StageSelectManager : MonoBehaviour
             if (stage.labelUI != null)
             {
                 stage.labelUI.SetActive(false);
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        for (int i = 0; i < stages.Length; i++)
+        {
+            if (other == stages[i].stageCollider)
+            {
+                touchingStageIndex = i;
+                UpdateStageLabels(); // ←★ ラベル更新
+                return;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        for (int i = 0; i < stages.Length; i++)
+        {
+            if (other == stages[i].stageCollider && touchingStageIndex == i)
+            {
+                touchingStageIndex = -1;
+                UpdateStageLabels(); // ←★ 非表示に更新
+                return;
             }
         }
     }
