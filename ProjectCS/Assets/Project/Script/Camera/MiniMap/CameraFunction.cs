@@ -1,7 +1,7 @@
 ﻿//======================================================
 // CameraFunctionスクリプト
 // 作成者：竹内
-// 最終更新日：3/31
+// 最終更新日：05/04
 // 
 // [Log]
 // 04/23 高下 入力に関する仕様変更(PlayerInput(InputActionAsset))
@@ -18,7 +18,7 @@ public class CameraFunction : MonoBehaviour
     public Transform Target;         // 対象
 
     [SerializeField] private PlayerInput PlayerInput;      // プレイヤーの入力を管理するcomponent
-    [SerializeField] private PlayerSpeedManager PlayerSpeedManager;
+    [SerializeField] private PlayerSpeedManager PlayerSpeedManager; // PlayerSpeedManagerコンポーネント
 
     [Tooltip("カメラとプレイヤーの距離")]
     [SerializeField] private float Distance = 5.0f;               // カメラとプレイヤーの距離
@@ -30,8 +30,6 @@ public class CameraFunction : MonoBehaviour
     [SerializeField] private float VerticalMin = -80.0f;          // 縦方向移動の最小値
     [SerializeField] private float VerticalMax = 80.0f;           // 縦方向移動の最大値
     [SerializeField] private float AutoCorrectSpeed = 1.5f;       // 自動補正速度
-    //[SerializeField] private float LookSmoothSpeed = 5.0f;      // 自動視線修正値
-    //[SerializeField] private float PositionSmoothSpeed = 5.0f;  // カメラ位置の補正速度
 
     [Header("補完設定")]
     [SerializeField] private float TransitionDuration = 0.5f;       // ロックオン補完時間
@@ -94,6 +92,9 @@ public class CameraFunction : MonoBehaviour
         bool rtPressed = LookTargetAction.ReadValue<float>() > 0.5f;
         bool isManual = false;
 
+        // 速度に応じたカメラの高さを計算
+        float cameraHeight = Mathf.Lerp(MinCameraHeight, MaxCameraHeight, PlayerSpeedManager.GetSpeedRatio());
+
         // カメラ回転（手動操作：右スティック等）
         if (RotateInput.x < -0.5f) { yaw -= RotationSpeed * Time.deltaTime; isManual = true; }
         if (RotateInput.x > 0.5f) { yaw += RotationSpeed * Time.deltaTime; isManual = true; }
@@ -136,7 +137,7 @@ public class CameraFunction : MonoBehaviour
             Vector3 desiredPos = Player.position - direction * LockOnDistance;
             desiredPos.y = Player.position.y + LockOnHeight;
 
-            Quaternion desiredRot = Quaternion.LookRotation((Target.position + Vector3.up * 1.0f) - desiredPos);
+            Quaternion desiredRot = Quaternion.LookRotation((Target.position + Vector3.up * cameraHeight) - desiredPos);
 
             if (IsTransitioningToTarget)
             {
@@ -162,21 +163,6 @@ public class CameraFunction : MonoBehaviour
             }
 
         }
-        //if (rtPressed && Target != null)
-        //{
-        //    Vector3 viewDir = (Target.position - Player.position).normalized;
-
-        //    // プレイヤーの背後（敵方向）に回り込む目標位置
-        //    Vector3 desiredPos = Player.position - viewDir * Distance + Vector3.up * 2.0f;
-
-        //    // カメラをスムーズにその位置へ
-        //    transform.position = Vector3.Lerp(transform.position, desiredPos, PositionSmoothSpeed * Time.deltaTime);
-
-        //    // 敵の頭あたりを注視（滑らかに補正）
-        //    Vector3 lookTarget = Target.position + Vector3.up * 1.5f;
-        //    Quaternion desiredRot = Quaternion.LookRotation(lookTarget - transform.position);
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, desiredRot, LookSmoothSpeed * Time.deltaTime);
-        //}
         else
         {
             // === RTを離した場合：通常視点に戻す補完 ===
@@ -197,11 +183,11 @@ public class CameraFunction : MonoBehaviour
                 Quaternion normalRot;
                 if (Input.GetMouseButton(1) && Target != null)
                 {
-                    normalRot = Quaternion.LookRotation((Target.position + Vector3.up * 1.5f) - normalPos);
+                    normalRot = Quaternion.LookRotation((Target.position + Vector3.up * cameraHeight) - normalPos);
                 }
                 else
                 {
-                    normalRot = Quaternion.LookRotation((Player.position + Vector3.up * 1.5f) - normalPos);
+                    normalRot = Quaternion.LookRotation((Player.position + Vector3.up * cameraHeight) - normalPos);
                 }
 
                 transform.position = Vector3.Lerp(ReturnStartPos, normalPos, t);
@@ -217,8 +203,6 @@ public class CameraFunction : MonoBehaviour
                 // === 通常のカメラ追従処理 ===
                 Vector3 offset = Quaternion.Euler(pitch, yaw, 0) * new Vector3(0, 0, -Distance);
                 transform.position = Player.position + offset;
-
-                float cameraHeight = Mathf.Lerp(MinCameraHeight, MaxCameraHeight, PlayerSpeedManager.GetSpeedRatio());
 
                 // 右クリックでターゲットを注視、そうでなければプレイヤーを注視
                 if (Input.GetMouseButton(1) && Target != null)
