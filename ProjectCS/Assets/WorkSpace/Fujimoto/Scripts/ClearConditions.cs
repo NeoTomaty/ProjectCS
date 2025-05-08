@@ -1,11 +1,12 @@
 //======================================================
 // ClearConditionsスクリプト
 // 作成者：藤本
-// 最終更新日：4/29
+// 最終更新日：5/8
 // 
 // [Log]
 // 04/29 藤本　クリア条件の追加
 // 05/01 竹内　UIと連携してリフティング回数を参照できるように修正
+// 05/08 荒井　クリア演出を実行できるように変更
 //======================================================
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,6 +22,9 @@ public class ClearConditions : MonoBehaviour
 
     [Header("UI")]
     public Text liftingCounterText; // Textを設定
+
+    [SerializeField]
+    private GameClearSequence GameClearSequence; // クリア演出のスクリプト
 
 
     private int currentCount; // 現在のリフティング回数（外部から受け取る）
@@ -45,7 +49,15 @@ public class ClearConditions : MonoBehaviour
         if (currentCount <= 0)
         {
             Debug.Log("ClearConditionsスクリプト：条件を満たしたためシーン遷移を行います");
-            TriggerSceneTransition();
+
+            if(GameClearSequence == null)
+            {
+                TriggerSceneTransition();
+            }
+            else
+            {
+                GameClearSequence.OnGameClear();
+            }
         }
     }
 
@@ -63,7 +75,7 @@ public class ClearConditions : MonoBehaviour
     }
 
     // シーン遷移を実行
-    private void TriggerSceneTransition()
+    public void TriggerSceneTransition()
     {
         if (!string.IsNullOrEmpty(nextSceneName)) // シーン名が設定されている場合のみ実行
         {
