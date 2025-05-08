@@ -12,6 +12,7 @@
 // 04/27 荒井 SetOverAccelerationValue関数を追加
 // 05/03 荒井 SetSpeed関数とSetOverSpeed関数を追加
 // 05/03 荒井 SetOverAccelerationValue関数を削除
+// 05/08 高下 GetMaxSpeedとGetMinSpeed関数追加
 //====================================================
 using UnityEngine;
 
@@ -58,5 +59,17 @@ public class PlayerSpeedManager : MonoBehaviour
     public float GetSpeedRatio()
     {
         return Mathf.Clamp01((PlayerSpeed - MinPlayerSpeed) / (MaxPlayerSpeed - MinPlayerSpeed));
+    }
+
+    // プレイヤーの最大速度取得
+    public float GetMaxSpeed()
+    {
+        return MaxPlayerSpeed;
+    }
+
+    // プレイヤーの最小速度取得
+    public float GetMinSpeed()
+    {
+        return MinPlayerSpeed;
     }
 }
