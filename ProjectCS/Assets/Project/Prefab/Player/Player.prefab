@@ -14,12 +14,16 @@ GameObject:
   - component: {fileID: 3190134139319929782}
   - component: {fileID: 7594584885162362816}
   - component: {fileID: 2693352334119193582}
+  - component: {fileID: 8979839764745253483}
+  - component: {fileID: 2143212272161903499}
   - component: {fileID: 8720992588139776628}
   - component: {fileID: 3943404572096005784}
   - component: {fileID: 2946462142280788705}
   - component: {fileID: 6838755633707204601}
   - component: {fileID: 3659676806870951451}
   - component: {fileID: 8740208562483421672}
+  - component: {fileID: 2849093543017307252}
+  - component: {fileID: 1947499482024800223}
   - component: {fileID: 3330943657278321323}
   - component: {fileID: 1200413717019472822}
   - component: {fileID: 8365331316546696322}
@@ -44,7 +48,7 @@ Transform:
   m_GameObject: {fileID: 4584313306017835350}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.24, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -166,6 +170,30 @@ MonoBehaviour:
   PlayerSpeed: 20
   MaxPlayerSpeed: 60
   MinPlayerSpeed: 20
+--- !u!114 &8979839764745253483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80bb27cd06dbf744a8e577b72e026a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2143212272161903499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73d96a8d56c280547895b96f545a278f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8720992588139776628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,8 +269,9 @@ MonoBehaviour:
   Acceleration: 3
   MaxVelocityY: 50
   MinVelocityY: -50
-  InputAcceptDuration: 1
   IsInputEnabled: 0
+  InputAcceptDuration: 1
+  warpPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &8740208562483421672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,6 +293,48 @@ MonoBehaviour:
   HighSpeedColor: {r: 1, g: 0, b: 0, a: 1}
   LowToMiddleSpeedThreshold: 30
   MiddleToHighSpeedThreshold: 60
+--- !u!114 &2849093543017307252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ddf652feb247147b68bdec12fac259, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseJumpForce: 100
+  groundCheckRadius: 5
+  ChargeBluePower: 1
+  ChargeYellowPower: 1.5
+  ChargeRedPower: 2
+  chargeYellowTime: 1
+  chargeRedTime: 2
+  overheatTime: 2.5
+  chargingSpeedMultiplier: 0.8
+  chargeEffectPrefab: {fileID: 4782991280154357332, guid: 11ddb81fcff55a5428885c55431038b2, type: 3}
+  JumpPower: 0
+--- !u!114 &1947499482024800223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313306017835350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d3696323af0ba46adc1b7d1bb3eab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetObject: {fileID: 0}
+  GaugeController: {fileID: 0}
+  BaseJumpPower: 50
+  BaseForce: 10
+  SlowMotionFactor: 0.005
+  SlowMotionDistance: 10
+  IgnoreNonTargetCollisions: 0
 --- !u!96 &3330943657278321323
 TrailRenderer:
   serializedVersion: 3
