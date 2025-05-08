@@ -49,15 +49,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Pause",
-                    "type": "Button",
-                    "id": "b3d99ccd-05d4-4f5e-b8c1-122ac7347242",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -280,11 +271,28 @@
                     "action": "RotateCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "Option",
+            "id": "9779e7d4-229a-410f-93d2-a8e83e965458",
+            "actions": [
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "562217a3-21ad-4b4d-a740-2aee5329107e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "c86a5940-a251-41d7-a18b-296fdbeb504f",
-                    "path": "<Gamepad>/start",
+                    "id": "0599b750-0acf-4397-b150-469c24a219e9",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -294,8 +302,8 @@
                 },
                 {
                     "name": "",
-                    "id": "9acc541d-7417-471d-ba61-9aa20cedf047",
-                    "path": "<Keyboard>/escape",
+                    "id": "ece20732-555e-4282-8e90-d1e1990f0575",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
