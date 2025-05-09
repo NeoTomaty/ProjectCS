@@ -8,14 +8,24 @@
 using UnityEngine;
 public class HitWallSound : MonoBehaviour
 {
-    public AudioSource WallSound;
+    //壁との衝突音のAudioClipを設定するための変数
+    public AudioClip WallSound;
+
+    //AudioSourceコンポーネントを保持するための変数
+    private AudioSource AudioSource;
+
+    void Start()
+    {
+        //AudioSourceコンポーネントを取得
+        AudioSource = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            WallSound.Play();
+            AudioSource.PlayOneShot(WallSound);
         }
     }
 }
