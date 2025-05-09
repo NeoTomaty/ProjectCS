@@ -12,6 +12,7 @@
 // 05/02 藤本 Respawnオブジェクトをすり抜けないよう高さでも判定を取るように修正
 // 05/02 荒井 リフティングジャンプの終了処理の場所を修正
 // 05/02 高下 対象を飛ばしたときに強制的にロックオンする処理を追加
+// 05/08 藤本 リスポーンした後上昇し落下スピードを調整できるように修正
 //====================================================
 using UnityEngine;
 
@@ -35,6 +36,11 @@ public class BlownAway_Ver2 : MonoBehaviour
     private float MaxRandomXYRange = 0.0f; // ランダムに加えるXY軸の範囲（最大）
 
     [SerializeField]
+    private float MinFallSpeed = 0.0f; // 落下時のスピート（最小）
+    [SerializeField]
+    private float MaxFallSpeed = 30.0f; // 落下時のスピート（最大）
+
+    [SerializeField]
     private Transform RespawnArea;         // 移動させる範囲オブジェト
 
     [SerializeField]
@@ -47,6 +53,10 @@ public class BlownAway_Ver2 : MonoBehaviour
     private CameraFunction CameraFunction;
 
     private FallPointCalculator FallPoint; // 落下地点を計算するスクリプト
+
+    private float previousVerticalVelocity = 0f;  // リスポーン前のY方向速度を保存
+
+    private bool HitNextFallArea = true;    // リスポーンエリアに連続で当たらないようにする
 
     private Rigidbody Rb;
 
@@ -67,8 +77,13 @@ public class BlownAway_Ver2 : MonoBehaviour
     {
         Debug.Log($"接触: {other.name}");
 
-        if (other.CompareTag("Respawn"))
+        if (other.CompareTag("Respawn") && HitNextFallArea == true)
         {
+            HitNextFallArea = false;
+
+            // 現在のY方向速度を保存
+            previousVerticalVelocity = Rb.linearVelocity.y;
+
             MoveToRandomXZInRespawnArea();
         }
     }
@@ -77,10 +92,28 @@ public class BlownAway_Ver2 : MonoBehaviour
     void Update()
     {
         // Respawnオブジェクトのより高い位置にいたらリスポーン
-        if (RespawnArea && transform.position.y > RespawnArea.position.y)
+        if (RespawnArea && transform.position.y > RespawnArea.position.y　&& HitNextFallArea == true)
         {
+            HitNextFallArea = false;
+            // 現在のY方向速度を保存
+            previousVerticalVelocity = Rb.linearVelocity.y;
+
             Debug.Log($"Respawnオブジェクトの高さを超えたためリスポーン");
             MoveToRandomXZInRespawnArea();
+        }
+    }
+
+    // 落下スピードを制限する
+    void FixedUpdate()
+    {
+        // 落下中かつ速度が上限を超えていたら制限
+        if (Rb.linearVelocity.y < -MaxFallSpeed)
+        {
+            Vector3 clampedVelocity = Rb.linearVelocity;
+            clampedVelocity.y = -MaxFallSpeed;
+            Rb.linearVelocity = clampedVelocity;
+
+            Debug.Log($"落下速度を制限しました: {Rb.linearVelocity.y}");
         }
     }
 
@@ -88,10 +121,10 @@ public class BlownAway_Ver2 : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Player")) return;
 
-        // 飛ぶ先の位置を決定
-        //MoveToRandomXZInRespawnArea();
-
         ClearConditionsScript.CheckLiftingCount();
+
+        // Snackに触れたらHitNextFallAreaをtrueに戻す
+        HitNextFallArea = true;
 
         // PlayerSpeedManagerスクリプトを取得
         PlayerSpeedManager PlayerSpeedManager = collision.gameObject.GetComponent<PlayerSpeedManager>();
@@ -213,10 +246,12 @@ public class BlownAway_Ver2 : MonoBehaviour
         // Y座標はRespawnAreaの高さに設定
         float y = respawnCenter.y;
 
+        // 保存した上方向の力を代入
         Vector3 newPos = new Vector3(randomX, y, randomZ);
         transform.position = newPos;
-        Rb.linearVelocity = Vector3.zero;
+        Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
 
+        Debug.Log($"上昇速度: {Rb.linearVelocity.y}");
         Debug.Log($"リスポーン座標（グラウンド内）: {newPos}");
 
         FallPoint?.CalculateGroundPoint();
