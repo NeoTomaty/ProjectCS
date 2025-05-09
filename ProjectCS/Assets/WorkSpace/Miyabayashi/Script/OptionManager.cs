@@ -26,7 +26,8 @@ public class OptionManager : MonoBehaviour
 
     [Header("Manager Reference")]
     [SerializeField] private PauseManager pauseManager;
-    [SerializeField] private CameraFunction CameraFunction;
+    [SerializeField] private CameraFunction cameraFunction;
+    [SerializeField] private VolumeSetting volumeSetting;
 
     [Header("Input")]
     [SerializeField] private InputActionReference adjustAction;
@@ -78,14 +79,15 @@ public class OptionManager : MonoBehaviour
 
             if (isAdjustingVolume)
             {
-                volumeSlider.value = Mathf.Clamp(volumeSlider.value + direction * moveAmount, 0f, volumeSlider.maxValue);
+                volumeSlider.value = Mathf.Clamp(volumeSlider.value + direction * moveAmount, 0.0f, volumeSlider.maxValue);
                 
+                volumeSetting.SetVolume(volumeSlider.value);
             }
             else if (isAdjustingSensitivity)
             {
                 sensitivitySlider.value = Mathf.Clamp(sensitivitySlider.value + direction * moveAmount, 0.5f, sensitivitySlider.maxValue);
 
-                CameraFunction.SetRatio(sensitivitySlider.value);
+                cameraFunction.SetRatio(sensitivitySlider.value);
             }
 
             adjustTimer = adjustCooldown;

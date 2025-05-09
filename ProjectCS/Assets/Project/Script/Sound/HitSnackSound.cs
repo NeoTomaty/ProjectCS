@@ -10,15 +10,24 @@ using UnityEngine;
 
 public class HitSnackSound : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public AudioSource SnackSound;
+    //壁との衝突音のAudioClipを設定するための変数
+    public AudioClip SnackSound;
+
+    //AudioSourceコンポーネントを保持するための変数
+    private AudioSource AudioSource;
+
+    void Start()
+    {
+        //AudioSourceコンポーネントを取得
+        AudioSource = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Snack"))
         {
-            SnackSound.Play();
+            AudioSource.PlayOneShot(SnackSound);
         }
     }
 }
