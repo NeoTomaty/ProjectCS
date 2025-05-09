@@ -900,7 +900,7 @@ MonoBehaviour:
   Distance: 6
   MaxCameraHeight: 5
   MinCameraHeight: 3
-  RotationSpeed: 90
+  DefaultRotationSpeed: 50
   VerticalMin: -80
   VerticalMax: 80
   AutoCorrectSpeed: 1.5
@@ -1259,6 +1259,7 @@ MonoBehaviour:
   clearCondition: 3
   nextSceneName: ResultScene
   liftingCounterText: {fileID: 1856113167}
+  GameClearSequence: {fileID: 0}
 --- !u!4 &1473430703
 Transform:
   m_ObjectHideFlags: 0
@@ -1647,6 +1648,8 @@ MonoBehaviour:
   MaxForwardForce: 0
   MinRandomXYRange: 0
   MaxRandomXYRange: 0
+  MinFallSpeed: 0
+  MaxFallSpeed: 30
   RespawnArea: {fileID: 1073458115}
   LiftingJump: {fileID: 1007991453}
   GroundArea: {fileID: 1073458115}
@@ -1665,6 +1668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GravityScale: {x: 0, y: -9.8, z: 0}
+  MaxFallSpeed: 20
   IsActive: 1
 --- !u!4 &1846973843 stripped
 Transform:
