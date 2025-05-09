@@ -13,6 +13,7 @@
 // 05/02 荒井 リフティングジャンプの終了処理の場所を修正
 // 05/02 高下 対象を飛ばしたときに強制的にロックオンする処理を追加
 // 05/08 藤本 リスポーンした後上昇し落下スピードを調整できるように修正
+// 05/08 荒井 ゲームクリア時にスナックのリスポーンを無効化する処理を追加
 //====================================================
 using UnityEngine;
 
@@ -64,6 +65,8 @@ public class BlownAway_Ver2 : MonoBehaviour
     [Header("クリア条件を管理しているオブジェクト")]
     private ClearConditions ClearConditionsScript; // リフティング回数管理のスクリプト
 
+    private bool IsRespawn = true;
+
     void Start()
     {
         Rb = GetComponent<Rigidbody>();
@@ -98,8 +101,12 @@ public class BlownAway_Ver2 : MonoBehaviour
             // 現在のY方向速度を保存
             previousVerticalVelocity = Rb.linearVelocity.y;
 
-            Debug.Log($"Respawnオブジェクトの高さを超えたためリスポーン");
-            MoveToRandomXZInRespawnArea();
+            // リスポーン無効でなければ
+            if (IsRespawn)
+            {
+                Debug.Log($"Respawnオブジェクトの高さを超えたためリスポーン");
+                MoveToRandomXZInRespawnArea();
+            }
         }
     }
 
@@ -256,5 +263,11 @@ public class BlownAway_Ver2 : MonoBehaviour
 
         FallPoint?.CalculateGroundPoint();
 
+    }
+
+    // クリア時処理
+    public void OnClear()
+    {
+        IsRespawn = false;
     }
 }
