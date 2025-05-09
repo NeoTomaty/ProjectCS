@@ -9,49 +9,64 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+
 public class PauseManager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseUI;
-    [SerializeField] private GameObject optionUI; 
-    private bool isPaused = false;
-    private PlayerInput playerInput;
+    [SerializeField] private GameObject optionUI;
     [SerializeField] private GameObject firstPauseButton;
     [SerializeField] private GameObject firstOptionButton;
+
+    private bool isPaused = false;
+    private PlayerInput playerInput;
+    private InputAction pauseAction;
 
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
-    }
 
-    private void Start()
-    {
         if (playerInput != null)
         {
-            playerInput.actions["Pause"].performed += OnPausePerformed;
+            pauseAction = playerInput.actions["Pause"];
+        }
+        else
+        {
+            Debug.LogError("PlayerInputが見つかりません！");
         }
     }
 
-    private void OnDestroy()
+    private void OnEnable()
     {
-        if (playerInput != null)
+        if (pauseAction != null)
         {
-            playerInput.actions["Pause"].performed -= OnPausePerformed;
+            pauseAction.performed += OnPausePerformed;
+            pauseAction.Enable();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (pauseAction != null && playerInput.actions != null)
+        {
+            pauseAction.performed -= OnPausePerformed;
+            pauseAction.Disable();
         }
     }
 
     private void OnPausePerformed(InputAction.CallbackContext context)
     {
+        Debug.Log("esc");
         if (!context.performed) return;
 
-        // ★追加：オプションが開いていたらポーズの切り替え無効
-        if (optionUI != null && optionUI.activeSelf)
-            return;
+        // オプションが開いていたらポーズ切り替え無効
+        if (optionUI != null && optionUI.activeSelf) return;
 
         if (!isPaused)
         {
-            EventSystem.current.SetSelectedGameObject(firstPauseButton);
             Time.timeScale = 0f;
             pauseUI.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(firstPauseButton);
             isPaused = true;
         }
         else
@@ -59,7 +74,6 @@ public class PauseManager : MonoBehaviour
             ResumeGame();
         }
     }
-
 
     public void OpenOption()
     {

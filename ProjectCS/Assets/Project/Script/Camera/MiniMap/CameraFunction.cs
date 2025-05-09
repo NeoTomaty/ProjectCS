@@ -8,6 +8,7 @@
 // 04/25 高下 ターゲットにロックオンしたときと解除時に補完するように調整
 // 05/02 高下 リフティング時の強制ロックオン処理を追加
 // 05/04 高下 プレイヤーの速度に応じて、カメラの高さを変更できるように調整
+// 05/08 宮林 カメラ感度調整用のコードを追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -26,7 +27,7 @@ public class CameraFunction : MonoBehaviour
     [SerializeField] private float MaxCameraHeight = 5.0f;        // カメラの高さ（最大）
     [Tooltip("カメラの高さ最小値（低速時）")]
     [SerializeField] private float MinCameraHeight = 3.0f;        // カメラの高さ（最小）
-    [SerializeField] private float RotationSpeed = 50.0f;         // 回転速度
+    [SerializeField] private float DefaultRotationSpeed = 50.0f;         // 回転速度
     [SerializeField] private float VerticalMin = -80.0f;          // 縦方向移動の最小値
     [SerializeField] private float VerticalMax = 80.0f;           // 縦方向移動の最大値
     [SerializeField] private float AutoCorrectSpeed = 1.5f;       // 自動補正速度
@@ -68,6 +69,10 @@ public class CameraFunction : MonoBehaviour
     private bool IsForceLockOn = false;
     private float ForceLockOnTimeLeft = 0f;
 
+    //カメラ感度調整用
+    private float RotationSpeed;
+    private float RotationRatio=1.0f;
+
     private void Start()
     {
         if(!PlayerInput)
@@ -82,6 +87,9 @@ public class CameraFunction : MonoBehaviour
         // 対応するInputActionを取得
         LookTargetAction = PlayerInput.actions["LookTargetSnack"];
         RotateAction = PlayerInput.actions["RotateCamera"];
+
+        //デフォルトのカメラ感度を受け渡す
+        RotationSpeed = DefaultRotationSpeed;
     }
 
     private void LateUpdate()
@@ -94,6 +102,8 @@ public class CameraFunction : MonoBehaviour
 
         // 速度に応じたカメラの高さを計算
         float cameraHeight = Mathf.Lerp(MinCameraHeight, MaxCameraHeight, PlayerSpeedManager.GetSpeedRatio());
+
+        RotationSpeed = DefaultRotationSpeed * RotationRatio;
 
         // カメラ回転（手動操作：右スティック等）
         if (RotateInput.x < -0.5f) { yaw -= RotationSpeed * Time.deltaTime; isManual = true; }
@@ -284,4 +294,10 @@ public class CameraFunction : MonoBehaviour
     {
         Target = target;
     }
+
+    public void SetRatio(float ratio)
+    {
+        RotationRatio = ratio;
+    }
+
 }

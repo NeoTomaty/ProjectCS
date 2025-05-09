@@ -4,6 +4,7 @@
 // 最終更新日：5/6
 // 
 // [Log]5/6 宮林　オプション画面を実装
+//      5/8 宮林　カメラ感度受け渡しを追加
 //======================================================
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,6 +26,7 @@ public class OptionManager : MonoBehaviour
 
     [Header("Manager Reference")]
     [SerializeField] private PauseManager pauseManager;
+    [SerializeField] private CameraFunction CameraFunction;
 
     [Header("Input")]
     [SerializeField] private InputActionReference adjustAction;
@@ -35,6 +37,8 @@ public class OptionManager : MonoBehaviour
 
     private float adjustCooldown = 0.15f;
     private float adjustTimer = 0f;
+
+    
 
     private void OnEnable()
     {
@@ -55,8 +59,9 @@ public class OptionManager : MonoBehaviour
     void Start()
     {
         // スライダーの初期値を1に設定
-        volumeSlider.value = 0.5f;
-        sensitivitySlider.value = 0.5f;
+        volumeSlider.value = 1.0f;
+        sensitivitySlider.value = 1.0f;
+
     }
 
     void Update()
@@ -73,11 +78,14 @@ public class OptionManager : MonoBehaviour
 
             if (isAdjustingVolume)
             {
-                volumeSlider.value = Mathf.Clamp01(volumeSlider.value + direction * moveAmount);
+                volumeSlider.value = Mathf.Clamp(volumeSlider.value + direction * moveAmount, 0f, volumeSlider.maxValue);
+                
             }
             else if (isAdjustingSensitivity)
             {
-                sensitivitySlider.value = Mathf.Clamp01(sensitivitySlider.value + direction * moveAmount);
+                sensitivitySlider.value = Mathf.Clamp(sensitivitySlider.value + direction * moveAmount, 0.5f, sensitivitySlider.maxValue);
+
+                CameraFunction.SetRatio(sensitivitySlider.value);
             }
 
             adjustTimer = adjustCooldown;
