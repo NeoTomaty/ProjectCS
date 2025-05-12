@@ -1,12 +1,13 @@
 //======================================================
 // ClearConditionsスクリプト
 // 作成者：藤本
-// 最終更新日：5/8
+// 最終更新日：5/10
 // 
 // [Log]
 // 04/29 藤本　クリア条件の追加
 // 05/01 竹内　UIと連携してリフティング回数を参照できるように修正
 // 05/08 荒井　クリア演出を実行できるように変更
+// 05/10 荒井　クリア演出に関する例外処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -56,7 +57,15 @@ public class ClearConditions : MonoBehaviour
             }
             else
             {
-                GameClearSequence.OnGameClear();
+                bool Res = GameClearSequence.OnGameClear();
+
+                // OnGameClear関数が正常に終了しなかった場合
+                // 演出無しでシーン遷移
+                if (!Res)
+                {
+                    Debug.LogError("ClearConditionsスクリプト：OnGameClear関数が正常に終了しませんでした");
+                    TriggerSceneTransition();
+                }
             }
         }
     }
