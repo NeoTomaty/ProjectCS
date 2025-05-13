@@ -75,6 +75,12 @@ public class GameClearSequence : MonoBehaviour
         // CameraFunctionを無効化
         CameraFunction.enabled = false;
 
+        //// カメラ距離
+        //Vector3 CameraDirection = SnackObject.transform.position - CameraObject.transform.position;
+        //Vector3 DirectionOffset = CameraDirection.normalized * 30f; // カメラの距離を調整
+        //Vector3 CameraPos = SnackObject.transform.position - DirectionOffset;
+        //CameraObject.transform.position = CameraPos; // カメラの位置を調整
+
         // 星を配置する
         Vector3 StarPos = SnackObject.transform.position;
         StarPos.y = StarHeight; // スナックの上に星を配置
