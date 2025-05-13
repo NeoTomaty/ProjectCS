@@ -37,7 +37,7 @@ public class FadeManager : MonoBehaviour
     {
         fadeImage.alpha = 1f; // 最初は黒く
         SceneManager.sceneLoaded += OnSceneLoaded;
-        StartCoroutine(FadeOut());
+        StartCoroutine(FadeIn());
 
         // InputActionMap の取得
         actionMap = new InputActionMap("UI");
@@ -55,12 +55,12 @@ public class FadeManager : MonoBehaviour
    
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        StartCoroutine(FadeOut()); // 新しいシーンに入ったら明るくする
+        StartCoroutine(FadeIn()); // 新しいシーンに入ったら明るくする
         isFading = false;
         isInputBlocked = false; // フェードが終わったら入力を再開
     }
 
-    private IEnumerator FadeIn()
+    private IEnumerator FadeOut()
     {
         float t = 0f;
         while (t < fadeDuration)
@@ -74,7 +74,7 @@ public class FadeManager : MonoBehaviour
         DisableInput();
     }
 
-    private IEnumerator FadeOut()
+    private IEnumerator FadeIn()
     {
         float t = fadeDuration;
         while (t > 0f)
@@ -95,7 +95,7 @@ public class FadeManager : MonoBehaviour
 
         Time.timeScale = 1f; // ← ここで解除！
 
-        yield return StartCoroutine(FadeIn());
+        yield return StartCoroutine(FadeOut());
         SceneManager.LoadScene(sceneName);
     }
 

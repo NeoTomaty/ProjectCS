@@ -9,16 +9,19 @@
 //====================================================
 
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class BGMManager : MonoBehaviour
 {
     public static BGMManager Instance;
 
-    public AudioSource audioSource;
+    public AudioMixer audioMixer;         // Inspectorで AudioMixer を設定
+    public string exposedParam = "BGMVolume"; // Exposeしたパラメータ名
 
-    private void Awake()
+    private AudioSource audioSource;
+
+    void Awake()
     {
-        // すでにインスタンスがあれば破棄（シングルトン）
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -26,21 +29,36 @@ public class BGMManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // シーン間で破棄しない
+        DontDestroyOnLoad(gameObject);
+
+        // AudioSource追加
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.loop = true;
+        audioSource.playOnAwake = false;
+        audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("BGM")[0];
     }
 
-    public void PlayBGM(AudioClip clip, float volume = 1f)
+    public void PlayBGM(AudioClip clip)
     {
-        if (audioSource.clip == clip && audioSource.isPlaying) return;
+        if (clip == null) return;
+
+        if (audioSource.clip == clip && audioSource.isPlaying)
+            return;
 
         audioSource.clip = clip;
-        audioSource.volume = volume;
-        audioSource.loop = true;
         audioSource.Play();
     }
 
     public void StopBGM()
     {
         audioSource.Stop();
+    }
+
+    
+    // 音量設定（0.0～1.0） → dBに変換してMixerに反映
+    public void SetVolume(float volume)
+    {
+        float dB = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
+        audioMixer.SetFloat(exposedParam, dB);
     }
 }
