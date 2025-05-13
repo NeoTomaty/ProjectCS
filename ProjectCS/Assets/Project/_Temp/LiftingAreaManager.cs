@@ -2,13 +2,14 @@
 // スクリプト名：LiftingAreaManager
 // 作成者：高下
 // 内容：プレイヤーとターゲットとのエリアを管理するクラス
-// 最終更新日：05/10
+// 最終更新日：05/13
 // 
 // [Log]
 // 04/26 高下 スクリプト作成
 // 04/26 高下 リフティングパートに移行した際に、エリア内の色が変わる処理を追加
 // 04/27 高下 落下地点に応じてオブジェクトを再配置するSetFallPointを追加
 // 05/10 高下 ターゲットオブジェクトの地面までの距離をテキストに表示する機能を追加
+// 05/13 高下 GetIsTargetContactin関数追加
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
@@ -38,10 +39,13 @@ public class LiftingAreaManager : MonoBehaviour
     [SerializeField] 
     private Text DistanceToGroundText;
 
-    [SerializeField]
-    private Color NormalColor = new Color(1.0f, 0.3f, 0.3f, 0.2f); // 通常時の色
-    [SerializeField]
-    private Color LiftingPartlColor = new Color(1f, 1f, 1f, 0.2f); // リフティングパート時の色
+    [Header("エリアの大きさ設定")]
+    [SerializeField] private float Radius = 35.0f;  // 半径
+    [SerializeField] private float Height = 100.0f; // 高さ
+
+    [Header("エリアのカラー設定")]
+    [SerializeField] private Color NormalColor = new Color(1.0f, 0.3f, 0.3f, 0.2f); // 通常時の色
+    [SerializeField] private Color LiftingPartColor = new Color(1f, 1f, 1f, 0.2f); // リフティングパート時の色
 
     void Start()
     {
@@ -56,6 +60,10 @@ public class LiftingAreaManager : MonoBehaviour
 
         // ターゲットオブジェクトの半径分の大きさを取得
         TargetOffsetY = Target.GetComponent<Collider>().bounds.extents.y;
+
+        // エリアのサイズを初期化
+        float Diameter = Radius * 2.0f;
+        transform.localScale = new Vector3(Diameter, Height, Diameter);
     }
 
     private void Update()
@@ -88,7 +96,7 @@ public class LiftingAreaManager : MonoBehaviour
         if(IsPlayerContacting && IsTargetContacting)
         {
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.LiftingPart);
-            ObjectRenderer.material.SetColor("_Color", LiftingPartlColor);
+            ObjectRenderer.material.SetColor("_Color", LiftingPartColor);
         }
     }
 
@@ -122,5 +130,11 @@ public class LiftingAreaManager : MonoBehaviour
         // エリアのY座標を調整
         fallPoint.y += transform.localScale.y - 0.1f;
         transform.position = fallPoint;
+    }
+
+    // 対象オブジェクトが範囲外にあるかどうかを返す
+    public bool GetIsTargetContacting()
+    {
+        return IsTargetContacting;
     }
 }
