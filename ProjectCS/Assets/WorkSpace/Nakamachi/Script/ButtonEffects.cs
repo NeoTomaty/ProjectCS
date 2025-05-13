@@ -1,7 +1,7 @@
 //ButtonEffects.cs
 //作成者:中町雷我
 //最終更新日:2025/05/08
-//アタッチ:StartButton、ExitButton、OptionButtonにアタッチ
+//アタッチ:StartButton、ExitButtonにアタッチ
 //[Log]
 //05/08　中町　ボタンにマウスカーソルを合わすとテキストの色と文字が1.2倍拡大する処理
 
