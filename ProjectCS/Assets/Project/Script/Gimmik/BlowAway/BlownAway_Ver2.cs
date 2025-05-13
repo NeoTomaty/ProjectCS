@@ -53,6 +53,9 @@ public class BlownAway_Ver2 : MonoBehaviour
     [SerializeField] 
     private CameraFunction CameraFunction;
 
+    [SerializeField]
+    private FlyingPoint flyingPoint;　// スコア計算用スクリプト
+
     private FallPointCalculator FallPoint; // 落下地点を計算するスクリプト
 
     private float previousVerticalVelocity = 0f;  // リスポーン前のY方向速度を保存
@@ -176,18 +179,17 @@ public class BlownAway_Ver2 : MonoBehaviour
 
                 // プレイヤーのリフティングパートを終了する
                 LiftingJump.FinishLiftingJump();    // AddForceの前に呼び出さないとスナックが飛ばない
+
+                if (flyingPoint != null)
+                {
+                    flyingPoint.CalculateScore();
+                    Debug.LogWarning("スコア計算開始");
+                }
             }
         }
 
         // Rigidbodyに力を加える
         Rb.AddForce(ForceDirection, ForceMode.Impulse);
-
-        // ポイント計算開始
-        FlyingPoint flyingPoint = GetComponent<FlyingPoint>();
-        if (flyingPoint != null)
-        {
-            flyingPoint.Launch(collision.transform); // プレイヤーを渡す
-        }
 
         // ヒットストップを開始する
         StartCoroutine(HitStop(Mathf.Lerp(MinHitStopTime, MaxHitStopTime, SpeedRatio)));
