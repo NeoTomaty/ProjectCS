@@ -29,7 +29,7 @@ public class StageSelectManager : MonoBehaviour
     public AudioClip selectSE;               // ← 選択音SE（カーソル移動など）
     public AudioClip enterSE;                // ← 決定音SE（ステージ突入）
     public AudioClip cancelSE;               // ← キャンセル音SE（戻る）
-    public AudioClip stageSelectBGMClip;    //BGM
+  
 
     public StageData[] stages;
     public Transform cameraTransform;
@@ -50,10 +50,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
-        if (BGMManager.Instance != null)
-        {
-            BGMManager.Instance.PlayBGM(stageSelectBGMClip); // AudioClipを用意してInspectorで設定
-        }
+  
 
         MovePlayerToStageInstant(currentIndex);
         UpdateStageLabels();

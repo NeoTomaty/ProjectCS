@@ -15,18 +15,7 @@ public class SceneTransitionButton : MonoBehaviour
     // インスペクタビューから設定するシーン名
     public string sceneName;
  
-    //FadeManager fade = Object.FindFirstObjectByType<FadeManager>();
-
-    //// シーン遷移
-    //public void LoadScene()
-    //{
-    //    if (fade != null)
-    //    {
-    //        StartCoroutine(fade.FadeAndLoadScene(sceneName)); // Fade処理を開始し、シーン遷移
-    //    }
-    //}
-
-
+ 
 
    public void StartSceneTransition()
     {
