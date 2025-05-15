@@ -1065,6 +1065,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage
       objectReference: {fileID: 0}
+    - target: {fileID: 2177250526901273904, guid: ee3c382f038bcae46b60a1b389964ae4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2445617867269016475, guid: ee3c382f038bcae46b60a1b389964ae4, type: 3}
       propertyPath: m_LocalScale.x
       value: 300
@@ -1774,7 +1778,8 @@ MonoBehaviour:
   SnackObject: {fileID: 1846973834}
   CameraObject: {fileID: 946110160}
   StarObject: {fileID: 408351444}
-  CameraTiltAngle: 60
+  CameraTiltAngle: 0
+  Offset: 30
   StarHeight: 300
   StarToStarDistance: 0
 --- !u!1001 &1476793812
@@ -2411,6 +2416,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LAManager: {fileID: 1411678370}
+  BaseGroundLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &1846973836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2437,6 +2445,7 @@ MonoBehaviour:
   LiftingJump: {fileID: 1007991453}
   GroundArea: {fileID: 2098637895}
   CameraFunction: {fileID: 946110165}
+  flyingPoint: {fileID: 0}
   ClearConditionsScript: {fileID: 1473430702}
 --- !u!114 &1846973837
 MonoBehaviour:
