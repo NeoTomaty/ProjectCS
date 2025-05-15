@@ -1,7 +1,7 @@
 //======================================================
 // [LiftingJump]
 // 作成者：荒井修
-// 最終更新日：05/07
+// 最終更新日：05/15
 // 
 // [Log]
 // 04/26　荒井　キーを入力したらターゲットに向かってぶっ飛んでいくように実装
@@ -19,6 +19,7 @@
 // 05/03　荒井　リフティングジャンプ中に左右移動や減速等の操作を無効にする処理を追加
 // 05/07　荒井　すり抜けモードが有効なのにオブジェクトをすり抜けられないバグを修正
 // 05/07　荒井　クリアカウントで多段ヒット扱いされる挙動を修正
+// 05/15　荒井　移動速度の変化の操作先をPlayerSpeedManagerからMovePlayerに変更
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -30,19 +31,16 @@ public class LiftingJump : MonoBehaviour
     [SerializeField] GameObject TargetObject;                   // 目標地点
     [SerializeField] private GaugeController GaugeController;   // ゲージコントローラーの参照
     private MovePlayer MovePlayer;                              // プレイヤーの移動スクリプトの参照
-    private PlayerSpeedManager PlayerSpeedManager;              // プレイヤーの移動速度を管理するスクリプトの参照
     private ObjectGravity ObjectGravityScript;                  // 重力スクリプトの参照
     private PlayerInput PlayerInput;                            // プレイヤーの入力を管理するcomponent
 
-    [SerializeField] private float BaseJumpPower = 10f; // 基となるジャンプの速度
+    [SerializeField] private float JumpSpeed = 2f;  // ジャンプ時の移動速度補正
 
     private float JumpPower = 0f;
     public float GetJumpPower => JumpPower; // ジャンプ力の取得
 
-    private float BaseSpeed = 0f; // 元の移動速度
-
-    [SerializeField] private float BaseForce = 10f; // 衝突後の力
-    public float GetForce => BaseForce * GaugeController.GetGaugeValue;
+    [SerializeField] private float MaxMultiForce = 2f;  // ゲージによるパワー補正の最大値
+    public float GetForce => GaugeController.GetGaugeValue * (MaxMultiForce - 1) + 1f;  // 1～最大値の振れ幅
 
     [SerializeField] private float SlowMotionFactor = 0.1f; //スローモーションの度合い
     [SerializeField] private float SlowMotionDistance = 1f; // スローモーションへ移行する距離
@@ -63,12 +61,12 @@ public class LiftingJump : MonoBehaviour
         if (Enabled)
         {
             // スローモーションを開始
-            PlayerSpeedManager.SetOverSpeed((BaseJumpPower * JumpPower) * SlowMotionFactor); // スローモーション中の移動速度を設定
+            MovePlayer.MoveSpeedMultiplier = SlowMotionFactor;
         }
         else
         {
             // スローモーションを終了
-            PlayerSpeedManager.SetOverSpeed(BaseJumpPower * JumpPower); // 移動速度を戻す
+            MovePlayer.MoveSpeedMultiplier = JumpSpeed * JumpPower;
         }
     }
 
@@ -116,8 +114,7 @@ public class LiftingJump : MonoBehaviour
         MovePlayer.SetMoveDirection(JumpDirection.normalized);
 
         // プレイヤーを加速させる
-        BaseSpeed = PlayerSpeedManager.GetPlayerSpeed; // 元の移動速度を保存
-        PlayerSpeedManager.SetOverSpeed(BaseJumpPower * JumpPower);
+        MovePlayer.MoveSpeedMultiplier = JumpSpeed * JumpPower;
     }
 
     // リフティングジャンプを停止する関数
@@ -152,7 +149,7 @@ public class LiftingJump : MonoBehaviour
         MovePlayer.SetMoveDirection(MoveDirection.normalized);  // 移動方向を設定
 
         // 移動速度を元に戻す
-        PlayerSpeedManager.SetSpeed(BaseSpeed);
+        MovePlayer.MoveSpeedMultiplier = 1f;
     }
 
     // ターゲットに近づいた瞬間を判定する関数
@@ -187,7 +184,6 @@ public class LiftingJump : MonoBehaviour
     void Start()
     {
         MovePlayer = GetComponent<MovePlayer>();
-        PlayerSpeedManager = GetComponent<PlayerSpeedManager>();
         ObjectGravityScript = GetComponent<ObjectGravity>();
 
         // 全オブジェクトの当たり判定を取得
