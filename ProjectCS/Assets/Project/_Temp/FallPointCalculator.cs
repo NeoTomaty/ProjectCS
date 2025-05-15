@@ -2,11 +2,12 @@
 // スクリプト名：FallPointCalculator
 // 作成者：高下
 // 内容：飛ばす対象の落下地点を計算するクラス
-// 最終更新日：05/13
+// 最終更新日：05/14
 // 
 // [Log]
 // 04/27 高下 スクリプト作成
 // 05/13 高下 地面との当たり判定をタグからレイヤーに変更
+// 05/14 高下 地面の座標とオブジェクトの落下座標を分けて処理をすることに変更
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
@@ -19,10 +20,12 @@ using UnityEngine;
 public class FallPointCalculator : MonoBehaviour
 {
     private string GroundTag = "Ground"; // 地面オブジェクトのタグ
-    private Vector3 FallPoint; // 落下地点
+    private Vector3 FallPoint;           // 落下地点
+    private Vector3 GroundPoint;         // 地面の座標
+    private bool IsGround = false;       // 地面に着地しているかどうか
    
     [SerializeField] private LiftingAreaManager LAManager; // LiftingAreaManagerを参照
-
+   
     [Tooltip("BaseGroundのレイヤーを設定")]
     [SerializeField] private LayerMask BaseGroundLayerMask; // ベースとなる地面のレイヤー
 
@@ -46,6 +49,20 @@ public class FallPointCalculator : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag(GroundTag)) return;
+
+        IsGround = true; // 地面に着いている
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag(GroundTag)) return;
+
+        IsGround = false; // 地面に着いていない
+    }
+
     public void CalculateGroundPoint()
     {
         RaycastHit hit;
@@ -56,10 +73,19 @@ public class FallPointCalculator : MonoBehaviour
         if (Physics.Raycast(origin, direction, out hit, Mathf.Infinity, BaseGroundLayerMask)) // 一応下方向のレイは無限に設定
         {
             Debug.Log("落下地点：" + hit.point);
-            FallPoint = hit.point;
+            GroundPoint = hit.point;
 
             // リフティングエリアオブジェクトを移動させる
-            LAManager.SetFallPoint(FallPoint);
+            LAManager.SetFallPoint(GroundPoint);
+        }
+
+        // ターゲットオブジェクトの落下地点を計算（すべての地面に対して実行）
+        if (Physics.Raycast(origin, direction, out hit, Mathf.Infinity))
+        {
+            if(hit.collider.CompareTag(GroundTag))
+            {
+               FallPoint = hit.point;
+            }
         }
     }
 
@@ -67,5 +93,11 @@ public class FallPointCalculator : MonoBehaviour
     public Vector3 GetFallPoint()
     {
         return FallPoint; 
+    }
+
+    // 地面に着いているどうかを取得
+    public bool GetIsGround()
+    {
+        return IsGround;
     }
 }
