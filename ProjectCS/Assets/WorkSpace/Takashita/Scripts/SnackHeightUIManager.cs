@@ -6,6 +6,7 @@
 // 
 // [Log]
 // 05/14 高下 スクリプト作成
+// 05/15 高下 ポインター表示のときの高さ上限値を超えられるように仮で実装
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
@@ -43,8 +44,9 @@ public class SnackHeightUIManager : MonoBehaviour
     [SerializeField] private GameObject TextObject;     // テキストオブジェクト
     [SerializeField] private GameObject SnackObject;    // スナックオブジェクト
     [SerializeField] private float MaxHeight = 500.0f;  // ゲージ最大時の高さ
+    [SerializeField] private float AddLimitUnlock = 0f; // ポインターの上限解放の加算値
     [SerializeField] private bool IsTextVisible = true; // テキストを表示するかどうか
-
+   
     [Header("表示関連")]
     [SerializeField] private GaugeDisplayMethod DisplayMethod = GaugeDisplayMethod.AlwaysVisible;
     [SerializeField] private GaugeDisplayType DisplayType = GaugeDisplayType.Bar;
@@ -102,6 +104,7 @@ public class SnackHeightUIManager : MonoBehaviour
 
                 // メーターの上下の高さを計算する
                 PointMaxY = MeterRect.anchoredPosition.y + (MeterRect.rect.height / 2.0f) - (PointerRect.rect.height / 2.0f);
+                PointMaxY += AddLimitUnlock;
                 PointMinY = MeterRect.anchoredPosition.y - (MeterRect.rect.height / 2.0f) + (PointerRect.rect.height / 2.0f);
 
                 break;
