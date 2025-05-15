@@ -81,7 +81,7 @@ public class OptionManager : MonoBehaviour
             {
                 volumeSlider.value = Mathf.Clamp(volumeSlider.value + direction * moveAmount, 0.0f, volumeSlider.maxValue);
                 
-                volumeSetting.SetVolume(volumeSlider.value);
+                volumeSetting.SetBGMVolume(volumeSlider.value);
             }
             else if (isAdjustingSensitivity)
             {
