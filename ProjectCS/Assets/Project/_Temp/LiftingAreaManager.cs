@@ -2,7 +2,7 @@
 // スクリプト名：LiftingAreaManager
 // 作成者：高下
 // 内容：プレイヤーとターゲットとのエリアを管理するクラス
-// 最終更新日：05/13
+// 最終更新日：05/14
 // 
 // [Log]
 // 04/26 高下 スクリプト作成
@@ -10,16 +10,15 @@
 // 04/27 高下 落下地点に応じてオブジェクトを再配置するSetFallPointを追加
 // 05/10 高下 ターゲットオブジェクトの地面までの距離をテキストに表示する機能を追加
 // 05/13 高下 GetIsTargetContactin関数追加
+// 05/14 高下 テキストに関する処理を削除
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
 // 1. このスクリプトはリフティングエリアオブジェクトにアタッチする
 // 2. Playerにプレイヤーオブジェクトを設定
 // 3. Targetにリフティング対象オブジェクトを設定
-// 3.DistanceToGroundTextにテキストを設定
 
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LiftingAreaManager : MonoBehaviour
 {
@@ -33,11 +32,6 @@ public class LiftingAreaManager : MonoBehaviour
     PlayerStateManager PlayerState = null; // プレイヤーの状態管理コンポーネント
 
     private Renderer ObjectRenderer;
-    private Vector3 GroundPoint = new Vector3(0f, 0f, 0f); // 地面の位置
-    private float TargetOffsetY = 0f;    // Targetの半径分
-    private float DistanceToGround = 0f; // 地面までの距離
-    [SerializeField] 
-    private Text DistanceToGroundText;
 
     [Header("エリアの大きさ設定")]
     [SerializeField] private float Radius = 35.0f;  // 半径
@@ -58,24 +52,9 @@ public class LiftingAreaManager : MonoBehaviour
         ObjectRenderer = GetComponent<Renderer>();
         ObjectRenderer.material.SetColor("_Color", NormalColor);
 
-        // ターゲットオブジェクトの半径分の大きさを取得
-        TargetOffsetY = Target.GetComponent<Collider>().bounds.extents.y;
-
         // エリアのサイズを初期化
         float Diameter = Radius * 2.0f;
         transform.localScale = new Vector3(Diameter, Height, Diameter);
-    }
-
-    private void Update()
-    {
-        if(DistanceToGroundText)
-        {
-            // 地面までの距離を計算
-            DistanceToGround = Mathf.Max(0f, (Target.transform.position.y - TargetOffsetY) - GroundPoint.y);
-
-            // 数値をテキストに反映
-            DistanceToGroundText.text = Mathf.FloorToInt(DistanceToGround).ToString() + "m";
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -125,8 +104,6 @@ public class LiftingAreaManager : MonoBehaviour
     // ターゲットの落下地点にエリアを配置する
     public void SetFallPoint(Vector3 fallPoint)
     {
-        GroundPoint = fallPoint;
-
         // エリアのY座標を調整
         fallPoint.y += transform.localScale.y - 0.1f;
         transform.position = fallPoint;

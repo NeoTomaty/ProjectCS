@@ -12,6 +12,7 @@
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.GraphicsBuffer;
 
 public class CameraFunction : MonoBehaviour
 {
@@ -73,6 +74,7 @@ public class CameraFunction : MonoBehaviour
     private float RotationSpeed;
     private float RotationRatio=1.0f;
 
+   
     private void Start()
     {
         if(!PlayerInput)
@@ -142,16 +144,23 @@ public class CameraFunction : MonoBehaviour
                 StartLockOn(false);
             }
 
-            // 目標位置と回転を計算
-            Vector3 direction = (Target.position - Player.position).normalized;
-            Vector3 desiredPos = Player.position - direction * LockOnDistance;
-            desiredPos.y = Player.position.y + LockOnHeight;
+            Vector3 playerPos = Player.position;
+            Vector3 targetPos = Target.position;
 
-            Quaternion desiredRot = Quaternion.LookRotation((Target.position + Vector3.up * cameraHeight) - desiredPos);
+            // プレイヤー→ターゲットの方向
+            Vector3 toTarget = (targetPos - playerPos).normalized;
+
+            // カメラはプレイヤーの後方（ターゲットと反対）に「LockOnDistance」だけ配置
+            Vector3 desiredPos = playerPos - toTarget * LockOnDistance;
+
+            // 高さ補正
+            desiredPos.y += LockOnHeight;
+
+            // カメラはターゲットを注視
+            Quaternion desiredRot = Quaternion.LookRotation((targetPos + Vector3.up * cameraHeight) - desiredPos);
 
             if (IsTransitioningToTarget)
             {
-                // ロックオン補完中
                 TransitionTime += Time.deltaTime;
                 float t = Mathf.Clamp01(TransitionTime / TransitionDuration);
                 transform.position = Vector3.Lerp(TransitionStartPos, desiredPos, t);
@@ -159,7 +168,6 @@ public class CameraFunction : MonoBehaviour
 
                 if (t >= 1.0f || Vector3.Distance(transform.position, desiredPos) < TransitionEndThreshold)
                 {
-                    // 補完終了
                     IsTransitioningToTarget = false;
                     transform.position = desiredPos;
                     transform.rotation = desiredRot;
@@ -167,11 +175,9 @@ public class CameraFunction : MonoBehaviour
             }
             else
             {
-                // 補完後：そのままロックオン位置に追従
                 transform.position = desiredPos;
                 transform.rotation = desiredRot;
             }
-
         }
         else
         {
