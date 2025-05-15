@@ -24,7 +24,9 @@ public class GameClearSequence : MonoBehaviour
     [SerializeField] private GameObject StarObject;             // 星
 
     [Header("カメラの設定")]
-    [SerializeField] private float CameraTiltAngle = 0f; // カメラの傾き角度
+    [SerializeField] private float CameraTiltAngle = 0f;    // カメラの傾き角度
+    [SerializeField] private float Offset = 30f;            // カメラの距離を調整するオフセット値
+    private float CameraDistance = 0f;                      // ゲーム中のカメラの距離
 
     [Header("星の設定")]
     [SerializeField] private float StarHeight = 300f; // 星の高さ
@@ -75,11 +77,9 @@ public class GameClearSequence : MonoBehaviour
         // CameraFunctionを無効化
         CameraFunction.enabled = false;
 
-        //// カメラ距離
-        //Vector3 CameraDirection = SnackObject.transform.position - CameraObject.transform.position;
-        //Vector3 DirectionOffset = CameraDirection.normalized * 30f; // カメラの距離を調整
-        //Vector3 CameraPos = SnackObject.transform.position - DirectionOffset;
-        //CameraObject.transform.position = CameraPos; // カメラの位置を調整
+        // ゲーム中のカメラの距離を取得
+        Vector3 CameraDirection = SnackObject.transform.position - CameraObject.transform.position;
+        CameraDistance = CameraDirection.magnitude;
 
         // 星を配置する
         Vector3 StarPos = SnackObject.transform.position;
@@ -121,10 +121,24 @@ public class GameClearSequence : MonoBehaviour
         // 座標
         if (!IsCameraStop)
         {
-            float TargetPosY = SnackObject.transform.position.y;
+            Vector3 TargetPos = SnackObject.transform.position;
             Vector3 CameraPos = CameraObject.transform.position;
-            CameraPos.y = TargetPosY;   // 高さをスナックに合わせる
-            CameraObject.transform.position = CameraPos;
+
+            float OffsetTime = AfterTimer * 1f;
+            OffsetTime = Mathf.Clamp01(OffsetTime);
+            float CurrentOffset = Mathf.Lerp(CameraDistance, Offset, OffsetTime);
+
+            // カメラ距離
+            Vector3 CameraDirection = TargetPos - CameraPos;
+            Vector3 DirectionOffset = CameraDirection.normalized * CurrentOffset; // カメラの距離を調整
+            CameraPos = TargetPos - DirectionOffset;
+
+            // カメラのY座標をスナックのY座標に合わせる
+            float HeightMatchTime = AfterTimer * 5f;
+            HeightMatchTime = Mathf.Clamp01(HeightMatchTime);
+            float CurrentHeight = Mathf.Lerp(CameraPos.y, TargetPos.y, HeightMatchTime);
+            CameraPos.y = CurrentHeight;
+            CameraObject.transform.position = CameraPos; // カメラの位置を調整
         }
 
         // 視線
