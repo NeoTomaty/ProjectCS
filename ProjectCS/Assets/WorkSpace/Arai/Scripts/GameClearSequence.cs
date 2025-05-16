@@ -79,16 +79,8 @@ public class GameClearSequence : MonoBehaviour
 
         CameraFunction CameraFunction = CameraObject.GetComponent<CameraFunction>();
 
-<<<<<<< HEAD
-        //Debug.LogError(PlayerSpeedManager);
-        //Debug.LogError(BlownAway);
-        //Debug.LogError(SnackGravity);
-        //Debug.LogError(CameraFunction);
 
-        if (PlayerSpeedManager == null ||BlownAway == null || SnackGravity == null|| CameraFunction == null)
-=======
         if (MovePlayer == null ||BlownAway == null || SnackGravity == null|| CameraFunction == null)
->>>>>>> origin/Arai
         {
             Debug.LogError("GameClearSequence >> 使用するスクリプトが参照先にアタッチされていません");
             return false;
