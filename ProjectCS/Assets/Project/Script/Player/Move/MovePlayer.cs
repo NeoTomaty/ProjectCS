@@ -36,6 +36,8 @@ public class MovePlayer : MonoBehaviour
     // 移動速度の倍率
     [System.NonSerialized] public float MoveSpeedMultiplier = 1f; // PlayerSpeedManagerのスピード値を変えずに速度を変えたいため追加
 
+    private Rigidbody Rb;
+
     // 他のスクリプトから進行方向を設定するためのセッター
     public void SetMoveDirection(Vector3 NewDirection)
     {
@@ -58,6 +60,8 @@ public class MovePlayer : MonoBehaviour
         {
             Debug.LogWarning("LiftingJumpスクリプトがPlayerにアタッチされていません。");
         }
+
+        Rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -96,13 +100,21 @@ public class MovePlayer : MonoBehaviour
             else
             {
                 // 進行方向を取得し、その方向へ移動
-                transform.position += MoveDirection * PlayerSpeedManager.GetPlayerSpeed * MoveSpeedMultiplier * Time.deltaTime;
+                Rb.linearVelocity = new Vector3(MoveDirection.x * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.y * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.z * PlayerSpeedManager.GetPlayerSpeed);
             }
         }
         else
         {
             // 進行方向を取得し、その方向へ移動
-            transform.position += MoveDirection * PlayerSpeedManager.GetPlayerSpeed * MoveSpeedMultiplier * Time.deltaTime;
+            if (LiftingJump.IsLiftingPart)
+            {
+                Rb.linearVelocity = new Vector3(MoveDirection.x * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.y * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.z * PlayerSpeedManager.GetPlayerSpeed);
+            }
+            else
+            {
+                Rb.linearVelocity = new Vector3(MoveDirection.x * PlayerSpeedManager.GetPlayerSpeed, Rb.linearVelocity.y, MoveDirection.z * PlayerSpeedManager.GetPlayerSpeed);
+            }
+
         }
 
         // 向きを進行方向に合わせる
