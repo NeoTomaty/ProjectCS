@@ -16,7 +16,7 @@ public class FlyingPoint : MonoBehaviour
     [Header("必要な参照")]
     [SerializeField] private LiftingJump LiftingJump;
     [SerializeField] private GaugeController GaugeController;
-    [SerializeField] private Rigidbody PlayerRigidbody;
+    [SerializeField] private PlayerSpeedManager PlayerSpeed;
 
     [Header("スコア出力")]
     [SerializeField] private float Score;
@@ -30,7 +30,7 @@ public class FlyingPoint : MonoBehaviour
     // スコアを計算する関数
     public void CalculateScore()
     {
-        if (LiftingJump == null || GaugeController == null || PlayerRigidbody == null)
+        if (LiftingJump == null || GaugeController == null || PlayerSpeed == null)
         {
             Debug.LogWarning("PlayerScore：参照が不足しています");
             return;
@@ -39,13 +39,13 @@ public class FlyingPoint : MonoBehaviour
         float jumpPower = LiftingJump.GetJumpPower;
         float rawValue = GaugeController.GetGaugeValue;
         int gaugeScore = Mathf.Clamp(Mathf.CeilToInt(rawValue * 10f), 1, 10); // ゲージのポイントを1～10にする
-        float speed = PlayerRigidbody.linearVelocity.magnitude;
+        float speed = PlayerSpeed.GetPlayerSpeed;
 
         // スコア計算
-        float rawScore = (jumpPower + gaugeScore) * speed;
+        float rawScore = jumpPower * speed;
         Score = Mathf.Floor(rawScore); // 小数点以下を切り捨て
         totalScore += Score;
 
-        Debug.Log($"スコア加算: ({jumpPower} + {gaugeScore}) × {speed} = {Score} → 合計: {totalScore}");
+        Debug.Log($"スコア加算: {jumpPower} +  × {speed} = {Score} → 合計: {totalScore}");
     }
 }
