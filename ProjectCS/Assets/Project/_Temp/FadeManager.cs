@@ -10,22 +10,23 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.InputSystem.UI;
 
 public class FadeManager : MonoBehaviour
 {
-     public CanvasGroup fadeImage;
+    public CanvasGroup fadeImage;
     public float fadeDuration = 1f;
-    // 複数の PlayerInput を登録できるように
-    [SerializeField]
+
+    // シーン内の PlayerInput を動的に取得して管理する
     private List<PlayerInput> playerInputs = new List<PlayerInput>();
     public InputSystemUIInputModule uiInputModule;
 
     private static FadeManager instance;
     private bool isFading = false;
     private bool isInputBlocked = false;
+
     void Awake()
     {
         if (instance != null)
@@ -40,26 +41,34 @@ public class FadeManager : MonoBehaviour
 
     void Start()
     {
-        fadeImage.alpha = 1f; // 最初は黒く
+        fadeImage.alpha = 1f; // 最初は黒
         SceneManager.sceneLoaded += OnSceneLoaded;
-        StartCoroutine(FadeIn());
 
+        // 初期シーン内の入力取得
+        RefreshPlayerInputs();
+        RefreshUIInputModule();
+
+        StartCoroutine(FadeIn());
     }
 
     public void FadeToScene(string sceneName)
     {
         if (!isFading)
         {
+            RefreshPlayerInputs(); // 念のため
+            RefreshUIInputModule();
             StartCoroutine(FadeAndLoadScene(sceneName));
         }
     }
 
-   
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        StartCoroutine(FadeIn()); // 新しいシーンに入ったら明るくする
+        RefreshPlayerInputs();
+        RefreshUIInputModule();
+
+        StartCoroutine(FadeIn());
         isFading = false;
-        isInputBlocked = false; // フェードが終わったら入力を再開
+        isInputBlocked = false;
     }
 
     private IEnumerator FadeOut()
@@ -73,13 +82,11 @@ public class FadeManager : MonoBehaviour
             yield return null;
         }
         fadeImage.alpha = 1f;
-
-       
     }
 
     private IEnumerator FadeIn()
     {
-        float t = fadeDuration; 
+        float t = fadeDuration;
         EnableInput();
 
         while (t > 0f)
@@ -89,8 +96,6 @@ public class FadeManager : MonoBehaviour
             yield return null;
         }
         fadeImage.alpha = 0f;
-
-        
     }
 
     public IEnumerator FadeAndLoadScene(string sceneName)
@@ -98,16 +103,24 @@ public class FadeManager : MonoBehaviour
         isFading = true;
         isInputBlocked = true;
 
-        Time.timeScale = 1f; // ← ここで解除！
+        Time.timeScale = 1f;
 
         yield return StartCoroutine(FadeOut());
         SceneManager.LoadScene(sceneName);
     }
 
+    // そのシーンの PlayerInput を取得
+    private void RefreshPlayerInputs()
+    {
+        playerInputs.Clear();
+        playerInputs.AddRange(FindObjectsByType<PlayerInput>(FindObjectsSortMode.None));
+    }
 
-    // 入力を無効化するメソッド
-
-    // 入力を無効化
+    // そのシーンの UIInputModule を取得
+    private void RefreshUIInputModule()
+    {
+        uiInputModule = FindFirstObjectByType<InputSystemUIInputModule>();
+    }
     private void DisableInput()
     {
         foreach (var input in playerInputs)
@@ -115,11 +128,11 @@ public class FadeManager : MonoBehaviour
             if (input != null)
                 input.enabled = false;
         }
+
         if (uiInputModule != null)
-            uiInputModule.enabled = false; // UI無効化
+            uiInputModule.enabled = false;
     }
 
-    // 入力を有効化
     private void EnableInput()
     {
         foreach (var input in playerInputs)
@@ -129,14 +142,12 @@ public class FadeManager : MonoBehaviour
         }
 
         if (uiInputModule != null)
-            uiInputModule.enabled = true; // UI有効化
+            uiInputModule.enabled = true;
     }
 
-    // 入力がブロックされているかどうかを確認するためのメソッド
     public bool IsInputBlocked()
     {
         return isInputBlocked;
     }
 }
-
 

@@ -25,11 +25,10 @@ public class StageSelectManager : MonoBehaviour
     }
 
     [Header("Audio")]
-    public AudioSource audioSource;          // ← Inspectorでアサイン
-
-    public AudioClip selectSE;               // ← 選択音SE（カーソル移動など）
-    public AudioClip enterSE;                // ← 決定音SE（ステージ突入）
-    public AudioClip cancelSE;               // ← キャンセル音SE（戻る）
+    public AudioSource audioSource;
+    public AudioClip selectSE;
+    public AudioClip enterSE;
+    public AudioClip cancelSE;
 
     public StageData[] stages;
     public Transform cameraTransform;
@@ -37,50 +36,40 @@ public class StageSelectManager : MonoBehaviour
 
     public float playerMoveSpeed = 3f;
     public float cameraFollowSpeed = 5f;
-    public float stageEnterDistance = 2f;
 
     private int currentIndex = 0;
     private bool isAutoMoving = false;
     private Vector3 autoMoveTarget;
 
-    private int touchingStageIndex = -1; // プレイヤーが現在触れているステージ（なければ -1）
+    private int touchingStageIndex = -1;
 
-    public FadeController fadeController; // ← Inspectorにアサイン
-    public string backSceneName = "TitleScene"; // ← ESCで戻る用
+    public string backSceneName = "TitleScene";
 
-    private bool isInputLocked = false; // ← 追加
+    private bool isInputLocked = false;
 
     [SerializeField] private PauseManager pauseManager;
+
+    private float inputCooldownAfterUnpause = 0.2f;
+    private float unpauseTimer = 0f;
+    private bool wasPausedLastFrame = false;
 
     private void Start()
     {
         MovePlayerToStageInstant(currentIndex);
         UpdateStageLabels();
-
-        // フェードイン（開始時）
-        if (fadeController != null)
-        {
-            fadeController.FadeIn();
-        }
+        // FadeManagerが自動でFadeInしてくれるので不要
     }
-
-    private float inputCooldownAfterUnpause = 0.2f; // ポーズ解除後に待つ時間（秒）
-    private float unpauseTimer = 0f;
-    private bool wasPausedLastFrame = false;
 
     private void Update()
     {
-        // ポーズ状態の取得
         bool isPaused = pauseManager != null && pauseManager.IsPaused();
 
-        // ポーズ解除された直後ならタイマー開始
         if (wasPausedLastFrame && !isPaused)
         {
             unpauseTimer = inputCooldownAfterUnpause;
         }
         wasPausedLastFrame = isPaused;
 
-        // クールタイム中は入力無効
         if (unpauseTimer > 0f)
         {
             unpauseTimer -= Time.deltaTime;
@@ -110,21 +99,15 @@ public class StageSelectManager : MonoBehaviour
 
     private bool IsSubmitPressed()
     {
-        bool keyboardSubmit = Keyboard.current != null &&
-            (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame);
-
-        bool gamepadSubmit = Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame; // Aボタン
-
-        return keyboardSubmit || gamepadSubmit;
+        return (Keyboard.current != null &&
+                (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame)) ||
+               (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame);
     }
 
     private bool IsCancelPressed()
     {
-        bool keyboardCancel = Keyboard.current != null && Keyboard.current.backspaceKey.wasPressedThisFrame;
-
-        bool gamepadCancel = Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame; // Bボタン
-
-        return keyboardCancel || gamepadCancel;
+        return (Keyboard.current != null && Keyboard.current.backspaceKey.wasPressedThisFrame) ||
+               (Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame);
     }
 
     private void UpdateCurrentStageByProximity()
@@ -154,33 +137,23 @@ public class StageSelectManager : MonoBehaviour
 
     private void HandleTriggerSelection()
     {
-        if (Gamepad.current == null) return;
+        if (Gamepad.current == null && !Keyboard.current.rightArrowKey.wasPressedThisFrame && !Keyboard.current.leftArrowKey.wasPressedThisFrame)
+            return;
 
-        if (Gamepad.current.dpad.left.wasPressedThisFrame)
+        if ((Gamepad.current != null && Gamepad.current.dpad.left.wasPressedThisFrame) ||
+            Input.GetKeyDown(KeyCode.LeftArrow))
         {
             currentIndex = (currentIndex - 1 + stages.Length) % stages.Length;
             StartAutoMoveToStage(currentIndex);
-            PlaySE(selectSE); // ★効果音再生
+            PlaySE(selectSE);
         }
 
-        if (Gamepad.current.dpad.right.wasPressedThisFrame)
+        if ((Gamepad.current != null && Gamepad.current.dpad.right.wasPressedThisFrame) ||
+            Input.GetKeyDown(KeyCode.RightArrow))
         {
             currentIndex = (currentIndex + 1) % stages.Length;
             StartAutoMoveToStage(currentIndex);
-            PlaySE(selectSE); // ★効果音再生
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            currentIndex = (currentIndex + 1) % stages.Length;
-            StartAutoMoveToStage(currentIndex);
-            PlaySE(selectSE); // ★効果音再生
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            currentIndex = (currentIndex - 1 + stages.Length) % stages.Length;
-            StartAutoMoveToStage(currentIndex);
-            PlaySE(selectSE); // ★効果音再生
+            PlaySE(selectSE);
         }
     }
 
@@ -194,17 +167,8 @@ public class StageSelectManager : MonoBehaviour
             Vector3 move = new Vector3(h, 0, 0);
             Vector3 nextPos = playerTransform.position + move.normalized * playerMoveSpeed * Time.deltaTime;
 
-            // 前方にWallタグがあれば進めない
             Ray ray = new Ray(playerTransform.position, move.normalized);
-            if (!Physics.Raycast(ray, out RaycastHit hit, 0.6f))
-            {
-                playerTransform.position = nextPos;
-            }
-            else if (hit.collider.CompareTag("Wall"))
-            {
-                // Wall に当たったので移動しない
-            }
-            else
+            if (!Physics.Raycast(ray, out RaycastHit hit, 0.6f) || !hit.collider.CompareTag("Wall"))
             {
                 playerTransform.position = nextPos;
             }
@@ -218,7 +182,7 @@ public class StageSelectManager : MonoBehaviour
         if (!isAutoMoving) return;
 
         Vector3 dir = autoMoveTarget - playerTransform.position;
-        dir.y = 0; // 高さは無視
+        dir.y = 0;
         float dist = dir.magnitude;
 
         if (dist > 0.05f)
@@ -235,15 +199,13 @@ public class StageSelectManager : MonoBehaviour
 
     private void CancelAndGoBack()
     {
-        isInputLocked = true; // ← 操作ロック
+        isInputLocked = true;
         PlaySE(cancelSE);
 
-        if (fadeController != null)
+        FadeManager fade = FindFirstObjectByType<FadeManager>();
+        if (fade != null)
         {
-            fadeController.FadeOut(() =>
-            {
-                SceneManager.LoadScene(backSceneName);
-            });
+            fade.FadeToScene(backSceneName);
         }
         else
         {
@@ -262,7 +224,7 @@ public class StageSelectManager : MonoBehaviour
         autoMoveTarget = new Vector3(
             stages[index].stageTransform.position.x,
             playerTransform.position.y,
-            playerTransform.position.z // Z方向には移動しない（横移動のみ）
+            playerTransform.position.z
         );
         isAutoMoving = true;
         HideAllLabels();
@@ -281,18 +243,16 @@ public class StageSelectManager : MonoBehaviour
     {
         if (touchingStageIndex >= 0 && touchingStageIndex < stages.Length)
         {
-            isInputLocked = true; // ← 操作ロック
+            isInputLocked = true;
             PlaySE(enterSE);
 
             string sceneName = stages[touchingStageIndex].sceneName;
             if (!string.IsNullOrEmpty(sceneName))
             {
-                if (fadeController != null)
+                FadeManager fade = FindFirstObjectByType<FadeManager>();
+                if (fade != null)
                 {
-                    fadeController.FadeOut(() =>
-                    {
-                        SceneManager.LoadScene(sceneName);
-                    });
+                    fade.FadeToScene(sceneName);
                 }
                 else
                 {
@@ -303,19 +263,6 @@ public class StageSelectManager : MonoBehaviour
         else
         {
             Debug.Log("どのステージにも接触していません");
-        }
-    }
-
-    private void LoadSelectedStage()
-    {
-        string sceneName = stages[currentIndex].sceneName;
-        if (!string.IsNullOrEmpty(sceneName))
-        {
-            SceneManager.LoadScene(sceneName);
-        }
-        else
-        {
-            Debug.LogWarning("Scene name is empty for stage " + currentIndex);
         }
     }
 
@@ -348,7 +295,7 @@ public class StageSelectManager : MonoBehaviour
             if (other == stages[i].stageCollider)
             {
                 touchingStageIndex = i;
-                UpdateStageLabels(); // ←★ ラベル更新
+                UpdateStageLabels();
                 return;
             }
         }
@@ -361,7 +308,7 @@ public class StageSelectManager : MonoBehaviour
             if (other == stages[i].stageCollider && touchingStageIndex == i)
             {
                 touchingStageIndex = -1;
-                UpdateStageLabels(); // ←★ 非表示に更新
+                UpdateStageLabels();
                 return;
             }
         }

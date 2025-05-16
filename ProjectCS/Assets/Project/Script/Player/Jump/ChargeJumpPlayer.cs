@@ -277,7 +277,7 @@ public class ChargeJumpPlayer : MonoBehaviour
                     case PlayerStateManager.LiftingState.Normal:
 
                         // í èÌÉWÉÉÉìÉv
-                        rb.AddForce(Vector3.up * baseJumpForce, ForceMode.Impulse);
+                        rb.AddForce(Vector3.up * NormalJumpForce, ForceMode.Impulse);
 
                         break;
                     case PlayerStateManager.LiftingState.LiftingPart:
