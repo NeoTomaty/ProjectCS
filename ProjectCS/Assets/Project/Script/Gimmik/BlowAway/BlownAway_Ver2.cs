@@ -197,6 +197,7 @@ public class BlownAway_Ver2 : MonoBehaviour
         // クリア演出時にスナックが吹っ飛ぶ速度を固定化
         if (!IsRespawn)
         {
+            GetComponent<ObjectGravity>().IsActive = false;
             ForceDirection = Vector3.up * OnClearSnackSpeed;
         }
 
