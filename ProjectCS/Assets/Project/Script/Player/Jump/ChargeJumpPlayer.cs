@@ -22,6 +22,8 @@ public class ChargeJumpPlayer : MonoBehaviour
 
     [SerializeField] private float groundCheckRadius = 0.2f;
 
+    [SerializeField] private float NormalJumpForce = 10.0f;
+
     [Header("ジャンプ倍率設定")]
     [SerializeField] private float ChargeBluePower = 1.0f; // 押してる間は0.8倍！
     [SerializeField] private float ChargeYellowPower = 1.5f; // 押してる間は0.8倍！
@@ -58,6 +60,10 @@ public class ChargeJumpPlayer : MonoBehaviour
     private LiftingJump LiftingJump;
 
     public float JumpPower = 0.0f;
+
+    [SerializeField] private float chargeThresholdTime = 0.3f; // 追加：0.3秒以上でチャージ開始
+    private float jumpButtonHoldTime = 0.0f;
+    private bool isJumpButtonPressed = false;
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -95,23 +101,31 @@ public class ChargeJumpPlayer : MonoBehaviour
     {
         isGrounded = CheckIfGrounded();
 
+        if (isJumpButtonPressed)
+        {
+            jumpButtonHoldTime += Time.deltaTime;
+
+            if (!isCharging && jumpButtonHoldTime >= chargeThresholdTime)
+            {
+                StartCharging(); // 0.3秒超えたらチャージ開始
+            }
+        }
+
         if (isCharging)
         {
             chargeTimer += Time.deltaTime;
 
             if (!isOverheated && chargeTimer < overheatTime)
             {
-                // ボタン押している間は常に0.8倍
                 float targetSpeed = originalSpeed * chargingSpeedMultiplier;
                 SetSpeedDirectly(targetSpeed);
             }
             else if (chargeTimer >= overheatTime)
             {
-                // オーバーヒート到達
                 isOverheated = true;
-                // もう速度はいじらない（押し続けてもそのまま）
                 chargeEffectInstance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             }
+
             UpdateChargeEffect();
         }
     }
@@ -140,10 +154,7 @@ public class ChargeJumpPlayer : MonoBehaviour
             isCharging = false;
             isOverheated = false;
 
-            //if (speedManager != null)
-            //{
-            //    SetSpeedDirectly(originalSpeed); // スピードも元に戻す
-            //}
+          
             return;
         }
 
@@ -210,55 +221,79 @@ public class ChargeJumpPlayer : MonoBehaviour
         }
     }
 
+    // 0.3秒超えたら呼ばれるチャージ開始処理
+    private void StartCharging()
+    {
+        isCharging = true;
+        chargeTimer = 0.0f;
+
+        if (chargeEffectPrefab != null)
+        {
+            if (chargeEffectInstance == null)
+            {
+                chargeEffectInstance = Instantiate(chargeEffectPrefab, transform);
+                chargeEffectInstance.transform.localPosition = Vector3.zero;
+            }
+
+            chargeEffectInstance.Play();
+        }
+
+        Debug.Log("チャージ開始");
+    }
+
+
     // 押した瞬間（チャージ開始）
+    // ジャンプボタン押したとき
     private void OnJumpStarted(InputAction.CallbackContext context)
     {
-     
         if (isGrounded)
         {
-            isCharging = true;
-            chargeTimer = 0.0f;
+            isJumpButtonPressed = true;
+            jumpButtonHoldTime = 0.0f;
             isOverheated = false;
-            originalSpeed = speedManager.GetPlayerSpeed; // 押した時の速度を保存
-            Debug.Log("チャージ開始");
-
-            if (chargeEffectPrefab != null)
-            {
-                if (chargeEffectInstance == null)
-                {
-                    // まだインスタンス作ってなかったら作る
-                    chargeEffectInstance = Instantiate(chargeEffectPrefab, transform);
-                    chargeEffectInstance.transform.localPosition = Vector3.zero;
-                }
-
-                chargeEffectInstance.Play();
-            }
+            originalSpeed = speedManager.GetPlayerSpeed;
         }
     }
 
-    // 離した瞬間（ジャンプする）
+    // ジャンプボタン離したとき
     private void OnJumpCanceled(InputAction.CallbackContext context)
     {
+        isJumpButtonPressed = false;
+
         if (isCharging)
         {
             if (isGrounded)
             {
-                Jump(); // ここでジャンプ！！
+                Jump(); // チャージジャンプ
             }
-            else
+        }
+        else
+        {
+            if (isGrounded)
             {
-                // 空中でボタン離したらリセットだけ
-                chargeTimer = 0.0f;
-                isCharging = false;
-                isOverheated = false;
-                if (chargeEffectInstance != null)
+                float jumpMultiplier = 1.0f;
+                switch (PlayerStateManager.GetLiftingState())
                 {
-                    chargeEffectInstance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                    ResetChargeEffect();
+                    case PlayerStateManager.LiftingState.Normal:
+
+                        // 通常ジャンプ
+                        rb.AddForce(Vector3.up * baseJumpForce, ForceMode.Impulse);
+
+                        break;
+                    case PlayerStateManager.LiftingState.LiftingPart:
+                        // リフティング状態
+                        LiftingJump.SetJumpPower(jumpMultiplier);
+                        LiftingJump.StartLiftingJump();
+                        break;
+
                 }
             }
         }
+
+        // リセット処理
+        ResetChargeState();
     }
+
 
     private void SetSpeedDirectly(float newSpeed)
     {
@@ -320,5 +355,19 @@ public class ChargeJumpPlayer : MonoBehaviour
         main.startColor = Color.cyan; // 最初はシアンに戻す
 
         chargeEffectInstance.transform.localScale = Vector3.one * 2.0f; // サイズも戻す
+    }
+
+    private void ResetChargeState()
+    {
+        chargeTimer = 0.0f;
+        isCharging = false;
+        isOverheated = false;
+        jumpButtonHoldTime = 0.0f;
+
+        if (chargeEffectInstance != null)
+        {
+            chargeEffectInstance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            ResetChargeEffect();
+        }
     }
 }
