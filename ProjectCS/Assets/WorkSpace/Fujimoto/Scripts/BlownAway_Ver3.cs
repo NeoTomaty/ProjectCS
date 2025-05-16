@@ -164,6 +164,8 @@ public class BlownAway_Ver3 : MonoBehaviour
             }
         }
 
+        flyingPoint.CalculateScore();
+
         // ヒットストップを開始する
         StartCoroutine(HitStop());
 

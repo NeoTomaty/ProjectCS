@@ -398,6 +398,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1846973854}
+    - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1846973859}
   m_SourcePrefab: {fileID: 100100000, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
 --- !u!1 &243426634
 GameObject:
@@ -1408,6 +1411,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d3696323af0ba46adc1b7d1bb3eab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &1007991447 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 7594584885162362816, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+  m_PrefabInstance: {fileID: 407104758}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1073458115 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9212668309795385399, guid: c24c078e66ef09546b7057196da77511, type: 3}
@@ -2326,7 +2334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321b60a12d3698f4e87a587064b56429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 500
+  launchForce: 1450
 --- !u!114 &1846973849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2353,20 +2361,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitStopTime: 0.5
-  baseForce: 100
-  forcePerLift: 100
+  baseForce: 500
+  forcePerLift: 50
   MinUpwardForce: 0
   MaxUpwardForce: 0
   MinRandomXYRange: 0
   MaxRandomXYRange: 0
   MinFallSpeed: 0
-  MaxFallSpeed: 30
+  MaxFallSpeed: 50
   RespawnArea: {fileID: 1073458115}
   LiftingJump: {fileID: 1007991430}
   GroundArea: {fileID: 1073458115}
   CameraFunction: {fileID: 946110165}
-  flyingPoint: {fileID: 0}
+  flyingPoint: {fileID: 1846973859}
   ClearConditionsScript: {fileID: 1473430702}
+--- !u!114 &1846973859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846973834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf28563d99dcaa44aae3f7bc4de7f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LiftingJump: {fileID: 1007991430}
+  GaugeController: {fileID: 667970409}
+  PlayerRigidbody: {fileID: 1007991447}
+  Score: 0
+  totalScore: 0
 --- !u!1 &1856113165
 GameObject:
   m_ObjectHideFlags: 0
