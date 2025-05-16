@@ -67,7 +67,7 @@ public class OptionManager : MonoBehaviour
         // volumeSetting ‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡‚Ì‚İ”½‰f
         if (volumeSetting != null)
         {
-            volumeSetting.SetVolume(volumeSlider.value);
+            volumeSetting.SetBGMVolume(volumeSlider.value);
         }
 
         // cameraFunction ‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡‚Ì‚İ”½‰f
@@ -92,17 +92,14 @@ public class OptionManager : MonoBehaviour
             if (isAdjustingVolume)
             {
                 volumeSlider.value = Mathf.Clamp(volumeSlider.value + direction * moveAmount, 0.0f, volumeSlider.maxValue);
-<<<<<<< HEAD
-                
-                volumeSetting.SetBGMVolume(volumeSlider.value);
-=======
+
                 GameSettingsManager.Instance.SetVolume(volumeSlider.value); // •Û‘¶
                 if (volumeSetting != null)
                 {
-                    volumeSetting.SetVolume(volumeSlider.value);
+                    volumeSetting.SetBGMVolume(volumeSlider.value);
                 }
                 Debug.Log($"Volume: {volumeSlider.value}");
->>>>>>> origin/Moriwaki
+
             }
             else if (isAdjustingSensitivity)
             {
