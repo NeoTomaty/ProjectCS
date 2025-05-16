@@ -708,7 +708,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2849093543017307252, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: overheatTime
-      value: 0.8
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2849093543017307252, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: baseJumpForce
@@ -716,15 +716,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2849093543017307252, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: chargeRedTime
-      value: 0.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2849093543017307252, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: chargeYellowTime
       value: 0.5
       objectReference: {fileID: 0}
+<<<<<<< HEAD
     - target: {fileID: 2849093543017307252, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: chargeThresholdTime
       value: 0.2
+=======
+    - target: {fileID: 2946462142280788705, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+      propertyPath: TurnSmooth
+      value: 3
+>>>>>>> 03eb97c3c470111863eb69026923d140caf82f44
       objectReference: {fileID: 0}
     - target: {fileID: 3659676806870951451, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: IsInputEnabled
@@ -1671,7 +1677,7 @@ MonoBehaviour:
   Distance: 7
   MaxCameraHeight: 5
   MinCameraHeight: 3
-  DefaultRotationSpeed: 50
+  DefaultRotationSpeed: 250
   VerticalMin: -80
   VerticalMax: 80
   AutoCorrectSpeed: 1.5
@@ -2384,6 +2390,10 @@ PrefabInstance:
       propertyPath: offset.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5982959382606716176, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
+      propertyPath: toggleHeight
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 7775454700796400270, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2434,19 +2444,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8072429509422537424, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8072429509422537424, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
-      propertyPath: m_NormalizedViewPortRect.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8072429509422537424, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
+      propertyPath: m_NormalizedViewPortRect.y
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 8072429509422537424, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
-      value: 0.2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8072429509422537424, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 0.3
+      value: 0.12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
