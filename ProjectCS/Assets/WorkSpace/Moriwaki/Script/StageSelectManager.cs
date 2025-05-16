@@ -50,6 +50,8 @@ public class StageSelectManager : MonoBehaviour
 
     private bool isInputLocked = false; // ← 追加
 
+    [SerializeField] private PauseManager pauseManager;
+
     private void Start()
     {
         MovePlayerToStageInstant(currentIndex);
@@ -62,23 +64,47 @@ public class StageSelectManager : MonoBehaviour
         }
     }
 
+    private float inputCooldownAfterUnpause = 0.2f; // ポーズ解除後に待つ時間（秒）
+    private float unpauseTimer = 0f;
+    private bool wasPausedLastFrame = false;
+
     private void Update()
     {
-        if (isInputLocked) return;// ← 入力ロック中は何もしない
+        // ポーズ状態の取得
+        bool isPaused = pauseManager != null && pauseManager.IsPaused();
 
-        HandleTriggerSelection();
-        HandlePlayerInput();
-        HandleAutoMove();
-        HandleCameraFollow();
-
-        if (IsSubmitPressed())
+        // ポーズ解除された直後ならタイマー開始
+        if (wasPausedLastFrame && !isPaused)
         {
-            TryEnterStage();
+            unpauseTimer = inputCooldownAfterUnpause;
+        }
+        wasPausedLastFrame = isPaused;
+
+        // クールタイム中は入力無効
+        if (unpauseTimer > 0f)
+        {
+            unpauseTimer -= Time.deltaTime;
+            return;
         }
 
-        if (IsCancelPressed())
+        if (isInputLocked) return;
+
+        if (!isPaused)
         {
-            CancelAndGoBack();
+            HandleTriggerSelection();
+            HandlePlayerInput();
+            HandleAutoMove();
+            HandleCameraFollow();
+
+            if (IsSubmitPressed())
+            {
+                TryEnterStage();
+            }
+
+            if (IsCancelPressed())
+            {
+                CancelAndGoBack();
+            }
         }
     }
 
