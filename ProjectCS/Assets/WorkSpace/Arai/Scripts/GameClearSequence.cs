@@ -8,9 +8,10 @@
 // 05/10　荒井　OnGameClear関数に戻り値を追加
 // 05/11　荒井　カメラがスナックを追跡する処理を追加
 // 05/12　荒井　一連の流れを仮実装
-// 05/16　荒井　スコア表示等への対応準備仮完了
+// 05/16　荒井　スコア表示等に対応
 //======================================================
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 // クリア演出を制御するスクリプト
@@ -18,7 +19,7 @@ public class GameClearSequence : MonoBehaviour
 {
     [Header("参照")]
     [SerializeField] private ClearConditions ClearConditions;   // シーン遷移を管理するスクリプト
-    //[SerializeField] private FlyingPoint FlyingPoint;           // スコアを管理するスクリプト
+    [SerializeField] private FlyingPoint FlyingPoint;           // スコアを管理するスクリプト
     [SerializeField] private GameObject ClearUI;                // クリア演出のUI
     [SerializeField] private GameObject PlayerObject;           // プレイヤーオブジェクト
     [SerializeField] private GameObject SnackObject;            // スナックオブジェクト
@@ -33,12 +34,14 @@ public class GameClearSequence : MonoBehaviour
     [Header("星の設定")]
     [SerializeField] private float StarHeight = 300f; // 星の高さ
     [SerializeField] private float StarToStarDistance = 200f; // 星と星の距離
-    //[SerializeField] private int[] StarScoreThresholdArray; // スコアの閾値
+    [SerializeField] private int[] StarScoreThresholdArray; // スコアの閾値
 
     [Header("スナックの速度")]
     [SerializeField] private int SnackSpeed = 700;
 
     private GameObject ClearBackImage;
+
+    private PlayerInput PlayerInput; // プレイヤーの入力を管理するcomponent
 
     // スコア
     private float Score = 0f;
@@ -86,12 +89,14 @@ public class GameClearSequence : MonoBehaviour
             return false;
         }
 
+        PlayerInput.actions.Disable(); // 入力を無効にする
+
         ClearBackImage = ClearUI.transform.GetChild(0).gameObject;
         ClearBackImage.SetActive(true);
 
-        //Score = FlyingPoint.TotalScore;
-        //Text ScoreText = ClearUI.transform.GetChild(2).GetComponent<Text>();
-        //ScoreText.text = "スコア：" + Score.ToString();
+        Score = FlyingPoint.TotalScore;
+        Text ScoreText = ClearUI.transform.GetChild(2).GetComponent<Text>();
+        ScoreText.text = "スコア：" + Score.ToString();
 
         // スナックのリスポーンを無効化
         BlownAway.OnClear(SnackSpeed);
@@ -105,15 +110,12 @@ public class GameClearSequence : MonoBehaviour
 
         // 星を配置する
         Vector3 StarPos = SnackObject.transform.position;
-        StarPos.y = StarHeight; // スナックの上に星を配置
-        GameObject StarClone = Instantiate(StarObject, StarPos, Quaternion.identity);
-        //Vector3 StarPos = SnackObject.transform.position;
-        //for (int i = 0; i < StarScoreThresholdArray.Length; i++)
-        //{
-        //    // スコアの閾値の数だけ星を配置
-        //    StarPos.y = StarHeight + (StarToStarDistance * i); // スナックの上に星を配置
-        //    GameObject StarClone = Instantiate(StarObject, StarPos, Quaternion.identity);
-        //}
+        for (int i = 0; i < StarScoreThresholdArray.Length; i++)
+        {
+            // スコアの閾値の数だけ星を配置
+            StarPos.y = StarHeight + (StarToStarDistance * i); // スナックの上に星を配置
+            GameObject StarClone = Instantiate(StarObject, StarPos, Quaternion.identity);
+        }
 
         // クリア演出中フラグを立てる
         IsClearSequence = true;
@@ -121,6 +123,10 @@ public class GameClearSequence : MonoBehaviour
         return true;
     }
 
+    private void Awake()
+    {
+        PlayerInput = PlayerObject.GetComponent<PlayerInput>();
+    }
     private void Start()
     {
         ClearUI.transform.GetChild(0).gameObject.SetActive(false);
@@ -139,6 +145,7 @@ public class GameClearSequence : MonoBehaviour
         // 演出が終わってから入力受付
         if (IsUIVisible && Input.anyKeyDown)
         {
+            Time.timeScale = 1.0f;
             ClearConditions.TriggerSceneTransition();
         }
 
@@ -195,15 +202,14 @@ public class GameClearSequence : MonoBehaviour
         // クリア演出中のUIを表示
         Vector3 SnackPos = SnackObject.transform.position;
 
-        //// UIを表示するスナックのY座標を計算
-        //float PosY = 100f;
-        //if (StarScoreThresholdArray.Length > 0)
-        //{
-        //    PosY += 300f + ((StarScoreThresholdArray.Length - 1) * StarToStarDistance);
-        //}
+        // UIを表示するスナックのY座標を計算
+        float PosY = 100f;
+        if (StarScoreThresholdArray.Length > 0)
+        {
+            PosY += 300f + ((StarScoreThresholdArray.Length - 1) * StarToStarDistance);
+        }
 
-        //if (!IsUIVisible && SnackPos.y > PosY)
-        if (!IsUIVisible && SnackPos.y > 600f)
+        if (!IsUIVisible && SnackPos.y > PosY)
         {
             if (!IsBackVisible)
             {
