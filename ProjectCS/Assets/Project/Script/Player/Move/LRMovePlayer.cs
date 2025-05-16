@@ -9,20 +9,26 @@
 // 04/01 コントローラー操作追加
 // 04/08 左右移動を速度に依存させる
 // 04/23 高下 入力に関する仕様変更(PlayerInput(InputActionAsset))
+// 05/15 竹内 カメラの前方向に依存した左右移動に変更
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class LRMovePlayer : MonoBehaviour
 {
+    [Header("コード内で参照するもの")]
     public PlayerSpeedManager PlayerSpeedManager; // 速度管理クラス
     public MovePlayer MovePlayer; // プレイヤー移動クラス
 
-    [SerializeField] private float TurnSpeed = 100.0f;  // カーブの回転速度
-    [SerializeField] private float TurnResponse = 1.0f; // カーブのしやすさ
+    [Header("カーブのしやすさ")]
+    [SerializeField] private float TurnSmooth = 10.0f;  // カーブのしやすさ
 
     private PlayerInput PlayerInput; // プレイヤーの入力を管理するcomponent
     private InputAction TurnAction;  // 左右移動用のInputAction
+
+    // プレイヤーの左右移動方向を示す変数
+    float moveX;
+
     private void Awake()
     {
         // 自分にアタッチされているPlayerInputを取得
@@ -41,20 +47,22 @@ public class LRMovePlayer : MonoBehaviour
 
     void Update()
     {
+        moveX = TurnAction.ReadValue<float>();
+    }
+
+
+    void FixedUpdate()
+    {
         if (PlayerSpeedManager == null) return;
 
         // 速度を取得
         float speed = PlayerSpeedManager.GetPlayerSpeed;
 
-        // 速度が速いほどカーブしにくくする
-        //float rotationAmount = (TurnSpeed / Mathf.Max(speed, 1)) * Time.deltaTime;
 
         // 現在の速度に応じて曲がりやすくする
         // カーブ量 = 回転速度 × 速度 × deltaTime
-        float rotationAmount = TurnSpeed * (speed * TurnResponse) * Time.deltaTime;
+        float rotationAmount = speed * TurnSmooth * Time.deltaTime;
 
-        // プレイヤーの左右移動方向を示す変数
-        float moveX = TurnAction.ReadValue<float>();
 
         // 回転処理（左右）
         if (Mathf.Abs(moveX) > 0.1f)    // 絶対値より大きな値の場合
@@ -63,15 +71,5 @@ public class LRMovePlayer : MonoBehaviour
             MovePlayer.SetMoveDirection(Quaternion.Euler(0, angle, 0) * MovePlayer.GetMoveDirection);
         }
 
-        //// 左カーブ
-        //if (moveX < -0.1f)
-        //{
-        //    MovePlayer.SetMoveDirection(Quaternion.Euler(0, -rotationAmount, 0) * MovePlayer.GetMoveDirection);
-        //}
-        //// 右カーブ
-        //if (moveX > 0.1f)
-        //{
-        //    MovePlayer.SetMoveDirection(Quaternion.Euler(0, rotationAmount, 0) * MovePlayer.GetMoveDirection);
-        //}
     }
 }
