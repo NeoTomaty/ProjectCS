@@ -1,22 +1,24 @@
 //======================================================
 // [GameClearSequence]
 // 作成者：荒井修
-// 最終更新日：05/12
+// 最終更新日：05/16
 // 
 // [Log]
 // 05/08　荒井　仮のクリア演出を作成
 // 05/10　荒井　OnGameClear関数に戻り値を追加
 // 05/11　荒井　カメラがスナックを追跡する処理を追加
 // 05/12　荒井　一連の流れを仮実装
+// 05/16　荒井　スコア表示等への対応準備仮完了
 //======================================================
 using UnityEngine;
+using UnityEngine.UI;
 
 // クリア演出を制御するスクリプト
 public class GameClearSequence : MonoBehaviour
 {
     [Header("参照")]
     [SerializeField] private ClearConditions ClearConditions;   // シーン遷移を管理するスクリプト
-    //[SerializeField] private PlayerScore PlayerScore;           // スコアを管理するスクリプト
+    //[SerializeField] private FlyingPoint FlyingPoint;           // スコアを管理するスクリプト
     [SerializeField] private GameObject ClearUI;                // クリア演出のUI
     [SerializeField] private GameObject PlayerObject;           // プレイヤーオブジェクト
     [SerializeField] private GameObject SnackObject;            // スナックオブジェクト
@@ -33,8 +35,17 @@ public class GameClearSequence : MonoBehaviour
     [SerializeField] private float StarToStarDistance = 200f; // 星と星の距離
     //[SerializeField] private int[] StarScoreThresholdArray; // スコアの閾値
 
+    [Header("スナックの速度")]
+    [SerializeField] private int SnackSpeed = 700;
+
+    private GameObject ClearBackImage;
+
+    // スコア
+    private float Score = 0f;
+
     // クリア後タイマー
     private float AfterTimer = 0f;
+    private float UITimer = 0f;
 
     // クリア演出中フラグ
     private bool IsClearSequence = false;
@@ -44,6 +55,9 @@ public class GameClearSequence : MonoBehaviour
 
     // UI表示フラグ
     private bool IsUIVisible = false;
+
+    // 背景表示フラグ
+    private bool IsBackVisible = false;
 
     // カメラ追跡フラグ
     private bool IsCameraStop = false;
@@ -58,21 +72,28 @@ public class GameClearSequence : MonoBehaviour
             return false;
         }
 
-        PlayerSpeedManager PlayerSpeedManager = PlayerObject.GetComponent<PlayerSpeedManager>();
+        MovePlayer MovePlayer = PlayerObject.GetComponent<MovePlayer>();
 
         BlownAway_Ver2 BlownAway = SnackObject.GetComponent<BlownAway_Ver2>();
         ObjectGravity SnackGravity = SnackObject.GetComponent<ObjectGravity>();
 
         CameraFunction CameraFunction = CameraObject.GetComponent<CameraFunction>();
 
-        if (PlayerSpeedManager == null ||BlownAway == null || SnackGravity == null|| CameraFunction == null)
+        if (MovePlayer == null ||BlownAway == null || SnackGravity == null|| CameraFunction == null)
         {
             Debug.LogError("GameClearSequence >> 使用するスクリプトが参照先にアタッチされていません");
             return false;
         }
 
+        ClearBackImage = ClearUI.transform.GetChild(0).gameObject;
+        ClearBackImage.SetActive(true);
+
+        //Score = FlyingPoint.TotalScore;
+        //Text ScoreText = ClearUI.transform.GetChild(2).GetComponent<Text>();
+        //ScoreText.text = "スコア：" + Score.ToString();
+
         // スナックのリスポーンを無効化
-        BlownAway.OnClear();
+        BlownAway.OnClear(SnackSpeed);
 
         // CameraFunctionを無効化
         CameraFunction.enabled = false;
@@ -101,7 +122,9 @@ public class GameClearSequence : MonoBehaviour
 
     private void Start()
     {
-        ClearUI.SetActive(false);
+        ClearUI.transform.GetChild(0).gameObject.SetActive(false);
+        ClearUI.transform.GetChild(1).gameObject.SetActive(false);
+        ClearUI.transform.GetChild(2).gameObject.SetActive(false);
     }
 
     void Update()
@@ -112,7 +135,8 @@ public class GameClearSequence : MonoBehaviour
         AfterTimer += Time.deltaTime;
 
         // キー・ボタン入力でシーン遷移
-        if (Input.anyKeyDown)
+        // 演出が終わってから入力受付
+        if (IsUIVisible && Input.anyKeyDown)
         {
             ClearConditions.TriggerSceneTransition();
         }
@@ -148,18 +172,18 @@ public class GameClearSequence : MonoBehaviour
         //Vector3 TargetFocus = Vector3.Lerp(CameraObject.transform.position, SnackObject.transform.position, FocusTime);
         //CameraObject.transform.LookAt(TargetFocus);
 
-        // 傾き
-        float TiltTime = AfterTimer * 1f;
-        TiltTime = Mathf.Clamp01(TiltTime);
-        float CurrentTiltAngle = Mathf.LerpAngle(0f, CameraTiltAngle, TiltTime);
-        CameraObject.transform.Rotate(0f, 0f, CurrentTiltAngle);
+        //// 傾き
+        //float TiltTime = AfterTimer * 1f;
+        //TiltTime = Mathf.Clamp01(TiltTime);
+        //float CurrentTiltAngle = Mathf.LerpAngle(0f, CameraTiltAngle, TiltTime);
+        //CameraObject.transform.Rotate(0f, 0f, CurrentTiltAngle);
 
 
         // スナックを吹っ飛ばした後プレイヤーを停止
         if (!IsPlayerStop && AfterTimer > 0.1f)
         {
             // プレイヤーの移動速度を0にする
-            PlayerObject.GetComponent<PlayerSpeedManager>().SetOverSpeed(0f);
+            PlayerObject.GetComponent<MovePlayer>().MoveSpeedMultiplier = 0f;
 
             // スナックの重力もここで無効化
             SnackObject.GetComponent<ObjectGravity>().IsActive = false;
@@ -180,20 +204,35 @@ public class GameClearSequence : MonoBehaviour
         //if (!IsUIVisible && SnackPos.y > PosY)
         if (!IsUIVisible && SnackPos.y > 600f)
         {
-            // UIを表示
-            ClearUI.SetActive(true);
+            if (!IsBackVisible)
+            {
+                // カメラの動きを止める
+                IsCameraStop = true;
 
-            // UI表示フラグを立てる
-            IsUIVisible = true;
+                UITimer += Time.deltaTime*0.5f;
+                UITimer=Mathf.Clamp01(UITimer);
 
-            // カメラの動きを止める
-            IsCameraStop = true;
+                Color C = Color.black;
+                C.a = Mathf.Lerp(0f, 0.6f, UITimer);
+                ClearBackImage.GetComponent<Image>().color = C;
 
-            //// ゲームが止まっていなかったらここで止める
-            //if (Time.timeScale != 0f)
-            //{
-            //    Time.timeScale = 0f;
-            //}
+                if(UITimer>=1f) IsBackVisible = true;
+            }
+            else
+            {
+                // UIを表示
+                ClearUI.transform.GetChild(1).gameObject.SetActive(true);
+                ClearUI.transform.GetChild(2).gameObject.SetActive(true);
+
+                // UI表示フラグを立てる
+                IsUIVisible = true;
+
+                // ゲームが止まっていなかったらここで止める
+                if (Time.timeScale != 0f)
+                {
+                    Time.timeScale = 0f;
+                }
+            }
         }
     }
 }
