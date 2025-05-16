@@ -14,6 +14,7 @@
 // 05/02 高下 対象を飛ばしたときに強制的にロックオンする処理を追加
 // 05/08 藤本 リスポーンした後上昇し落下スピードを調整できるように修正
 // 05/08 荒井 ゲームクリア時にスナックのリスポーンを無効化する処理を追加
+// 05/15 荒井 リフティングジャンプ時のスナック吹っ飛ばし威力にゲージやチャージジャンプの影響を適用し、仮の威力補正を実装
 //====================================================
 using UnityEngine;
 
@@ -175,7 +176,10 @@ public class BlownAway_Ver2 : MonoBehaviour
         {
             if (LiftingJump.IsLiftingPart)
             {
-                //ForceDirection *= LiftingJump.GetForce * LiftingJump.GetJumpPower;
+                // プレイヤーの速度が早くなるほど、吹っ飛ばし威力に減衰補正をかける
+                float Ratio = PlayerSpeedManager.GetSpeedRatio();
+                float Multiplier = 1.3f - (Ratio * 0.5f);
+                ForceDirection *= LiftingJump.GetForce * (LiftingJump.GetJumpPower * Multiplier);
 
                 // プレイヤーのリフティングパートを終了する
                 LiftingJump.FinishLiftingJump();    // AddForceの前に呼び出さないとスナックが飛ばない

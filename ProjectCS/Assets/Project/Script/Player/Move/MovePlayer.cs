@@ -2,7 +2,7 @@
 // スクリプト名：MovePlayer
 // 作成者：高下
 // 内容：プレイヤーの自動前進移動
-// 最終更新日：05/07
+// 最終更新日：05/15
 // 
 // [Log]
 // 03/27 高下 スクリプト作成 
@@ -11,6 +11,7 @@
 // 04/08 高下 高速時の壁貫通防止処理を実装
 // 04/09 竹内 AutoRapidMove対応するようにスクリプトを修正
 // 05/07 荒井 LiftingJumpのすり抜けモードに対応するように変更
+// 05/15 荒井 MoveSpeedMultiplier変数を追加し、移動処理に速度の補正を乗せられるように変更
 //====================================================
 using UnityEngine;
 
@@ -31,6 +32,9 @@ public class MovePlayer : MonoBehaviour
 
     private bool IsHitStopActive = false; // ヒットストップ中かどうか
     public bool GetIsHitStopActive => IsHitStopActive;
+
+    // 移動速度の倍率
+    [System.NonSerialized] public float MoveSpeedMultiplier = 1f; // PlayerSpeedManagerのスピード値を変えずに速度を変えたいため追加
 
     // 他のスクリプトから進行方向を設定するためのセッター
     public void SetMoveDirection(Vector3 NewDirection)
@@ -92,13 +96,13 @@ public class MovePlayer : MonoBehaviour
             else
             {
                 // 進行方向を取得し、その方向へ移動
-                transform.position += MoveDirection * PlayerSpeedManager.GetPlayerSpeed * Time.deltaTime;
+                transform.position += MoveDirection * PlayerSpeedManager.GetPlayerSpeed * MoveSpeedMultiplier * Time.deltaTime;
             }
         }
         else
         {
             // 進行方向を取得し、その方向へ移動
-            transform.position += MoveDirection * PlayerSpeedManager.GetPlayerSpeed * Time.deltaTime;
+            transform.position += MoveDirection * PlayerSpeedManager.GetPlayerSpeed * MoveSpeedMultiplier * Time.deltaTime;
         }
 
         // 向きを進行方向に合わせる
