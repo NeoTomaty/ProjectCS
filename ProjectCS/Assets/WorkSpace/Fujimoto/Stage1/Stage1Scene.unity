@@ -497,6 +497,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1846973849}
+    - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1846973850}
   m_SourcePrefab: {fileID: 100100000, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
 --- !u!4 &269084444 stripped
 Transform:
@@ -1342,7 +1345,7 @@ MonoBehaviour:
   Distance: 7
   MaxCameraHeight: 5
   MinCameraHeight: 3
-  RotationSpeed: 90
+  DefaultRotationSpeed: 50
   VerticalMin: -80
   VerticalMax: 80
   AutoCorrectSpeed: 1.5
@@ -2148,6 +2151,7 @@ MonoBehaviour:
   clearCondition: 3
   nextSceneName: ResultScene
   liftingCounterText: {fileID: 1856113167}
+  GameClearSequence: {fileID: 0}
 --- !u!4 &1473430703
 Transform:
   m_ObjectHideFlags: 0
@@ -2878,6 +2882,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LAManager: {fileID: 1411678370}
+  BaseGroundLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &1846973836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2885,7 +2892,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1846973834}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43d388e4e3d2b524a9bd4a8512db3eaa, type: 3}
   m_Name: 
@@ -2904,6 +2911,7 @@ MonoBehaviour:
   LiftingJump: {fileID: 1007991453}
   GroundArea: {fileID: 1073458115}
   CameraFunction: {fileID: 946110165}
+  flyingPoint: {fileID: 0}
   ClearConditionsScript: {fileID: 1473430702}
 --- !u!114 &1846973837
 MonoBehaviour:
@@ -2918,6 +2926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GravityScale: {x: 0, y: -9.8, z: 0}
+  MaxFallSpeed: 20
   IsActive: 1
 --- !u!4 &1846973843 stripped
 Transform:
@@ -2936,7 +2945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321b60a12d3698f4e87a587064b56429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 0
+  launchForce: 500
 --- !u!114 &1846973849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2950,6 +2959,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snackRespawnPoint: {fileID: 0}
+--- !u!114 &1846973850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846973834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c803b94a1ae1442b5ddfc64869f531, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinHitStopTime: 0.5
+  MaxHitStopTime: 1
+  MinUpwardForce: 50
+  MaxUpwardForce: 200
+  MinForwardForce: 0
+  MaxForwardForce: 0
+  MinRandomXYRange: 0
+  MaxRandomXYRange: 0
+  MinFallSpeed: 0
+  MaxFallSpeed: 30
+  RespawnArea: {fileID: 1073458115}
+  LiftingJump: {fileID: 1007991453}
+  GroundArea: {fileID: 1073458115}
+  CameraFunction: {fileID: 946110165}
+  flyingPoint: {fileID: 0}
+  liftingCount: 0
+  ClearConditionsScript: {fileID: 0}
 --- !u!1 &1856113165
 GameObject:
   m_ObjectHideFlags: 0
