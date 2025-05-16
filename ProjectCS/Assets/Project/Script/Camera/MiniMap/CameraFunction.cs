@@ -12,7 +12,7 @@
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.GraphicsBuffer;
+
 
 public class CameraFunction : MonoBehaviour
 {
