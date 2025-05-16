@@ -11,16 +11,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.InputSystem.UI;
 
 public class FadeManager : MonoBehaviour
 {
-    public CanvasGroup fadeImage;
+     public CanvasGroup fadeImage;
     public float fadeDuration = 1f;
-    private static FadeManager instance;
-    private bool isFading = false; // フェード中かどうかのフラグ
-    private bool isInputBlocked = false; // 入力をブロックするフラグ
-    private InputActionMap actionMap;
+    // 複数の PlayerInput を登録できるように
+    [SerializeField]
+    private List<PlayerInput> playerInputs = new List<PlayerInput>();
+    public InputSystemUIInputModule uiInputModule;
 
+    private static FadeManager instance;
+    private bool isFading = false;
+    private bool isInputBlocked = false;
     void Awake()
     {
         if (instance != null)
@@ -39,9 +44,6 @@ public class FadeManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
         StartCoroutine(FadeIn());
 
-        // InputActionMap の取得
-        actionMap = new InputActionMap("UI");
-        // InputActionsにバインドする必要があればここで設定
     }
 
     public void FadeToScene(string sceneName)
@@ -63,6 +65,7 @@ public class FadeManager : MonoBehaviour
     private IEnumerator FadeOut()
     {
         float t = 0f;
+        DisableInput();
         while (t < fadeDuration)
         {
             t += Time.unscaledDeltaTime;
@@ -71,12 +74,14 @@ public class FadeManager : MonoBehaviour
         }
         fadeImage.alpha = 1f;
 
-        DisableInput();
+       
     }
 
     private IEnumerator FadeIn()
     {
-        float t = fadeDuration;
+        float t = fadeDuration; 
+        EnableInput();
+
         while (t > 0f)
         {
             t -= Time.unscaledDeltaTime;
@@ -85,7 +90,7 @@ public class FadeManager : MonoBehaviour
         }
         fadeImage.alpha = 0f;
 
-        EnableInput();
+        
     }
 
     public IEnumerator FadeAndLoadScene(string sceneName)
@@ -101,21 +106,30 @@ public class FadeManager : MonoBehaviour
 
 
     // 入力を無効化するメソッド
+
+    // 入力を無効化
     private void DisableInput()
     {
-        if (actionMap != null)
+        foreach (var input in playerInputs)
         {
-            actionMap.Disable();  // InputActionMapを無効化
+            if (input != null)
+                input.enabled = false;
         }
+        if (uiInputModule != null)
+            uiInputModule.enabled = false; // UI無効化
     }
 
-    // 入力を有効化するメソッド
+    // 入力を有効化
     private void EnableInput()
     {
-        if (actionMap != null)
+        foreach (var input in playerInputs)
         {
-            actionMap.Enable();  // InputActionMapを有効化
+            if (input != null)
+                input.enabled = true;
         }
+
+        if (uiInputModule != null)
+            uiInputModule.enabled = true; // UI有効化
     }
 
     // 入力がブロックされているかどうかを確認するためのメソッド

@@ -457,10 +457,6 @@ PrefabInstance:
       propertyPath: chargeYellowTime
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2849093543017307252, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
-      propertyPath: chargeThresholdTime
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 3659676806870951451, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: IsInputEnabled
       value: 0
@@ -702,6 +698,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 71103057}
     m_Modifications:
+    - target: {fileID: 189543796308789387, guid: 77e2a6e942710f94c8daccf446613761, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 591084983431945648, guid: 77e2a6e942710f94c8daccf446613761, type: 3}
       propertyPath: m_LocalScale.x
       value: 3
@@ -2079,7 +2079,7 @@ MonoBehaviour:
   LAManager: {fileID: 1411678370}
   BaseGroundLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!114 &1846973836
 MonoBehaviour:
   m_ObjectHideFlags: 0
