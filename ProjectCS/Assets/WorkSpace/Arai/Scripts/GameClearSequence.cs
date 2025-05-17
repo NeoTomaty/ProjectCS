@@ -1,7 +1,7 @@
 //======================================================
 // [GameClearSequence]
 // 作成者：荒井修
-// 最終更新日：05/16
+// 最終更新日：05/17
 // 
 // [Log]
 // 05/08　荒井　仮のクリア演出を作成
@@ -9,6 +9,7 @@
 // 05/11　荒井　カメラがスナックを追跡する処理を追加
 // 05/12　荒井　一連の流れを仮実装
 // 05/16　荒井　スコア表示等に対応
+// 05/17　荒井　スナックが吹っ飛ぶ方向が完全な真上じゃないのをクリア演出限定で修正
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -42,6 +43,8 @@ public class GameClearSequence : MonoBehaviour
     [Header("クリアUIを強制的に表示する時間")]
     [SerializeField] private float UIShowTime = 10f; // クリアUIを強制的に表示する時間
 
+    private GameObject SnackClone; // スナックのクローン
+
     private GameObject ClearBackImage;
 
     private PlayerInput PlayerInput; // プレイヤーの入力を管理するcomponent
@@ -72,7 +75,7 @@ public class GameClearSequence : MonoBehaviour
     // 正常に終了した場合はtrueを、そうでない場合はfalseを返す
     public bool OnGameClear()
     {
-        if (ClearUI == null || PlayerObject == null|| SnackObject == null || CameraObject == null|| ClearConditions == null)
+        if (ClearConditions == null || FlyingPoint == null || ClearUI == null || PlayerObject == null || SnackObject == null || CameraObject == null || StarObject == null)
         {
             Debug.LogError("GameClearSequence >> インスペクターでの設定が不十分です");
             return false;
@@ -101,18 +104,31 @@ public class GameClearSequence : MonoBehaviour
         Text ScoreText = ClearUI.transform.GetChild(2).GetComponent<Text>();
         ScoreText.text = "スコア：" + Score.ToString();
 
-        // スナックのリスポーンを無効化
-        BlownAway.OnClear(SnackSpeed);
+        // スナックのクローンを作成
+        Vector3 SpawnPos = SnackObject.transform.position;
+        SnackClone = Instantiate(SnackObject, SpawnPos, Quaternion.identity);
+
+        // 元のスナックを非表示にする
+        SnackObject.SetActive(false);
+
+        // プレイヤーとスナックの当たり判定を無効化
+        Collider PlayerCollider = PlayerObject.GetComponent<Collider>();
+        Collider SnackCollider = SnackClone.GetComponent<Collider>();
+        Physics.IgnoreCollision(PlayerCollider, SnackCollider);
+
+        SnackClone.GetComponent<BlownAway_Ver2>().OnClear();        // スナックのリスポーンを無効化
+        SnackClone.GetComponent<ObjectGravity>().IsActive = false;  // スナックの重力を無効化
+        SnackClone.GetComponent<Rigidbody>().AddForce(Vector3.up * SnackSpeed, ForceMode.Impulse);  // スナックを上に吹っ飛ばす
 
         // CameraFunctionを無効化
         CameraFunction.enabled = false;
 
         // ゲーム中のカメラの距離を取得
-        Vector3 CameraDirection = SnackObject.transform.position - CameraObject.transform.position;
+        Vector3 CameraDirection = SnackClone.transform.position - CameraObject.transform.position;
         CameraDistance = CameraDirection.magnitude;
 
         // 星を配置する
-        Vector3 StarPos = SnackObject.transform.position;
+        Vector3 StarPos = SnackClone.transform.position;
         for (int i = 0; i < StarScoreThresholdArray.Length; i++)
         {
             // スコアの閾値の数だけ星を配置
@@ -164,7 +180,7 @@ public class GameClearSequence : MonoBehaviour
         // 座標
         if (!IsCameraStop)
         {
-            Vector3 TargetPos = SnackObject.transform.position;
+            Vector3 TargetPos = SnackClone.transform.position;
             Vector3 CameraPos = CameraObject.transform.position;
 
             float OffsetTime = AfterTimer * 1f;
@@ -185,10 +201,10 @@ public class GameClearSequence : MonoBehaviour
         }
 
         // 視線
-        CameraObject.transform.LookAt(SnackObject.transform.position);
+        CameraObject.transform.LookAt(SnackClone.transform.position);
         //float FocusTime = AfterTimer * CameraFocusSpeed;
         //FocusTime = Mathf.Clamp01(FocusTime);
-        //Vector3 TargetFocus = Vector3.Lerp(CameraObject.transform.position, SnackObject.transform.position, FocusTime);
+        //Vector3 TargetFocus = Vector3.Lerp(CameraObject.transform.position, SnackClone.transform.position, FocusTime);
         //CameraObject.transform.LookAt(TargetFocus);
 
         //// 傾き
@@ -204,14 +220,11 @@ public class GameClearSequence : MonoBehaviour
             // プレイヤーの移動速度を0にする
             PlayerObject.GetComponent<MovePlayer>().MoveSpeedMultiplier = 0f;
 
-            // スナックの重力もここで無効化
-            SnackObject.GetComponent<ObjectGravity>().IsActive = false;
-
             IsPlayerStop = true;
         }
 
         // クリア演出中のUIを表示
-        Vector3 SnackPos = SnackObject.transform.position;
+        Vector3 SnackPos = SnackClone.transform.position;
 
         // UIを表示するスナックのY座標を計算
         float PosY = 100f;

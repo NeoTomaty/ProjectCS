@@ -16,6 +16,7 @@
 // 05/08 荒井 ゲームクリア時にスナックのリスポーンを無効化する処理を追加
 // 05/15 荒井 リフティングジャンプ時のスナック吹っ飛ばし威力にゲージやチャージジャンプの影響を適用し、仮の威力補正を実装
 // 05/16 荒井 クリア演出時のスナックの速度を固定にできるように変更
+// 05/17 荒井 クリア演出時の処理を修正
 //====================================================
 using UnityEngine;
 
@@ -194,13 +195,6 @@ public class BlownAway_Ver2 : MonoBehaviour
             }
         }
 
-        // クリア演出時にスナックが吹っ飛ぶ速度を固定化
-        if (!IsRespawn)
-        {
-            GetComponent<ObjectGravity>().IsActive = false;
-            ForceDirection = Vector3.up * OnClearSnackSpeed;
-        }
-
         // Rigidbodyに力を加える
         Rb.AddForce(ForceDirection, ForceMode.Impulse);
 
@@ -281,12 +275,11 @@ public class BlownAway_Ver2 : MonoBehaviour
     }
 
     // クリア時処理
-    public void OnClear(int SnackSpeed)
+    public void OnClear()
     {
         // リスポーン無効化
         IsRespawn = false;
 
-        // スナックの速度を設定
-        OnClearSnackSpeed = SnackSpeed;
+        StartCoroutine(HitStop(1f));
     }
 }
