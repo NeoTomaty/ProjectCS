@@ -39,6 +39,9 @@ public class GameClearSequence : MonoBehaviour
     [Header("スナックの速度")]
     [SerializeField] private int SnackSpeed = 700;
 
+    [Header("クリアUIを強制的に表示する時間")]
+    [SerializeField] private float UIShowTime = 10f; // クリアUIを強制的に表示する時間
+
     private GameObject ClearBackImage;
 
     private PlayerInput PlayerInput; // プレイヤーの入力を管理するcomponent
@@ -141,12 +144,20 @@ public class GameClearSequence : MonoBehaviour
         // タイマー進行
         AfterTimer += Time.deltaTime;
 
+        // 10秒経過でクリアUIを強制的に表示
+        if (AfterTimer > UIShowTime) IsUIVisible = true;
+
         // キー・ボタン入力でシーン遷移
         // 演出が終わってから入力受付
-        if (IsUIVisible && Input.anyKeyDown)
+        if (IsUIVisible)
         {
-            Time.timeScale = 1.0f;
-            ClearConditions.TriggerSceneTransition();
+            if (Input.anyKeyDown)
+            {
+                ClearConditions.TriggerSceneTransition();
+            }
+
+            // クリアUI表示済みなら以降の処理をスキップ
+            return;
         }
 
         // カメラにスナックを追跡させる
@@ -233,12 +244,6 @@ public class GameClearSequence : MonoBehaviour
 
                 // UI表示フラグを立てる
                 IsUIVisible = true;
-
-                // ゲームが止まっていなかったらここで止める
-                if (Time.timeScale != 0f)
-                {
-                    Time.timeScale = 0f;
-                }
             }
         }
     }
