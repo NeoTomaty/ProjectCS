@@ -105,9 +105,9 @@ public class ChargeJumpPlayer : MonoBehaviour
         {
             jumpButtonHoldTime += Time.deltaTime;
 
-            if (!isCharging && jumpButtonHoldTime >= chargeThresholdTime)
+            if (!isCharging && jumpButtonHoldTime >= chargeThresholdTime && isGrounded) // ← isGrounded を追加
             {
-                StartCharging(); // 0.3秒超えたらチャージ開始
+                StartCharging(); // 地上にいるときだけチャージ開始
             }
         }
 
