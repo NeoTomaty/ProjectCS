@@ -72,7 +72,28 @@ public class BlownAway_Ver2 : MonoBehaviour
     private ClearConditions ClearConditionsScript; // リフティング回数管理のスクリプト
 
     private bool IsRespawn = true;
-    private int OnClearSnackSpeed = 700;
+
+    // クールタイムを開始する関数
+    void StartCoolTime(Collider PlayerCollider)
+    {
+        // クールタイム中は当たり判定を無効化
+        Collider collider = GetComponent<Collider>();
+        if (collider != null)
+        {
+            Physics.IgnoreCollision(collider, PlayerCollider, true);
+        }
+    }
+
+    // クールタイムを終了する関数
+    void EndCoolTime(Collider PlayerCollider)
+    {
+        // クールタイム終了後に当たり判定を有効化
+        Collider collider = GetComponent<Collider>();
+        if (collider != null)
+        {
+            Physics.IgnoreCollision(collider, PlayerCollider, false);
+        }
+    }
 
     void Start()
     {
@@ -134,6 +155,8 @@ public class BlownAway_Ver2 : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("Player")) return;
+
+        StartCoolTime(collision.gameObject.GetComponent<Collider>()); // クールタイムを開始
 
         ClearConditionsScript.CheckLiftingCount();
 
@@ -203,6 +226,14 @@ public class BlownAway_Ver2 : MonoBehaviour
 
         // カメラの強制ロックオン開始
         CameraFunction.StartLockOn(true);
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Player")) return;
+
+        // クールタイムを終了
+        EndCoolTime(collision.gameObject.GetComponent<Collider>());
     }
 
     // ヒットストップ関数
