@@ -2452,17 +2452,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
---- !u!114 &1549211006 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8239012434070568144, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
-  m_PrefabInstance: {fileID: 1398599356}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11fd83609983e4d4fafb384937817321, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1556653214 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4436518401975526290, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
@@ -2938,7 +2927,7 @@ PrefabInstance:
     - target: {fileID: 4490488296815464941, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
       propertyPath: volumeSetting
       value: 
-      objectReference: {fileID: 1549211006}
+      objectReference: {fileID: 0}
     - target: {fileID: 4490488296815464941, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
       propertyPath: CameraFunction
       value: 
@@ -3635,6 +3624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClearConditions: {fileID: 1473430702}
+  FlyingPoint: {fileID: 1007991472}
   ClearUI: {fileID: 2042474137}
   PlayerObject: {fileID: 335305063}
   SnackObject: {fileID: 1846973834}
@@ -3644,7 +3634,9 @@ MonoBehaviour:
   Offset: 30
   StarHeight: 300
   StarToStarDistance: 200
+  StarScoreThresholdArray: 000000000000000000000000
   SnackSpeed: 700
+  UIShowTime: 6
 --- !u!1 &2113434520
 GameObject:
   m_ObjectHideFlags: 0
