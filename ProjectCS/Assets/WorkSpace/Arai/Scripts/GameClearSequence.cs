@@ -1,7 +1,7 @@
 //======================================================
 // [GameClearSequence]
 // 作成者：荒井修
-// 最終更新日：05/17
+// 最終更新日：05/19
 // 
 // [Log]
 // 05/08　荒井　仮のクリア演出を作成
@@ -10,6 +10,7 @@
 // 05/12　荒井　一連の流れを仮実装
 // 05/16　荒井　スコア表示等に対応
 // 05/17　荒井　スナックが吹っ飛ぶ方向が完全な真上じゃないのをクリア演出限定で修正
+// 05/19　荒井　クリアUI以外のキャンバスを非表示にする処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -97,8 +98,21 @@ public class GameClearSequence : MonoBehaviour
 
         PlayerInput.actions.Disable(); // 入力を無効にする
 
+        // 背景を表示
         ClearBackImage = ClearUI.transform.GetChild(0).gameObject;
         ClearBackImage.SetActive(true);
+
+        // クリアUI以外のキャンバスを非表示にする
+        Transform FinishCanvas = ClearUI.transform.parent;
+        Transform ParentCanvas = FinishCanvas.parent;
+        for (int i = 0; i < ParentCanvas.childCount; i++)
+        {
+            Transform Child = ParentCanvas.GetChild(i);
+            if (Child != FinishCanvas)
+            {
+                Child.gameObject.SetActive(false);
+            }
+        }
 
         Score = FlyingPoint.TotalScore;
         Text ScoreText = ClearUI.transform.GetChild(2).GetComponent<Text>();
