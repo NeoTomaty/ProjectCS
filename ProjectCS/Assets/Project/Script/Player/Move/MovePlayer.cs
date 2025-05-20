@@ -100,7 +100,7 @@ public class MovePlayer : MonoBehaviour
             else
             {
                 // 進行方向を取得し、その方向へ移動
-                Rb.linearVelocity = new Vector3(MoveDirection.x * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.y * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.z * PlayerSpeedManager.GetPlayerSpeed);
+                Rb.linearVelocity = new Vector3(MoveDirection.x * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.y * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.z * PlayerSpeedManager.GetPlayerSpeed) * MoveSpeedMultiplier;
             }
         }
         else
@@ -108,11 +108,11 @@ public class MovePlayer : MonoBehaviour
             // 進行方向を取得し、その方向へ移動
             if (LiftingJump.IsLiftingPart)
             {
-                Rb.linearVelocity = new Vector3(MoveDirection.x * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.y * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.z * PlayerSpeedManager.GetPlayerSpeed);
+                Rb.linearVelocity = new Vector3(MoveDirection.x * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.y * PlayerSpeedManager.GetPlayerSpeed, MoveDirection.z * PlayerSpeedManager.GetPlayerSpeed) * MoveSpeedMultiplier;
             }
             else
             {
-                Rb.linearVelocity = new Vector3(MoveDirection.x * PlayerSpeedManager.GetPlayerSpeed, Rb.linearVelocity.y, MoveDirection.z * PlayerSpeedManager.GetPlayerSpeed);
+                Rb.linearVelocity = new Vector3(MoveDirection.x * PlayerSpeedManager.GetPlayerSpeed, Rb.linearVelocity.y, MoveDirection.z * PlayerSpeedManager.GetPlayerSpeed) * MoveSpeedMultiplier;
             }
 
         }
