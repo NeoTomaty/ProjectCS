@@ -22,6 +22,7 @@ public class SnackRespawner : MonoBehaviour
         if (ground != null)
         {
             groundY = ground.transform.position.y;
+            Debug.Log("SnackRespawner >>groundY = " + groundY);
         }
         else
         {
