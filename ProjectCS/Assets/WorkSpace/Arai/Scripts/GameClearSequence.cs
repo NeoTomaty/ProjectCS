@@ -122,8 +122,11 @@ public class GameClearSequence : MonoBehaviour
         Vector3 SpawnPos = SnackObject.transform.position;
         SnackClone = Instantiate(SnackObject, SpawnPos, Quaternion.identity);
 
+        // 元のスナックを移動させる
+        SnackObject.transform.localPosition = new Vector3(10000f, 10f, 10000f);
+
         // 元のスナックを非表示にする
-        SnackObject.SetActive(false);
+        SnackObject.GetComponent<MeshRenderer>().enabled = false;
 
         // プレイヤーとスナックの当たり判定を無効化
         Collider PlayerCollider = PlayerObject.GetComponent<Collider>();
