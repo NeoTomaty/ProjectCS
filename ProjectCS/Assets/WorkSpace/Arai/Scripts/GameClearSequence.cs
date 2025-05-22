@@ -123,7 +123,7 @@ public class GameClearSequence : MonoBehaviour
         SnackClone = Instantiate(SnackObject, SpawnPos, Quaternion.identity);
 
         // 元のスナックを非表示にする
-        SnackObject.SetActive(false);
+        SnackObject.SetActive(true);
 
         // プレイヤーとスナックの当たり判定を無効化
         Collider PlayerCollider = PlayerObject.GetComponent<Collider>();
