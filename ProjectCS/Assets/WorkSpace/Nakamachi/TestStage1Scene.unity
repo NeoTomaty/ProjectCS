@@ -837,7 +837,7 @@ PrefabInstance:
     - target: {fileID: 3943404572096005784, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: MoveStartSE
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: ba134a053cb72824e84bb6951baca5e3, type: 3}
     - target: {fileID: 3943404572096005784, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: audioSource
       value: 
@@ -1779,8 +1779,10 @@ MonoBehaviour:
   VerticalMin: -80
   VerticalMax: 80
   AutoCorrectSpeed: 1.5
-  TransitionDuration: 0.5
-  ReturnDuration: 0.4
+  NormalLockOnTransitionDuration: 0.5
+  NormalLockOnReturnDuration: 0.4
+  ForceLockOnTransitionDuration: 0.2
+  ForceLockOnReturnDuration: 0.3
   TransitionEndThreshold: 0.01
   LockOnDistance: 8
   LockOnHeight: 6

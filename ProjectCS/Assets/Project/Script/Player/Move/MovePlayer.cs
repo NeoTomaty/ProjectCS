@@ -12,6 +12,7 @@
 // 04/09 竹内 AutoRapidMove対応するようにスクリプトを修正
 // 05/07 荒井 LiftingJumpのすり抜けモードに対応するように変更
 // 05/15 荒井 MoveSpeedMultiplier変数を追加し、移動処理に速度の補正を乗せられるように変更
+// 05/22 中町 移動開始音SE実装
 //====================================================
 using UnityEngine;
 
@@ -44,8 +45,17 @@ public class MovePlayer : MonoBehaviour
     //移動開始後に鳴らすSE
     [SerializeField] private AudioClip MoveStartSE;
 
-    //
+    //前フレームで移動していたかどうかを記録
     private bool WasMoving = false;
+
+    //SEをすでに再生したかどうかのフラグ
+    private bool HasPlayedSE = false;
+
+    //移動開始からの経過時間を記録するタイマー
+    private float MoveStartTimer = 0.0f;
+
+    //SEを鳴らすまでの遅延時間(秒)
+    private float DelayBeforeSE = 0.05f;
 
     // 他のスクリプトから進行方向を設定するためのセッター
     public void SetMoveDirection(Vector3 NewDirection)
@@ -91,6 +101,45 @@ public class MovePlayer : MonoBehaviour
         }
 
         if (PlayerSpeedManager == null) return;
+
+        //現在の移動状態を判定(MoveDirectionの大きさが0.01より大きければ移動中とみなす)
+        bool IsCurrentlyMoving = MoveDirection.magnitude > 0.01f;
+
+        if(IsCurrentlyMoving)
+        {
+            //前のフレームでは止まっていて、今のフレームで移動を開始したとき
+            if(!WasMoving)
+            {
+                //タイマーをリセット
+                MoveStartTimer = 0.0f;
+
+                //SE再生フラグもリセット
+                HasPlayedSE = false;
+            }
+
+            //SEがまだ再生されていないとき、タイマーを進める
+            if(!HasPlayedSE)
+            {
+                //経過時間を加算
+                MoveStartTimer += Time.deltaTime;
+
+                //一定時間(DelayBeforeSE)経過したらSEを再生
+                if(MoveStartTimer >= DelayBeforeSE)
+                {
+                    if(audioSource != null && MoveStartSE != null)
+                    {
+                        //SEを一度だけ再生
+                        audioSource.PlayOneShot(MoveStartSE);
+
+                        //再生済みフラグを立てる
+                        HasPlayedSE = true;
+                    }
+                }
+            }
+        }
+
+        //現在の移動状態を次フレーム用に保存
+        WasMoving = IsCurrentlyMoving;
 
         // レイキャストで壁を検出
         // すり抜けが有効な場合はレイキャストによる衝突判定を行わない
