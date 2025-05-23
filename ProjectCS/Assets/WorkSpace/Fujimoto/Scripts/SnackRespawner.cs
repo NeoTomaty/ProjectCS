@@ -4,6 +4,7 @@
 // 
 // [Log]
 // 05/06 藤本　snackのリスポーン処理作成
+// 05/22 荒井　groundYの設定ロジックを修正
 //====================================================
 
 using UnityEngine;
@@ -18,11 +19,22 @@ public class SnackRespawner : MonoBehaviour
     void Start()
     {
         // Groundよリ低くなったらリスポーン
-        GameObject ground = GameObject.FindGameObjectWithTag("Ground");
-        if (ground != null)
+
+        // Groundタグのオブジェクトを全て取得
+        GameObject[] grounds = GameObject.FindGameObjectsWithTag("Ground");
+        if (grounds.Length != 0)
         {
-            groundY = ground.transform.position.y;
-            Debug.Log("SnackRespawner >>groundY = " + groundY);
+            // 初期値設定
+            groundY = grounds[0].transform.position.y;
+
+            // 一番低い位置の地面で設定
+            foreach (GameObject ground in grounds)
+            {
+                if (ground.transform.position.y < groundY)
+                {
+                    groundY = ground.transform.position.y;
+                }
+            }
         }
         else
         {
