@@ -207,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GravityScale: {x: 0, y: -19.6, z: 0}
+  MaxFallSpeed: 20
   IsActive: 1
 --- !u!114 &3943404572096005784
 MonoBehaviour:
@@ -237,8 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerSpeedManager: {fileID: 2693352334119193582}
   MovePlayer: {fileID: 3943404572096005784}
-  TurnSpeed: 10
-  TurnResponse: 0.5
+  TurnSmooth: 10
 --- !u!114 &6838755633707204601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,6 +307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseJumpForce: 100
   groundCheckRadius: 5
+  NormalJumpForce: 10
   ChargeBluePower: 1
   ChargeYellowPower: 1.5
   ChargeRedPower: 2
@@ -316,6 +317,7 @@ MonoBehaviour:
   chargingSpeedMultiplier: 0.8
   chargeEffectPrefab: {fileID: 4782991280154357332, guid: 11ddb81fcff55a5428885c55431038b2, type: 3}
   JumpPower: 0
+  chargeThresholdTime: 0.3
 --- !u!114 &1947499482024800223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,8 +332,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 0}
   GaugeController: {fileID: 0}
-  BaseJumpPower: 50
-  BaseForce: 10
+  JumpSpeed: 2
+  MaxMultiForce: 2
   SlowMotionFactor: 0.005
   SlowMotionDistance: 10
   IgnoreNonTargetCollisions: 0
@@ -665,6 +667,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: b4127153-14cb-4f6b-b3b4-982eb939f14a
     m_ActionName: 'Player/RotateCamera[/Keyboard/i,/Keyboard/k,/Keyboard/j,/Keyboard/l,/XInputControllerWindows/rightStick]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 562217a3-21ad-4b4d-a740-2aee5329107e
+    m_ActionName: 'Option/Pause[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
