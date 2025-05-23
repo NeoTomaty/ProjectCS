@@ -38,6 +38,15 @@ public class MovePlayer : MonoBehaviour
 
     private Rigidbody Rb;
 
+    //SEを再生するためのAudioSource
+    [SerializeField] private AudioSource audioSource;
+
+    //移動開始後に鳴らすSE
+    [SerializeField] private AudioClip MoveStartSE;
+
+    //
+    private bool WasMoving = false;
+
     // 他のスクリプトから進行方向を設定するためのセッター
     public void SetMoveDirection(Vector3 NewDirection)
     {
