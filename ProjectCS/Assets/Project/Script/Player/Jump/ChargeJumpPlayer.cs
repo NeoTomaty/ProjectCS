@@ -11,6 +11,7 @@
 // 04/27　森脇　エフェクト制御の追加
 // 04/29　荒井　チャージ後のジャンプ処理にリフティングジャンプへの分岐を追加
 // 05/03　荒井　ジャンプ時にスピードを元に戻す処理をswitch分岐内に移動
+// 05/03　森脇　ジャンプ外部へ渡す
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -26,6 +27,7 @@ public class ChargeJumpPlayer : MonoBehaviour
 
     [Header("ジャンプ倍率設定")]
     [SerializeField] private float ChargeBluePower = 1.0f; // 押してる間は0.8倍！
+
     [SerializeField] private float ChargeYellowPower = 1.5f; // 押してる間は0.8倍！
     [SerializeField] private float ChargeRedPower = 2.0f; // 押してる間は0.8倍！
 
@@ -37,7 +39,6 @@ public class ChargeJumpPlayer : MonoBehaviour
 
     [Header("スピード設定")]
     [SerializeField] private float chargingSpeedMultiplier = 0.8f; // 押してる間は0.8倍！
-
 
     [SerializeField] private ParticleSystem chargeEffectPrefab; // プレハブを指定！
     private ParticleSystem chargeEffectInstance; // インスタンスを保存する用
@@ -64,6 +65,10 @@ public class ChargeJumpPlayer : MonoBehaviour
     [SerializeField] private float chargeThresholdTime = 0.3f; // 追加：0.3秒以上でチャージ開始
     private float jumpButtonHoldTime = 0.0f;
     private bool isJumpButtonPressed = false;
+
+    private bool isJumping = false;
+    public bool IsJumping => isJumping;
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -138,6 +143,7 @@ public class ChargeJumpPlayer : MonoBehaviour
         {
             if (collider.CompareTag(groundTag))
             {
+                isJumping = false;
                 return true;
             }
         }
@@ -154,7 +160,6 @@ public class ChargeJumpPlayer : MonoBehaviour
             isCharging = false;
             isOverheated = false;
 
-          
             return;
         }
 
@@ -180,6 +185,7 @@ public class ChargeJumpPlayer : MonoBehaviour
                 // 通常状態
                 JumpPower = baseJumpForce * jumpMultiplier;
                 rb.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
+                isJumping = true; // ジャンプ中フラグを立てる
                 Debug.Log($"ジャンプ成功！倍率: {jumpMultiplier}倍, チャージ時間: {chargeTimer:F2}秒");
                 if (speedManager != null)
                 {
@@ -187,6 +193,7 @@ public class ChargeJumpPlayer : MonoBehaviour
                     SetSpeedDirectly(originalSpeed);
                 }
                 break;
+
             case PlayerStateManager.LiftingState.LiftingPart:
                 // リフティング状態
                 LiftingJump.SetJumpPower(jumpMultiplier);
@@ -241,7 +248,6 @@ public class ChargeJumpPlayer : MonoBehaviour
         Debug.Log("チャージ開始");
     }
 
-
     // 押した瞬間（チャージ開始）
     // ジャンプボタン押したとき
     private void OnJumpStarted(InputAction.CallbackContext context)
@@ -278,14 +284,14 @@ public class ChargeJumpPlayer : MonoBehaviour
 
                         // 通常ジャンプ
                         rb.AddForce(Vector3.up * NormalJumpForce, ForceMode.Impulse);
-
+                        isJumping = true; // ジャンプ中フラグを立てる
                         break;
+
                     case PlayerStateManager.LiftingState.LiftingPart:
                         // リフティング状態
                         LiftingJump.SetJumpPower(jumpMultiplier);
                         LiftingJump.StartLiftingJump();
                         break;
-
                 }
             }
         }
@@ -293,7 +299,6 @@ public class ChargeJumpPlayer : MonoBehaviour
         // リセット処理
         ResetChargeState();
     }
-
 
     private void SetSpeedDirectly(float newSpeed)
     {
