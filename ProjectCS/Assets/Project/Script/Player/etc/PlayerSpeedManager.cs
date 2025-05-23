@@ -13,6 +13,7 @@
 // 05/03 荒井 SetSpeed関数とSetOverSpeed関数を追加
 // 05/03 荒井 SetOverAccelerationValue関数を削除
 // 05/08 高下 GetMaxSpeedとGetMinSpeed関数追加
+// 05/22 中町 加速音SE実装
 //====================================================
 using UnityEngine;
 
@@ -28,11 +29,26 @@ public class PlayerSpeedManager : MonoBehaviour
     // PlayerSpeed取得
     public float GetPlayerSpeed => PlayerSpeed;
 
+    //効果音を再生するためのAudioSource(インスペクターで設定)
+    [SerializeField] private AudioSource audioSource;
+
+    //加速時に再生する効果音(インスペクターで設定)
+    [SerializeField] private AudioClip AccelerationSE;
+
     // プレイヤーの速度の加算関数
     public void SetAccelerationValue(float AccelerationValue)
     {
+        //加速前の速度を保存
+        float PreviousSpeed = PlayerSpeed;
+
         PlayerSpeed += AccelerationValue;
         PlayerSpeed = Mathf.Clamp(PlayerSpeed, MinPlayerSpeed, MaxPlayerSpeed); // 速度を制限
+
+        //実際に加速したときのみ効果音を再生
+        if(PlayerSpeed > PreviousSpeed && AccelerationSE != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(AccelerationSE);
+        }
     }
 
     // プレイヤーの速度の減算関数
