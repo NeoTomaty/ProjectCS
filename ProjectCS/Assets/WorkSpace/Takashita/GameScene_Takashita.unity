@@ -772,7 +772,7 @@ PrefabInstance:
       objectReference: {fileID: 667970409}
     - target: {fileID: 2693352334119193582, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: PlayerSpeed
-      value: 40
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 2693352334119193582, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: MaxPlayerSpeed
@@ -1701,7 +1701,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -1759,11 +1759,13 @@ MonoBehaviour:
   VerticalMin: -80
   VerticalMax: 80
   AutoCorrectSpeed: 1.5
-  TransitionDuration: 0.5
-  ReturnDuration: 0.4
+  NormalLockOnTransitionDuration: 0
+  NormalLockOnReturnDuration: 0
+  ForceLockOnTransitionDuration: 0.4
+  ForceLockOnReturnDuration: 0.4
   TransitionEndThreshold: 0.01
   LockOnDistance: 8
-  LockOnHeight: 6
+  LockOnHeight: 5
   ForceLockOnTime: 2
 --- !u!114 &946110166
 MonoBehaviour:

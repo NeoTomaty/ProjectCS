@@ -9,6 +9,7 @@
 // 05/02 高下 リフティング時の強制ロックオン処理を追加
 // 05/04 高下 プレイヤーの速度に応じて、カメラの高さを変更できるように調整
 // 05/08 宮林 カメラ感度調整用のコードを追加
+// 05/22 高下 通常ロックオン時と強制ロックオン時の補完速度を分けて処理できるように調整
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,81 +17,82 @@ using UnityEngine.InputSystem;
 
 public class CameraFunction : MonoBehaviour
 {
-    public Transform Player;         // プレイヤー
-    public Transform Target;         // 対象
+    public Transform Player;     // プレイヤーのTransform
+    public Transform Target;     // ロックオン対象のTransform
 
-    [SerializeField] private PlayerInput PlayerInput;      // プレイヤーの入力を管理するcomponent
-    [SerializeField] private PlayerSpeedManager PlayerSpeedManager; // PlayerSpeedManagerコンポーネント
+    [SerializeField] private PlayerInput PlayerInput;            // プレイヤーの入力処理コンポーネント
+    [SerializeField] private PlayerSpeedManager PlayerSpeedManager;  // プレイヤーの速度管理コンポーネント
 
     [Tooltip("カメラとプレイヤーの距離")]
-    [SerializeField] private float Distance = 5.0f;               // カメラとプレイヤーの距離
+    [SerializeField] private float Distance = 5.0f;              // 通常時のカメラ距離
     [Tooltip("カメラの高さ最大値（高速時）")]
-    [SerializeField] private float MaxCameraHeight = 5.0f;        // カメラの高さ（最大）
+    [SerializeField] private float MaxCameraHeight = 5.0f;       // 高速時のカメラ高さ
     [Tooltip("カメラの高さ最小値（低速時）")]
-    [SerializeField] private float MinCameraHeight = 3.0f;        // カメラの高さ（最小）
-    [SerializeField] private float DefaultRotationSpeed = 50.0f;         // 回転速度
-    [SerializeField] private float VerticalMin = -80.0f;          // 縦方向移動の最小値
-    [SerializeField] private float VerticalMax = 80.0f;           // 縦方向移動の最大値
-    [SerializeField] private float AutoCorrectSpeed = 1.5f;       // 自動補正速度
+    [SerializeField] private float MinCameraHeight = 3.0f;       // 低速時のカメラ高さ
+    [SerializeField] private float DefaultRotationSpeed = 50.0f; // カメラ回転速度（初期値）
+    [SerializeField] private float VerticalMin = -80.0f;         // ピッチの下限
+    [SerializeField] private float VerticalMax = 80.0f;          // ピッチの上限
+    [SerializeField] private float AutoCorrectSpeed = 1.5f;      // 無操作時の自動補正速度
 
-    [Header("補完設定")]
-    [SerializeField] private float TransitionDuration = 0.5f;       // ロックオン補完時間
-    [SerializeField] private float ReturnDuration = 0.4f;           // 通常視点へ戻る補完時間
-    [SerializeField] private float TransitionEndThreshold = 0.01f;  // 補完終了とみなす閾値
+    [Header("通常ロックオン補完設定")]
+    [SerializeField] private float NormalLockOnTransitionDuration = 0.5f; // 通常ロックオン開始時の補完時間
+    [SerializeField] private float NormalLockOnReturnDuration = 0.4f;     // 通常ロックオン解除時の補完時間
+
+    [Header("強制ロックオン補完設定")]
+    [SerializeField] private float ForceLockOnTransitionDuration = 0.2f;  // 強制ロックオン開始時の補完時間
+    [SerializeField] private float ForceLockOnReturnDuration = 0.3f;      // 強制ロックオン解除時の補完時間
+
+    [SerializeField] private float TransitionEndThreshold = 0.01f;
+
+    private float currentTransitionDuration = 0.5f; // ロックオン補完時間（動的切替）
+    private float currentReturnDuration = 0.4f;     // ロックオン解除補完時間（動的切替）
 
     [Header("ロックオン時のカメラ設定")]
     [SerializeField] private float LockOnDistance = 3.0f;           // ロックオン時のカメラ距離
     [SerializeField] private float LockOnHeight = 2.0f;             // ロックオン時の高さオフセット
 
-    [Header("強制ロックオン時のカメラ設定")]
-    [Tooltip("リフティングで飛ばした後のロックオン時間")]
-    [SerializeField] private float ForceLockOnTime = 2.0f;          // リフティングで飛ばした後のロックオン時間
+    [Header("強制ロックオン設定")]
+    [Tooltip("強制ロックオン持続時間（例：リフティング後）")]
+    [SerializeField] private float ForceLockOnTime = 2.0f;          // 強制ロックオンの持続秒数
 
+    // カメラの回転状態（ヨー・ピッチ）
     private float yaw = 0f;
     private float pitch = 20f;
 
-    private InputAction LookTargetAction; // ターゲット用のInputAction
-    private InputAction RotateAction;     // 回転用のInputAction
-    private Vector2 RotateInput;          // 入力された値を保持する（回転用）
+    // 入力アクションと入力値
+    private InputAction LookTargetAction;   // ロックオンボタン入力
+    private InputAction RotateAction;       // カメラ回転入力
+    private Vector2 RotateInput;            // 回転入力ベクトル
 
-    // ロックオン状態の制御用
-    private bool IsLookingTarget = false;
-    private bool IsTransitioningToTarget = false;
+    // 状態フラグ
+    private bool IsLookingTarget = false;       // ロックオン中かどうか
+    private bool IsTransitioningToTarget = false;  // ロックオン補完中かどうか
+    private bool IsReturningToNormal = false;     // 通常視点へ復帰補完中かどうか
+    private bool IsForceLockOn = false;           // 強制ロックオン中かどうか
+
+    // 補完処理用タイマーと補完開始時の状態記録
     private float TransitionTime = 0f;
     private Vector3 TransitionStartPos;
     private Quaternion TransitionStartRot;
 
-    // 通常視点へ戻す制御用
-    private bool IsReturningToNormal = false;
     private float ReturnTime = 0f;
     private Vector3 ReturnStartPos;
     private Quaternion ReturnStartRot;
 
-    // リフティング時の強制ロックオン制御用
-    private bool IsForceLockOn = false;
-    private float ForceLockOnTimeLeft = 0f;
+    private float ForceLockOnTimeLeft = 0f;       // 強制ロックオン残り時間
 
-    //カメラ感度調整用
-    private float RotationSpeed;
-    private float RotationRatio=1.0f;
+    private float RotationSpeed;                 // 実際の回転速度（感度補正含む）
+    private float RotationRatio = 1.0f;          // 回転感度の倍率
 
-   
     private void Start()
     {
-        if(!PlayerInput)
-        {
-            Debug.LogError("追尾対象プレイヤーのPlayerInputがアタッチされていません");
-        }
-        if (!PlayerSpeedManager)
-        {
-            Debug.LogError("プレイヤーのPlayerSpeedManagerが設定されていません");
-        }
+        if (!PlayerInput) Debug.LogError("PlayerInput が設定されていません");
+        if (!PlayerSpeedManager) Debug.LogError("PlayerSpeedManager が設定されていません");
 
-        // 対応するInputActionを取得
+        // 各InputActionを取得
         LookTargetAction = PlayerInput.actions["LookTargetSnack"];
         RotateAction = PlayerInput.actions["RotateCamera"];
 
-        //デフォルトのカメラ感度を受け渡す
         RotationSpeed = DefaultRotationSpeed;
     }
 
@@ -98,45 +100,42 @@ public class CameraFunction : MonoBehaviour
     {
         if (Player == null) return;
 
-        // RTボタンが押されているかを確認
         bool rtPressed = LookTargetAction.ReadValue<float>() > 0.5f;
         bool isManual = false;
 
-        // 速度に応じたカメラの高さを計算
+        // プレイヤーの速度に応じてカメラの高さを補間
         float cameraHeight = Mathf.Lerp(MinCameraHeight, MaxCameraHeight, PlayerSpeedManager.GetSpeedRatio());
 
         RotationSpeed = DefaultRotationSpeed * RotationRatio;
 
-        // カメラ回転（手動操作：右スティック等）
+        // カメラのマニュアル回転操作（右スティック）
         if (RotateInput.x < -0.5f) { yaw -= RotationSpeed * Time.deltaTime; isManual = true; }
         if (RotateInput.x > 0.5f) { yaw += RotationSpeed * Time.deltaTime; isManual = true; }
         if (RotateInput.y > 0.5f) { pitch += RotationSpeed * Time.deltaTime; isManual = true; }
         if (RotateInput.y < -0.5f) { pitch -= RotationSpeed * Time.deltaTime; isManual = true; }
 
-        pitch = Mathf.Clamp(pitch, VerticalMin, VerticalMax); // 縦角度の制限
+        pitch = Mathf.Clamp(pitch, VerticalMin, VerticalMax);
 
-        // 無操作時はプレイヤーの向きに自動補正
+        // 無操作時はプレイヤー方向に補正
         if (!isManual && !Input.GetKey(KeyCode.R))
         {
-            float targetYaw = Player.eulerAngles.y;
-            float targetPitch = 20f;
-            yaw = Mathf.LerpAngle(yaw, targetYaw, AutoCorrectSpeed * Time.deltaTime);
-            pitch = Mathf.Lerp(pitch, targetPitch, AutoCorrectSpeed * Time.deltaTime);
+            yaw = Mathf.LerpAngle(yaw, Player.eulerAngles.y, AutoCorrectSpeed * Time.deltaTime);
+            pitch = Mathf.Lerp(pitch, 20f, AutoCorrectSpeed * Time.deltaTime);
         }
 
-        // 強制ロックオン時の処理
-        if(IsForceLockOn)
+        // 強制ロックオン時間のカウントダウン
+        if (IsForceLockOn)
         {
             ForceLockOnTimeLeft -= Time.deltaTime;
-
-            if (ForceLockOnTimeLeft < 0f)
+            if (ForceLockOnTimeLeft <= 0f)
             {
+                StopLockOn();
                 IsForceLockOn = false;
                 Debug.Log("強制ロックオン終了");
             }
         }
 
-        // === ロックオン時のカメラ制御 ===
+        // ロックオン処理（RT押下 または 強制ロックオン）
         if ((rtPressed || IsForceLockOn) && Target != null)
         {
             if (!IsLookingTarget)
@@ -146,23 +145,18 @@ public class CameraFunction : MonoBehaviour
 
             Vector3 playerPos = Player.position;
             Vector3 targetPos = Target.position;
-
-            // プレイヤー→ターゲットの方向
             Vector3 toTarget = (targetPos - playerPos).normalized;
 
-            // カメラはプレイヤーの後方（ターゲットと反対）に「LockOnDistance」だけ配置
+            // プレイヤーから後方に配置（ターゲット反対方向）
             Vector3 desiredPos = playerPos - toTarget * LockOnDistance;
-
-            // 高さ補正
             desiredPos.y += LockOnHeight;
 
-            // カメラはターゲットを注視
             Quaternion desiredRot = Quaternion.LookRotation((targetPos + Vector3.up * cameraHeight) - desiredPos);
 
             if (IsTransitioningToTarget)
             {
                 TransitionTime += Time.deltaTime;
-                float t = Mathf.Clamp01(TransitionTime / TransitionDuration);
+                float t = Mathf.Clamp01(TransitionTime / currentTransitionDuration); // ←切り替えた補完時間を使用
                 transform.position = Vector3.Lerp(TransitionStartPos, desiredPos, t);
                 transform.rotation = Quaternion.Slerp(TransitionStartRot, desiredRot, t);
 
@@ -181,64 +175,46 @@ public class CameraFunction : MonoBehaviour
         }
         else
         {
-            // === RTを離した場合：通常視点に戻す補完 ===
-            if (IsLookingTarget)
-            {
-                StopLockOn();
-            }
+            // ロックオン解除時
+            if (IsLookingTarget) StopLockOn();
 
             if (IsReturningToNormal)
             {
-                // 通常視点へ補完中
                 ReturnTime += Time.deltaTime;
-                float t = Mathf.Clamp01(ReturnTime / ReturnDuration);
+                float t = Mathf.Clamp01(ReturnTime / currentReturnDuration); // ← ここで切り替えた値を使用
 
                 Vector3 offset = Quaternion.Euler(pitch, yaw, 0) * new Vector3(0, 0, -Distance);
                 Vector3 normalPos = Player.position + offset;
 
-                Quaternion normalRot;
-                if (Input.GetMouseButton(1) && Target != null)
-                {
-                    normalRot = Quaternion.LookRotation((Target.position + Vector3.up * cameraHeight) - normalPos);
-                }
-                else
-                {
-                    normalRot = Quaternion.LookRotation((Player.position + Vector3.up * cameraHeight) - normalPos);
-                }
+                Quaternion normalRot = (Input.GetMouseButton(1) && Target != null)
+                    ? Quaternion.LookRotation((Target.position + Vector3.up * cameraHeight) - normalPos)
+                    : Quaternion.LookRotation((Player.position + Vector3.up * cameraHeight) - normalPos);
 
                 transform.position = Vector3.Lerp(ReturnStartPos, normalPos, t);
                 transform.rotation = Quaternion.Slerp(ReturnStartRot, normalRot, t);
 
                 if (t >= 1.0f)
                 {
-                    IsReturningToNormal = false; // 補完終了
+                    IsReturningToNormal = false;
                 }
+                    
             }
             else
             {
-                // === 通常のカメラ追従処理 ===
                 Vector3 offset = Quaternion.Euler(pitch, yaw, 0) * new Vector3(0, 0, -Distance);
                 transform.position = Player.position + offset;
 
-                // 右クリックでターゲットを注視、そうでなければプレイヤーを注視
                 if (Input.GetMouseButton(1) && Target != null)
-                {
                     transform.LookAt(Target.position + Vector3.up * cameraHeight);
-                }
                 else
-                {
                     transform.LookAt(Player.position + Vector3.up * cameraHeight);
-                }
             }
         }
     }
 
     private void OnEnable()
     {
-        // カメラ回転アクション
         PlayerInput.actions["RotateCamera"].performed += OnRotate;
-
-        // 入力終了時
         PlayerInput.actions["RotateCamera"].canceled += OnRotate;
     }
 
@@ -246,44 +222,42 @@ public class CameraFunction : MonoBehaviour
     {
         if (PlayerInput != null && PlayerInput.actions != null)
         {
-            // イベント登録解除
             PlayerInput.actions["RotateCamera"].performed -= OnRotate;
             PlayerInput.actions["RotateCamera"].canceled -= OnRotate;
         }
     }
 
-    // 入力イベント（押された/離された）で呼ばれる
+    // 回転入力を取得（スティック操作）
     public void OnRotate(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            // 入力が行われた
-            RotateInput = context.ReadValue<Vector2>();
-        }
-        else if (context.canceled)
-        {
-            // 入力がキャンセルされた
-            RotateInput = Vector2.zero;
-        }
+        RotateInput = context.performed ? context.ReadValue<Vector2>() : Vector2.zero;
     }
 
+    // ロックオン開始
     public void StartLockOn(bool isForceLockOn)
     {
         if (Target == null || Player == null) return;
+
         IsLookingTarget = true;
         IsTransitioningToTarget = true;
         TransitionTime = 0.0f;
         TransitionStartPos = transform.position;
         TransitionStartRot = transform.rotation;
 
-        // 渡された引数によって、任意ロックオンか強制ロックオンを判断
         IsForceLockOn = isForceLockOn;
-        if(IsForceLockOn)
+
+        // 状態に応じて補完時間を切り替え
+        currentTransitionDuration = isForceLockOn
+            ? ForceLockOnTransitionDuration
+            : NormalLockOnTransitionDuration;
+
+        if (IsForceLockOn)
         {
             ForceLockOnTimeLeft = ForceLockOnTime;
         }
     }
 
+    // ロックオン解除処理
     public void StopLockOn()
     {
         if (!IsLookingTarget) return;
@@ -294,16 +268,24 @@ public class CameraFunction : MonoBehaviour
         ReturnTime = 0.0f;
         ReturnStartPos = transform.position;
         ReturnStartRot = transform.rotation;
+
+        // 状態に応じてロックオン解除補完時間を切り替え
+        currentReturnDuration = IsForceLockOn
+            ? ForceLockOnReturnDuration
+            : NormalLockOnReturnDuration;
+
+        Debug.Log("ロックオン終了速度" + currentReturnDuration);    
     }
 
+    // ターゲットを外部から指定
     public void SetLockOnTarget(Transform target)
     {
         Target = target;
     }
 
+    // 回転感度倍率の設定
     public void SetRatio(float ratio)
     {
         RotationRatio = ratio;
     }
-
 }
