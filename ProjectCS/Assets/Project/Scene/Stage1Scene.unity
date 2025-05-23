@@ -171,7 +171,7 @@ MonoBehaviour:
   countdownText: {fileID: 1892667193}
   countdownCanvas: {fileID: 282731403}
   goDisplayTime: 0.5
-  snackLauncher: {fileID: 0}
+  snackLauncher: {fileID: 756912132}
 --- !u!1 &84185481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,7 +1173,7 @@ MonoBehaviour:
   DefaultRotationSpeed: 250
   VerticalMin: -80
   VerticalMax: 80
-  AutoCorrectSpeed: 1.5
+  AutoCorrectSpeed: 8
   NormalLockOnTransitionDuration: 0.5
   NormalLockOnReturnDuration: 0.4
   ForceLockOnTransitionDuration: 0.2
@@ -1471,7 +1471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321b60a12d3698f4e87a587064b56429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 1400
+  launchForce: 500
 --- !u!114 &756912133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2034,11 +2034,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2693352334119193582, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: MaxPlayerSpeed
-      value: 80
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2693352334119193582, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: MinPlayerSpeed
-      value: 30
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2849093543017307252, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: overheatTime
@@ -2066,8 +2066,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2946462142280788705, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: TurnSmooth
-      value: 3
+      value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3190134139319929782, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 9b753f095f7819643a43c140ebba1474, type: 2}
     - target: {fileID: 3659676806870951451, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: IsInputEnabled
       value: 0
