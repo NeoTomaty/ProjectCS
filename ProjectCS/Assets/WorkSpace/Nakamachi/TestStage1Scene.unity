@@ -2229,6 +2229,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4616531718173721844, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
   m_PrefabInstance: {fileID: 1063024709}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &1070818885 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8365331316546696322, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+  m_PrefabInstance: {fileID: 1063024709}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1110608476
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3499,6 +3504,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 503559882}
     m_Modifications:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
+      propertyPath: OpenSE
+      value: 
+      objectReference: {fileID: 8300000, guid: 25ad526696a2c4c4a9185a4571730761, type: 3}
+    - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
+      propertyPath: CloseSE
+      value: 
+      objectReference: {fileID: 8300000, guid: 34e449b5cc94f45478d06a22180109ef, type: 3}
+    - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: pauseUI
       value: 
       objectReference: {fileID: 773421366}
@@ -3506,6 +3519,10 @@ PrefabInstance:
       propertyPath: optionUI
       value: 
       objectReference: {fileID: 18411753}
+    - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1070818885}
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstPauseButton
       value: 
