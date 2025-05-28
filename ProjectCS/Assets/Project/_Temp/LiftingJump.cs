@@ -1,7 +1,7 @@
 //======================================================
 // [LiftingJump]
 // 作成者：荒井修
-// 最終更新日：05/15
+// 最終更新日：05/28
 // 
 // [Log]
 // 04/26　荒井　キーを入力したらターゲットに向かってぶっ飛んでいくように実装
@@ -20,6 +20,8 @@
 // 05/07　荒井　すり抜けモードが有効なのにオブジェクトをすり抜けられないバグを修正
 // 05/07　荒井　クリアカウントで多段ヒット扱いされる挙動を修正
 // 05/15　荒井　移動速度の変化の操作先をPlayerSpeedManagerからMovePlayerに変更
+// 05/28　荒井　IsNearTargetNextFrame関数を追加
+// 05/28　荒井　リフティングジャンプでスピードが速いとQTEが発動しないことがあるバグを修正
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -115,6 +117,16 @@ public class LiftingJump : MonoBehaviour
 
         // プレイヤーを加速させる
         MovePlayer.MoveSpeedMultiplier = JumpSpeed * JumpPower;
+
+        // 踏み切り時点で既に近かったらスローモーションを開始
+        if (IsNearTargetEnter())
+        {
+            // スローモーションを開始
+            SetSlowMotion(true);
+
+            // ゲージを表示
+            GaugeController.Play();
+        }
     }
 
     // リフティングジャンプを停止する関数
@@ -152,13 +164,35 @@ public class LiftingJump : MonoBehaviour
         MovePlayer.MoveSpeedMultiplier = 1f;
     }
 
+    // 次のフレームでスローモーションへの移行距離に達するかどうかを判定する関数
+    private bool IsNearTargetNextFrame()
+    {
+        // 1フレーム当たりの移動距離
+        // 移動方向の大きさ * プレイヤーの速度 * 移動速度倍率 * Time.deltaTime
+        float MoveDistancePerFrame = MovePlayer.GetMoveDirection.magnitude * MovePlayer.PlayerSpeedManager.GetPlayerSpeed * MovePlayer.MoveSpeedMultiplier * Time.deltaTime;
+
+        // ターゲットとの距離を計算
+        float Distance = Vector3.Distance(transform.position, TargetObject.transform.position);
+
+        // 次のフレームでのターゲットとの距離
+        float DistanceNextFrame = Distance - MoveDistancePerFrame;
+
+        // スローモーションへの移行距離に達するかどうか
+        if (DistanceNextFrame < SlowMotionDistance)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     // ターゲットに近づいた瞬間を判定する関数
     private bool IsNearTargetEnter()
     {
-        // ターゲットとの距離を計算
-        float distance = Vector3.Distance(transform.position, TargetObject.transform.position);
+        // 次のフレームでスローモーションへの移行距離に達するかどうかを判定
+        bool IsNearNextFrame = IsNearTargetNextFrame();
 
-        if (distance < SlowMotionDistance)
+        if(IsNearNextFrame)
         {
             if (!IsNearTargetLast)
             {
@@ -201,12 +235,23 @@ public class LiftingJump : MonoBehaviour
             // 一定距離までターゲットに近づいたらスローモーションを開始
             if (IsNearTargetEnter())
             {
+                // ターゲットとの距離がスローモーションへの移行距離より大きい場合
+                float DistanceToTarget = Vector3.Distance(transform.position, TargetObject.transform.position);
+                if (DistanceToTarget > SlowMotionDistance)
+                {
+                    // スローモーションへの移行距離までワープさせる
+                    // ワープ先座標 = ターゲットの座標 - (移動方向 * スローモーションへの移行距離)
+                    Vector3 NewPosition = TargetObject.transform.position - (MovePlayer.GetMoveDirection * SlowMotionDistance);
+                    GetComponent<Rigidbody>().MovePosition(NewPosition);
+                }
+
                 // スローモーションを開始
                 SetSlowMotion(true);
 
                 // ゲージを表示
                 GaugeController.Play();
-            }else if(GaugeController.IsFinishEnter())
+            }
+            else if (GaugeController.IsFinishEnter())
             {
                 // スローモーションを終了
                 SetSlowMotion(false);
