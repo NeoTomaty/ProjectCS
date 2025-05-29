@@ -2,7 +2,7 @@
 // [LiftingJump]
 // 作成者：荒井修
 // 最終更新日：05/15
-// 
+//
 // [Log]
 // 04/26　荒井　キーを入力したらターゲットに向かってぶっ飛んでいくように実装
 // 04/27　荒井　ターゲットに近づいたらスローモーションが始まるように実装
@@ -20,6 +20,7 @@
 // 05/07　荒井　すり抜けモードが有効なのにオブジェクトをすり抜けられないバグを修正
 // 05/07　荒井　クリアカウントで多段ヒット扱いされる挙動を修正
 // 05/15　荒井　移動速度の変化の操作先をPlayerSpeedManagerからMovePlayerに変更
+// 05/29　森脇　モデルのフラグ変化
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,7 +29,7 @@ using UnityEngine.InputSystem;
 // プレイヤーにアタッチ
 public class LiftingJump : MonoBehaviour
 {
-    [SerializeField] GameObject TargetObject;                   // 目標地点
+    [SerializeField] private GameObject TargetObject;                   // 目標地点
     [SerializeField] private GaugeController GaugeController;   // ゲージコントローラーの参照
     private MovePlayer MovePlayer;                              // プレイヤーの移動スクリプトの参照
     private ObjectGravity ObjectGravityScript;                  // 重力スクリプトの参照
@@ -54,6 +55,8 @@ public class LiftingJump : MonoBehaviour
     public bool IsLiftingPart => IsJumping; // リフティングジャンプ中かどうか
 
     private bool IsNearTargetLast = false; // ターゲットに近づいたかどうか
+
+    [SerializeField] private PlayerAnimationController playerAnimController;
 
     // スローモーションのオンオフを切り替える関数
     private void SetSlowMotion(bool Enabled)
@@ -150,6 +153,8 @@ public class LiftingJump : MonoBehaviour
 
         // 移動速度を元に戻す
         MovePlayer.MoveSpeedMultiplier = 1f;
+
+        playerAnimController.SetUseNormalModelWithWait();
     }
 
     // ターゲットに近づいた瞬間を判定する関数
@@ -181,7 +186,7 @@ public class LiftingJump : MonoBehaviour
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
         MovePlayer = GetComponent<MovePlayer>();
         ObjectGravityScript = GetComponent<ObjectGravity>();
@@ -191,7 +196,7 @@ public class LiftingJump : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (TargetObject == null) return;
 
@@ -206,7 +211,8 @@ public class LiftingJump : MonoBehaviour
 
                 // ゲージを表示
                 GaugeController.Play();
-            }else if(GaugeController.IsFinishEnter())
+            }
+            else if (GaugeController.IsFinishEnter())
             {
                 // スローモーションを終了
                 SetSlowMotion(false);

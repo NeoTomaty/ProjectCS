@@ -11,40 +11,60 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    [SerializeField]
-    private Animator animator; // モデルのAnimator（Mixamoモデル）
+    [Header("モデル切り替え")]
+    [SerializeField] private GameObject rotationModel;
 
-    [SerializeField]
-    private PlayerSpeedManager speedManager; // PlayerSpeedManagerへの参照
+    [SerializeField] private GameObject model;
 
-    [SerializeField]
-    private float speedToAnimatorSpeed = 0.01f; // 速度 → アニメーション再生速度への変換倍率
+    [Header("true = model を表示 / false = rotationModel を表示")]
+    [SerializeField] private bool useNormalModel = true;
 
-    [SerializeField]
-    private ChargeJumpPlayer chargeJumpPlayer;
+    [Header("model の Animator（1ループ判定用）")]
+    [SerializeField] private Animator modelAnimator;
+
+    private bool waitingForAnimFinish = false;
 
     private void Update()
     {
-        if (speedManager == null || animator == null)
+        UpdateModelVisibility();
+
+        // アニメーション終了待ち中ならチェック
+        if (useNormalModel && waitingForAnimFinish && modelAnimator != null)
+        {
+            AnimatorStateInfo stateInfo = modelAnimator.GetCurrentAnimatorStateInfo(0);
+
+            // ループせずに再生されたアニメーションが終了したら
+            if (stateInfo.normalizedTime >= 1.0f /*&& !stateInfo.loop*/)
+            {
+                useNormalModel = false;
+                waitingForAnimFinish = false;
+                UpdateModelVisibility();
+            }
+        }
+    }
+
+    private void UpdateModelVisibility()
+    {
+        if (rotationModel == null || model == null)
             return;
 
-        float currentSpeed = speedManager.GetPlayerSpeed;
+        model.SetActive(useNormalModel);
+        rotationModel.SetActive(!useNormalModel);
+    }
 
-        // Animator.speed を変換倍率に応じて設定
-        float animSpeed = currentSpeed * speedToAnimatorSpeed;
+    // 外部から model を表示（アニメーション再生）させるときに呼ぶ
+    public void SetUseNormalModelWithWait()
+    {
+        useNormalModel = true;
+        waitingForAnimFinish = true;
+        UpdateModelVisibility();
+    }
 
-        // 再生速度の下限と上限を設定（必要に応じて調整）
-        animSpeed = Mathf.Clamp(animSpeed, 0.1f, 3.0f);
-
-        animator.speed = animSpeed;
-
-        if (chargeJumpPlayer.IsJumping)
-        {
-            animator.SetTrigger("Jump");
-        }
-        else
-        {
-            animator.SetTrigger("Run");
-        }
+    // 外部から通常通り切り替えたい場合
+    public void SetUseNormalModel(bool value)
+    {
+        useNormalModel = value;
+        waitingForAnimFinish = false;
+        UpdateModelVisibility();
     }
 }
