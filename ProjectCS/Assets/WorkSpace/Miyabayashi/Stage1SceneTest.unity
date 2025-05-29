@@ -532,6 +532,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5cd246b6df953da4d83891319aa2d621, type: 2}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7554536379738216804, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -1813,6 +1817,7 @@ MonoBehaviour:
   PlayerSpeed: {fileID: 0}
   Score: 0
   totalScore: 0
+  ComboBonusUpValue: 0.2
 --- !u!4 &1073458115 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9212668309795385399, guid: c24c078e66ef09546b7057196da77511, type: 3}
@@ -3701,6 +3706,7 @@ MonoBehaviour:
   GravityScale: {x: 0, y: -30, z: 0}
   MaxFallSpeed: 250
   IsActive: 1
+  FallSE: {fileID: 0}
 --- !u!4 &1846973843 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7554536379738216804, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
