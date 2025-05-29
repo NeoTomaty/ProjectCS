@@ -59,16 +59,23 @@ public class LRMovePlayer : MonoBehaviour
         float speed = PlayerSpeedManager.GetPlayerSpeed;
 
 
-        // 現在の速度に応じて曲がりやすくする
-        // カーブ量 = 回転速度 × 速度 × deltaTime
-        float rotationAmount = speed * TurnSmooth * Time.deltaTime;
-
-
-        // 回転処理（左右）
-        if (Mathf.Abs(moveX) > 0.1f)    // 絶対値より大きな値の場合
+        // 入力が一定以上ある場合のみ処理
+        if (Mathf.Abs(moveX) > 0.1f)
         {
-            float angle = rotationAmount * Mathf.Sign(moveX);   // 符号を取得
-            MovePlayer.SetMoveDirection(Quaternion.Euler(0, angle, 0) * MovePlayer.GetMoveDirection);
+            // カメラの右方向を取得（Y軸を水平に保つ）
+            Vector3 cameraRight = Camera.main.transform.right;
+            cameraRight.y = 0;
+            cameraRight.Normalize();
+
+            // 入力に応じた移動ベクトルを作成
+            Vector3 moveDirection = cameraRight * moveX;
+
+            // 回転をスムージングしたい場合（任意）
+            Vector3 currentDir = MovePlayer.GetMoveDirection;
+            Vector3 smoothedDir = Vector3.Slerp(currentDir, moveDirection, TurnSmooth * Time.deltaTime);
+
+            // 最終的な移動方向をセット
+            MovePlayer.SetMoveDirection(smoothedDir.normalized);
         }
 
     }
