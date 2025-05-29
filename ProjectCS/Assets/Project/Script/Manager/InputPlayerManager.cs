@@ -9,10 +9,13 @@
 // 04/21 高下 CPUのインプット操作を切り替える処理を追加
 // 04/23 高下 コントローラーの割り当て処理を追加
 // 04/25 高下 スクリプト名変更、1人モード固定に修正
+// 05/29 中町 UI選択SE実装
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 // ******* このスクリプトの使い方 ******* //
 // 1. Playerオブジェクトにこのスクリプトをアタッチ
@@ -22,6 +25,17 @@ using UnityEngine.InputSystem.Users;
 
 public class InputPlayerManager : MonoBehaviour
 {
+    [Header("SE設定")]
+
+    //効果音を再生するAudioSource
+    [SerializeField] private AudioSource audioSource;
+
+    //UI移動時に再生する効果音
+    [SerializeField] private AudioClip MoveSE;
+
+    //最後に選択されていたUIオブジェクト
+    private GameObject LastSelected;
+
     void Start()
     {
         // PlayerInputComponentを取得
@@ -42,8 +56,28 @@ public class InputPlayerManager : MonoBehaviour
             // キーボード操作に設定
             AssignInputToPlayer(PlayerInputComponent, Keyboard.current, "Keyboard", "プレイヤー");
         }
+
+        //現在選択されているUIオブジェクトを取得
+        LastSelected = EventSystem.current.currentSelectedGameObject;
     }
 
+    void Update()
+    {
+        //現在選択されているUIオブジェクトを取得
+        GameObject CurrentSelected = EventSystem.current.currentSelectedGameObject;
+
+        //選択されているUIが前回と異なるとき(UI移動があったとき)
+        if (CurrentSelected != null && CurrentSelected != LastSelected)
+        {
+            //効果音を再生
+            PlayMoveSE();
+
+            //現在の選択を記録
+            LastSelected = CurrentSelected;
+        }
+    }
+
+    //入力デバイスをプレイヤーに割り当てる処理
     private void AssignInputToPlayer(PlayerInput playerInput, InputDevice device, string controlScheme, string playerLabel)
     {
         if (playerInput == null || device == null)
@@ -65,5 +99,18 @@ public class InputPlayerManager : MonoBehaviour
         playerInput.ActivateInput();
 
         Debug.Log($"{playerLabel} の {controlScheme} 入力が割り当てられました");
+    }
+
+    //UI移動時の効果音を再生する処理
+    private void PlayMoveSE()
+    {
+        if(audioSource != null && MoveSE != null)
+        {
+            if(audioSource != null && MoveSE != null)
+            {
+                //一回だけ効果音を再生する
+                audioSource.PlayOneShot(MoveSE);
+            }
+        }
     }
 }
