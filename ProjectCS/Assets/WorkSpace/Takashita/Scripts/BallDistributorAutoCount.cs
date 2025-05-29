@@ -8,90 +8,92 @@
 // 05/26 高下 スクリプト作成
 //====================================================
 using UnityEngine;
+using System.Collections.Generic;
 
+[RequireComponent(typeof(CubicBezierCurve))]
 public class BallDistributorAutoCount : MonoBehaviour
 {
-    // CubicBezierCurve から取得する制御点
-    private Transform StartPoint;
-    private Transform EndPoint;
-    private Transform ControlPoint1;
-    private Transform ControlPoint2;
-
-    // 配置する球体のPrefab
     public GameObject SpherePrefab;
-
-    // 球体同士の間隔（単位：メートル）
     public float Spacing = 0.5f;
-
-    // 球体のサイズ（スケール）
     public float SphereScale = 0.2f;
-
-    // 曲線の長さを計算する際に使用する分割数（数が多いほど精度が上がる）
+    public float BigSphereScale = 0.4f;
     public int CurveSampleResolution = 100;
 
-    // 実行時に曲線長を計算し、球体を配置
+    private CubicBezierCurve bezierCurve;
+
     private void Start()
     {
-        // 同一オブジェクトにアタッチされた CubicBezierCurve から制御点を取得
-        StartPoint = GetComponent<CubicBezierCurve>().StageObject1.transform;
-        EndPoint = GetComponent<CubicBezierCurve>().StageObject2.transform;
-        ControlPoint1 = GetComponent<CubicBezierCurve>().ControlPoint1.transform;
-        ControlPoint2 = GetComponent<CubicBezierCurve>().ControlPoint2.transform;
+        bezierCurve = GetComponent<CubicBezierCurve>();
 
-        // 必須の設定が揃っていなければ処理を中断
-        if (StartPoint == null || EndPoint == null || ControlPoint1 == null || ControlPoint2 == null || SpherePrefab == null)
+        // データが不正なら終了
+        if (bezierCurve.anchorPoints.Count < 2 ||
+            bezierCurve.controlPoints.Count != (bezierCurve.anchorPoints.Count - 1) * 2 ||
+            SpherePrefab == null)
             return;
 
-        // 曲線の長さを近似的に計算
-        float curveLength = EstimateCurveLength();
-
-        // 線の長さに基づいて配置する球の数を決定（最低2つ）
-        int numberOfBalls = Mathf.Max(2, Mathf.RoundToInt(curveLength / Spacing));
-
-        // 計算した数だけ球体を配置
-        for (int i = 0; i < numberOfBalls; i++)
+        // 各アンカーポイントに大きい球体を配置
+        foreach (Transform anchor in bezierCurve.anchorPoints)
         {
-            float t = i / (float)(numberOfBalls - 1); // 0〜1の範囲で等間隔に分割
-            Vector3 pos = CalculateBezierPoint(t);    // 曲線上の位置を取得
-            GameObject ball = Instantiate(SpherePrefab, pos, Quaternion.identity, transform); // 球体を生成して親に設定
-            ball.transform.localScale = Vector3.one * SphereScale; // サイズを設定
+            if (anchor == null) continue;
+            CreateSphere(anchor.position, BigSphereScale);
+        }
+
+        // 各セグメントごとにベジェ曲線を分割して小さい球体を配置
+        for (int i = 0; i < bezierCurve.anchorPoints.Count - 1; i++)
+        {
+            Transform p0 = bezierCurve.anchorPoints[i];
+            Transform p1 = bezierCurve.anchorPoints[i + 1];
+            Transform c1 = bezierCurve.controlPoints[i * 2];
+            Transform c2 = bezierCurve.controlPoints[i * 2 + 1];
+
+            if (p0 == null || p1 == null || c1 == null || c2 == null)
+                continue;
+
+            float segmentLength = EstimateCurveLength(p0.position, c1.position, c2.position, p1.position);
+            int count = Mathf.Max(2, Mathf.RoundToInt(segmentLength / Spacing));
+
+            for (int j = 1; j < count - 1; j++) // 始点終点を除く
+            {
+                float t = j / (float)(count - 1);
+                Vector3 pos = CalculateBezierPoint(p0.position, c1.position, c2.position, p1.position, t);
+                CreateSphere(pos, SphereScale);
+            }
         }
     }
 
-    // 3次ベジェ曲線に基づいて、指定された t の位置の点を返す
-    private Vector3 CalculateBezierPoint(float t)
+    private void CreateSphere(Vector3 position, float scale)
     {
-        Vector3 p0 = StartPoint.position;      // 始点
-        Vector3 p1 = ControlPoint1.position;   // 制御点1
-        Vector3 p2 = ControlPoint2.position;   // 制御点2
-        Vector3 p3 = EndPoint.position;        // 終点
+        GameObject ball = Instantiate(SpherePrefab, position, Quaternion.identity, transform);
+        ball.transform.localScale = Vector3.one * scale;
+    }
 
+    // Cubic Bezierの点を求める
+    private Vector3 CalculateBezierPoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+    {
         float u = 1 - t;
         float tt = t * t;
         float uu = u * u;
         float uuu = uu * u;
         float ttt = tt * t;
 
-        // ベジェ曲線の式
         return uuu * p0 +
                3 * uu * t * p1 +
                3 * u * tt * p2 +
                ttt * p3;
     }
 
-    // 曲線を多数の直線で近似して、全体の長さを求める
-    private float EstimateCurveLength()
+    // 曲線長を近似で算出
+    private float EstimateCurveLength(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
     {
         float length = 0f;
-        Vector3 prev = CalculateBezierPoint(0f); // 初期点
+        Vector3 prev = CalculateBezierPoint(p0, p1, p2, p3, 0f);
 
-        // resolutionの数だけ曲線をサンプリングして、区間ごとの距離を加算
         for (int i = 1; i <= CurveSampleResolution; i++)
         {
             float t = i / (float)CurveSampleResolution;
-            Vector3 current = CalculateBezierPoint(t);
-            length += Vector3.Distance(prev, current); // 前の点との距離を加算
-            prev = current; // 現在の点を次回の前の点として保存
+            Vector3 current = CalculateBezierPoint(p0, p1, p2, p3, t);
+            length += Vector3.Distance(prev, current);
+            prev = current;
         }
 
         return length;
