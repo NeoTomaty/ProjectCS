@@ -198,6 +198,11 @@ public class ChargeJumpPlayer : MonoBehaviour
                 // リフティング状態
                 LiftingJump.SetJumpPower(jumpMultiplier);
                 LiftingJump.StartLiftingJump();
+                if (speedManager != null)
+                {
+                    // ジャンプ後スピード戻す（オーバーヒートしてない場合）
+                    SetSpeedDirectly(originalSpeed);
+                }
                 break;
         }
 
