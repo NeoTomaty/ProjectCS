@@ -1,3 +1,10 @@
+//ButtonNavigation.cs
+//作成者:中町雷我
+//最終更新日:2025/05/11
+//アタッチ:Startボタンにアタッチ
+//[Log]
+//05/11　中町　メニュー決定SE
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
