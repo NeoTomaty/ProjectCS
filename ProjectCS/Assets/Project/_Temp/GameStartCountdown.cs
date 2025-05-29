@@ -4,12 +4,14 @@
 // 
 // [Log]
 // 05/07 藤本　カウントダウン処理実装
+// 05/29　宮林　ポーズ画面表示ボタンの停止
 //====================================================
 
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class GameStartCountdown : MonoBehaviour
 {
@@ -25,9 +27,13 @@ public class GameStartCountdown : MonoBehaviour
     [Header("Snack打ち上げ対象")]
     [SerializeField] private SnackLauncher snackLauncher;
 
+    [Header("操作を止めるinput")]
+    public PlayerInput PauseInput;                              //ポーズ画面の操作受け取り
+
     void Start()
     {
         StartCoroutine(CountdownCoroutine());
+        PauseInput.actions.Disable(); // 入力を無効にする
     }
 
     private IEnumerator CountdownCoroutine()
@@ -46,7 +52,7 @@ public class GameStartCountdown : MonoBehaviour
 
         // カウントダウン非表示
         countdownCanvas.gameObject.SetActive(false);
-
+        PauseInput.actions.Enable(); // 入力を有効にする
         // 時間再開
         Time.timeScale = 1f;
 
