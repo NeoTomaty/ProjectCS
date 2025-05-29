@@ -130,7 +130,7 @@ public class LiftingJump : MonoBehaviour
         // ˆÚ“®‘¬“x‚ðŒ³‚É–ß‚·
         MovePlayer.MoveSpeedMultiplier = 1f;
 
-        playerAnimController.SetUseNormalModelWithWait();
+        //playerAnimController.SetUseNormalModelWithWait();
     }
 
     private void Awake()

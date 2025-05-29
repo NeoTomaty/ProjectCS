@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4727665498126996010}
   - component: {fileID: 4101561620321043984}
   - component: {fileID: 1158241096710083265}
-  - component: {fileID: 2767958681328913457}
+  - component: {fileID: 4609241152821256124}
+  - component: {fileID: 7115812461998457897}
   m_Layer: 0
   m_Name: Snack
   m_TagString: Untagged
@@ -115,8 +116,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &2767958681328913457
-SphereCollider:
+--- !u!65 &4609241152821256124
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -134,5 +135,32 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 6.140432
+  m_Size: {x: 8.10779, y: 12.280864, z: 1.9363998}
   m_Center: {x: -0.0048835278, y: 0, z: 0.07071084}
+--- !u!114 &7115812461998457897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779649352305782782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c803b94a1ae1442b5ddfc64869f531, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitStopTime: 0.5
+  baseForce: 100
+  forcePerLift: 100
+  MinUpwardForce: 50
+  MaxUpwardForce: 200
+  MinRandomXYRange: 0
+  MaxRandomXYRange: 0
+  MinFallSpeed: 0
+  MaxFallSpeed: 30
+  RespawnArea: {fileID: 0}
+  LiftingJump: {fileID: 0}
+  GroundArea: {fileID: 0}
+  CameraFunction: {fileID: 0}
+  flyingPoint: {fileID: 0}
+  ClearConditionsScript: {fileID: 0}
