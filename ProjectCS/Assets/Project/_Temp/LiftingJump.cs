@@ -1,7 +1,7 @@
 //======================================================
 // [LiftingJump]
 // 作成者：荒井修
-// 最終更新日：05/28
+// 最終更新日：05/29
 // 
 // [Log]
 // 04/26　荒井　キーを入力したらターゲットに向かってぶっ飛んでいくように実装
@@ -23,15 +23,20 @@
 <<<<<<< HEAD
 // 05/28　荒井　IsNearTargetNextFrame関数を追加
 // 05/28　荒井　リフティングジャンプでスピードが速いとQTEが発動しないことがあるバグを修正
+<<<<<<< HEAD
 =======
 // 05/29　宮林　ポーズ画面表示ボタンの停止
 >>>>>>> origin/Miyabayashi
+=======
+// 05/29　荒井　スクリプト実行順の優先度を設定
+>>>>>>> d642fa3109c167a8fecbf6690ff49f98cae0148e
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 // ジャンプ操作で目標地点にぶっ飛んでいく挙動のテスト用のスクリプト
 // プレイヤーにアタッチ
+[DefaultExecutionOrder(-100)] // 他のスクリプトよりも後に実行されるように設定
 public class LiftingJump : MonoBehaviour
 {
     [SerializeField] GameObject TargetObject;                   // 目標地点
@@ -247,7 +252,7 @@ public class LiftingJump : MonoBehaviour
                     // スローモーションへの移行距離までワープさせる
                     // ワープ先座標 = ターゲットの座標 - (移動方向 * スローモーションへの移行距離)
                     Vector3 NewPosition = TargetObject.transform.position - (MovePlayer.GetMoveDirection * SlowMotionDistance);
-                    GetComponent<Rigidbody>().MovePosition(NewPosition);
+                    transform.position = NewPosition;
                 }
 
                 // スローモーションを開始
