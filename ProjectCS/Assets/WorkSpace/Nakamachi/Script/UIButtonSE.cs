@@ -1,4 +1,4 @@
-//SEPlayer.cs
+//UIButtonSE.cs
 //作成者:中町雷我
 //最終更新日:2025/05/29
 //アタッチ:PauseCanvasのTittleButton,StageSelect,Retry,Optionボタンにアタッチ
