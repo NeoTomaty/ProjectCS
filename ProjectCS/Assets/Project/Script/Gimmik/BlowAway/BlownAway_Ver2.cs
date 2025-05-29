@@ -213,10 +213,8 @@ public class BlownAway_Ver2 : MonoBehaviour
             {
                 if (LiftingJump.IsLiftingPart)
                 {
-                    // プレイヤーの速度が早くなるほど、吹っ飛ばし威力に減衰補正をかける
-                    float Ratio = PlayerSpeedManager.GetSpeedRatio();
-                    float Multiplier = 1.3f - (Ratio * 0.5f);
-                    ForceDirection *= LiftingJump.GetForce * (LiftingJump.GetJumpPower * Multiplier);
+                    // ジャンプのチャージ量で吹っ飛ばしを強化
+                    ForceDirection *= LiftingJump.GetJumpPower;
 
                     // プレイヤーのリフティングパートを終了する
                     LiftingJump.FinishLiftingJump();    // AddForceの前に呼び出さないとスナックが飛ばない

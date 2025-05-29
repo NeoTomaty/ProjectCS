@@ -1,13 +1,7 @@
 //======================================================
 // [LiftingJump]
 // 作成者：荒井修
-<<<<<<< HEAD
 // 最終更新日：05/29
-// 
-=======
-// 最終更新日：05/15
-//
->>>>>>> origin/Moriwaki
 // [Log]
 // 04/26　荒井　キーを入力したらターゲットに向かってぶっ飛んでいくように実装
 // 04/27　荒井　ターゲットに近づいたらスローモーションが始まるように実装
@@ -25,31 +19,22 @@
 // 05/07　荒井　すり抜けモードが有効なのにオブジェクトをすり抜けられないバグを修正
 // 05/07　荒井　クリアカウントで多段ヒット扱いされる挙動を修正
 // 05/15　荒井　移動速度の変化の操作先をPlayerSpeedManagerからMovePlayerに変更
-<<<<<<< HEAD
-<<<<<<< HEAD
 // 05/28　荒井　IsNearTargetNextFrame関数を追加
 // 05/28　荒井　リフティングジャンプでスピードが速いとQTEが発動しないことがあるバグを修正
-<<<<<<< HEAD
-=======
 // 05/29　宮林　ポーズ画面表示ボタンの停止
->>>>>>> origin/Miyabayashi
-=======
 // 05/29　荒井　スクリプト実行順の優先度を設定
->>>>>>> d642fa3109c167a8fecbf6690ff49f98cae0148e
-=======
 // 05/29　森脇　モデルのフラグ変化
->>>>>>> origin/Moriwaki
+// 05/29　荒井　QTE廃止
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 // ジャンプ操作で目標地点にぶっ飛んでいく挙動のテスト用のスクリプト
 // プレイヤーにアタッチ
-[DefaultExecutionOrder(-100)] // 他のスクリプトよりも後に実行されるように設定
 public class LiftingJump : MonoBehaviour
 {
-    [SerializeField] private GameObject TargetObject;                   // 目標地点
-    [SerializeField] private GaugeController GaugeController;   // ゲージコントローラーの参照
+
+    [SerializeField] GameObject TargetObject;                   // 目標地点
     private MovePlayer MovePlayer;                              // プレイヤーの移動スクリプトの参照
     private ObjectGravity ObjectGravityScript;                  // 重力スクリプトの参照
     private PlayerInput PlayerInput;                            // プレイヤーの入力を管理するcomponent
@@ -59,12 +44,6 @@ public class LiftingJump : MonoBehaviour
 
     private float JumpPower = 0f;
     public float GetJumpPower => JumpPower; // ジャンプ力の取得
-
-    [SerializeField] private float MaxMultiForce = 2f;  // ゲージによるパワー補正の最大値
-    public float GetForce => GaugeController.GetGaugeValue * (MaxMultiForce - 1) + 1f;  // 1～最大値の振れ幅
-
-    [SerializeField] private float SlowMotionFactor = 0.1f; //スローモーションの度合い
-    [SerializeField] private float SlowMotionDistance = 1f; // スローモーションへ移行する距離
 
     [SerializeField] private bool IgnoreNonTargetCollisions = false;    // ターゲット以外との衝突を無視するかどうか
     public bool IsIgnore => IgnoreNonTargetCollisions && IsJumping;
@@ -77,26 +56,6 @@ public class LiftingJump : MonoBehaviour
     private bool IsNearTargetLast = false; // ターゲットに近づいたかどうか
 
     [SerializeField] private PlayerAnimationController playerAnimController;
-
-    // スローモーションのオンオフを切り替える関数
-    private void SetSlowMotion(bool Enabled)
-    {
-        if (Enabled)
-        {
-            // スローモーションを開始
-            MovePlayer.MoveSpeedMultiplier = SlowMotionFactor;
-        }
-        else
-        {
-            // スローモーションを終了
-            MovePlayer.MoveSpeedMultiplier = JumpSpeed * JumpPower;
-        }
-    }
-
-    public void ResetGaugeValue()
-    {
-        GaugeController.SetGaugeValue(0f);
-    }
 
     public void SetJumpPower(float Power)
     {
@@ -138,16 +97,6 @@ public class LiftingJump : MonoBehaviour
 
         // プレイヤーを加速させる
         MovePlayer.MoveSpeedMultiplier = JumpSpeed * JumpPower;
-
-        // 踏み切り時点で既に近かったらスローモーションを開始
-        if (IsNearTargetEnter())
-        {
-            // スローモーションを開始
-            SetSlowMotion(true);
-
-            // ゲージを表示
-            GaugeController.Play();
-        }
     }
 
     // リフティングジャンプを停止する関数
@@ -173,9 +122,6 @@ public class LiftingJump : MonoBehaviour
 
         IsJumping = false;
 
-        // ゲージを停止
-        GaugeController.Stop();
-
         // 上昇を止める
         Vector3 MoveDirection = MovePlayer.GetMoveDirection;    // 現在の移動方向を取得
         MoveDirection.y = 0;                                    // Y軸の移動を無効にする
@@ -185,50 +131,6 @@ public class LiftingJump : MonoBehaviour
         MovePlayer.MoveSpeedMultiplier = 1f;
 
         playerAnimController.SetUseNormalModelWithWait();
-    }
-
-    // 次のフレームでスローモーションへの移行距離に達するかどうかを判定する関数
-    private bool IsNearTargetNextFrame()
-    {
-        // 1フレーム当たりの移動距離
-        // 移動方向の大きさ * プレイヤーの速度 * 移動速度倍率 * Time.deltaTime
-        float MoveDistancePerFrame = MovePlayer.GetMoveDirection.magnitude * MovePlayer.PlayerSpeedManager.GetPlayerSpeed * MovePlayer.MoveSpeedMultiplier * Time.deltaTime;
-
-        // ターゲットとの距離を計算
-        float Distance = Vector3.Distance(transform.position, TargetObject.transform.position);
-
-        // 次のフレームでのターゲットとの距離
-        float DistanceNextFrame = Distance - MoveDistancePerFrame;
-
-        // スローモーションへの移行距離に達するかどうか
-        if (DistanceNextFrame < SlowMotionDistance)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    // ターゲットに近づいた瞬間を判定する関数
-    private bool IsNearTargetEnter()
-    {
-        // 次のフレームでスローモーションへの移行距離に達するかどうかを判定
-        bool IsNearNextFrame = IsNearTargetNextFrame();
-
-        if(IsNearNextFrame)
-        {
-            if (!IsNearTargetLast)
-            {
-                IsNearTargetLast = true;
-                return true;
-            }
-        }
-        else
-        {
-            IsNearTargetLast = false;
-        }
-
-        return false;
     }
 
     private void Awake()
@@ -250,36 +152,7 @@ public class LiftingJump : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (TargetObject == null) return;
 
-        // 上昇中
-        if (IsJumping)
-        {
-            // 一定距離までターゲットに近づいたらスローモーションを開始
-            if (IsNearTargetEnter())
-            {
-                // ターゲットとの距離がスローモーションへの移行距離より大きい場合
-                float DistanceToTarget = Vector3.Distance(transform.position, TargetObject.transform.position);
-                if (DistanceToTarget > SlowMotionDistance)
-                {
-                    // スローモーションへの移行距離までワープさせる
-                    // ワープ先座標 = ターゲットの座標 - (移動方向 * スローモーションへの移行距離)
-                    Vector3 NewPosition = TargetObject.transform.position - (MovePlayer.GetMoveDirection * SlowMotionDistance);
-                    transform.position = NewPosition;
-                }
-
-                // スローモーションを開始
-                SetSlowMotion(true);
-
-                // ゲージを表示
-                GaugeController.Play();
-            }
-            else if (GaugeController.IsFinishEnter())
-            {
-                // スローモーションを終了
-                SetSlowMotion(false);
-            }
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
