@@ -20,8 +20,12 @@
 // 05/07　荒井　すり抜けモードが有効なのにオブジェクトをすり抜けられないバグを修正
 // 05/07　荒井　クリアカウントで多段ヒット扱いされる挙動を修正
 // 05/15　荒井　移動速度の変化の操作先をPlayerSpeedManagerからMovePlayerに変更
+<<<<<<< HEAD
 // 05/28　荒井　IsNearTargetNextFrame関数を追加
 // 05/28　荒井　リフティングジャンプでスピードが速いとQTEが発動しないことがあるバグを修正
+=======
+// 05/29　宮林　ポーズ画面表示ボタンの停止
+>>>>>>> origin/Miyabayashi
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,6 +39,7 @@ public class LiftingJump : MonoBehaviour
     private MovePlayer MovePlayer;                              // プレイヤーの移動スクリプトの参照
     private ObjectGravity ObjectGravityScript;                  // 重力スクリプトの参照
     private PlayerInput PlayerInput;                            // プレイヤーの入力を管理するcomponent
+    public PlayerInput PauseInput;                              //ポーズ画面の操作受け取り
 
     [SerializeField] private float JumpSpeed = 2f;  // ジャンプ時の移動速度補正
 
@@ -86,7 +91,7 @@ public class LiftingJump : MonoBehaviour
     public void StartLiftingJump()
     {
         PlayerInput.actions.Disable(); // 入力を無効にする
-
+        PauseInput.actions.Disable(); // 入力を無効にする
         if (IgnoreNonTargetCollisions)   // すり抜け有効時
         {
             Collider SelfCollider = GetComponent<Collider>();                   // 自分のコライダーを取得
@@ -133,7 +138,7 @@ public class LiftingJump : MonoBehaviour
     public void FinishLiftingJump()
     {
         PlayerInput.actions.Enable(); // 入力を有効にする
-
+        PauseInput.actions.Enable(); // 入力を有効にする
         if (IgnoreNonTargetCollisions)  // すり抜け有効時
         {
             Collider SelfCollider = GetComponent<Collider>();   // 自分のコライダーを取得
