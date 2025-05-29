@@ -174,8 +174,6 @@ public class IsHitAny : MonoBehaviour
 
             // •Ç”½ŽËŽž‚ÌAddForce‚ð—LŒø‚É‚·‚é
             IsJumpReflect = true;
-
-            LiftingJumpScript.ResetGaugeValue();
         }
 
     }

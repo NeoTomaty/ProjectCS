@@ -156,8 +156,6 @@ public class TestIsHitAny : MonoBehaviour
 
             // •Ç”½ŽËŽž‚ÌAddForce‚ð—LŒø‚É‚·‚é
             IsJumpReflect = true;
-
-            LiftingJumpScript.ResetGaugeValue();
         }
 
     }
