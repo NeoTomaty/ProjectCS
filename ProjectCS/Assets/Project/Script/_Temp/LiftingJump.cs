@@ -33,8 +33,7 @@ using UnityEngine.InputSystem;
 // プレイヤーにアタッチ
 public class LiftingJump : MonoBehaviour
 {
-
-    [SerializeField] GameObject TargetObject;                   // 目標地点
+    [SerializeField] private GameObject TargetObject;                   // 目標地点
     private MovePlayer MovePlayer;                              // プレイヤーの移動スクリプトの参照
     private ObjectGravity ObjectGravityScript;                  // 重力スクリプトの参照
     private PlayerInput PlayerInput;                            // プレイヤーの入力を管理するcomponent
@@ -130,7 +129,7 @@ public class LiftingJump : MonoBehaviour
         // 移動速度を元に戻す
         MovePlayer.MoveSpeedMultiplier = 1f;
 
-        //playerAnimController.SetUseNormalModelWithWait();
+        playerAnimController.PlayRandomAnimation();
     }
 
     private void Awake()
@@ -152,7 +151,6 @@ public class LiftingJump : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-
     }
 
     private void OnCollisionEnter(Collision collision)

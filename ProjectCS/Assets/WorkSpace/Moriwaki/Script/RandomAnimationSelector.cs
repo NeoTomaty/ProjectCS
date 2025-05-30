@@ -8,5 +8,6 @@ public class RandomAnimationSelector : StateMachineBehaviour
     {
         int randomIndex = Random.Range(0, animationCount);
         animator.SetInteger("RandomIndex", randomIndex);
+        Debug.Log($"Random Animation Index Set: {randomIndex}");
     }
 }

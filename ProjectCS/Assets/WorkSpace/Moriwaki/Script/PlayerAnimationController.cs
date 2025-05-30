@@ -22,6 +22,11 @@ public class PlayerAnimationController : MonoBehaviour
     [Header("model の Animator（1ループ判定用）")]
     [SerializeField] private Animator modelAnimator;
 
+    [Header("ランダムアニメーションの設定")]
+    [SerializeField] private int randomAnimationCount = 3; // アニメーションの数
+
+    [SerializeField] private string randomIndexParameterName = "RandomIndex"; // パラメータ名
+
     private bool waitingForAnimFinish = false;
 
     private void Update()
@@ -54,7 +59,9 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayRandomAnimation()
     {
-        SetUseNormalModelWithWait(); // モデルを表示し、アニメーション終了を待つ
+        SetUseNormalModelWithWait();
+        int randomIndex = Random.Range(0, randomAnimationCount);
+        modelAnimator.SetInteger("RandomIndex", randomIndex);
     }
 
     // 外部から model を表示（アニメーション再生）させるときに呼ぶ
