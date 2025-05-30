@@ -7,6 +7,7 @@
 // 05/30 荒井 スコアのコンボボーナスのリセットを実装
 //====================================================
 using UnityEngine;
+using System.Collections;
 
 public class BlownAway_Ver3 : MonoBehaviour
 {
@@ -53,6 +54,8 @@ public class BlownAway_Ver3 : MonoBehaviour
     private float previousVerticalVelocity = 0f;  // リスポーン前のY方向速度を保存
 
     private bool HitNextFallArea = true;    // リスポーンエリアに連続で当たらないようにする
+
+    private bool HitSnack = true; // snackに多段ヒットしないようにする
 
     private Rigidbody Rb;
 
@@ -120,10 +123,45 @@ public class BlownAway_Ver3 : MonoBehaviour
             Debug.Log($"落下速度を制限しました: {Rb.linearVelocity.y}");
         }
     }
+   
 
     void OnCollisionEnter(Collision collision)
     {
+<<<<<<< HEAD
         if (collision.gameObject.CompareTag("Ground"))
+=======
+        if (!collision.gameObject.CompareTag("Player")) return;
+
+        // 多段ヒット防止フラグ
+        if (!HitSnack) return;
+
+        HitSnack = false;
+        Debug.Log("HitSnack = false");
+
+        ClearConditionsScript.CheckLiftingCount();
+       
+        // Snackに触れたらHitNextFallAreaをtrueに戻す
+        HitNextFallArea = true;
+
+        // リフティング回数を加算
+        liftingCount++;
+
+        // 力を計算：基本 + 回数 × 増加量
+        float force = baseForce + (liftingCount * forcePerLift);
+
+        // 上方向のベクトルに力を加える
+        Vector3 forceDir = Vector3.up * force;
+        Rb.AddForce(forceDir, ForceMode.Impulse);
+
+        Debug.Log(liftingCount);
+
+
+        // snackの座標のログ
+        Debug.Log($"snackの座標: {transform.position}");
+
+        // ゲージによる補正
+        if (LiftingJump != null)
+>>>>>>> origin/Fujimoto
         {
             // スコアのコンボボーナスをリセット
             if (flyingPoint != null)
@@ -207,6 +245,9 @@ public class BlownAway_Ver3 : MonoBehaviour
             Debug.LogWarning("RespawnAreaが設定されていません");
             return;
         }
+
+        // プレイヤーが離れたら多段ヒット防止フラグをtrue
+        HitSnack = true;
 
         // 範囲取得
         Vector3 respawnCenter = RespawnArea.position;
