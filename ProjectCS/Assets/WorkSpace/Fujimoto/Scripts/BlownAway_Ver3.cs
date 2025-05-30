@@ -4,6 +4,7 @@
 // 内容：リフティング回数に応じて飛ぶ力が段階的に上がる
 // [Log]
 // 05/13 藤本 リフティング回数に応じて飛ぶ力が段階的に上がる
+// 05/30 荒井 スコアのコンボボーナスのリセットを実装
 //====================================================
 using UnityEngine;
 
@@ -122,55 +123,64 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Player")) return;
-
-        ClearConditionsScript.CheckLiftingCount();
-        
-        //ClearConditionsScript.
-        // Snackに触れたらHitNextFallAreaをtrueに戻す
-        HitNextFallArea = true;
-
-        // リフティング回数を加算
-        liftingCount++;
-
-        // 力を計算：基本 + 回数 × 増加量
-        float force = baseForce + (liftingCount * forcePerLift);
-
-        // 上方向のベクトルに力を加える
-        Vector3 forceDir = Vector3.up * force;
-        Rb.AddForce(forceDir, ForceMode.Impulse);
-
-        Debug.Log(liftingCount);
-
-
-        // snackの座標のログ
-        Debug.Log($"snackの座標: {transform.position}");
-
-        // ゲージによる補正
-        if (LiftingJump != null)
+        if (collision.gameObject.CompareTag("Ground"))
         {
-            if (LiftingJump.IsLiftingPart)
+            // スコアのコンボボーナスをリセット
+            if (flyingPoint != null)
             {
-                //ForceDirection *= LiftingJump.GetForce * LiftingJump.GetJumpPower;
-
-                // プレイヤーのリフティングパートを終了する
-                LiftingJump.FinishLiftingJump();    // AddForceの前に呼び出さないとスナックが飛ばない
-
-                if (flyingPoint != null)
-                {
-                    flyingPoint.CalculateScore();
-                    Debug.LogWarning("スコア計算開始");
-                }
+                flyingPoint.ResetComboBonus();
             }
         }
+        else if (collision.gameObject.CompareTag("Player"))
+        {
+            ClearConditionsScript.CheckLiftingCount();
 
-        flyingPoint.CalculateScore();
+            //ClearConditionsScript.
+            // Snackに触れたらHitNextFallAreaをtrueに戻す
+            HitNextFallArea = true;
 
-        // ヒットストップを開始する
-        StartCoroutine(HitStop());
+            // リフティング回数を加算
+            liftingCount++;
 
-        // カメラの強制ロックオン開始
-        CameraFunction.StartLockOn(true);
+            // 力を計算：基本 + 回数 × 増加量
+            float force = baseForce + (liftingCount * forcePerLift);
+
+            // 上方向のベクトルに力を加える
+            Vector3 forceDir = Vector3.up * force;
+            Rb.AddForce(forceDir, ForceMode.Impulse);
+
+            Debug.Log(liftingCount);
+
+
+            // snackの座標のログ
+            Debug.Log($"snackの座標: {transform.position}");
+
+            // ゲージによる補正
+            if (LiftingJump != null)
+            {
+                if (LiftingJump.IsLiftingPart)
+                {
+                    //ForceDirection *= LiftingJump.GetForce * LiftingJump.GetJumpPower;
+
+                    // プレイヤーのリフティングパートを終了する
+                    LiftingJump.FinishLiftingJump();    // AddForceの前に呼び出さないとスナックが飛ばない
+
+                    if (flyingPoint != null)
+                    {
+                        flyingPoint.CalculateScore();
+                        Debug.LogWarning("スコア計算開始");
+                    }
+                }
+            }
+
+            flyingPoint.CalculateScore();
+
+            // ヒットストップを開始する
+            StartCoroutine(HitStop());
+
+            // カメラの強制ロックオン開始
+            CameraFunction.StartLockOn(true);
+        }
     }
 
     // ヒットストップ関数
