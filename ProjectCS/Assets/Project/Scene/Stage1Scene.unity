@@ -1411,34 +1411,6 @@ MonoBehaviour:
   BaseGroundLayerMask:
     serializedVersion: 2
     m_Bits: 128
---- !u!114 &756912135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756912130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43d388e4e3d2b524a9bd4a8512db3eaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MinHitStopTime: 0.5
-  MaxHitStopTime: 1
-  MinUpwardForce: 50
-  MaxUpwardForce: 500
-  MinForwardForce: 0
-  MaxForwardForce: 0
-  MinRandomXYRange: 0
-  MaxRandomXYRange: 0
-  MinFallSpeed: 0
-  MaxFallSpeed: 100
-  RespawnArea: {fileID: 949123409}
-  LiftingJump: {fileID: 1070818865}
-  GroundArea: {fileID: 949123409}
-  CameraFunction: {fileID: 594655328}
-  flyingPoint: {fileID: 1070818855}
-  ClearConditionsScript: {fileID: 1731900030}
 --- !u!114 &756912136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2278,9 +2250,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       insertIndex: -1
       addedObject: {fileID: 756912136}
-    - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 756912135}
     - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       insertIndex: -1
       addedObject: {fileID: 756912134}
