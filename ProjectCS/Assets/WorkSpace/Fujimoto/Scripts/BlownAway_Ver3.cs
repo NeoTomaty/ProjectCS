@@ -127,47 +127,10 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-<<<<<<< HEAD
+
         if (collision.gameObject.CompareTag("Ground"))
-=======
-        if (!collision.gameObject.CompareTag("Player")) return;
-
-        // 多段ヒット防止フラグ
-        if (!HitSnack) return;
-
-        HitSnack = false;
-        Debug.Log("HitSnack = false");
-
-        ClearConditionsScript.CheckLiftingCount();
-       
-        // Snackに触れたらHitNextFallAreaをtrueに戻す
-        HitNextFallArea = true;
-
-        // リフティング回数を加算
-        liftingCount++;
-
-        // 力を計算：基本 + 回数 × 増加量
-        float force = baseForce + (liftingCount * forcePerLift);
-
-        // 上方向のベクトルに力を加える
-        Vector3 forceDir = Vector3.up * force;
-        Rb.AddForce(forceDir, ForceMode.Impulse);
-
-        Debug.Log(liftingCount);
-
-
-        // snackの座標のログ
-        Debug.Log($"snackの座標: {transform.position}");
-
-        // ゲージによる補正
-        if (LiftingJump != null)
->>>>>>> origin/Fujimoto
         {
-            // スコアのコンボボーナスをリセット
-            if (flyingPoint != null)
-            {
-                flyingPoint.ResetComboBonus();
-            }
+            flyingPoint.ResetComboBonus();
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
