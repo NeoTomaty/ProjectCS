@@ -19,11 +19,17 @@ public class OptionManager : MonoBehaviour
     [SerializeField] private GameObject firstOptionButton;
     [SerializeField] private GameObject CurrentOptionButton;
     [SerializeField] private GameObject firstPauseButton;
-    [SerializeField] private GameObject volumeButton;
+    [SerializeField] private GameObject bgmVolumeButton;
+    [SerializeField] private GameObject seVolumeButton;
     [SerializeField] private GameObject sensitivityButton;
 
-    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Slider bgmVolumeSlider;
     [SerializeField] private Slider sensitivitySlider;
+    [SerializeField] private Slider seVolumeSlider;
+    
+   
+
+
 
     [Header("Manager Reference")]
     [SerializeField] private PauseManager pauseManager;
@@ -36,7 +42,8 @@ public class OptionManager : MonoBehaviour
 
     [SerializeField] private InputActionReference cancelAction;
 
-    private bool isAdjustingVolume = false;
+    private bool isAdjustingBgmVolume = false;
+    private bool isAdjustingSeVolume = false;
     private bool isAdjustingSensitivity = false;
 
     private float adjustCooldown = 0.15f;
@@ -61,13 +68,14 @@ public class OptionManager : MonoBehaviour
     private void Start()
     {
         // スライダーに保存済み設定値を反映
-        volumeSlider.value = GameSettingsManager.Instance.Volume;
+        bgmVolumeSlider.value = GameSettingsManager.Instance.BgmVolume;
+        seVolumeSlider.value = GameSettingsManager.Instance.SeVolume;
         sensitivitySlider.value = GameSettingsManager.Instance.Sensitivity;
 
         // volumeSetting が設定されている場合のみ反映
         if (volumeSetting != null)
         {
-            volumeSetting.SetBGMVolume(volumeSlider.value);
+            volumeSetting.SetBGMVolume(bgmVolumeSlider.value);
         }
 
         // cameraFunction が設定されている場合のみ反映
@@ -89,17 +97,30 @@ public class OptionManager : MonoBehaviour
             float moveAmount = 0.05f;
             float direction = Mathf.Sign(horizontal);
 
-            if (isAdjustingVolume)
+            if (isAdjustingBgmVolume)
             {
-                volumeSlider.value = Mathf.Clamp(volumeSlider.value + direction * moveAmount, 0.0f, volumeSlider.maxValue);
+                bgmVolumeSlider.value = Mathf.Clamp(bgmVolumeSlider.value + direction * moveAmount, 0.0f, bgmVolumeSlider.maxValue);
 
-                GameSettingsManager.Instance.SetVolume(volumeSlider.value); // 保存
+                GameSettingsManager.Instance.SetBgmVolume(bgmVolumeSlider.value); // 保存
                 if (volumeSetting != null)
                 {
-                    volumeSetting.SetBGMVolume(volumeSlider.value);
+                    volumeSetting.SetBGMVolume(bgmVolumeSlider.value);
                 }
-                Debug.Log($"Volume: {volumeSlider.value}");
+                Debug.Log($"BGM Volume: {bgmVolumeSlider.value}");
 
+            }
+            else if (isAdjustingSeVolume)
+            {
+                seVolumeSlider.value = Mathf.Clamp(seVolumeSlider.value + direction * moveAmount, 0.0f, seVolumeSlider.maxValue);
+
+                GameSettingsManager.Instance.SetSeVolume(seVolumeSlider.value); // 保存
+
+                if (volumeSetting != null)
+                {
+                    volumeSetting.SetSEVolume(seVolumeSlider.value);
+                }
+
+                Debug.Log($"SE Volume: {seVolumeSlider.value}");
             }
             else if (isAdjustingSensitivity)
             {
@@ -116,9 +137,13 @@ public class OptionManager : MonoBehaviour
         }
     }
 
-    public float GetVolume()
+    public float GetBgmVolume()
     {
-        return GameSettingsManager.Instance.Volume;
+        return GameSettingsManager.Instance.BgmVolume;
+    }
+    public float GetSeVolume()
+    {
+        return GameSettingsManager.Instance.SeVolume;
     }
 
     public float GetSensitivity()
@@ -132,7 +157,7 @@ public class OptionManager : MonoBehaviour
         pauseManager.SetPauseUIVisible(true);
 
         // スライダー調整を終了
-        isAdjustingVolume = false;
+        isAdjustingBgmVolume = false;
         isAdjustingSensitivity = false;
 
         // ボタン選択を戻す
@@ -140,17 +165,27 @@ public class OptionManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(firstPauseButton);
     }
 
-    public void OnVolumeButtonClick()
+    public void OnBgmVolumeButtonClick()
     {
-        isAdjustingVolume = true;
+        isAdjustingBgmVolume = true;
         isAdjustingSensitivity = false;
+        isAdjustingSeVolume = false;
+
+        EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    public void OnSEVolumeButtonClick()
+    {
+        isAdjustingBgmVolume = false;
+        isAdjustingSensitivity = false;
+        isAdjustingSeVolume = true;
 
         EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnSensitivityButtonClick()
     {
-        isAdjustingVolume = false;
+        isAdjustingBgmVolume = false;
         isAdjustingSensitivity = true;
 
         EventSystem.current.SetSelectedGameObject(null);
@@ -158,13 +193,12 @@ public class OptionManager : MonoBehaviour
 
     private void OnCancel(InputAction.CallbackContext context)
     {
-        if (isAdjustingVolume || isAdjustingSensitivity)
+        if (isAdjustingBgmVolume || isAdjustingSensitivity || isAdjustingSeVolume)
         {
-            // スライダー調整中 → ボタン選択に戻る
-            isAdjustingVolume = false;
+            isAdjustingBgmVolume = false;
             isAdjustingSensitivity = false;
+            isAdjustingSeVolume = false;
 
-            // 戻る時は、元のボタン（例：音量ボタン）を再選択
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(CurrentOptionButton);
         }
