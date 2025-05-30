@@ -1,7 +1,7 @@
 //======================================================
 // [GameClearSequence]
 // 作成者：荒井修
-// 最終更新日：05/19
+// 最終更新日：05/29
 // 
 // [Log]
 // 05/08　荒井　仮のクリア演出を作成
@@ -11,6 +11,7 @@
 // 05/16　荒井　スコア表示等に対応
 // 05/17　荒井　スナックが吹っ飛ぶ方向が完全な真上じゃないのをクリア演出限定で修正
 // 05/19　荒井　クリアUI以外のキャンバスを非表示にする処理を追加
+// 05/29　中町　クリア演出SE実装
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -71,6 +72,14 @@ public class GameClearSequence : MonoBehaviour
 
     // カメラ追跡フラグ
     private bool IsCameraStop = false;
+
+    [Header("サウンド設定")]
+
+    //ゲームクリア時に再生する効果音(AudioClip)をインスペクターから設定できるようにする
+    [SerializeField] private AudioClip ClearSE;
+
+    //効果音を再生するためのAudioSourceコンポーネント
+    private AudioSource audioSource;
 
     // クリア条件を満たした時に呼び出す関数
     // 正常に終了した場合はtrueを、そうでない場合はfalseを返す
@@ -153,6 +162,13 @@ public class GameClearSequence : MonoBehaviour
             GameObject StarClone = Instantiate(StarObject, StarPos, Quaternion.identity);
         }
 
+        //効果音(SE)が設定されていて、AudioSourceも存在するときに再生する
+        if (ClearSE != null && audioSource != null)
+        {
+            //一回だけ効果音を再生する(重ねて再生可能)
+            audioSource.PlayOneShot(ClearSE);
+        }
+
         // クリア演出中フラグを立てる
         IsClearSequence = true;
 
@@ -162,6 +178,9 @@ public class GameClearSequence : MonoBehaviour
     private void Awake()
     {
         PlayerInput = PlayerObject.GetComponent<PlayerInput>();
+
+        //AudioSourceコンポーネントをこのGameObjectに追加し、効果音再生用に保持しておく
+        audioSource = gameObject.AddComponent<AudioSource>();
     }
     private void Start()
     {
