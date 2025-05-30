@@ -18,6 +18,7 @@
 // 05/16 荒井 クリア演出時のスナックの速度を固定にできるように変更
 // 05/17 荒井 クリア演出時の処理を修正
 // 05/19 荒井 プレイヤーとの当たり判定を無効化、有効化する関数を追加し、それぞれOnCollisionEnterとOnCollisionExitに追加
+// 05/24 荒井 OnCollisionEnter関数に地面との接触の分岐を追加し、スコアのコンボボーナスをリセットするように実装
 //====================================================
 using UnityEngine;
 
@@ -155,78 +156,86 @@ public class BlownAway_Ver2 : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Player")) return;
-
-        StartCoolTime(collision.gameObject.GetComponent<Collider>()); // クールタイムを開始
-
-        ClearConditionsScript.CheckLiftingCount();
-
-        // Snackに触れたらHitNextFallAreaをtrueに戻す
-        HitNextFallArea = true;
-
-        // PlayerSpeedManagerスクリプトを取得
-        PlayerSpeedManager PlayerSpeedManager = collision.gameObject.GetComponent<PlayerSpeedManager>();
-        if (!PlayerSpeedManager)
+        if (collision.gameObject.CompareTag("Ground"))
         {
-            Debug.LogWarning("PlayerSpeedManager取得失敗");
-            return;
-        }
-        // プレイヤーの現在の速度割合を取得
-        float SpeedRatio = PlayerSpeedManager.GetSpeedRatio();
-        // 現在のお菓子の大きさの割合を取得する
-        float ScaleRatio = transform.localScale.x;
-
-        // 真上方向に力を加える
-        Vector3 UpwardDirection = Vector3.up * Mathf.Lerp(MinUpwardForce, MaxUpwardForce, SpeedRatio);
-
-        // プレイヤーの前方方向を取得（向いている方向）
-        Vector3 PlayerForward = collision.transform.forward;
-        Vector3 ForwardForce = PlayerForward * Mathf.Lerp(MinForwardForce, MaxForwardForce, ScaleRatio);
-
-        // ランダムなXY方向のベクトルを生成
-        float RandomAngle = Random.Range(0.0f, 2.0f * Mathf.PI); // ランダムな角度
-        Vector3 RandomDirection = new Vector3(Mathf.Cos(RandomAngle), 0.0f, Mathf.Sin(RandomAngle));
-
-        // ランダム方向ベクトルを指定した距離になるようにスケーリング
-        RandomDirection = RandomDirection.normalized * Mathf.Lerp(MinRandomXYRange, MaxRandomXYRange, ScaleRatio);
-
-        // 最終的な力の方向
-        //Vector3 ForceDirection = UpwardDirection + RandomDirection + ForwardForce;
-
-        // snackの座標のログ
-        Debug.Log($"snackの座標: {transform.position}");
-
-        Vector3 ForceDirection = UpwardDirection;
-
-        // ゲージによる補正
-        if (IsRespawn && LiftingJump != null)
-        {
-            if (LiftingJump.IsLiftingPart)
+            // スコアのコンボボーナスをリセット
+            if (flyingPoint != null)
             {
-                // プレイヤーの速度が早くなるほど、吹っ飛ばし威力に減衰補正をかける
-                float Ratio = PlayerSpeedManager.GetSpeedRatio();
-                float Multiplier = 1.3f - (Ratio * 0.5f);
-                ForceDirection *= LiftingJump.GetForce * (LiftingJump.GetJumpPower * Multiplier);
-
-                // プレイヤーのリフティングパートを終了する
-                LiftingJump.FinishLiftingJump();    // AddForceの前に呼び出さないとスナックが飛ばない
-
-                if (flyingPoint != null)
-                {
-                    flyingPoint.CalculateScore();
-                    Debug.LogWarning("スコア計算開始");
-                }
+                flyingPoint.ResetComboBonus();
             }
         }
 
-        // Rigidbodyに力を加える
-        Rb.AddForce(ForceDirection, ForceMode.Impulse);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            StartCoolTime(collision.gameObject.GetComponent<Collider>()); // クールタイムを開始
 
-        // ヒットストップを開始する
-        StartCoroutine(HitStop(Mathf.Lerp(MinHitStopTime, MaxHitStopTime, SpeedRatio)));
+            ClearConditionsScript.CheckLiftingCount();
 
-        // カメラの強制ロックオン開始
-        CameraFunction.StartLockOn(true);
+            // Snackに触れたらHitNextFallAreaをtrueに戻す
+            HitNextFallArea = true;
+
+            // PlayerSpeedManagerスクリプトを取得
+            PlayerSpeedManager PlayerSpeedManager = collision.gameObject.GetComponent<PlayerSpeedManager>();
+            if (!PlayerSpeedManager)
+            {
+                Debug.LogWarning("PlayerSpeedManager取得失敗");
+                return;
+            }
+            // プレイヤーの現在の速度割合を取得
+            float SpeedRatio = PlayerSpeedManager.GetSpeedRatio();
+            // 現在のお菓子の大きさの割合を取得する
+            float ScaleRatio = transform.localScale.x;
+
+            // 真上方向に力を加える
+            Vector3 UpwardDirection = Vector3.up * Mathf.Lerp(MinUpwardForce, MaxUpwardForce, SpeedRatio);
+
+            // プレイヤーの前方方向を取得（向いている方向）
+            Vector3 PlayerForward = collision.transform.forward;
+            Vector3 ForwardForce = PlayerForward * Mathf.Lerp(MinForwardForce, MaxForwardForce, ScaleRatio);
+
+            // ランダムなXY方向のベクトルを生成
+            float RandomAngle = Random.Range(0.0f, 2.0f * Mathf.PI); // ランダムな角度
+            Vector3 RandomDirection = new Vector3(Mathf.Cos(RandomAngle), 0.0f, Mathf.Sin(RandomAngle));
+
+            // ランダム方向ベクトルを指定した距離になるようにスケーリング
+            RandomDirection = RandomDirection.normalized * Mathf.Lerp(MinRandomXYRange, MaxRandomXYRange, ScaleRatio);
+
+            // 最終的な力の方向
+            //Vector3 ForceDirection = UpwardDirection + RandomDirection + ForwardForce;
+
+            // snackの座標のログ
+            Debug.Log($"snackの座標: {transform.position}");
+
+            Vector3 ForceDirection = UpwardDirection;
+
+            // ゲージによる補正
+            if (IsRespawn && LiftingJump != null)
+            {
+                if (LiftingJump.IsLiftingPart)
+                {
+                    // ジャンプのチャージ量で吹っ飛ばしを強化
+                    ForceDirection *= LiftingJump.GetJumpPower;
+
+                    // プレイヤーのリフティングパートを終了する
+                    LiftingJump.FinishLiftingJump();    // AddForceの前に呼び出さないとスナックが飛ばない
+
+                    if (flyingPoint != null)
+                    {
+                        flyingPoint.CalculateScore();
+                        Debug.LogWarning("スコア計算開始");
+                    }
+                }
+            }
+
+            // Rigidbodyに力を加える
+            Rb.AddForce(ForceDirection, ForceMode.Impulse);
+
+            // ヒットストップを開始する
+            StartCoroutine(HitStop(Mathf.Lerp(MinHitStopTime, MaxHitStopTime, SpeedRatio)));
+
+            // カメラの強制ロックオン開始
+            CameraFunction.StartLockOn(true);
+        }
     }
 
     private void OnCollisionExit(Collision collision)

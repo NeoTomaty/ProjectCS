@@ -2,11 +2,12 @@
 //======================================================
 // FlyingPointスクリプト
 // 作成者：藤本
-// 最終更新日：4/22
+// 最終更新日：5/24
 //
 // [Log]
 // 4/22 藤本　飛距離に応じたポイント計算実装
 // 5/09 藤本　スコアを計算を（チャージジャンプ＋QTEゲージ）×プレイヤーの速度＝スコアに変更
+// 5/24 荒井　コンボボーナスを追加
 //======================================================
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,16 @@ public class FlyingPoint : MonoBehaviour
 
     public float GetScore() => Score;
 
+    [Header("コンボボーナス設定")]
+    [SerializeField] private float ComboBonusUpValue = 0.2f; // コンボボーナスの増加量
+    private float ComboBonusRate = 1.0f; // コンボボーナス倍率
+
+    public void ResetComboBonus()
+    {
+        ComboBonusRate = 1.0f; // コンボボーナス倍率をリセット
+        Debug.Log("コンボボーナスをリセットしました");
+    }
+
     // スコアを計算する関数
     public void CalculateScore()
     {
@@ -43,9 +54,14 @@ public class FlyingPoint : MonoBehaviour
 
         // スコア計算
         float rawScore = jumpPower * speed;
+        rawScore *= ComboBonusRate; // コンボボーナス
         Score = Mathf.Floor(rawScore); // 小数点以下を切り捨て
         totalScore += Score;
 
-        Debug.Log($"スコア加算: {jumpPower} +  × {speed} = {Score} → 合計: {totalScore}");
+        Debug.Log($"スコア加算: {jumpPower} × {speed} = {Score} → 合計: {totalScore}");
+        Debug.Log($"コンボボーナス: {ComboBonusRate}");
+
+        // コンボボーナスの更新
+        ComboBonusRate += ComboBonusUpValue;
     }
 }
