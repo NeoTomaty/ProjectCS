@@ -1,7 +1,11 @@
 //======================================================
 // [GameClearSequence]
 // 作成者：荒井修
+<<<<<<< HEAD
 // 最終更新日：05/29
+=======
+// 最終更新日：05/30
+>>>>>>> origin/Arai
 // 
 // [Log]
 // 05/08　荒井　仮のクリア演出を作成
@@ -11,7 +15,11 @@
 // 05/16　荒井　スコア表示等に対応
 // 05/17　荒井　スナックが吹っ飛ぶ方向が完全な真上じゃないのをクリア演出限定で修正
 // 05/19　荒井　クリアUI以外のキャンバスを非表示にする処理を追加
+<<<<<<< HEAD
 // 05/29　中町　クリア演出SE実装
+=======
+// 05/30　荒井　BlownAway_Ver3に対応
+>>>>>>> origin/Arai
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -93,7 +101,7 @@ public class GameClearSequence : MonoBehaviour
 
         MovePlayer MovePlayer = PlayerObject.GetComponent<MovePlayer>();
 
-        BlownAway_Ver2 BlownAway = SnackObject.GetComponent<BlownAway_Ver2>();
+        BlownAway_Ver3 BlownAway = SnackObject.GetComponent<BlownAway_Ver3>();
         ObjectGravity SnackGravity = SnackObject.GetComponent<ObjectGravity>();
 
         CameraFunction CameraFunction = CameraObject.GetComponent<CameraFunction>();
@@ -142,7 +150,7 @@ public class GameClearSequence : MonoBehaviour
         Collider SnackCollider = SnackClone.GetComponent<Collider>();
         Physics.IgnoreCollision(PlayerCollider, SnackCollider);
 
-        SnackClone.GetComponent<BlownAway_Ver2>().OnClear();        // スナックのリスポーンを無効化
+        SnackClone.GetComponent<BlownAway_Ver3>().OnClear();        // スナックのリスポーンを無効化
         SnackClone.GetComponent<ObjectGravity>().IsActive = false;  // スナックの重力を無効化
         SnackClone.GetComponent<Rigidbody>().AddForce(Vector3.up * SnackSpeed, ForceMode.Impulse);  // スナックを上に吹っ飛ばす
 
