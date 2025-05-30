@@ -2172,7 +2172,8 @@ MonoBehaviour:
   countdownText: {fileID: 139439269}
   countdownCanvas: {fileID: 629335442}
   goDisplayTime: 0.5
-  snackLauncher: {fileID: 0}
+  snackLauncher: {fileID: 1846973854}
+  PauseInput: {fileID: 622377339258834998}
 --- !u!1 &1473430701
 GameObject:
   m_ObjectHideFlags: 0
@@ -3010,6 +3011,7 @@ MonoBehaviour:
   GravityScale: {x: 0, y: -30, z: 0}
   MaxFallSpeed: 250
   IsActive: 1
+  FallSE: {fileID: 0}
 --- !u!4 &1846973843 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7554536379738216804, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
