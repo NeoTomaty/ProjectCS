@@ -1,7 +1,7 @@
 //======================================================
 // [PlayerHitWall]
 // 作成者：荒井修
-// 最終更新日：04/11
+// 最終更新日：05/30
 // 
 // 内容：プレイヤーが何かにあたった際の処理
 // 　　　プレイヤーオブジェクトにアタッチする
@@ -18,6 +18,7 @@
 // 04/27　荒井　リフティングパートに関する処理を追加
 // 04/30　竹内　Playerタグ及びGoalWallタグに当たった際の挙動を削除
 // 04/30　竹内　RespawnAreaタグに当たった際の挙動を追加
+// 05/30　中町　リスポーンSE実装
 //======================================================
 
 using UnityEngine;
@@ -30,16 +31,19 @@ public class IsHitAny : MonoBehaviour
     [Header("壁に衝突したときの加速度")]
     [SerializeField] private float Acceleration = 1.0f;
 
+    //Y方向の速度制限(壁反射時の力の調整に使用)
     [Header("Y方向の速度")]
     [SerializeField]
     private float MaxVelocityY = 50.0f;  // Y軸最大の速さ
     [SerializeField]
     private float MinVelocityY = -50.0f; // Y軸最小の速さ
 
-
+    //壁に当たった後にボタン入力で加速できるかどうか
     [Header("ボタン入力による加速を実行するかどうか")]
     [SerializeField]
     private bool IsInputEnabled = true;
+
+    //入力受付時間の設定(壁に当たってから何秒間入力を受け付けるか)
     [Header("ボタン入力まわりの設定")]
     [SerializeField]
     private float InputAcceptDuration = 1.0f;// 壁に衝突後の入力受付時間
@@ -64,6 +68,13 @@ public class IsHitAny : MonoBehaviour
     // 同じオブジェクトにアタッチされているスクリプトであるという想定での実装
     MovePlayer MovePlayerScript;    //実際のスクリプト
 
+    //リスポーン時に再生するSE(サウンドエフェクト)
+    [Header("リスポーン時のSE")]
+    [SerializeField] private AudioClip RespawnSE;
+
+    //SEを再生するためのAudioSource
+    private AudioSource audioSource;
+
     void Start()
     {
         MovePlayerScript = GetComponent<MovePlayer>();
@@ -73,6 +84,14 @@ public class IsHitAny : MonoBehaviour
         if (MovePlayerScript == null)
         {
             Debug.LogError("プレイヤー >> MovePlayerスクリプトが見つかりません");
+        }
+
+        //AudioSourceがアタッチされていなければ追加
+        audioSource = GetComponent<AudioSource>();
+
+        if(audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
@@ -186,6 +205,12 @@ public class IsHitAny : MonoBehaviour
         {
             // オブジェクトの位置をwarpPositionに変更する
             transform.position = warpPosition;
+
+            //リスポーンSEを再生
+            if(RespawnSE != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(RespawnSE);
+            }
         }
     }
 
