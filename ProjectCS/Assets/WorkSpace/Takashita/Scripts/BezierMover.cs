@@ -6,20 +6,58 @@ public class BezierMover : MonoBehaviour
     [Range(0.1f, 10f)]
     public float moveDuration = 3f; // 曲線を移動し終えるまでの秒数
 
-
+    private bool IsReverse = false;
 
     private float timer = 0f;
 
+    private bool isMoving = false;
+
+    private void Start()
+    {
+        //timer = moveDuration;
+        
+    }
+
     void Update()
     {
-        //if (curve == null) return;
+        if (!isMoving || curve == null) return;
 
-        //// 経過時間を更新
-        //timer += Time.deltaTime;
-        //float t = Mathf.Clamp01(timer / moveDuration); // 0～1 の範囲に正規化
+        timer += IsReverse ? -Time.deltaTime : Time.deltaTime;
 
-        //// 曲線上の位置を取得してオブジェクトを移動
-        //Vector3 position = curve.CalculateBezierPoint(t);
-        //transform.position = position;
+        timer = Mathf.Clamp(timer, 0f, moveDuration);
+
+        if ((!IsReverse && timer >= moveDuration) || (IsReverse && timer <= 0f))
+        {
+            isMoving = false; // 停止フラグ
+            return;
+        }
+
+        float t = Mathf.Clamp01(timer / moveDuration);
+        transform.position = curve.CalculateBezierPoint(t);
+    }
+
+    public void StartMove(bool isReverse, CubicBezierCurve cubicBezierCurve)
+    {
+        IsReverse = isReverse;
+        curve = cubicBezierCurve;
+        isMoving = true;
+
+        Debug.Log("timer = " + timer);
+        if (timer == 0f || timer == moveDuration)
+        {
+            timer = isReverse ? 1f : 0f;
+            Debug.Log("処理通過");
+        }
+        
+    }
+
+    public void SetPosition(Vector3 pos)
+    {
+        transform.position = pos;
+    }
+
+    public bool GetIsMoving()
+    {
+        return isMoving;
     }
 }

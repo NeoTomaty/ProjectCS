@@ -13,79 +13,59 @@ using System.Collections.Generic;
 [ExecuteAlways]
 public class CubicBezierCurve : MonoBehaviour
 {
-    [Header("アンカーポイント（始点・終点含む）")]
-    public List<Transform> anchorPoints = new List<Transform>(); // P0〜Pn
-
-    [Header("制御点（各セグメントごとに2つ）")]
-    public List<Transform> controlPoints = new List<Transform>(); // (N-1)×2個
+    // 曲線の始点・終点および制御点
+    public Transform StageObject1;       // ベジェ曲線の始点（P0）
+    public Transform StageObject2;       // ベジェ曲線の終点（P3）
+    public Transform ControlPoint1;      // 制御点1（P1）
+    public Transform ControlPoint2;      // 制御点2（P2）
 
     [Range(2, 100)]
-    public int resolution = 20;
+    public int resolution = 20;          // 曲線を構成する線分の数（精度）
 
-    private void OnValidate()
-    {
-        AdjustControlPointList();
-    }
-
+    // シーンビューでGizmosを描画（ただし実行時には描画しない）
     private void OnDrawGizmos()
     {
+        // 必要なTransformが揃っていない場合は描画しない
+        if (StageObject1 == null || StageObject2 == null || ControlPoint1 == null || ControlPoint2 == null) return;
+
+        // 実行中（Play中）は描画をスキップ
         if (Application.isPlaying) return;
-        if (anchorPoints.Count < 2 || controlPoints.Count != (anchorPoints.Count - 1) * 2) return;
 
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.green; // 曲線部分の色を設定
 
-        for (int i = 0; i < anchorPoints.Count - 1; i++)
+        Vector3 prev = StageObject1.position; // 始点を初期値とする
+        for (int i = 1; i <= resolution; i++)
         {
-            Transform p0 = anchorPoints[i];
-            Transform p1 = anchorPoints[i + 1];
-            Transform cp1 = controlPoints[i * 2];
-            Transform cp2 = controlPoints[i * 2 + 1];
-
-            if (p0 == null || p1 == null || cp1 == null || cp2 == null)
-                continue;
-
-            Vector3 prev = p0.position;
-            for (int j = 1; j <= resolution; j++)
-            {
-                float t = j / (float)resolution;
-                Vector3 point = CalculateBezierPoint(p0.position, cp1.position, cp2.position, p1.position, t);
-                Gizmos.DrawLine(prev, point);
-                prev = point;
-            }
-
-            // 補助線
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(p0.position, cp1.position);
-            Gizmos.DrawLine(cp2.position, p1.position);
-            Gizmos.color = Color.green;
+            float t = i / (float)resolution;         // 0〜1の範囲で等間隔に分割
+            Vector3 point = CalculateBezierPoint(t); // tに応じたベジェ点を計算
+            Gizmos.DrawLine(prev, point);            // 前回の点と今回の点を結ぶ
+            prev = point;                            // 今回の点を次回の起点に更新
         }
+
+        // 制御点と始点・終点を結ぶ補助線（視覚的な操作ガイド）
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(StageObject1.position, ControlPoint1.position);
+        Gizmos.DrawLine(ControlPoint2.position, StageObject2.position);
     }
 
-    // Cubic Bezier
-    private Vector3 CalculateBezierPoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+    // Cubic Bezier（3次ベジェ曲線）でt位置の点を計算
+    public Vector3 CalculateBezierPoint(float t)
     {
-        float u = 1 - t;
-        float tt = t * t;
-        float uu = u * u;
-        float uuu = uu * u;
-        float ttt = tt * t;
+        Vector3 p0 = StageObject1.position;    // 始点
+        Vector3 p1 = ControlPoint1.position;   // 制御点1
+        Vector3 p2 = ControlPoint2.position;   // 制御点2
+        Vector3 p3 = StageObject2.position;    // 終点
 
+        float u = 1 - t;       // 補間係数の逆数
+        float tt = t * t;      // t^2
+        float uu = u * u;      // (1 - t)^2
+        float uuu = uu * u;    // (1 - t)^3
+        float ttt = tt * t;    // t^3
+
+        // Cubic Bezier の式に基づいて曲線上の点を計算して返す
         return uuu * p0 +
                3 * uu * t * p1 +
                3 * u * tt * p2 +
                ttt * p3;
-    }
-
-    // アンカーポイントの数に応じて制御点リストの長さを調整
-    private void AdjustControlPointList()
-    {
-        int targetCount = (anchorPoints.Count - 1) * 2;
-        if (targetCount < 0) targetCount = 0;
-
-        while (controlPoints.Count < targetCount)
-            controlPoints.Add(null);
-
-        while (controlPoints.Count > targetCount)
-            controlPoints.RemoveAt(controlPoints.Count - 1);
     }
 }
