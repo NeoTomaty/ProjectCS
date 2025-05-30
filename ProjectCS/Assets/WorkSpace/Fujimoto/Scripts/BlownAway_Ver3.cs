@@ -134,6 +134,12 @@ public class BlownAway_Ver3 : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
+            // ‘½’iƒqƒbƒg–hŽ~
+            if (!HitSnack) return;
+
+            // ‘½’iƒqƒbƒg–hŽ~ƒtƒ‰ƒOfalse
+            HitSnack = false;
+
             ClearConditionsScript.CheckLiftingCount();
 
             //ClearConditionsScript.

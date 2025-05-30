@@ -986,8 +986,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 797.7, y: -620}
-  m_SizeDelta: {x: 600, y: 400}
+  m_AnchoredPosition: {x: 712, y: -477}
+  m_SizeDelta: {x: 700, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &563229273
 MonoBehaviour:
@@ -1010,7 +1010,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: b4e123e047507ba4ba60b6e061a8e93f, type: 3}
     m_FontSize: 100
     m_FontStyle: 0
     m_BestFit: 0
@@ -1319,7 +1319,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: b4e123e047507ba4ba60b6e061a8e93f, type: 3}
     m_FontSize: 100
     m_FontStyle: 0
     m_BestFit: 0
@@ -1356,8 +1356,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 700, y: 330}
-  m_SizeDelta: {x: 600, y: 300}
+  m_AnchoredPosition: {x: 583, y: 430}
+  m_SizeDelta: {x: 700, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &756912130 stripped
 GameObject:
@@ -1411,34 +1411,6 @@ MonoBehaviour:
   BaseGroundLayerMask:
     serializedVersion: 2
     m_Bits: 128
---- !u!114 &756912135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756912130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43d388e4e3d2b524a9bd4a8512db3eaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MinHitStopTime: 0.5
-  MaxHitStopTime: 1
-  MinUpwardForce: 50
-  MaxUpwardForce: 500
-  MinForwardForce: 0
-  MaxForwardForce: 0
-  MinRandomXYRange: 0
-  MaxRandomXYRange: 0
-  MinFallSpeed: 0
-  MaxFallSpeed: 100
-  RespawnArea: {fileID: 949123409}
-  LiftingJump: {fileID: 1070818865}
-  GroundArea: {fileID: 949123409}
-  CameraFunction: {fileID: 594655328}
-  flyingPoint: {fileID: 1070818855}
-  ClearConditionsScript: {fileID: 1731900030}
 --- !u!114 &756912136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2192,21 +2164,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1070818855}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
-      propertyPath: MaxFallSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: CameraFunction
       value: 
       objectReference: {fileID: 594655328}
-    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
-      propertyPath: MaxUpwardForce
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
-      propertyPath: MinUpwardForce
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: ClearConditionsScript
       value: 
@@ -2292,9 +2252,6 @@ PrefabInstance:
       addedObject: {fileID: 756912136}
     - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 756912135}
-    - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 756912134}
     - targetCorrespondingSourceObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       insertIndex: -1
@@ -2360,7 +2317,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 26d9cff1dfa5ef840a88439cbc5089e4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 61da040bf5da2d244b52eaca52ea1208, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3148,7 +3105,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 02b6558032ee1d24cbaf3c7da17c9a60, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2b64443984da5a84fb1da1fdf5649fb2, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
