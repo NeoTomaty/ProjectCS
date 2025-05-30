@@ -11,54 +11,37 @@
 using UnityEditor;
 using UnityEngine;
 
-// エディタ上で DynamicBezierCurve の SceneGUI を拡張
+// CubicBezierCurve を対象としたカスタムエディタ（シーンビュー用）
 [CustomEditor(typeof(CubicBezierCurve))]
-public class DynamicBezierCurveEditor : Editor
+public class CubicBezierCurveEditor : Editor
 {
+    // シーンビューにカスタムUIを表示するメソッド
     private void OnSceneGUI()
     {
+        // 編集対象の CubicBezierCurve を取得
         CubicBezierCurve curve = (CubicBezierCurve)target;
 
-        // 安全チェック（anchorとcontrolの数が正しいか）
-        if (curve.anchorPoints.Count < 2 || curve.controlPoints.Count != (curve.anchorPoints.Count - 1) * 2)
-            return;
-
-        // 制御点を一つずつドラッグできるようにする
-        EditorGUI.BeginChangeCheck();
-
-        for (int i = 0; i < curve.controlPoints.Count; i++)
+        // 必要な全てのTransformが存在しているか確認
+        if (curve.StageObject1 && curve.StageObject2 && curve.ControlPoint1 && curve.ControlPoint2)
         {
-            Transform cp = curve.controlPoints[i];
-            if (cp == null) continue;
+            // 変更の記録開始（変更を検出するブロック）
+            EditorGUI.BeginChangeCheck();
 
-            // ハンドルを表示
-            Vector3 newPos = Handles.PositionHandle(cp.position, Quaternion.identity);
+            // 制御点にドラッグ可能な位置ハンドルを表示（マウス操作で動かせる）
+            Vector3 p1 = Handles.PositionHandle(curve.ControlPoint1.position, Quaternion.identity);
+            Vector3 p2 = Handles.PositionHandle(curve.ControlPoint2.position, Quaternion.identity);
 
-            if (newPos != cp.position)
+            // 位置が変更された場合にのみ処理
+            if (EditorGUI.EndChangeCheck())
             {
-                Undo.RecordObject(cp, $"Move Control Point {i}");
-                cp.position = newPos;
+                // Undoシステムに制御点の移動を記録（Ctrl+Z などで戻せるように）
+                Undo.RecordObject(curve.ControlPoint1, "Move Control Point 1");
+                Undo.RecordObject(curve.ControlPoint2, "Move Control Point 2");
+
+                // 制御点の位置を更新
+                curve.ControlPoint1.position = p1;
+                curve.ControlPoint2.position = p2;
             }
-        }
-
-        // アンカーポイントも編集可能にしたい場合はこちらを追加（任意）
-        for (int i = 0; i < curve.anchorPoints.Count; i++)
-        {
-            Transform ap = curve.anchorPoints[i];
-            if (ap == null) continue;
-
-            Vector3 newPos = Handles.PositionHandle(ap.position, Quaternion.identity);
-            if (newPos != ap.position)
-            {
-                Undo.RecordObject(ap, $"Move Anchor Point {i}");
-                ap.position = newPos;
-            }
-        }
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            // Sceneを更新
-            EditorUtility.SetDirty(curve);
         }
     }
 }
