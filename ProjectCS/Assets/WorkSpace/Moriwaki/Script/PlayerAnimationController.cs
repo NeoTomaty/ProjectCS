@@ -1,25 +1,25 @@
-//======================================================
+ï»¿//======================================================
 // [PlayerAnimationController]
-// ì¬ÒFX˜e
-// ÅIXV“úF05/22
+// ä½œæˆè€…ï¼šæ£®è„‡
+// æœ€çµ‚æ›´æ–°æ—¥ï¼š05/22
 //
 // [Log]
-// 05/22@X˜e ƒAƒjƒ[ƒ^[‚ÌŠÇ—
+// 05/22ã€€æ£®è„‡ ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®ç®¡ç†
 //======================================================
 
 using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    [Header("ƒ‚ƒfƒ‹Ø‚è‘Ö‚¦")]
+    [Header("ãƒ¢ãƒ‡ãƒ«åˆ‡ã‚Šæ›¿ãˆ")]
     [SerializeField] private GameObject rotationModel;
 
     [SerializeField] private GameObject model;
 
-    [Header("true = model ‚ğ•\¦ / false = rotationModel ‚ğ•\¦")]
+    [Header("true = model ã‚’è¡¨ç¤º / false = rotationModel ã‚’è¡¨ç¤º")]
     [SerializeField] private bool useNormalModel = true;
 
-    [Header("model ‚Ì Animatori1ƒ‹[ƒv”»’è—pj")]
+    [Header("model ã® Animatorï¼ˆ1ãƒ«ãƒ¼ãƒ—åˆ¤å®šç”¨ï¼‰")]
     [SerializeField] private Animator modelAnimator;
 
     private bool waitingForAnimFinish = false;
@@ -28,12 +28,12 @@ public class PlayerAnimationController : MonoBehaviour
     {
         UpdateModelVisibility();
 
-        // ƒAƒjƒ[ƒVƒ‡ƒ“I—¹‘Ò‚¿’†‚È‚çƒ`ƒFƒbƒN
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†å¾…ã¡ä¸­ãªã‚‰ãƒã‚§ãƒƒã‚¯
         if (useNormalModel && waitingForAnimFinish && modelAnimator != null)
         {
             AnimatorStateInfo stateInfo = modelAnimator.GetCurrentAnimatorStateInfo(0);
 
-            // ƒ‹[ƒv‚¹‚¸‚ÉÄ¶‚³‚ê‚½ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI—¹‚µ‚½‚ç
+            // ãƒ«ãƒ¼ãƒ—ã›ãšã«å†ç”Ÿã•ã‚ŒãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚äº†ã—ãŸã‚‰
             if (stateInfo.normalizedTime >= 1.0f /*&& !stateInfo.loop*/)
             {
                 useNormalModel = false;
@@ -52,7 +52,12 @@ public class PlayerAnimationController : MonoBehaviour
         rotationModel.SetActive(!useNormalModel);
     }
 
-    // ŠO•”‚©‚ç model ‚ğ•\¦iƒAƒjƒ[ƒVƒ‡ƒ“Ä¶j‚³‚¹‚é‚Æ‚«‚ÉŒÄ‚Ô
+    public void PlayRandomAnimation()
+    {
+        SetUseNormalModelWithWait(); // ãƒ¢ãƒ‡ãƒ«ã‚’è¡¨ç¤ºã—ã€ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†ã‚’å¾…ã¤
+    }
+
+    // å¤–éƒ¨ã‹ã‚‰ model ã‚’è¡¨ç¤ºï¼ˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿï¼‰ã•ã›ã‚‹ã¨ãã«å‘¼ã¶
     public void SetUseNormalModelWithWait()
     {
         useNormalModel = true;
@@ -60,7 +65,7 @@ public class PlayerAnimationController : MonoBehaviour
         UpdateModelVisibility();
     }
 
-    // ŠO•”‚©‚ç’Êí’Ê‚èØ‚è‘Ö‚¦‚½‚¢ê‡
+    // å¤–éƒ¨ã‹ã‚‰é€šå¸¸é€šã‚Šåˆ‡ã‚Šæ›¿ãˆãŸã„å ´åˆ
     public void SetUseNormalModel(bool value)
     {
         useNormalModel = value;
