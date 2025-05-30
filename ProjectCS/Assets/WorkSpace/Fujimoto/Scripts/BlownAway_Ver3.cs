@@ -6,6 +6,7 @@
 // 05/13 藤本 リフティング回数に応じて飛ぶ力が段階的に上がる
 //====================================================
 using UnityEngine;
+using System.Collections;
 
 public class BlownAway_Ver3 : MonoBehaviour
 {
@@ -52,6 +53,8 @@ public class BlownAway_Ver3 : MonoBehaviour
     private float previousVerticalVelocity = 0f;  // リスポーン前のY方向速度を保存
 
     private bool HitNextFallArea = true;    // リスポーンエリアに連続で当たらないようにする
+
+    private bool HitSnack = true; // snackに多段ヒットしないようにする
 
     private Rigidbody Rb;
 
@@ -119,14 +122,20 @@ public class BlownAway_Ver3 : MonoBehaviour
             Debug.Log($"落下速度を制限しました: {Rb.linearVelocity.y}");
         }
     }
+   
 
     void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("Player")) return;
 
+        // 多段ヒット防止フラグ
+        if (!HitSnack) return;
+
+        HitSnack = false;
+        Debug.Log("HitSnack = false");
+
         ClearConditionsScript.CheckLiftingCount();
-        
-        //ClearConditionsScript.
+       
         // Snackに触れたらHitNextFallAreaをtrueに戻す
         HitNextFallArea = true;
 
@@ -197,6 +206,9 @@ public class BlownAway_Ver3 : MonoBehaviour
             Debug.LogWarning("RespawnAreaが設定されていません");
             return;
         }
+
+        // プレイヤーが離れたら多段ヒット防止フラグをtrue
+        HitSnack = true;
 
         // 範囲取得
         Vector3 respawnCenter = RespawnArea.position;
