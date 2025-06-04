@@ -17,12 +17,21 @@ public class DecelerationArea : MonoBehaviour
 
     [Tooltip("減速率（0.0～1.0で設定）")]
     [SerializeField] private float DecelerationRatio = 0.1f;
-
+    
+    //減速の基準を最大速度にするかどうか
     [Tooltip("true:最大速度から減速値を決定 false:現在の速度から減速値を決定")]
     [SerializeField] private bool IsDecelerationBasedOnMaxSpeed = true;
 
     [Tooltip("速度を補完する時間（秒）")]
     [SerializeField] private float InterpolationDuration = 1.0f;
+
+    //減速時に鳴らすサウンドエフェクト
+    [Header("SE設定")]
+    [Tooltip("減速時に再生するSE")]
+    [SerializeField] private AudioClip DecelerationSE;
+
+    //SE再生用のAudioSource
+    private AudioSource audioSource;
 
     private PlayerSpeedManager SpeedManager; // プレイヤーのPlayerSpeedManagerコンポーネント
     private float TempPlayerSpeed = 0f;      // 減速前の速度
@@ -33,13 +42,19 @@ public class DecelerationArea : MonoBehaviour
 
     void Start()
     {
+        //プレイヤーが設定されていないときはエラーを出力
         if (!Player)
         {
             Debug.LogError("プレイヤーオブジェクトが設定されていません");
             return;
         }
 
+        //プレイヤーの速度管理コンポーネントを取得
         SpeedManager = Player.GetComponent<PlayerSpeedManager>();
+
+        //AudioSourceをこのオブジェクトに追加し、SE再生用に設定
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
     }
 
     void Update()
@@ -65,11 +80,18 @@ public class DecelerationArea : MonoBehaviour
         }
     }
 
+    //プレイヤーが減速エリアに入ったときの処理
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == Player)
         {
             Debug.Log("減速エリアに入りました");
+
+            //SEが設定されていれば再生
+            if(DecelerationSE != null)
+            {
+                audioSource.PlayOneShot(DecelerationSE);
+            }
 
             // 補完中なら目標速度を、そうでなければ現在のプレイヤー速度を一時保存
             TempPlayerSpeed = IsInterpolating ? TargetSpeed : SpeedManager.GetPlayerSpeed;
@@ -86,11 +108,13 @@ public class DecelerationArea : MonoBehaviour
             // 目標速度が最小速度を下回らないように調整
             TargetSpeed = Mathf.Max(SpeedManager.GetMinSpeed(), TempPlayerSpeed - decelerationValue);
 
+            //補完の初期化
             InterpolationTimer = 0f;
             IsInterpolating = true;
         }
     }
 
+    //プレイヤーが減速エリアから出たときの処理
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == Player)
@@ -103,6 +127,7 @@ public class DecelerationArea : MonoBehaviour
             // エリアに入った時の速度を設定
             TargetSpeed = TempPlayerSpeed;            
 
+            //補完の初期化
             InterpolationTimer = 0f;
             IsInterpolating = true;
         }
