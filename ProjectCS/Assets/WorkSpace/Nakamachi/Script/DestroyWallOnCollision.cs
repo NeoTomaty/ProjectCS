@@ -1,13 +1,13 @@
 ﻿//DestroyWallOnCollision.cs
 //作成者:中町雷我
-//最終更新日:2025/05/04
+//最終更新日:2025/06/05
 //アタッチ:DestructionWallのタグが付いたオブジェクトにアタッチ
 //[Log]
 //04/30　中町　Playerが破壊壁に一定のスピード以上あれば破壊してエフェクトを出す処理
 //05/04　荒井　プレイヤーを反射させる処理を関数化
 //05/04　荒井　壁が破壊される時にプレイヤーを反射させない処理を追加
 //05/04　荒井　反射 or 貫通を切り替えられるように変更
-//06/04　中町　壁破壊SE実装
+//06/05　中町　壁破壊SE実装
 
 using UnityEngine;
 
@@ -30,19 +30,19 @@ public class DestroyWallOnCollision : MonoBehaviour
 
     // 壁破壊時の貫通フラグ
     [SerializeField] private bool IsPenetration = false;
+    
+    //壁が破壊されたときに再生する効果音(SE)
+    [SerializeField] private AudioClip DestroySE;
 
-    //壁が破壊されたときに再生するサウンドエフェクト(AudioClip)
-    [SerializeField] private AudioClip DestorySE;
-
-    //サウンド再生用のAudioSource
+    //効果音を再生するためのAudioSource(PlayClipAtPointを使うので未使用)
     private AudioSource audioSource;
 
+    //初期化処理(AudioSourceがなければ追加)
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
 
-        //AudioSourceが存在しないときは新しく追加する
-        if (audioSource == null)
+        if(audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
@@ -73,10 +73,10 @@ public class DestroyWallOnCollision : MonoBehaviour
                 // 貫通フラグがfalseの場合、プレイヤーを反射させる
                 if (!IsPenetration) ReflectPlayer(Normal);
 
-                //サウンドエフェクトが設定されていれば再生
-                if(DestorySE != null && audioSource != null)
+                //効果音が設定されていれば再生(壁が破壊されても音が鳴るようにPlayClipAtPointを使用)
+                if (DestroySE != null)
                 {
-                    audioSource.PlayOneShot(DestorySE);
+                    AudioSource.PlayClipAtPoint(DestroySE,transform.position);
                 }
 
                 //パーティクルエフェクトを生成
