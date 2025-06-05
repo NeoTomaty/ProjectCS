@@ -2,7 +2,7 @@
 // スクリプト名：ChargeJumpPlayer
 // 作成者：宮林
 // 内容：プレイヤーのジャンプ処理
-// 最終更新日：04/29
+// 最終更新日：06/05
 //
 // [Log]
 // 04/26　宮林　スクリプト作成
@@ -12,6 +12,7 @@
 // 04/29　荒井　チャージ後のジャンプ処理にリフティングジャンプへの分岐を追加
 // 05/03　荒井　ジャンプ時にスピードを元に戻す処理をswitch分岐内に移動
 // 05/03　森脇　ジャンプ外部へ渡す
+// 06/05　荒井　効果音の再生処理を追加（ジャンプ＆着地）
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -104,7 +105,19 @@ public class ChargeJumpPlayer : MonoBehaviour
 
     private void Update()
     {
+        bool isGroundLast = isGrounded;
+
         isGrounded = CheckIfGrounded();
+
+        // 地面に着いた瞬間
+        if (!isGroundLast && isGrounded)
+        {
+            PlayerLandingSound SoundScript = GetComponent<PlayerLandingSound>();
+            if (SoundScript != null)
+            {
+                SoundScript.PlayLandingSound();
+            }
+        }
 
         if (isJumpButtonPressed)
         {
@@ -299,6 +312,13 @@ public class ChargeJumpPlayer : MonoBehaviour
                         break;
                 }
             }
+        }
+
+        // 効果音再生
+        PlayerJumpSound SoundScript = GetComponent<PlayerJumpSound>();
+        if (SoundScript != null)
+        {
+            SoundScript.PlayJumpSound(); // ジャンプ音を再生
         }
 
         // リセット処理
