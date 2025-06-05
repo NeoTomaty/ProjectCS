@@ -26,6 +26,7 @@ public class StageSelectManager : MonoBehaviour
 
     [Header("Audio")]
     public AudioSource audioSource;
+
     public AudioClip selectSE;
     public AudioClip enterSE;
     public AudioClip cancelSE;
