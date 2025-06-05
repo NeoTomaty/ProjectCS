@@ -829,7 +829,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: optionUI
       value: 
-      objectReference: {fileID: 1616802822}
+      objectReference: {fileID: 0}
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstPauseButton
       value: 
@@ -837,7 +837,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstOptionButton
       value: 
-      objectReference: {fileID: 1556653214}
+      objectReference: {fileID: 0}
     - target: {fileID: 6272492561119360749, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: m_Name
       value: PauseManager
@@ -2500,7 +2500,7 @@ PrefabInstance:
     - target: {fileID: 8239012434070568144, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: volumeSlider
       value: 
-      objectReference: {fileID: 1773900312}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2771,11 +2771,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1556653214 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4436518401975526290, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1801492987}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1559649384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2928,11 +2923,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608753389}
   m_CullTransparentMesh: 1
---- !u!1 &1616802822 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7181697586950749315, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1801492987}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1617536961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7775454700796400270, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
@@ -3045,17 +3035,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5149087011742517647, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
   m_PrefabInstance: {fileID: 1801492987}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1773900312 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2419687137176127695, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1801492987}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1801492987
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3968,7 +3947,7 @@ PrefabInstance:
     - target: {fileID: 4977977814644047158, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
       propertyPath: Player
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 335305063}
     - target: {fileID: 4977977814644047158, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
       propertyPath: EnterSE
       value: 
