@@ -25,6 +25,7 @@
 // 05/29　荒井　スクリプト実行順の優先度を設定
 // 05/29　森脇　モデルのフラグ変化
 // 05/29　荒井　QTE廃止
+// 06/05　荒井　高さを条件としてリフティングジャンプを強制終了する処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -52,7 +53,8 @@ public class LiftingJump : MonoBehaviour
     private bool IsJumping = false;
     public bool IsLiftingPart => IsJumping; // リフティングジャンプ中かどうか
 
-    private bool IsNearTargetLast = false; // ターゲットに近づいたかどうか
+    private float OnStartedPlayerHeight = 0f; // リフティングジャンプ開始時のプレイヤーの高さ
+    private float TerminateHeight = 200f; // リフティングジャンプを強制的に終了させる高度
 
     [SerializeField] private PlayerAnimationController playerAnimController;
 
@@ -89,6 +91,9 @@ public class LiftingJump : MonoBehaviour
         GetComponent<Rigidbody>().Sleep();  // 自分のRigidbodyをスリープ状態にする（スローモーション中に落ちていく対策）
 
         IsJumping = true;
+
+        // プレイヤーの高さを保存
+        OnStartedPlayerHeight=transform.position.y;
 
         // プレイヤーから目標地点へのベクトルを計算
         Vector3 JumpDirection = (TargetObject.transform.position - transform.position);
@@ -151,6 +156,14 @@ public class LiftingJump : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (IsJumping)
+        {
+            // プレイヤーの高さが強制終了高度を超えたらリフティングジャンプ終了
+            if (transform.position.y > OnStartedPlayerHeight + TerminateHeight)
+            {
+                FinishLiftingJump();
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
