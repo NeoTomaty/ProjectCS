@@ -7,6 +7,7 @@
 //05/04　荒井　プレイヤーを反射させる処理を関数化
 //05/04　荒井　壁が破壊される時にプレイヤーを反射させない処理を追加
 //05/04　荒井　反射 or 貫通を切り替えられるように変更
+//06/04　中町　壁破壊SE実装
 
 using UnityEngine;
 
@@ -30,6 +31,23 @@ public class DestroyWallOnCollision : MonoBehaviour
     // 壁破壊時の貫通フラグ
     [SerializeField] private bool IsPenetration = false;
 
+    //壁が破壊されたときに再生するサウンドエフェクト(AudioClip)
+    [SerializeField] private AudioClip DestorySE;
+
+    //サウンド再生用のAudioSource
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+
+        //AudioSourceが存在しないときは新しく追加する
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
+
     //プレイヤーを反射させる関数
     private void ReflectPlayer(Vector3 Normal)
     {
@@ -50,10 +68,16 @@ public class DestroyWallOnCollision : MonoBehaviour
             Vector3 Normal = collision.contacts[0].normal;
 
             //プレイヤーの速度が壁を破壊するのに十分かどうかを確認
-            if (playerSpeedManager.GetPlayerSpeed>=RequiredSpeed)
+            if (playerSpeedManager.GetPlayerSpeed >= RequiredSpeed)
             {
                 // 貫通フラグがfalseの場合、プレイヤーを反射させる
                 if (!IsPenetration) ReflectPlayer(Normal);
+
+                //サウンドエフェクトが設定されていれば再生
+                if(DestorySE != null && audioSource != null)
+                {
+                    audioSource.PlayOneShot(DestorySE);
+                }
 
                 //パーティクルエフェクトを生成
                 GameObject ParticleInstance = Instantiate(ParticlePrefab, transform.position, Quaternion.Euler(-90f,0f,0f));
