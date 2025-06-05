@@ -120,6 +120,9 @@ public class BlownAway_Ver3 : MonoBehaviour
             clampedVelocity.y = -MaxFallSpeed;
             Rb.linearVelocity = clampedVelocity;
 
+            // プレイヤーが離れたら多段ヒット防止フラグをtrue
+            HitSnack = true;
+
             Debug.Log($"落下速度を制限しました: {Rb.linearVelocity.y}");
         }
     }
@@ -214,9 +217,6 @@ public class BlownAway_Ver3 : MonoBehaviour
             Debug.LogWarning("RespawnAreaが設定されていません");
             return;
         }
-
-        // プレイヤーが離れたら多段ヒット防止フラグをtrue
-        HitSnack = true;
 
         // 範囲取得
         Vector3 respawnCenter = RespawnArea.position;
