@@ -24,6 +24,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
  
 
     private Transform[] StageChildArray;
+    private Transform[] StageModelTransform;
     private CubicBezierCurve[] BezierCurveChildArray;
     private StageSelector StageSelectorComponent;
 
@@ -38,6 +39,8 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     private float ScaleChangeTimer = 0f;
     [SerializeField] private float ScaleChangeDuration = 0.5f;
     private bool IsScaling = true;
+    [SerializeField] private Vector3 SmallStageModelSize = new Vector3(0.5f, 0.5f, 0.5f);
+
 
     void Start()
     {
@@ -46,10 +49,13 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
         int childCount = StageObject.transform.childCount;
         StageChildArray = new Transform[childCount];
+        StageModelTransform = new Transform[childCount];
 
         for (int i = 0; i < childCount; i++)
         {
             StageChildArray[i] = StageObject.transform.GetChild(i);
+            StageModelTransform[i] = StageChildArray[i].transform.GetChild(0);
+            StageModelTransform[i].transform.localScale = SmallStageModelSize;
         }
 
 
@@ -132,13 +138,13 @@ public class StageSelectManager_Ver2 : MonoBehaviour
            
         }
 
-        if (Input.GetKeyDown(KeyCode.Return) && !BezierMoverComponent.GetIsMoving())
-        {
-            if(GameSceneNames.Length == StageSelectorComponent.GetStageNumber()) return;
+        //if (Input.GetKeyDown(KeyCode.Return) && !BezierMoverComponent.GetIsMoving())
+        //{
+        //    if(GameSceneNames.Length == StageSelectorComponent.GetStageNumber()) return;
 
-            ChangeScene(GameSceneNames[StageSelectorComponent.GetStageNumber()]);
+        //    ChangeScene(GameSceneNames[StageSelectorComponent.GetStageNumber()]);
            
-        }
+        //}
 
         if(!BezierMoverComponent.GetIsMoving())
         {
@@ -146,7 +152,27 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             float t = Mathf.Clamp01(ScaleChangeTimer / ScaleChangeDuration);
             StageImageUI.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
 
-            if(t >= 1.0f)
+            for (int i = 0; i < StageModelTransform.Length; i++)
+            {
+                if (i == StageSelectorComponent.GetStageNumber())
+                {
+                    if(StageModelTransform[i].transform.localScale != Vector3.one)
+                    {
+                        StageModelTransform[i].transform.localScale = Vector3.Lerp(SmallStageModelSize, Vector3.one, t);
+                    }
+
+                    StageModelTransform[i].transform.Rotate(0f, 10.0f * Time.deltaTime, 0f);
+                }
+                else
+                {
+                    StageModelTransform[i].transform.rotation = Quaternion.identity;
+                }
+
+               
+            }
+
+
+            if (t >= 1.0f)
             {
                 ScaleChangeTimer = ScaleChangeDuration;
             }
@@ -156,6 +182,16 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             ScaleChangeTimer -= Time.deltaTime;
             float t = Mathf.Clamp01(ScaleChangeTimer / ScaleChangeDuration);
             StageImageUI.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+           
+
+            for(int i = 0; i < StageModelTransform.Length;i++)
+            {
+                if(StageModelTransform[i].transform.localScale != SmallStageModelSize)
+                {
+                    StageModelTransform[i].transform.localScale = Vector3.Lerp(SmallStageModelSize, Vector3.one, t);
+                }
+
+            }
 
             if (t <= 0.0f)
             {
@@ -168,6 +204,8 @@ public class StageSelectManager_Ver2 : MonoBehaviour
         {
             ChangeScene(TitleSceneName);
         }
+
+        
 
     }
 

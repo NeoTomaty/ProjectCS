@@ -32,7 +32,7 @@ public class FadeManager : MonoBehaviour
     private static FadeManager instance;
 
     //フェード中かどうかのフラグ
-    private bool isFading = false;
+    public bool isFading = false;
 
     //入力をブロックしているかどうかのフラグ
     private bool isInputBlocked = false;
