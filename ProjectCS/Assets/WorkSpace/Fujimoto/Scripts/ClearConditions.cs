@@ -1,13 +1,14 @@
 //======================================================
 // ClearConditionsスクリプト
 // 作成者：藤本
-// 最終更新日：5/10
+// 最終更新日：06/05
 // 
 // [Log]
 // 04/29 藤本　クリア条件の追加
 // 05/01 竹内　UIと連携してリフティング回数を参照できるように修正
 // 05/08 荒井　クリア演出を実行できるように変更
 // 05/10 荒井　クリア演出に関する例外処理を追加
+// 06/05 荒井　シーン遷移時にフェードアウトする処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -89,7 +90,17 @@ public class ClearConditions : MonoBehaviour
         if (!string.IsNullOrEmpty(nextSceneName)) // シーン名が設定されている場合のみ実行
         {
             Debug.Log("Loading Scene: " + nextSceneName);
-            SceneManager.LoadScene(nextSceneName);
+
+            // フェードアウトしてシーン遷移
+            FadeManager fade = FindFirstObjectByType<FadeManager>();
+            if (fade != null)
+            {
+                fade.FadeToScene(nextSceneName);
+            }
+            else
+            {
+                SceneManager.LoadScene(nextSceneName);
+            }
         }
         else
         {
