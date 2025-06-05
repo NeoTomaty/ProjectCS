@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &18411753 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7181697586950749315, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1563025577}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &20560757
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,11 +365,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
---- !u!1 &230735028 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4436518401975526290, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1563025577}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &233516542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -696,17 +686,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &374675042 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2419687137176127695, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1563025577}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &375693732
 GameObject:
   m_ObjectHideFlags: 0
@@ -1920,6 +1899,10 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2693352334119193582, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1070818885}
+    - target: {fileID: 2693352334119193582, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: MaxPlayerSpeed
       value: 90
       objectReference: {fileID: 0}
@@ -1971,6 +1954,10 @@ PrefabInstance:
       propertyPath: WallSound
       value: 
       objectReference: {fileID: 8300000, guid: 1faee15383812634496f94be6686ce4e, type: 3}
+    - target: {fileID: 3943404572096005784, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1070818885}
     - target: {fileID: 4584313306017835350, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2031,6 +2018,10 @@ PrefabInstance:
       propertyPath: GravityScale.y
       value: -200
       objectReference: {fileID: 0}
+    - target: {fileID: 8979839764745253483, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1070818885}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2061,7 +2052,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LiftingJump: {fileID: 1070818865}
   GaugeController: {fileID: 510015326}
-  PlayerSpeed: {fileID: 0}
+  PlayerSpeed: {fileID: 1070818875}
   Score: 0
   totalScore: 0
   ComboBonusUpValue: 0.2
@@ -2101,6 +2092,11 @@ MonoBehaviour:
 --- !u!4 &1070818880 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4616531718173721844, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+  m_PrefabInstance: {fileID: 1063024709}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1070818885 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8365331316546696322, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
   m_PrefabInstance: {fileID: 1063024709}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1110608476
@@ -2147,6 +2143,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 83fea7cb3461bc849ac607ac703a9332, type: 2}
+    - target: {fileID: 4609241152821256124, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: m_Size.x
+      value: 8.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 4609241152821256124, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: m_Size.y
+      value: 12.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 4609241152821256124, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: m_Size.z
+      value: 2.72
+      objectReference: {fileID: 0}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: GroundArea
       value: 
@@ -2570,7 +2578,7 @@ PrefabInstance:
     - target: {fileID: 8239012434070568144, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: volumeSlider
       value: 
-      objectReference: {fileID: 374675042}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3495,7 +3503,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: optionUI
       value: 
-      objectReference: {fileID: 18411753}
+      objectReference: {fileID: 0}
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstPauseButton
       value: 
@@ -3503,7 +3511,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstOptionButton
       value: 
-      objectReference: {fileID: 230735028}
+      objectReference: {fileID: 0}
     - target: {fileID: 6272492561119360749, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: m_Name
       value: PauseManager

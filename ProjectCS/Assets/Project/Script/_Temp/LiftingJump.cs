@@ -56,7 +56,7 @@ public class LiftingJump : MonoBehaviour
     private float OnStartedPlayerHeight = 0f; // リフティングジャンプ開始時のプレイヤーの高さ
     private float TerminateHeight = 200f; // リフティングジャンプを強制的に終了させる高度
 
-    [SerializeField] private PlayerAnimationController playerAnimController;
+    //[SerializeField] private PlayerAnimationController playerAnimController;
 
     public void SetJumpPower(float Power)
     {
@@ -134,7 +134,7 @@ public class LiftingJump : MonoBehaviour
         // 移動速度を元に戻す
         MovePlayer.MoveSpeedMultiplier = 1f;
 
-        playerAnimController.PlayRandomAnimation();
+        //playerAnimController.PlayRandomAnimation();
     }
 
     private void Awake()
