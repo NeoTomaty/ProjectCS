@@ -13,7 +13,7 @@ public class StageSelector : MonoBehaviour
         Stage6,
     }
 
-    private SelectStageNumber SelectStage = SelectStageNumber.Stage1;
+    private static SelectStageNumber SelectStage = SelectStageNumber.Stage1;
 
     // 現在のステージを数値として取得
     private int CurrentIndex => (int)SelectStage;
@@ -34,6 +34,8 @@ public class StageSelector : MonoBehaviour
         {
             Destroy(gameObject); // 2つ目以降は破棄
         }
+
+      
     }
 
     public void SetStageNumber(int delta)

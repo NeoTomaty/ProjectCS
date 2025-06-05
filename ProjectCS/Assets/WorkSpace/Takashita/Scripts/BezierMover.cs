@@ -12,19 +12,15 @@ public class BezierMover : MonoBehaviour
 
     private bool isMoving = false;
 
-    private void Start()
-    {
-        //timer = moveDuration;
-        
-    }
-
     void Update()
     {
         if (!isMoving || curve == null) return;
 
         timer += IsReverse ? -Time.deltaTime : Time.deltaTime;
 
-        timer = Mathf.Clamp(timer, 0f, moveDuration);
+        
+        float t = Mathf.Clamp01(timer / moveDuration);
+        transform.position = curve.CalculateBezierPoint(t);
 
         if ((!IsReverse && timer >= moveDuration) || (IsReverse && timer <= 0f))
         {
@@ -32,8 +28,7 @@ public class BezierMover : MonoBehaviour
             return;
         }
 
-        float t = Mathf.Clamp01(timer / moveDuration);
-        transform.position = curve.CalculateBezierPoint(t);
+       
     }
 
     public void StartMove(bool isReverse, CubicBezierCurve cubicBezierCurve)
@@ -42,11 +37,10 @@ public class BezierMover : MonoBehaviour
         curve = cubicBezierCurve;
         isMoving = true;
 
-        Debug.Log("timer = " + timer);
-        if (timer == 0f || timer == moveDuration)
+        
+        if (timer <= 0f || timer >= moveDuration)
         {
-            timer = isReverse ? 1f : 0f;
-            Debug.Log("ˆ—’Ê‰ß");
+            timer = isReverse ? moveDuration : 0f;
         }
         
     }

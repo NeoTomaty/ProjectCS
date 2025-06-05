@@ -8,6 +8,9 @@
 // 05/23 高下 スクリプト作成
 //====================================================
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class StageSelectManager_Ver2 : MonoBehaviour
 {
@@ -15,13 +18,26 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
     [SerializeField] private GameObject StageObject;
     [SerializeField] private GameObject BezierCurveObject;
-    [SerializeField] private StageSelector StageSelectorComponent;
+    [SerializeField] private GameObject StageImageUI;
+    [SerializeField] private Image StageImage;
     [SerializeField] private BezierMover BezierMoverComponent;
+ 
 
     private Transform[] StageChildArray;
     private CubicBezierCurve[] BezierCurveChildArray;
+    private StageSelector StageSelectorComponent;
+
+
+    [SerializeField] private string[] GameSceneNames = new string[6];
+
+    [SerializeField] private string TitleSceneName;
+    [SerializeField] private Sprite[] StageImageSprites = new Sprite[5];
 
     private bool IsReverse = false;
+    private bool IsInputEnabled = false;
+    private float ScaleChangeTimer = 0f;
+    [SerializeField] private float ScaleChangeDuration = 0.5f;
+    private bool IsScaling = true;
 
     void Start()
     {
@@ -45,10 +61,44 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             BezierCurveChildArray[i] = BezierCurveObject.transform.GetChild(i).GetComponent<CubicBezierCurve>();
         }
 
-        BezierMoverComponent.SetPosition(BezierCurveChildArray[StageSelectorComponent.GetStageNumber()].StageObject1.position);
+        StageSelectorComponent = Object.FindFirstObjectByType<StageSelector>();
+
+        if (!StageSelectorComponent)
+        {
+            Debug.LogError("StageSelectorが見つかりません");
+            return;
+        }
+       
+        if(StageSelectorComponent.GetStageNumber() == BezierCurveChildArray.Length)
+        {
+            BezierMoverComponent.SetPosition(BezierCurveChildArray[StageSelectorComponent.GetStageNumber() - 1].StageObject2.position);
+        }
+        else
+        {
+            BezierMoverComponent.SetPosition(BezierCurveChildArray[StageSelectorComponent.GetStageNumber()].StageObject1.position);
+        }
+
+        StageImage.sprite = StageImageSprites[StageSelectorComponent.GetStageNumber()];
+
+        StageImageUI.transform.localScale = Vector3.zero;
+
     }
 
-   
+    private void OnValidate()
+    {
+        if (GameSceneNames.Length != StageImageSprites.Length)
+        {
+
+            Sprite[] newArray = new Sprite[GameSceneNames.Length];
+            for (int i = 0; i < Mathf.Min(GameSceneNames.Length, StageImageSprites.Length); i++)
+            {
+                newArray[i] = StageImageSprites[i]; // 既存の値を保持
+            }
+            StageImageSprites = newArray;
+        }
+    }
+
+
     void Update()
     {
         if (StageChildArray.Length - 1 != BezierCurveChildArray.Length) return;
@@ -70,7 +120,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
 
-            if (StageSelectorComponent.GetStageNumber() >= BezierCurveChildArray.Length) return;
+            if (StageSelectorComponent.GetStageNumber() == BezierCurveChildArray.Length) return;
 
             if (BezierMoverComponent.GetIsMoving() && !IsReverse) return;
 
@@ -80,6 +130,57 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
             StageSelectorComponent.SetStageNumber(1);
            
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return) && !BezierMoverComponent.GetIsMoving())
+        {
+            if(GameSceneNames.Length == StageSelectorComponent.GetStageNumber()) return;
+
+            ChangeScene(GameSceneNames[StageSelectorComponent.GetStageNumber()]);
+           
+        }
+
+        if(!BezierMoverComponent.GetIsMoving())
+        {
+            ScaleChangeTimer += Time.deltaTime;
+            float t = Mathf.Clamp01(ScaleChangeTimer / ScaleChangeDuration);
+            StageImageUI.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+
+            if(t >= 1.0f)
+            {
+                ScaleChangeTimer = ScaleChangeDuration;
+            }
+        }
+        else
+        {
+            ScaleChangeTimer -= Time.deltaTime;
+            float t = Mathf.Clamp01(ScaleChangeTimer / ScaleChangeDuration);
+            StageImageUI.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+
+            if (t <= 0.0f)
+            {
+                ScaleChangeTimer = 0f;
+                StageImage.sprite = StageImageSprites[StageSelectorComponent.GetStageNumber()];
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Backspace) && !BezierMoverComponent.GetIsMoving())
+        {
+            ChangeScene(TitleSceneName);
+        }
+
+    }
+
+    private void ChangeScene(string sceneName)
+    {
+        FadeManager fade = Object.FindFirstObjectByType<FadeManager>();
+        if (fade)
+        {
+            fade.FadeToScene(sceneName);
+        }
+        else
+        {
+            Debug.LogError("FadeManagerが見つかりません");
         }
     }
 }
