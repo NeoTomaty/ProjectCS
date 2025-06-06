@@ -44,6 +44,9 @@ public class PauseManager : MonoBehaviour
     //「Pause」アクション(Escキー)を取得するための変数
     private InputAction pauseAction;
 
+    [Header("Reference to Countdown")]
+    [SerializeField] private GameStartCountdown gameStartCountdown;
+
     //ゲーム開始時に呼ばれる(初期化処理)
     private void Awake()
     {
@@ -86,36 +89,28 @@ public class PauseManager : MonoBehaviour
     //Pauseアクションが実行されたときに呼ばれる処理
     private void OnPausePerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("esc");
-
-        //入力が正しくないときは処理しない
         if (!context.performed) return;
 
-        // オプションが開いていたらポーズ切り替え無効
+        // カウントダウン中ならポーズ禁止
+        if (gameStartCountdown != null && gameStartCountdown.IsCountingDown)
+        {
+            Debug.Log("カウントダウン中なのでポーズ不可");
+            return;
+        }
+
         if (optionUI != null && optionUI.activeSelf) return;
 
-        //ポーズ状態でなければポーズを開始
         if (!isPaused)
         {
-            //ゲーム内の時間を停止
             Time.timeScale = 0f;
-
-            //ポーズUIを表示
             pauseUI.SetActive(true);
-            
-            //UIの選択状態をリセットして、最初のボタンを選択
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(firstPauseButton);
-
-            //ポーズ状態に設定
             isPaused = true;
-
-            //開くときの効果音を再生
             PlaySE(OpenSE);
         }
         else
         {
-            //ポーズを解除
             ResumeGame();
         }
     }

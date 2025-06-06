@@ -30,33 +30,36 @@ public class GameStartCountdown : MonoBehaviour
     [Header("操作を止めるinput")]
     public PlayerInput PauseInput;                              //ポーズ画面の操作受け取り
 
+
+    private bool isCountingDown = false;
+    public bool IsCountingDown => isCountingDown;
+
+    
     void Start()
     {
+      
         StartCoroutine(CountdownCoroutine());
-        PauseInput.enabled = false; // 入力を無効にする
+   
     }
 
     private IEnumerator CountdownCoroutine()
     {
-        // 時間停止
-        Time.timeScale = 0f;
+        isCountingDown = true;  // カウントダウン開始
 
-        // カウントダウンCanvas表示
+        Time.timeScale = 0f;
         countdownCanvas.gameObject.SetActive(true);
 
-        // 表示を更新しながらカウント
         yield return StartCoroutine(ShowCount("3"));
         yield return StartCoroutine(ShowCount("2"));
         yield return StartCoroutine(ShowCount("1"));
         yield return StartCoroutine(ShowCount("GO!!", goDisplayTime));
 
-        // カウントダウン非表示
         countdownCanvas.gameObject.SetActive(false);
-        PauseInput.enabled = true;  // 入力を有効にする
-        // 時間再開
+
         Time.timeScale = 1f;
 
-        // Snackの打ち上げ実行
+        isCountingDown = false; // カウントダウン終了
+
         if (snackLauncher != null)
         {
             snackLauncher.Launch();
