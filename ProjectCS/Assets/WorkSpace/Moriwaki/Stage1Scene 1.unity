@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &18411753 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7181697586950749315, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1563025577}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &20560757
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,6 +168,8 @@ MonoBehaviour:
   goDisplayTime: 0.5
   snackLauncher: {fileID: 756912132}
   PauseInput: {fileID: 1866824034}
+  playerAnimController: {fileID: 4616531718026689714}
+  countdownAnimTrigger: Idol
 --- !u!1 &84185481
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,11 +367,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
---- !u!1 &230735028 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4436518401975526290, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1563025577}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &233516542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -696,17 +688,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &374675042 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2419687137176127695, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1563025577}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &375693732
 GameObject:
   m_ObjectHideFlags: 0
@@ -2392,7 +2373,7 @@ PrefabInstance:
     - target: {fileID: 8239012434070568144, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: volumeSlider
       value: 
-      objectReference: {fileID: 374675042}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3159,7 +3140,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: optionUI
       value: 
-      objectReference: {fileID: 18411753}
+      objectReference: {fileID: 0}
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstPauseButton
       value: 
@@ -3167,7 +3148,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstOptionButton
       value: 
-      objectReference: {fileID: 230735028}
+      objectReference: {fileID: 0}
     - target: {fileID: 6272492561119360749, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: m_Name
       value: PauseManager
@@ -3494,7 +3475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3109540996412661342, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.9
+      value: 0.72
       objectReference: {fileID: 0}
     - target: {fileID: 3109540996412661342, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3593,6 +3574,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3109540996412661342, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
   m_PrefabInstance: {fileID: 1511878579910881572}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4616531718026689714 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 784657071238269402, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+  m_PrefabInstance: {fileID: 1511878579910881572}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584313307071402259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd4e1f2497ca0345a8218c9ea421b8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
