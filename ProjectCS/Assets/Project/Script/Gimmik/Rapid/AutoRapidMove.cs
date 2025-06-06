@@ -1,55 +1,50 @@
-//======================================================
-// [スクリプト名]AutoRapidMove
-// 作成者：宮林朋輝
-// 最終更新日：4/8
-// 
-// [Log]
-// 3/31  宮林　スクリプト作成
-// 4/8　中町　プレイヤーが高速エリアに入ったらプレイヤーの操作を一切受け付けない処理追加
-// 4/8　中町　IsMovingフラグ追加
-// 4/8　中町　MoveToPosition関数にプレイヤーの操作を無効化する処理を追加
-// 4/8　中町　MoveToPosition関数に移動完了後、プレイヤーの操作を再度有効化する処理追加
-//======================================================
 using UnityEngine;
 using UnityEngine.AI;
 
-
+[RequireComponent(typeof(NavMeshAgent))]
 public class AutoRapidMove : MonoBehaviour
 {
-    public Transform targetPosition;
-    public float speed = 10.0f;
-    private bool IsMoving = false;
+    public Transform targetPosition; // 移動先の位置
+    private bool IsMoving = false;   // 移動中かどうかのフラグ
+    private NavMeshAgent agent;
+
+    private void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("RapidGate")&&!IsMoving)
+        // "RapidGate" に触れ、かつ "Player" タグが付いている場合に移動開始
+        if (other.CompareTag("RapidGate") && gameObject.CompareTag("Player") && !IsMoving)
         {
             IsMoving = true;
-            StartCoroutine(MoveToPosition());
+            StartCoroutine(MoveToTarget());
         }
     }
 
-    private System.Collections.IEnumerator MoveToPosition()
+    private System.Collections.IEnumerator MoveToTarget()
     {
-        MovePlayer PlayerController = GetComponent<MovePlayer>();
-        if (PlayerController != null)
+        // プレイヤーの操作を無効化
+        MovePlayer playerController = GetComponent<MovePlayer>();
+        if (playerController != null)
         {
-            PlayerController.enabled = false;
+            playerController.enabled = false;
         }
 
-        while (Vector3.Distance(transform.position, targetPosition.position) > 0.1f)
+        // NavMeshAgentで目的地へ移動
+        agent.SetDestination(targetPosition.position);
+
+        // 到着まで待機
+        while (!agent.pathPending && agent.remainingDistance > agent.stoppingDistance)
         {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                targetPosition.position,
-                speed * Time.deltaTime 
-            );
             yield return null;
         }
 
-        if (PlayerController != null)
+        // プレイヤーの操作を再度有効化
+        if (playerController != null)
         {
-            PlayerController.enabled = true;
+            playerController.enabled = true;
         }
 
         IsMoving = false;
