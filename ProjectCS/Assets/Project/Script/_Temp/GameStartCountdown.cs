@@ -46,7 +46,7 @@ public class GameStartCountdown : MonoBehaviour
         }
 
         StartCoroutine(CountdownCoroutine());
-        PauseInput.actions.Disable(); // 入力を無効にする
+        PauseInput.enabled = false; // 入力を無効にする
     }
 
     private IEnumerator CountdownCoroutine()
@@ -65,7 +65,7 @@ public class GameStartCountdown : MonoBehaviour
 
         // カウントダウン非表示
         countdownCanvas.gameObject.SetActive(false);
-        PauseInput.actions.Enable(); // 入力を有効にする
+        PauseInput.enabled = true;  // 入力を有効にする
         // 時間再開
         Time.timeScale = 1f;
 
