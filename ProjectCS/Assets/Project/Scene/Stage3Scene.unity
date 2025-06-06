@@ -504,7 +504,6 @@ Transform:
   - {fileID: 1133293307}
   - {fileID: 1073458115}
   - {fileID: 1411678368}
-  - {fileID: 361069171}
   - {fileID: 293509428}
   - {fileID: 7271619467180624187}
   m_Father: {fileID: 0}
@@ -837,111 +836,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 139439267}
   m_CullTransparentMesh: 1
---- !u!1001 &147586456
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 71103057}
-    m_Modifications:
-    - target: {fileID: 464011281485733888, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: GaugeController
-      value: 
-      objectReference: {fileID: 1305985656}
-    - target: {fileID: 1470544264590047492, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: MoveStartSE
-      value: 
-      objectReference: {fileID: 8300000, guid: ba134a053cb72824e84bb6951baca5e3, type: 3}
-    - target: {fileID: 1854882123196945607, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: MoveSE
-      value: 
-      objectReference: {fileID: 8300000, guid: 5fe672264a909d64c9bf5a692bb2a9d0, type: 3}
-    - target: {fileID: 1867525459366600980, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: FallSE
-      value: 
-      objectReference: {fileID: 8300000, guid: f0da744ea46f09644aef97b9ecf68c85, type: 3}
-    - target: {fileID: 2056852337690706839, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: RespawnSE
-      value: 
-      objectReference: {fileID: 8300000, guid: 29ad2944473aeee49aa77a8e15597431, type: 3}
-    - target: {fileID: 2056852337690706839, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: Acceleration
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2237295309557985351, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 38.53366
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 25.406113
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -232.5068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437299111896623018, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: LowToMiddleSpeedThreshold
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437299111896623018, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: MiddleToHighSpeedThreshold
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687482378487932302, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: PauseInput
-      value: 
-      objectReference: {fileID: 2074054581}
-    - target: {fileID: 6687482378487932302, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: TargetObject
-      value: 
-      objectReference: {fileID: 293509429}
-    - target: {fileID: 7674657072711435383, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: MovePlayer
-      value: 
-      objectReference: {fileID: 1647064419}
-    - target: {fileID: 7812798298063337930, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-      propertyPath: AccelerationSE
-      value: 
-      objectReference: {fileID: 8300000, guid: c7e9861bc2082674ba5fd77fd0e64a39, type: 3}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
+--- !u!1 &177602515 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5674883032482781059, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 1601806739}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &177602517 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7024722463320119455, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 1601806739}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177602515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf28563d99dcaa44aae3f7bc4de7f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &177602519 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6230786102668018270, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 1601806739}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177602515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &177602527 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4724461701143966718, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 1601806739}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177602515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d3696323af0ba46adc1b7d1bb3eab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &177602533 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1097230114656252054, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 1601806739}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177602515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b831209e703c1640a1b8686acea5d8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &177602537 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3806229488573800879, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 1601806739}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177602515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2dc09c98cde7624a96b6c325edeb0b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &177602542 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 1601806739}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &215708385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1054,7 +1013,7 @@ PrefabInstance:
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: AccelerationForGimmick
       value: 20
@@ -1074,7 +1033,7 @@ PrefabInstance:
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: SeAudioSource
       value: 
-      objectReference: {fileID: 1647064424}
+      objectReference: {fileID: 0}
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: BoostGimmickManager
       value: 
@@ -1426,7 +1385,7 @@ PrefabInstance:
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: LiftingJump
       value: 
-      objectReference: {fileID: 1647064427}
+      objectReference: {fileID: 177602527}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: RespawnArea
       value: 
@@ -1434,7 +1393,7 @@ PrefabInstance:
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: flyingPoint
       value: 
-      objectReference: {fileID: 1647064405}
+      objectReference: {fileID: 177602517}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: CameraFunction
       value: 
@@ -1776,33 +1735,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6746151913271381421, guid: 65305c14be121924c98a79cc9dd30c5a, type: 3}
   m_PrefabInstance: {fileID: 538631707}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &361069148 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2573940688387936766, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-  m_PrefabInstance: {fileID: 147586456}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647064404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &361069166 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7812798298063337930, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-  m_PrefabInstance: {fileID: 147586456}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647064404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2dc09c98cde7624a96b6c325edeb0b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &361069171 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2948504711894549378, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-  m_PrefabInstance: {fileID: 147586456}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &417861894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1896,7 +1828,7 @@ PrefabInstance:
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: AccelerationForGimmick
       value: 20
@@ -1916,7 +1848,7 @@ PrefabInstance:
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: SeAudioSource
       value: 
-      objectReference: {fileID: 1647064424}
+      objectReference: {fileID: 0}
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: BoostGimmickManager
       value: 
@@ -2515,9 +2447,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ebbe726fc9d1a64796dbe2b510c7cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeedManager: {fileID: 361069166}
+  playerSpeedManager: {fileID: 177602537}
   speedSlider: {fileID: 558781677}
   speedText: {fileID: 88342136}
+  smoothSpeed: 5
 --- !u!114 &558781677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2798,11 +2731,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2892,11 +2825,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3247,11 +3180,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3273,7 +3206,7 @@ PrefabInstance:
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: AccelerationForGimmick
       value: 20
@@ -3293,7 +3226,7 @@ PrefabInstance:
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: SeAudioSource
       value: 
-      objectReference: {fileID: 1647064424}
+      objectReference: {fileID: 0}
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: BoostGimmickManager
       value: 
@@ -3445,11 +3378,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3685,10 +3618,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef3797a0228c5194e85c8c1ce3d49393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 361069171}
+  Player: {fileID: 177602542}
   Target: {fileID: 293509428}
-  PlayerInput: {fileID: 361069148}
-  PlayerSpeedManager: {fileID: 361069166}
+  PlayerInput: {fileID: 177602519}
+  PlayerSpeedManager: {fileID: 177602537}
   Distance: 7
   MaxCameraHeight: 5
   MinCameraHeight: 3
@@ -3717,7 +3650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 946110162}
-  PlayerSpeedManager: {fileID: 361069166}
+  PlayerSpeedManager: {fileID: 177602537}
   MinFOV: 90
   MaxFOV: 120
   FOVLerpSpeed: 2
@@ -4060,7 +3993,7 @@ PrefabInstance:
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: AccelerationForGimmick
       value: 20
@@ -4080,7 +4013,7 @@ PrefabInstance:
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: SeAudioSource
       value: 
-      objectReference: {fileID: 1647064424}
+      objectReference: {fileID: 0}
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: BoostGimmickManager
       value: 
@@ -4199,7 +4132,7 @@ PrefabInstance:
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: AccelerationForGimmick
       value: 20
@@ -4219,7 +4152,7 @@ PrefabInstance:
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: SeAudioSource
       value: 
-      objectReference: {fileID: 1647064424}
+      objectReference: {fileID: 0}
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: BoostGimmickManager
       value: 
@@ -4761,11 +4694,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4873,7 +4806,7 @@ PrefabInstance:
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: AccelerationForGimmick
       value: 20
@@ -4893,7 +4826,7 @@ PrefabInstance:
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: SeAudioSource
       value: 
-      objectReference: {fileID: 1647064424}
+      objectReference: {fileID: 0}
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: BoostGimmickManager
       value: 
@@ -5188,11 +5121,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5306,7 +5239,7 @@ PrefabInstance:
     - target: {fileID: 8863059987598273660, guid: 598a259ec0249d747b82f95e9ae004fa, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 0}
     - target: {fileID: 9002346382337860184, guid: 598a259ec0249d747b82f95e9ae004fa, type: 3}
       propertyPath: m_Name
       value: SpeedLineUI
@@ -5325,17 +5258,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2558361036878106386, guid: bae2561dfa8ea454badd6bde4ea33e95, type: 3}
   m_PrefabInstance: {fileID: 215708385}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1305985656 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6019967001227606131, guid: bae2561dfa8ea454badd6bde4ea33e95, type: 3}
-  m_PrefabInstance: {fileID: 215708385}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6e5072c5027ede4bb6e099c5678b9e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1373755511
 GameObject:
   m_ObjectHideFlags: 0
@@ -5816,6 +5738,8 @@ MonoBehaviour:
   goDisplayTime: 0.5
   snackLauncher: {fileID: 0}
   PauseInput: {fileID: 2074054581}
+  playerAnimController: {fileID: 0}
+  countdownAnimTrigger: CountdownIdle
 --- !u!1 &1473430701
 GameObject:
   m_ObjectHideFlags: 0
@@ -6044,11 +5968,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6138,11 +6062,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6164,7 +6088,7 @@ PrefabInstance:
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: Player
       value: 
-      objectReference: {fileID: 1647064404}
+      objectReference: {fileID: 177602515}
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: DecelerationSE
       value: 
@@ -6376,7 +6300,7 @@ PrefabInstance:
     - target: {fileID: 5056589381151616154, guid: 55caf4c0f01fd334f8189ff77705e946, type: 3}
       propertyPath: Player
       value: 
-      objectReference: {fileID: 1647064404}
+      objectReference: {fileID: 177602515}
     - target: {fileID: 5056589381151616154, guid: 55caf4c0f01fd334f8189ff77705e946, type: 3}
       propertyPath: Target
       value: 
@@ -6413,7 +6337,7 @@ PrefabInstance:
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: AccelerationForGimmick
       value: 20
@@ -6433,7 +6357,7 @@ PrefabInstance:
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: SeAudioSource
       value: 
-      objectReference: {fileID: 1647064424}
+      objectReference: {fileID: 0}
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: BoostGimmickManager
       value: 
@@ -6541,54 +6465,96 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6679759056571754506, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
   m_PrefabInstance: {fileID: 1565130000}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1601806739
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 27.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 36.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -229.40584
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806229488573800879, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: PlayerSpeed
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806229488573800879, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: MaxPlayerSpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724461701143966718, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: TargetObject
+      value: 
+      objectReference: {fileID: 293509429}
+    - target: {fileID: 5674883032482781059, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: m_Name
+      value: AnimationPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812200255025461458, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: Acceleration
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
 --- !u!4 &1617536961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7775454700796400270, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
   m_PrefabInstance: {fileID: 1476793812}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1647064404 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2237295309557985351, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-  m_PrefabInstance: {fileID: 147586456}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1647064405 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 464011281485733888, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-  m_PrefabInstance: {fileID: 147586456}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647064404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acf28563d99dcaa44aae3f7bc4de7f03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1647064419 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1470544264590047492, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-  m_PrefabInstance: {fileID: 147586456}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647064404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b831209e703c1640a1b8686acea5d8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!82 &1647064424 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 5976677874886521557, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-  m_PrefabInstance: {fileID: 147586456}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1647064427 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6687482378487932302, guid: 0eb2c05174433334da5f1102f1a767a7, type: 3}
-  m_PrefabInstance: {fileID: 147586456}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647064404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25d3696323af0ba46adc1b7d1bb3eab3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1651126553 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4710431160877490182, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
@@ -6616,7 +6582,7 @@ PrefabInstance:
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: AccelerationForGimmick
       value: 20
@@ -6636,7 +6602,7 @@ PrefabInstance:
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: SeAudioSource
       value: 
-      objectReference: {fileID: 1647064424}
+      objectReference: {fileID: 0}
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: BoostGimmickManager
       value: 
@@ -6857,7 +6823,7 @@ PrefabInstance:
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: Player
       value: 
-      objectReference: {fileID: 1647064404}
+      objectReference: {fileID: 177602515}
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: DecelerationSE
       value: 
@@ -7228,11 +7194,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7800,7 +7766,7 @@ PrefabInstance:
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: Player
       value: 
-      objectReference: {fileID: 1647064404}
+      objectReference: {fileID: 177602515}
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: DecelerationSE
       value: 
@@ -7954,11 +7920,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7980,7 +7946,7 @@ PrefabInstance:
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     - target: {fileID: 473021672760504489, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: AccelerationForGimmick
       value: 20
@@ -8000,7 +7966,7 @@ PrefabInstance:
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: SeAudioSource
       value: 
-      objectReference: {fileID: 1647064424}
+      objectReference: {fileID: 0}
     - target: {fileID: 3853685836032987342, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
       propertyPath: BoostGimmickManager
       value: 
@@ -8268,11 +8234,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8362,11 +8328,11 @@ PrefabInstance:
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: MovePlayerScript
       value: 
-      objectReference: {fileID: 1647064419}
+      objectReference: {fileID: 177602533}
     - target: {fileID: 8441209492069213289, guid: 2e44b4e2b0092a64d9e2c802553e8e25, type: 3}
       propertyPath: playerSpeedManager
       value: 
-      objectReference: {fileID: 361069166}
+      objectReference: {fileID: 177602537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8475,10 +8441,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClearConditions: {fileID: 1473430702}
-  FlyingPoint: {fileID: 1647064405}
+  FlyingPoint: {fileID: 177602517}
   ClearUI: {fileID: 2042474137}
-  PlayerObject: {fileID: 1647064404}
-  SnackObject: {fileID: 0}
+  PlayerObject: {fileID: 177602515}
+  SnackObject: {fileID: 177602515}
   CameraObject: {fileID: 946110160}
   StarObject: {fileID: 1938181473}
   CameraTiltAngle: 0
@@ -9030,3 +8996,4 @@ SceneRoots:
   - {fileID: 2113434521}
   - {fileID: 924729809}
   - {fileID: 71103057}
+  - {fileID: 1601806739}

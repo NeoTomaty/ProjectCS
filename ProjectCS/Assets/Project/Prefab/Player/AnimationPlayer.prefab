@@ -1729,6 +1729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1511810113584449987}
   - component: {fileID: 9071961638925398697}
+  - component: {fileID: 1124383368804992412}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -1775,6 +1776,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1124383368804992412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4544935543484595707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57dc651711c11324f8b95574023badad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4675399441719123405
 GameObject:
   m_ObjectHideFlags: 0
@@ -2125,6 +2138,7 @@ GameObject:
   - component: {fileID: 6230786102668018270}
   - component: {fileID: 7195205485715558476}
   - component: {fileID: 7024722463320119455}
+  - component: {fileID: -7207479726219837928}
   m_Layer: 0
   m_Name: AnimationPlayer
   m_TagString: Player
@@ -2796,6 +2810,8 @@ MonoBehaviour:
   modelAnimator: {fileID: 9071961638925398697}
   randomAnimationCount: 4
   randomIndexParameterName: RandomIndex
+  transformEffectPrefab: {fileID: 0}
+  effectSpawnPoint: {fileID: 0}
 --- !u!114 &7024722463320119455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2814,6 +2830,20 @@ MonoBehaviour:
   Score: 0
   totalScore: 0
   ComboBonusUpValue: 0.2
+--- !u!114 &-7207479726219837928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5674883032482781059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5866a45d7f141f648bf02ee2e89e3d8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 0.8
+  decelerationAmount: 1
 --- !u!1 &6042188839904831397
 GameObject:
   m_ObjectHideFlags: 0
