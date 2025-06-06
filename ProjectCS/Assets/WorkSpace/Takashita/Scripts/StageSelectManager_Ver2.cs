@@ -21,7 +21,8 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private GameObject StageImageUI;
     [SerializeField] private Image StageImage;
     [SerializeField] private BezierMover BezierMoverComponent;
- 
+    [SerializeField] private StageSelectMoveCamera MoveCamera;
+
 
     private Transform[] StageChildArray;
     private Transform[] StageModelTransform;
@@ -138,15 +139,39 @@ public class StageSelectManager_Ver2 : MonoBehaviour
            
         }
 
-        //if (Input.GetKeyDown(KeyCode.Return) && !BezierMoverComponent.GetIsMoving())
-        //{
-        //    if(GameSceneNames.Length == StageSelectorComponent.GetStageNumber()) return;
+        if (Input.GetKeyDown(KeyCode.Return) && !BezierMoverComponent.GetIsMoving())
+        {
+            if (GameSceneNames.Length == StageSelectorComponent.GetStageNumber()) return;
 
-        //    ChangeScene(GameSceneNames[StageSelectorComponent.GetStageNumber()]);
-           
-        //}
+            if (!MoveCamera.GetIsSwitched())
+            {
+                MoveCamera.SetIsSwitched(true);
+            }
+            else
+            {
+                ChangeScene(GameSceneNames[StageSelectorComponent.GetStageNumber()]);
+            }
 
-        if(!BezierMoverComponent.GetIsMoving())
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Backspace) && !BezierMoverComponent.GetIsMoving())
+        {
+
+            if (MoveCamera.GetIsSwitched())
+            {
+                MoveCamera.SetIsSwitched(false);
+            }
+            else
+            {
+                ChangeScene(TitleSceneName);
+            }
+       
+        }
+
+
+
+        if (!BezierMoverComponent.GetIsMoving())
         {
             ScaleChangeTimer += Time.deltaTime;
             float t = Mathf.Clamp01(ScaleChangeTimer / ScaleChangeDuration);
@@ -200,13 +225,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Backspace) && !BezierMoverComponent.GetIsMoving())
-        {
-            ChangeScene(TitleSceneName);
-        }
-
-        
-
+       
     }
 
     private void ChangeScene(string sceneName)
