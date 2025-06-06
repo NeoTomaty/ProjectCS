@@ -11,14 +11,50 @@ using UnityEngine;
 
 public class StageSelectMoveCamera : MonoBehaviour
 {
-    [SerializeField] private Transform PlayerObject;     // 追従対象（プレイヤー）
-    [SerializeField] private Vector3 Offset = new Vector3(0f, 5f, -10f); // プレイヤーからの相対位置
+    public Transform PlayerObject;
 
-    void LateUpdate()
+    [Header("Offset & Rotation 1 (通常時)")]
+    public Vector3 Offset1 = new Vector3(0, 40, -60);
+    public Vector3 RotationEuler1 = new Vector3(20f, 0f, 0f);  // プレイヤーを見る回転など
+
+    [Header("Offset & Rotation 2 (切替時)")]
+    public Vector3 Offset2 = new Vector3(-5, 10, -14);
+    public Vector3 RotationEuler2 = new Vector3(0f, 45f, 0f);
+
+    [Header("設定")]
+    public float LerpSpeed = 3.0f;
+
+    private float t = 0f;
+    private bool IsSwitched = false;
+    private bool IsInterpolating;
+
+    void Update()
     {
-        if (PlayerObject == null) return;
+        // 補間係数更新
+        t = Mathf.MoveTowards(t, IsSwitched ? 1f : 0f, Time.deltaTime * LerpSpeed);
 
-        // プレイヤーの位置に対してオフセットを加え、カメラの位置を毎フレーム直接設定（回転は変えない）
-        transform.position = PlayerObject.position + Offset;
+        // オフセット補完（位置）
+        Vector3 offset = Vector3.Lerp(Offset1, Offset2, t);
+        transform.position = PlayerObject.position + offset;
+
+        // 回転補完
+        Quaternion rotation1 = Quaternion.Euler(RotationEuler1);
+        Quaternion rotation2 = Quaternion.Euler(RotationEuler2);
+        transform.rotation = Quaternion.Slerp(rotation1, rotation2, t);
+    }
+
+    public bool GetIsInterpolating()
+    {
+        return IsInterpolating;
+    }
+
+    public void SetIsSwitched(bool isSwitched)
+    {
+        IsSwitched = isSwitched;
+    }
+
+    public bool GetIsSwitched()
+    {
+        return IsSwitched;
     }
 }
