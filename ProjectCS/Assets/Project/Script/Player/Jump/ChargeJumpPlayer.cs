@@ -70,6 +70,8 @@ public class ChargeJumpPlayer : MonoBehaviour
     private bool isJumping = false;
     public bool IsJumping => isJumping;
 
+    private bool requestStartCharging = false;//空中でジャンプボタンの長押しを始めたとき用
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -103,36 +105,37 @@ public class ChargeJumpPlayer : MonoBehaviour
         LiftingJump = GetComponent<LiftingJump>();
     }
 
-    private void Update()
+    void Update()
     {
-        bool isGroundLast = isGrounded;
-
+        bool wasGrounded = isGrounded;
         isGrounded = CheckIfGrounded();
 
-        // 地面に着いた瞬間
-        if (!isGroundLast && isGrounded)
+        // 着地時にチャージ開始判定
+        if (!wasGrounded && isGrounded)
         {
-            PlayerLandingSound SoundScript = GetComponent<PlayerLandingSound>();
-            if (SoundScript != null)
+            if (!isCharging && isJumpButtonPressed && jumpButtonHoldTime >= chargeThresholdTime)
             {
-                SoundScript.PlayLandingSound();
+                StartCharging();
             }
+
+            // 着地音
+            var soundScript = GetComponent<PlayerLandingSound>();
+            soundScript?.PlayLandingSound();
         }
 
         if (isJumpButtonPressed)
         {
             jumpButtonHoldTime += Time.deltaTime;
 
-            if (!isCharging && jumpButtonHoldTime >= chargeThresholdTime && isGrounded) // ← isGrounded を追加
+            if (!isCharging && isGrounded && jumpButtonHoldTime >= chargeThresholdTime)
             {
-                StartCharging(); // 地上にいるときだけチャージ開始
+                StartCharging();
             }
         }
 
         if (isCharging)
         {
             chargeTimer += Time.deltaTime;
-
             if (!isOverheated && chargeTimer < overheatTime)
             {
                 float targetSpeed = originalSpeed * chargingSpeedMultiplier;
@@ -270,13 +273,10 @@ public class ChargeJumpPlayer : MonoBehaviour
     // ジャンプボタン押したとき
     private void OnJumpStarted(InputAction.CallbackContext context)
     {
-        if (isGrounded)
-        {
-            isJumpButtonPressed = true;
-            jumpButtonHoldTime = 0.0f;
-            isOverheated = false;
-            originalSpeed = speedManager.GetPlayerSpeed;
-        }
+        isJumpButtonPressed = true;
+        jumpButtonHoldTime = 0.0f;
+        isOverheated = false;
+        originalSpeed = speedManager.GetPlayerSpeed;
     }
 
     // ジャンプボタン離したとき
@@ -284,44 +284,32 @@ public class ChargeJumpPlayer : MonoBehaviour
     {
         isJumpButtonPressed = false;
 
-        if (isCharging)
+        if (isCharging && isGrounded)
         {
-            if (isGrounded)
-            {
-                Jump(); // チャージジャンプ
-            }
+            Jump(); // チャージジャンプ
         }
-        else
+        else if (!isCharging && isGrounded && jumpButtonHoldTime < chargeThresholdTime)
         {
-            if (isGrounded)
+            // 通常ジャンプ（※ホールド時間が短い時だけ）
+            float jumpMultiplier = 1.0f;
+            switch (PlayerStateManager.GetLiftingState())
             {
-                float jumpMultiplier = 1.0f;
-                switch (PlayerStateManager.GetLiftingState())
-                {
-                    case PlayerStateManager.LiftingState.Normal:
+                case PlayerStateManager.LiftingState.Normal:
+                    rb.AddForce(Vector3.up * NormalJumpForce, ForceMode.Impulse);
+                    isJumping = true;
+                    break;
 
-                        // 通常ジャンプ
-                        rb.AddForce(Vector3.up * NormalJumpForce, ForceMode.Impulse);
-                        isJumping = true; // ジャンプ中フラグを立てる
-                        break;
-
-                    case PlayerStateManager.LiftingState.LiftingPart:
-                        // リフティング状態
-                        LiftingJump.SetJumpPower(jumpMultiplier);
-                        LiftingJump.StartLiftingJump();
-                        break;
-                }
+                case PlayerStateManager.LiftingState.LiftingPart:
+                    LiftingJump.SetJumpPower(jumpMultiplier);
+                    LiftingJump.StartLiftingJump();
+                    break;
             }
         }
 
-        // 効果音再生
-        PlayerJumpSound SoundScript = GetComponent<PlayerJumpSound>();
-        if (SoundScript != null)
-        {
-            SoundScript.PlayJumpSound(); // ジャンプ音を再生
-        }
+        // SE
+        var soundScript = GetComponent<PlayerJumpSound>();
+        soundScript?.PlayJumpSound();
 
-        // リセット処理
         ResetChargeState();
     }
 
@@ -393,6 +381,7 @@ public class ChargeJumpPlayer : MonoBehaviour
         isCharging = false;
         isOverheated = false;
         jumpButtonHoldTime = 0.0f;
+        requestStartCharging = false; // ←追加！
 
         if (chargeEffectInstance != null)
         {
@@ -400,4 +389,5 @@ public class ChargeJumpPlayer : MonoBehaviour
             ResetChargeEffect();
         }
     }
+
 }
