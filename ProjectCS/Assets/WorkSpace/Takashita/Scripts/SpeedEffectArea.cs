@@ -41,15 +41,16 @@ public class SpeedEffectArea : MonoBehaviour
     [SerializeField] private AudioClip DecelerationSE;
 
     [Header("使用する加減速タイプ A:一時減速 B:減速 C:加速")]
-    [SerializeField] private SpeedEffectType effectType = SpeedEffectType.TypeA;
+    [SerializeField] private SpeedEffectType effectType;
 
     [Header("どれくらいの間隔で加減速するのか")]
-    [SerializeField] private float TickInterval = 0.5f;         // B/C用：定期的に加減速する間隔
+    [SerializeField] private float TickInterval = 1.0f;  // B/C用：定期的に加減速する間隔
+
+    private float tickTimer = 0f; // B/Cタイプ用：加減速のタイマー
 
     [Header("どれくらい加減速するのか")]
-    [SerializeField] private float SpeedAmount = 0.5f;   // B/C用：1回あたりの変化量
+    [SerializeField] private float SpeedAmount = 1.0f;   // B/C用：1回あたりの変化量
 
-    private float tickTimer = 0f;           // B/C用：経過時間記録
     private bool isPlayerInside = false;    // B/C用：エリア内判定
 
     //SE再生用のAudioSource
@@ -85,6 +86,8 @@ public class SpeedEffectArea : MonoBehaviour
         // Aタイプの補完処理
         if (effectType == SpeedEffectType.TypeA && IsInterpolating)
         {
+            Debug.Log("タイプA補完中");
+
             InterpolationTimer += Time.deltaTime;
             float t = Mathf.Clamp01(InterpolationTimer / InterpolationDuration);
             float newSpeed = Mathf.Lerp(StartSpeed, TargetSpeed, t);
@@ -97,19 +100,28 @@ public class SpeedEffectArea : MonoBehaviour
         // B/CタイプのTick処理
         if ((effectType == SpeedEffectType.TypeB || effectType == SpeedEffectType.TypeC) && isPlayerInside)
         {
+            Debug.Log("checkA");
+
+            float currentSpeed = SpeedManager.GetPlayerSpeed;
+            float newSpeed = currentSpeed;
+
+            // Tickタイマー更新
             tickTimer += Time.deltaTime;
+
             if (tickTimer >= TickInterval)
             {
-                tickTimer = 0f;
-
-                float currentSpeed = SpeedManager.GetPlayerSpeed;
-                float newSpeed = currentSpeed;
+                tickTimer = 0f; // タイマーリセット
 
                 if (effectType == SpeedEffectType.TypeB)
+                {
+                    Debug.Log("タイプB Clear");
                     newSpeed = Mathf.Max(SpeedManager.GetMinSpeed(), currentSpeed - SpeedAmount);
+                }
                 else if (effectType == SpeedEffectType.TypeC)
+                {
+                    Debug.Log("タイプC Clear");
                     newSpeed = Mathf.Min(SpeedManager.GetMaxSpeed(), currentSpeed + SpeedAmount);
-
+                }
                 SpeedManager.SetSpeed(newSpeed);
             }
         }
@@ -126,12 +138,14 @@ public class SpeedEffectArea : MonoBehaviour
             // SEが設定されていれば再生
             if (DecelerationSE != null) audioSource.PlayOneShot(DecelerationSE);
 
-            // プレイヤーがエリア内にいる状態に設定（B/C用の判定用）
+            // プレイヤーがエリア内にいる状態に設定
             isPlayerInside = true;
 
             // Aタイプ
             if (effectType == SpeedEffectType.TypeA)
             {
+                Debug.Log("タイプA処理中");
+
                 // すでに補完中ならその目標速度を一時保存、それ以外は現在の速度を保存
                 TempPlayerSpeed = IsInterpolating ? TargetSpeed : SpeedManager.GetPlayerSpeed;
 
@@ -151,11 +165,7 @@ public class SpeedEffectArea : MonoBehaviour
                 InterpolationTimer = 0f;
                 IsInterpolating = true;
             }
-            else
-            {
-                // B/Cタイプ用：タイマー初期化
-                tickTimer = 0f;
-            }
+ 
         }
     }
 
@@ -172,6 +182,8 @@ public class SpeedEffectArea : MonoBehaviour
             // Aタイプ
             if (effectType == SpeedEffectType.TypeA)
             {
+                Debug.Log("タイプA処理中");
+
                 // 補完の開始速度を現在の速度に設定
                 StartSpeed = SpeedManager.GetPlayerSpeed;
 
