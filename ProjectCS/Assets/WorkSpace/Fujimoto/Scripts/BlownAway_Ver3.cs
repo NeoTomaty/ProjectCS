@@ -5,6 +5,7 @@
 // [Log]
 // 05/13 藤本 リフティング回数に応じて飛ぶ力が段階的に上がる
 // 05/30 荒井 スコアのコンボボーナスのリセットを実装
+// 06/05 藤本 多段ヒット防止処理を追加
 //====================================================
 using UnityEngine;
 using System.Collections;
@@ -168,6 +169,7 @@ public class BlownAway_Ver3 : MonoBehaviour
             // ゲージによる補正
             if (LiftingJump != null)
             {
+                Debug.Log("リフティング開始");
                 if (LiftingJump.IsLiftingPart)
                 {
                     //ForceDirection *= LiftingJump.GetForce * LiftingJump.GetJumpPower;
@@ -207,6 +209,8 @@ public class BlownAway_Ver3 : MonoBehaviour
         }
 
         Time.timeScale = 1f; // 時間を再開する
+
+        Debug.Log("ヒットストップ開始");
     }
 
     // リスポーン位置
