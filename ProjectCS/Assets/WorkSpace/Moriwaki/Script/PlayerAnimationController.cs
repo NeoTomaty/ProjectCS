@@ -1,10 +1,11 @@
 ﻿//======================================================
 // [PlayerAnimationController]
 // 作成者：森脇
-// 最終更新日：05/22
+// 最終更新日：06/06
 //
 // [Log]
 // 05/22　森脇 アニメーターの管理
+// 06/06　森脇 カウントダウン時に特定アニメーション再生追加
 //======================================================
 
 using UnityEngine;
@@ -61,7 +62,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         SetUseNormalModelWithWait();
         int randomIndex = Random.Range(0, randomAnimationCount);
-        modelAnimator.SetInteger("RandomIndex", randomIndex);
+        modelAnimator.SetInteger(randomIndexParameterName, randomIndex);
     }
 
     // 外部から model を表示（アニメーション再生）させるときに呼ぶ
@@ -78,5 +79,30 @@ public class PlayerAnimationController : MonoBehaviour
         useNormalModel = value;
         waitingForAnimFinish = false;
         UpdateModelVisibility();
+    }
+
+    // 特定のTriggerアニメーションを再生したいときに使う
+    public void PlaySpecificAnimation(string triggerName)
+    {
+        if (modelAnimator != null)
+        {
+            useNormalModel = true;
+            waitingForAnimFinish = false;
+            UpdateModelVisibility();
+
+            // アニメーターの時間をUnscaledTimeに設定（Time.timeScaleの影響を受けない）
+            modelAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+
+            modelAnimator.SetTrigger(triggerName);
+        }
+    }
+
+    // RandomIndex方式を使いたい場合の代替
+    public void PlayAnimationByIndex(int index)
+    {
+        useNormalModel = true;
+        waitingForAnimFinish = false;
+        UpdateModelVisibility();
+        modelAnimator.SetInteger(randomIndexParameterName, index);
     }
 }

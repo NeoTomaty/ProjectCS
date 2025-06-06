@@ -1,10 +1,11 @@
 //====================================================
 // スクリプト名：GameStartCountdown
 // 作成者：藤本
-// 
+//
 // [Log]
 // 05/07 藤本　カウントダウン処理実装
 // 05/29　宮林　ポーズ画面表示ボタンの停止
+// 06/06　森脇　カウント時の待機Animation制御
 //====================================================
 
 using UnityEngine;
@@ -28,10 +29,22 @@ public class GameStartCountdown : MonoBehaviour
     [SerializeField] private SnackLauncher snackLauncher;
 
     [Header("操作を止めるinput")]
-    public PlayerInput PauseInput;                              //ポーズ画面の操作受け取り
+    public PlayerInput PauseInput;
 
-    void Start()
+    [Header("アニメーション制御用")]
+    [SerializeField] private PlayerAnimationController playerAnimController;
+
+    [Header("カウントダウン中に再生するアニメーショントリガー名")]
+    [SerializeField] private string countdownAnimTrigger = "CountdownIdle";
+
+    private void Start()
     {
+        // カウントダウン中に特定のアニメーションを再生
+        if (playerAnimController != null)
+        {
+            playerAnimController.PlaySpecificAnimation(countdownAnimTrigger);
+        }
+
         StartCoroutine(CountdownCoroutine());
         PauseInput.actions.Disable(); // 入力を無効にする
     }
@@ -55,6 +68,12 @@ public class GameStartCountdown : MonoBehaviour
         PauseInput.actions.Enable(); // 入力を有効にする
         // 時間再開
         Time.timeScale = 1f;
+
+        // model非表示 or 通常状態に戻す
+        if (playerAnimController != null)
+        {
+            playerAnimController.SetUseNormalModel(false);  // rotationModel に戻すなど
+        }
 
         // Snackの打ち上げ実行
         if (snackLauncher != null)
