@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &18411753 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7181697586950749315, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1563025577}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &20560757
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,6 +168,8 @@ MonoBehaviour:
   goDisplayTime: 0.5
   snackLauncher: {fileID: 756912132}
   PauseInput: {fileID: 1866824034}
+  playerAnimController: {fileID: 0}
+  countdownAnimTrigger: CountdownIdle
 --- !u!1 &84185481
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,7 +308,19 @@ PrefabInstance:
       objectReference: {fileID: 1070818854}
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: effectType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
+      propertyPath: SpeedAmount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
+      propertyPath: TickInterval
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
+      propertyPath: InterpolationDuration
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: m_LocalScale.x
@@ -327,11 +336,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -88.5
+      value: -126.2
       objectReference: {fileID: 0}
     - target: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.2
+      value: 15.1
       objectReference: {fileID: 0}
     - target: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: m_LocalPosition.z
@@ -374,11 +383,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
---- !u!1 &230735028 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4436518401975526290, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1563025577}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &233516542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -706,7 +710,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1984033651}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: Player
@@ -714,7 +718,15 @@ PrefabInstance:
       objectReference: {fileID: 1070818854}
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: effectType
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
+      propertyPath: SpeedAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
+      propertyPath: TickInterval
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: DecelerationSE
@@ -723,6 +735,10 @@ PrefabInstance:
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: DecelerationRatio
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
+      propertyPath: InterpolationDuration
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: IsDecelerationBasedOnMaxSpeed
@@ -742,15 +758,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -70.2
+      value: -43.983658
       objectReference: {fileID: 0}
     - target: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.2
+      value: 26.92389
       objectReference: {fileID: 0}
     - target: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.6
+      value: -2.0831962
       objectReference: {fileID: 0}
     - target: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: m_LocalRotation.w
@@ -782,24 +798,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2978475149538425863, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: m_Name
-      value: DecelerationArea1
+      value: DecelerationArea
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
---- !u!114 &374675042 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2419687137176127695, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1563025577}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &375693732
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,11 +841,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8785150571074568532, guid: ca237208ad5bf51429d652c50e06f5b4, type: 3}
   m_PrefabInstance: {fileID: 1541221555}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &450003747 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
-  m_PrefabInstance: {fileID: 344082755}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &452263747 stripped
 RectTransform:
@@ -2031,7 +2031,7 @@ PrefabInstance:
       objectReference: {fileID: 510015326}
     - target: {fileID: 2693352334119193582, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: PlayerSpeed
-      value: 200
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2693352334119193582, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: MaxPlayerSpeed
@@ -2073,6 +2073,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 13400000, guid: 9b753f095f7819643a43c140ebba1474, type: 2}
+    - target: {fileID: 3659676806870951451, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
+      propertyPath: Acceleration
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 3659676806870951451, guid: d217cf1242893a546bb6de71ff213b60, type: 3}
       propertyPath: IsInputEnabled
       value: 0
@@ -2232,8 +2236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5866a45d7f141f648bf02ee2e89e3d8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 0.1
-  decelerationAmount: 2
+  time: 0
+  decelerationAmount: 0
 --- !u!1001 &1110608476
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2701,7 +2705,7 @@ PrefabInstance:
     - target: {fileID: 8239012434070568144, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: volumeSlider
       value: 
-      objectReference: {fileID: 374675042}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3475,6 +3479,7 @@ MonoBehaviour:
   playerSpeedManager: {fileID: 1070818875}
   speedSlider: {fileID: 1921726496}
   speedText: {fileID: 563229273}
+  smoothSpeed: 5
 --- !u!114 &1921726496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3626,7 +3631,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: optionUI
       value: 
-      objectReference: {fileID: 18411753}
+      objectReference: {fileID: 0}
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstPauseButton
       value: 
@@ -3634,7 +3639,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstOptionButton
       value: 
-      objectReference: {fileID: 230735028}
+      objectReference: {fileID: 0}
     - target: {fileID: 6272492561119360749, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: m_Name
       value: PauseManager
@@ -3714,7 +3719,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 526742404}
-  - {fileID: 450003747}
   - {fileID: 375693733}
   - {fileID: 949123409}
   - {fileID: 1070818880}
@@ -3980,4 +3984,5 @@ SceneRoots:
   - {fileID: 843447328}
   - {fileID: 1984033651}
   - {fileID: 1501969184}
+  - {fileID: 344082755}
   - {fileID: 223765417}
