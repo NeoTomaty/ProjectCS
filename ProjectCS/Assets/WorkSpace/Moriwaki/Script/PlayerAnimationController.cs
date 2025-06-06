@@ -30,6 +30,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool waitingForAnimFinish = false;
 
+    [Header("変身エフェクト関連")]
+    [SerializeField] private GameObject transformEffectPrefab;
+
+    [SerializeField] private Transform effectSpawnPoint; // エフェクトの再生位置（任意）
+
     private void Update()
     {
         UpdateModelVisibility();
@@ -79,6 +84,7 @@ public class PlayerAnimationController : MonoBehaviour
         useNormalModel = value;
         waitingForAnimFinish = false;
         UpdateModelVisibility();
+        PlayTransformEffect(); // エフェクトを再生
     }
 
     // 特定のTriggerアニメーションを再生したいときに使う
@@ -104,5 +110,14 @@ public class PlayerAnimationController : MonoBehaviour
         waitingForAnimFinish = false;
         UpdateModelVisibility();
         modelAnimator.SetInteger(randomIndexParameterName, index);
+    }
+
+    private void PlayTransformEffect()
+    {
+        if (transformEffectPrefab != null)
+        {
+            Vector3 spawnPos = effectSpawnPoint != null ? effectSpawnPoint.position : transform.position;
+            Instantiate(transformEffectPrefab, spawnPos, Quaternion.identity);
+        }
     }
 }
