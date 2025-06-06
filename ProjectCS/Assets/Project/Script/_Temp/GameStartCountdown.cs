@@ -31,33 +31,26 @@ public class GameStartCountdown : MonoBehaviour
     [Header("操作を止めるinput")]
     public PlayerInput PauseInput;
 
-<<<<<<< HEAD
     [Header("アニメーション制御用")]
     [SerializeField] private PlayerAnimationController playerAnimController;
 
     [Header("カウントダウン中に再生するアニメーショントリガー名")]
     [SerializeField] private string countdownAnimTrigger = "CountdownIdle";
 
-    private void Start()
+
+    private bool isCountingDown = false;
+    public bool IsCountingDown => isCountingDown;
+
+    void Start()
     {
+        StartCoroutine(CountdownCoroutine());
+
         // カウントダウン中に特定のアニメーションを再生
         if (playerAnimController != null)
         {
             playerAnimController.PlaySpecificAnimation(countdownAnimTrigger);
         }
 
-=======
-
-    private bool isCountingDown = false;
-    public bool IsCountingDown => isCountingDown;
-
-    
-    void Start()
-    {
-      
->>>>>>> origin/miyabayashi
-        StartCoroutine(CountdownCoroutine());
-   
     }
 
     private IEnumerator CountdownCoroutine()
@@ -76,7 +69,7 @@ public class GameStartCountdown : MonoBehaviour
 
         Time.timeScale = 1f;
 
-<<<<<<< HEAD
+
         // model非表示 or 通常状態に戻す
         if (playerAnimController != null)
         {
@@ -84,10 +77,8 @@ public class GameStartCountdown : MonoBehaviour
         }
 
         // Snackの打ち上げ実行
-=======
         isCountingDown = false; // カウントダウン終了
 
->>>>>>> origin/miyabayashi
         if (snackLauncher != null)
         {
             snackLauncher.Launch();
