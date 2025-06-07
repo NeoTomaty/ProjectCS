@@ -26,6 +26,7 @@
 // 05/29　森脇　モデルのフラグ変化
 // 05/29　荒井　QTE廃止
 // 06/05　荒井　高さを条件としてリフティングジャンプを強制終了する処理を追加
+// 06/07　荒井　カウントダウン中にリフティングジャンプを発動しないように修正
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,21 +35,27 @@ using UnityEngine.InputSystem;
 // プレイヤーにアタッチ
 public class LiftingJump : MonoBehaviour
 {
-    [SerializeField] private GameObject TargetObject;                   // 目標地点
-    private MovePlayer MovePlayer;                              // プレイヤーの移動スクリプトの参照
-    private ObjectGravity ObjectGravityScript;                  // 重力スクリプトの参照
-    private PlayerInput PlayerInput;                            // プレイヤーの入力を管理するcomponent
-    public PlayerInput PauseInput;                              //ポーズ画面の操作受け取り
+    [Header("参照")]
+    [SerializeField] private GameObject TargetObject; // 目標地点
+    [SerializeField] private PlayerInput PauseInput; //ポーズ画面の操作受け取り
+    [SerializeField] private GameStartCountdown GameStartCountdownScript; // ゲーム開始カウントダウンのスクリプト
+    [Header("ジャンプ時の移動速度の基礎倍率")]
+    [SerializeField] private float JumpSpeed = 2f; // ジャンプ時の移動速度補正
+    [Header("オブジェクト貫通設定")]
+    [SerializeField] private bool IgnoreNonTargetCollisions = false;     
+    [Header("アニメーション")]
+    [SerializeField] private PlayerAnimationController playerAnimController;
 
-    [SerializeField] private float JumpSpeed = 2f;  // ジャンプ時の移動速度補正
+    private MovePlayer MovePlayer; // プレイヤーの移動スクリプトの参照
+    private ObjectGravity ObjectGravityScript; // 重力スクリプトの参照
+    private PlayerInput PlayerInput; // プレイヤーの入力を管理するcomponent
 
     private float JumpPower = 0f;
     public float GetJumpPower => JumpPower; // ジャンプ力の取得
 
-    [SerializeField] private bool IgnoreNonTargetCollisions = false;    // ターゲット以外との衝突を無視するかどうか
     public bool IsIgnore => IgnoreNonTargetCollisions && IsJumping;
 
-    private Collider[] AllColliders;    // 全オブジェクトの当たり判定
+    private Collider[] AllColliders; // 全オブジェクトの当たり判定
 
     private bool IsJumping = false;
     public bool IsLiftingPart => IsJumping; // リフティングジャンプ中かどうか
@@ -56,7 +63,6 @@ public class LiftingJump : MonoBehaviour
     private float OnStartedPlayerHeight = 0f; // リフティングジャンプ開始時のプレイヤーの高さ
     private float TerminateHeight = 200f; // リフティングジャンプを強制的に終了させる高度
 
-    [SerializeField] private PlayerAnimationController playerAnimController;
 
     public void SetJumpPower(float Power)
     {
@@ -66,6 +72,13 @@ public class LiftingJump : MonoBehaviour
     // リフティングジャンプを開始する関数
     public void StartLiftingJump()
     {
+        // カウントダウン中は無効
+        if (GameStartCountdownScript != null && GameStartCountdownScript.IsCountingDown)
+        {
+            Debug.Log("LiftingJump >> カウントダウン中なので無効");
+            return;
+        }
+
         PlayerInput.actions.Disable(); // 入力を無効にする
         PauseInput.actions.Disable(); // 入力を無効にする
         if (IgnoreNonTargetCollisions)   // すり抜け有効時
