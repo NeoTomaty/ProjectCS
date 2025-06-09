@@ -26,7 +26,7 @@ public class StageSelectMoveCamera : MonoBehaviour
 
     private float t = 0f;
     private bool IsSwitched = false;
-    private bool IsInterpolating;
+    private bool IsInterpolating = false;
 
     void Update()
     {
@@ -41,6 +41,11 @@ public class StageSelectMoveCamera : MonoBehaviour
         Quaternion rotation1 = Quaternion.Euler(RotationEuler1);
         Quaternion rotation2 = Quaternion.Euler(RotationEuler2);
         transform.rotation = Quaternion.Slerp(rotation1, rotation2, t);
+
+        if (IsInterpolating && (t == 0f || t == 1f))
+        {
+            IsInterpolating = false;
+        }
     }
 
     public bool GetIsInterpolating()
@@ -51,6 +56,7 @@ public class StageSelectMoveCamera : MonoBehaviour
     public void SetIsSwitched(bool isSwitched)
     {
         IsSwitched = isSwitched;
+        IsInterpolating = true;
     }
 
     public bool GetIsSwitched()

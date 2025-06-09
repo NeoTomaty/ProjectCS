@@ -68,4 +68,19 @@ public class CubicBezierCurve : MonoBehaviour
                3 * u * tt * p2 +
                ttt * p3;
     }
+
+    // Cubic Bezier 曲線の接線（進行方向ベクトル）を取得
+    public Vector3 GetTangent(float t)
+    {
+        Vector3 p0 = StageObject1.position;
+        Vector3 p1 = ControlPoint1.position;
+        Vector3 p2 = ControlPoint2.position;
+        Vector3 p3 = StageObject2.position;
+
+        // Cubic Bezier の導関数（一次微分）
+        return
+            3 * Mathf.Pow(1 - t, 2) * (p1 - p0) +
+            6 * (1 - t) * t * (p2 - p1) +
+            3 * Mathf.Pow(t, 2) * (p3 - p2);
+    }
 }
