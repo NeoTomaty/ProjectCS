@@ -9,7 +9,6 @@
 //====================================================
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 
 public class StageSelectManager_Ver2 : MonoBehaviour
@@ -19,10 +18,14 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private GameObject StageObject;
     [SerializeField] private GameObject BezierCurveObject;
     [SerializeField] private GameObject StageImageUI;
+    [SerializeField] private GameObject StartUI;
     [SerializeField] private Image StageImage;
+    [SerializeField] private Image StageName01;
+    [SerializeField] private GameObject StageName02;
     [SerializeField] private BezierMover BezierMoverComponent;
     [SerializeField] private StageSelectMoveCamera MoveCamera;
-
+    [SerializeField] private StageSelectChangeModel ChangeModel;
+    [SerializeField] private GameObject PointLineUI;
 
     private Transform[] StageChildArray;
     private Transform[] StageModelTransform;
@@ -34,6 +37,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
     [SerializeField] private string TitleSceneName;
     [SerializeField] private Sprite[] StageImageSprites = new Sprite[5];
+    [SerializeField] private Sprite[] StageNameSprites = new Sprite[5];
 
     private bool IsReverse = false;
     private bool IsInputEnabled = false;
@@ -41,6 +45,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private float ScaleChangeDuration = 0.5f;
     private bool IsScaling = true;
     [SerializeField] private Vector3 SmallStageModelSize = new Vector3(0.5f, 0.5f, 0.5f);
+    private UILineConnector LineConnector;
 
 
     void Start()
@@ -86,9 +91,19 @@ public class StageSelectManager_Ver2 : MonoBehaviour
         }
 
         StageImage.sprite = StageImageSprites[StageSelectorComponent.GetStageNumber()];
+        
+        StageName01.sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
 
         StageImageUI.transform.localScale = Vector3.zero;
 
+        StartUI.SetActive(false);
+        StageName02.SetActive(false);
+
+        LineConnector = PointLineUI.GetComponent<UILineConnector>();
+
+        LineConnector.SetArrayNumber(StageSelectorComponent.GetStageNumber());
+
+        
     }
 
     private void OnValidate()
@@ -103,6 +118,17 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             }
             StageImageSprites = newArray;
         }
+
+        if (GameSceneNames.Length != StageNameSprites.Length)
+        {
+
+            Sprite[] newArray = new Sprite[GameSceneNames.Length];
+            for (int i = 0; i < Mathf.Min(GameSceneNames.Length, StageNameSprites.Length); i++)
+            {
+                newArray[i] = StageNameSprites[i]; // Šù‘¶‚Ì’l‚ð•ÛŽ
+            }
+            StageNameSprites = newArray;
+        }
     }
 
 
@@ -110,7 +136,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     {
         if (StageChildArray.Length - 1 != BezierCurveChildArray.Length) return;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && !MoveCamera.GetIsSwitched())
         {
             if (StageSelectorComponent.GetStageNumber() <= 0) return;
 
@@ -122,9 +148,10 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
             StageSelectorComponent.SetStageNumber(-1);
             
+
         }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow) && !MoveCamera.GetIsSwitched())
         {
 
             if (StageSelectorComponent.GetStageNumber() == BezierCurveChildArray.Length) return;
@@ -137,6 +164,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
             StageSelectorComponent.SetStageNumber(1);
            
+
         }
 
         if (Input.GetKeyDown(KeyCode.Return) && !BezierMoverComponent.GetIsMoving())
@@ -151,8 +179,6 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             {
                 ChangeScene(GameSceneNames[StageSelectorComponent.GetStageNumber()]);
             }
-
-
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace) && !BezierMoverComponent.GetIsMoving())
@@ -166,7 +192,6 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             {
                 ChangeScene(TitleSceneName);
             }
-       
         }
 
 
@@ -176,6 +201,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             ScaleChangeTimer += Time.deltaTime;
             float t = Mathf.Clamp01(ScaleChangeTimer / ScaleChangeDuration);
             StageImageUI.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+            ChangeModel.SetChangeModel(true);
 
             for (int i = 0; i < StageModelTransform.Length; i++)
             {
@@ -200,16 +226,19 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             if (t >= 1.0f)
             {
                 ScaleChangeTimer = ScaleChangeDuration;
+                
             }
+
+            LineConnector.SetArrayNumber(StageSelectorComponent.GetStageNumber());
         }
         else
         {
             ScaleChangeTimer -= Time.deltaTime;
             float t = Mathf.Clamp01(ScaleChangeTimer / ScaleChangeDuration);
             StageImageUI.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
-           
+            ChangeModel.SetChangeModel(false);
 
-            for(int i = 0; i < StageModelTransform.Length;i++)
+            for (int i = 0; i < StageModelTransform.Length;i++)
             {
                 if(StageModelTransform[i].transform.localScale != SmallStageModelSize)
                 {
@@ -222,10 +251,34 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             {
                 ScaleChangeTimer = 0f;
                 StageImage.sprite = StageImageSprites[StageSelectorComponent.GetStageNumber()];
+                StageName01.sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
+                StageName02.GetComponent<Image>().sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
             }
         }
 
-       
+        if (MoveCamera.GetIsSwitched())
+        {
+            StageImageUI.SetActive(false);
+            PointLineUI.SetActive(false);
+        }
+        else if (!MoveCamera.GetIsSwitched() && !MoveCamera.GetIsInterpolating())
+        {
+            StageImageUI.SetActive(true);
+            PointLineUI.SetActive(true);
+        }
+
+        if (MoveCamera.GetIsSwitched() && !MoveCamera.GetIsInterpolating())
+        {
+            StartUI.SetActive(true);
+            StageName02.SetActive(true);
+            
+        }
+        else if (!MoveCamera.GetIsSwitched())
+        {
+            StartUI.SetActive(false);
+            StageName02.SetActive(false);
+        }
+
     }
 
     private void ChangeScene(string sceneName)

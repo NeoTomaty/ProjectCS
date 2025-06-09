@@ -12,23 +12,46 @@ public class BezierMover : MonoBehaviour
 
     private bool isMoving = false;
 
+    [SerializeField] private Transform RotatingModel;
+    [SerializeField] private float radius = 0.01f;
+
+    private Vector3 previousPosition;
+
     void Update()
     {
         if (!isMoving || curve == null) return;
 
         timer += IsReverse ? -Time.deltaTime : Time.deltaTime;
 
-        
         float t = Mathf.Clamp01(timer / moveDuration);
-        transform.position = curve.CalculateBezierPoint(t);
+        Vector3 currentPosition = curve.CalculateBezierPoint(t);
+        transform.position = currentPosition;
+
+        // 進行方向ベクトル
+        Vector3 delta = currentPosition - previousPosition;
+        float distance = delta.magnitude;
+
+        // モデルの見た目方向を進行方向に合わせる（Y軸を上にして向きを変える）
+        if (delta != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
+            RotatingModel.rotation = lookRotation;
+        }
+
+        // 転がるような回転（進行方向とY軸の外積で回転軸を作成）
+        if (distance > 0f && radius > 0f)
+        {
+            Vector3 rotationAxis = Vector3.Cross(delta.normalized, Vector3.up);
+            float angleDeg = Mathf.Rad2Deg * (distance / radius);
+            RotatingModel.Rotate(rotationAxis, angleDeg, Space.World);
+        }
+
+        previousPosition = currentPosition;
 
         if ((!IsReverse && timer >= moveDuration) || (IsReverse && timer <= 0f))
         {
-            isMoving = false; // 停止フラグ
-            return;
+            isMoving = false;
         }
-
-       
     }
 
     public void StartMove(bool isReverse, CubicBezierCurve cubicBezierCurve)
