@@ -13,8 +13,6 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-
-
 [ExecuteAlways]
 public class CubicBezierCurve : MonoBehaviour
 {

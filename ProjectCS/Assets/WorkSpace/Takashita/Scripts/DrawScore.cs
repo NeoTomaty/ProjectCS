@@ -1,18 +1,17 @@
+//====================================================
+// スクリプト名：DrawScore
+// 作成者：高下
+// 内容：スコアを表示する
+// 最終更新日：06/12
+// 
+// [Log]
+// 06/12 高下 スクリプト作成
+//====================================================
 using UnityEngine;
 
 public class DrawScore : MonoBehaviour
 {
     [SerializeField] private NumberSpriteManager[] NumberSprite = new NumberSpriteManager[5];
-
-    void Start()
-    {
-       
-    }
-    
-    void Update()
-    {
-       // SetScore(31546); //test
-    }
 
     public void SetScore(int score)
     {
