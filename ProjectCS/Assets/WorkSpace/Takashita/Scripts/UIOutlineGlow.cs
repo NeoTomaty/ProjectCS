@@ -1,3 +1,12 @@
+//====================================================
+// スクリプト名：UIOutlineGlow
+// 作成者：高下
+// 内容：UIにアウトラインを点滅させる
+// 最終更新日：06/01
+// 
+// [Log]
+// 06/01 高下 スクリプト作成
+//====================================================
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,4 +28,3 @@ public class UIOutlineGlow : MonoBehaviour
         outline.effectColor = new Color(glowColor.r, glowColor.g, glowColor.b, alpha);
     }
 }
-
