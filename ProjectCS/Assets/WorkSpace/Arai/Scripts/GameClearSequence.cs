@@ -127,6 +127,7 @@ public class GameClearSequence : MonoBehaviour
         Score = FlyingPoint.TotalScore;
         Text ScoreText = ClearUI.transform.GetChild(2).GetComponent<Text>();
         ScoreText.text = "スコア：" + Score.ToString();
+        Debug.Log("GameClearSequence >> スコア：" + Score);
 
         // スナックのクローンを作成
         Vector3 SpawnPos = SnackObject.transform.position;
