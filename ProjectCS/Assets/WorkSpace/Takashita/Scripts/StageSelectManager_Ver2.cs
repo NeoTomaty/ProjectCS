@@ -8,8 +8,8 @@
 // 05/23 高下 スクリプト作成
 //====================================================
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
-
 
 public class StageSelectManager_Ver2 : MonoBehaviour
 {
@@ -19,6 +19,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private GameObject BezierCurveObject;
     [SerializeField] private GameObject StageImageUI;
     [SerializeField] private GameObject StartUI;
+    [SerializeField] private GameObject ScoreUI;
     [SerializeField] private Image StageImage;
     [SerializeField] private Image StageName01;
     [SerializeField] private GameObject StageName02;
@@ -26,6 +27,8 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private StageSelectMoveCamera MoveCamera;
     [SerializeField] private StageSelectChangeModel ChangeModel;
     [SerializeField] private GameObject PointLineUI;
+    [SerializeField] private LoadStageScore StageScore;
+    [SerializeField] private DrawScore DrawScore;
 
     private Transform[] StageChildArray;
     private Transform[] StageModelTransform;
@@ -47,11 +50,31 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private Vector3 SmallStageModelSize = new Vector3(0.5f, 0.5f, 0.5f);
     private UILineConnector LineConnector;
 
+    private PlayerInput PlayerInput; // プレイヤーの入力を管理するcomponent
+    private InputAction ConfirmAction;  // ConfirmAction
+    private InputAction CancelAction;
+    private InputAction LeftMoveAction;
+    private InputAction RightMoveAction;
 
+    private FadeManager fade;
+
+    private void Awake()
+    {
+        // 自分にアタッチされているPlayerInputを取得
+        PlayerInput = GetComponent<PlayerInput>();
+
+        // 対応するInputActionを取得
+        ConfirmAction = PlayerInput.actions["Confirm"];
+        CancelAction = PlayerInput.actions["Cancel"];
+        LeftMoveAction = PlayerInput.actions["LeftMove"];
+        RightMoveAction = PlayerInput.actions["RightMove"];
+    }
     void Start()
     {
         if (!StageObject) Debug.LogError("StageObjectが設定されていません");
         if (!BezierCurveObject) Debug.LogError("BezierCurveObjectが設定されていません");
+
+        fade = Object.FindFirstObjectByType<FadeManager>();
 
         int childCount = StageObject.transform.childCount;
         StageChildArray = new Transform[childCount];
@@ -136,7 +159,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     {
         if (StageChildArray.Length - 1 != BezierCurveChildArray.Length) return;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && !MoveCamera.GetIsSwitched())
+        if (LeftMoveAction.WasPerformedThisFrame() && !MoveCamera.GetIsSwitched())
         {
             if (StageSelectorComponent.GetStageNumber() <= 0) return;
 
@@ -151,7 +174,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow) && !MoveCamera.GetIsSwitched())
+        if (RightMoveAction.WasPerformedThisFrame() && !MoveCamera.GetIsSwitched())
         {
 
             if (StageSelectorComponent.GetStageNumber() == BezierCurveChildArray.Length) return;
@@ -166,8 +189,8 @@ public class StageSelectManager_Ver2 : MonoBehaviour
            
 
         }
-
-        if (Input.GetKeyDown(KeyCode.Return) && !BezierMoverComponent.GetIsMoving())
+        
+        if (ConfirmAction.WasPerformedThisFrame() && !BezierMoverComponent.GetIsMoving())
         {
             if (GameSceneNames.Length == StageSelectorComponent.GetStageNumber()) return;
 
@@ -181,7 +204,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Backspace) && !BezierMoverComponent.GetIsMoving())
+        if (CancelAction.WasPerformedThisFrame() && !BezierMoverComponent.GetIsMoving())
         {
 
             if (MoveCamera.GetIsSwitched())
@@ -253,6 +276,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
                 StageImage.sprite = StageImageSprites[StageSelectorComponent.GetStageNumber()];
                 StageName01.sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
                 StageName02.GetComponent<Image>().sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
+                
             }
         }
 
@@ -271,26 +295,24 @@ public class StageSelectManager_Ver2 : MonoBehaviour
         {
             StartUI.SetActive(true);
             StageName02.SetActive(true);
-            
+            ScoreUI.SetActive(true);
+            DrawScore.SetScore(StageScore.GetStageScore(StageSelectorComponent.GetStageNumber()));
+
         }
         else if (!MoveCamera.GetIsSwitched())
         {
             StartUI.SetActive(false);
             StageName02.SetActive(false);
+            ScoreUI.SetActive(false);
         }
 
     }
 
     private void ChangeScene(string sceneName)
     {
-        FadeManager fade = Object.FindFirstObjectByType<FadeManager>();
         if (fade)
         {
             fade.FadeToScene(sceneName);
-        }
-        else
-        {
-            Debug.LogError("FadeManagerが見つかりません");
         }
     }
 }
