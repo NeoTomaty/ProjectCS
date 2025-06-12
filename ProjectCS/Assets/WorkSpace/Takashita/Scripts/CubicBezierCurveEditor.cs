@@ -43,6 +43,20 @@ public class CubicBezierCurveEditor : Editor
                 curve.ControlPoint2.position = p2;
             }
         }
+
+        // オブジェクトが選択されているときにキー入力を検知
+        Event e = Event.current;
+        if (e.type == EventType.KeyDown && e.keyCode == KeyCode.L) // Lキーで直線化
+        {
+            curve.ConvertToLine();
+            e.Use(); // イベント消費
+
+            // シーンを再描画させる
+            SceneView.RepaintAll();
+        }
     }
+
+ 
 }
+
 #endif

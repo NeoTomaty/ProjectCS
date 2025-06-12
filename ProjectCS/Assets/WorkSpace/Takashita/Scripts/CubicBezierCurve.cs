@@ -9,6 +9,11 @@
 //====================================================
 using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+
 
 [ExecuteAlways]
 public class CubicBezierCurve : MonoBehaviour
@@ -83,4 +88,27 @@ public class CubicBezierCurve : MonoBehaviour
             6 * (1 - t) * t * (p2 - p1) +
             3 * Mathf.Pow(t, 2) * (p3 - p2);
     }
+
+
+    public void ConvertToLine()
+    {
+#if UNITY_EDITOR
+        
+        // 制御点を始点と終点の線上に揃える（直線になる）
+        if (StageObject1 && StageObject2 && ControlPoint1 && ControlPoint2)
+        {
+            Undo.RecordObject(ControlPoint1, "Move Control Point 1");
+            Undo.RecordObject(ControlPoint2, "Move Control Point 2");
+
+            Vector3 start = StageObject1.position;
+            Vector3 end = StageObject2.position;
+
+            ControlPoint1.position = Vector3.Lerp(start, end, 1f / 3f);
+            ControlPoint2.position = Vector3.Lerp(start, end, 2f / 3f);
+        }
+#endif
+    }
+
 }
+
+
