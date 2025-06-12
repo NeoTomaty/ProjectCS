@@ -197,6 +197,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             // カメラの強制ロックオン開始
             CameraFunction.StartLockOn(true);
+
         }
     }
 
@@ -223,10 +224,13 @@ public class BlownAway_Ver3 : MonoBehaviour
         Time.timeScale = 0f;
         isHitStopActive = true;
         shouldEndHitStop = false;
+        float timer = 0f;
 
         // 終了指示が来るまでリアルタイムで待つ
-        while (!shouldEndHitStop)
+        // リアルタイムで一定時間待つ
+        while (timer < hitStopTime)
         {
+            timer += Time.unscaledDeltaTime;
             yield return null;
         }
 

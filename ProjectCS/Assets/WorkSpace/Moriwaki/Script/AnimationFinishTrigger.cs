@@ -8,6 +8,6 @@ public class AnimationFinishTrigger : MonoBehaviour
     {
         Debug.Log("キックが当たったタイミングで呼び出された");
         // snackのスクリプトを参照し、ヒットストップを解除
-        snackObject.GetComponent<BlownAway_Ver3>().EndHitStop();
+        //snackObject.GetComponent<BlownAway_Ver3>().EndHitStop();
     }
 }
