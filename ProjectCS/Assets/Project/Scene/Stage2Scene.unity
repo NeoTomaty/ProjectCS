@@ -516,12 +516,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1516824314}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: MaxFallSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: forcePerLift
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: CameraFunction
       value: 
       objectReference: {fileID: 946110165}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: MaxUpwardForce
-      value: 1000
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: MinUpwardForce
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: ClearConditionsScript
@@ -1463,6 +1475,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7207479726219837928, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: time
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 3699318811314356901, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -2982,7 +2998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b9e149b834648b41861a9ed8b5a8019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GravityScale: {x: 0, y: -30, z: 0}
+  GravityScale: {x: 0, y: -25, z: 0}
   MaxFallSpeed: 100
   IsActive: 1
   FallSE: {fileID: 0}
@@ -3016,7 +3032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321b60a12d3698f4e87a587064b56429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 600
+  launchForce: 550
 --- !u!1001 &1910297658
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3662,9 +3678,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 2fefcfdadf696d842883a5b983dd28a0, type: 3}
     - target: {fileID: 4198504948959112757, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
+      propertyPath: effectType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198504948959112757, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
+      propertyPath: SpeedAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198504948959112757, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
+      propertyPath: TickInterval
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198504948959112757, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
       propertyPath: DecelerationSE
       value: 
       objectReference: {fileID: 8300000, guid: feae2605a43c1ed4b919fb6b3a47e88b, type: 3}
+    - target: {fileID: 4516516242467683808, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.04
+      objectReference: {fileID: 0}
     - target: {fileID: 4579019981597987642, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
       propertyPath: DestorySE
       value: 
@@ -3706,12 +3738,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 2fefcfdadf696d842883a5b983dd28a0, type: 3}
     - target: {fileID: 4977977814644047158, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
+      propertyPath: effectType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977977814644047158, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
+      propertyPath: SpeedAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977977814644047158, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
+      propertyPath: TickInterval
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977977814644047158, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
       propertyPath: DecelerationSE
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4977977814644047158, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
       propertyPath: DecelerationRatio
-      value: 0.1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977977814644047158, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
+      propertyPath: InterpolationDuration
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5088214187940299994, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
       propertyPath: BoostSE
@@ -3757,6 +3805,10 @@ PrefabInstance:
       propertyPath: playerSpeedManager
       value: 
       objectReference: {fileID: 1516824334}
+    - target: {fileID: 6014554935186651112, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 48.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6286642341337686417, guid: bfcd45cb4ce53634f82c5628ba3af38d, type: 3}
       propertyPath: PlayerSpeedManager
       value: 
