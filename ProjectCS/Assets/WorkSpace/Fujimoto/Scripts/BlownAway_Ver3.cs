@@ -7,7 +7,8 @@
 // 05/30 荒井 スコアのコンボボーナスのリセットを実装
 // 06/05 藤本 多段ヒット防止処理を追加
 // 06/06 森脇 アニメーションとタイミング動悸させるためにヒットストップ変更
-// 06/13　森脇 カメラの制御フラグ追加
+// 06/13 森脇 カメラの制御フラグ追加
+// 06/13 高下 スナック複製時に必要なコンポーネントを参照するSetTarget関数を追加
 //====================================================
 using UnityEngine;
 using System.Collections;
@@ -84,6 +85,17 @@ public class BlownAway_Ver3 : MonoBehaviour
         FallPoint = GetComponent<FallPointCalculator>();
 
         if (!CameraFunction) Debug.LogError("CameraFunctionが設定されていません");
+    }
+
+    // 複製時に引数で渡されたコンポーネントを設定する
+    public void SetTarget(CameraFunction CF, FlyingPoint FP, ClearConditions CC, LiftingJump LJ, Transform respawnArea, Transform groundArea)
+    {
+        CameraFunction = CF;
+        flyingPoint = FP;
+        ClearConditionsScript = CC;
+        LiftingJump = LJ;
+        RespawnArea = respawnArea;
+        GroundArea = groundArea;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -195,6 +207,9 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             // ヒットストップを開始する
             StartCoroutine(HitStop());
+
+            // ロックオンする対象を設定
+            CameraFunction.SetSnack(gameObject.transform);
 
             // カメラの強制ロックオン開始
             // CameraFunction.StartLockOn(true);

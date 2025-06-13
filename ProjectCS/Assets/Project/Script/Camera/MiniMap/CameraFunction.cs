@@ -11,6 +11,8 @@
 // 05/08 宮林 カメラ感度調整用のコードを追加
 // 05/22 高下 通常ロックオン時と強制ロックオン時の補完速度を分けて処理できるように調整
 // 06/13　森脇 フィニッシュ時のカメラ制御
+// 06/13 高下 通常のロックオンを廃止
+// 06/13 高下 ターゲットを変更するSetSnack関数を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -154,7 +156,10 @@ public class CameraFunction : MonoBehaviour
             }
         }
 
-        bool rtPressed = LookTargetAction.ReadValue<float>() > 0.5f;
+        //bool rtPressed = LookTargetAction.ReadValue<float>() > 0.5f;
+
+        bool rtPressed = false;
+
         bool isManual = false;
 
         // プレイヤーの速度に応じてカメラの高さを補間
@@ -342,6 +347,7 @@ public class CameraFunction : MonoBehaviour
         RotationRatio = ratio;
     }
 
+
     public void StartSpecialView(Vector3 relativePosition)
     {
         // 特別視点モードを有効にし、目標の相対位置を保存
@@ -370,5 +376,12 @@ public class CameraFunction : MonoBehaviour
         pitch = 20f; // デフォルトのピッチ角に戻す
 
         Debug.Log("特別視点モード終了。通常視点へ復帰します。");
+    }
+
+    // ロックオンする対象を設定する
+    public void SetSnack(Transform Snack)
+    {
+        Target = Snack;
+
     }
 }

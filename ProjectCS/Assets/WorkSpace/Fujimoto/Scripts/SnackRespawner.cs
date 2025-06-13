@@ -5,6 +5,7 @@
 // [Log]
 // 05/06 藤本　snackのリスポーン処理作成
 // 05/22 荒井　groundYの設定ロジックを修正
+// 06/13 高下 スナック複製時に必要なコンポーネントを参照するSetTarget関数を追加
 //====================================================
 
 using UnityEngine;
@@ -43,6 +44,10 @@ public class SnackRespawner : MonoBehaviour
         }
     }
 
+    public void SetTarget(Transform SnackRespawnArea)
+    {
+        snackRespawnPoint = SnackRespawnArea;
+    }
     void Update()
     {
         if (transform.position.y < groundY)
