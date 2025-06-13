@@ -132,9 +132,8 @@ public class BlownAway_Ver3 : MonoBehaviour
         }
     }
 
-
     // 落下スピードと打ちあがる力を制限する
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         // 落下中かつ速度が上限を超えていたら制限
         if (Rb.linearVelocity.y < -MaxFallSpeed)
@@ -200,10 +199,8 @@ public class BlownAway_Ver3 : MonoBehaviour
                 Debug.Log("リフティング開始");
                 if (LiftingJump.IsLiftingPart)
                 {
-                    //ForceDirection *= LiftingJump.GetForce * LiftingJump.GetJumpPower;
-
                     // プレイヤーのリフティングパートを終了する
-                    LiftingJump.FinishLiftingJump();    // AddForceの前に呼び出さないとスナックが飛ばない
+                    LiftingJump.FinishLiftingJump();
 
                     if (flyingPoint != null)
                     {
@@ -211,13 +208,26 @@ public class BlownAway_Ver3 : MonoBehaviour
                         Debug.LogWarning("スコア計算開始");
                         Debug.LogWarning($"打ちあがる力{Rb.linearVelocity.y}");
                     }
+
+                    // ゲージが使われたときは手動解除タイプ
+                    StartCoroutine(HitStopManual());
                 }
+                else
+                {
+                    // ゲージを使っていないときは0.5秒で自動解除
+                    StartCoroutine(HitStopTimed(0.5f));
+                }
+            }
+            else
+            {
+                // LiftingJump が null（通常ヒットなど）でも自動解除
+                StartCoroutine(HitStopTimed(0.5f));
             }
 
             flyingPoint.CalculateScore();
 
             // ヒットストップを開始する
-            StartCoroutine(HitStop());
+            //  StartCoroutine(HitStop());
 
             // ロックオンする対象を設定
             CameraFunction.SetSnack(gameObject.transform);
@@ -245,7 +255,52 @@ public class BlownAway_Ver3 : MonoBehaviour
     //    Debug.Log("ヒットストップ開始");
     //}
 
-    private IEnumerator HitStop()
+    //private IEnumerator HitStop()
+    //{
+    //    if (isHitStopActive) yield break;
+
+    //    Time.timeScale = 0f;
+    //    isHitStopActive = true;
+    //    shouldEndHitStop = false;
+
+    //    Debug.Log("ヒットストップ開始");
+
+    //    // 外部から EndHitStop() が呼ばれるまで待機
+    //    while (!shouldEndHitStop)
+    //    {
+    //        yield return null;
+    //    }
+
+    //    Time.timeScale = 1f;
+    //    isHitStopActive = false;
+
+    //    Debug.Log("ヒットストップ終了");
+    //}
+
+    private IEnumerator HitStopTimed(float duration)
+    {
+        if (isHitStopActive) yield break;
+
+        Time.timeScale = 0f;
+        isHitStopActive = true;
+
+        Debug.Log($"ヒットストップ（自動解除）開始: {duration}秒");
+
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        Time.timeScale = 1f;
+        isHitStopActive = false;
+
+        Debug.Log("ヒットストップ終了（自動）");
+    }
+
+    private IEnumerator HitStopManual()
     {
         if (isHitStopActive) yield break;
 
@@ -253,9 +308,9 @@ public class BlownAway_Ver3 : MonoBehaviour
         isHitStopActive = true;
         shouldEndHitStop = false;
 
-        Debug.Log("ヒットストップ開始");
+        Debug.Log("ヒットストップ（手動解除）開始");
 
-        // 外部から EndHitStop() が呼ばれるまで待機
+        // 外部から EndHitStop() が呼ばれるまで待つ
         while (!shouldEndHitStop)
         {
             yield return null;
@@ -264,7 +319,7 @@ public class BlownAway_Ver3 : MonoBehaviour
         Time.timeScale = 1f;
         isHitStopActive = false;
 
-        Debug.Log("ヒットストップ終了");
+        Debug.Log("ヒットストップ終了（手動）");
     }
 
     // 外部スクリプトから呼び出してヒットストップを終了させる
