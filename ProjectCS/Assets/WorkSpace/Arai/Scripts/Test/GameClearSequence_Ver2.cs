@@ -5,6 +5,7 @@
 // 
 // [Log]
 // 06/13　荒井　スナックの中身が飛び散るエフェクトの再生処理を実装
+// 06/13　荒井　パーティクルの射出速度と回転速度をランダムに設定する処理を追加
 //======================================================
 using UnityEngine;
 
@@ -24,14 +25,14 @@ public class GameClearSequence_Ver2 : MonoBehaviour
     // パーティクルの制御
     [Header("パーティクルのパラメータ")]
     [SerializeField] float Size = 1.0f;
-    [SerializeField] float Speed = 1.0f;
+    [SerializeField] float SpeedMIN = 0.5f;
+    [SerializeField] float SpeedMAX = 1.5f;
     [SerializeField] float RotateSpeedMIN = 30.0f;
     [SerializeField] float RotateSpeedMAX = 200.0f;
 
     // クリア演出開始
     public void Play()
     {
-        // エフェクトを再生
         if (SnackEffect == null) return;
 
         // エフェクト生成
@@ -48,26 +49,24 @@ public class GameClearSequence_Ver2 : MonoBehaviour
 
         // パーティクルパラメータ設定
         var PSMain = PS.main;
-        PSMain.startSize = Size;    // サイズ
-        PSMain.startSpeed = Speed;  // 射出速度
-        var Rotation = PS.rotationOverLifetime; // 回転速度
-        float min = RotateSpeedMIN * Mathf.Deg2Rad;
-        float max = RotateSpeedMAX * Mathf.Deg2Rad;
+        // サイズ
+        PSMain.startSize = Size;
+
+        // 射出速度
+        float min = SpeedMIN;
+        float max = SpeedMAX;
+        PSMain.startSpeed = new ParticleSystem.MinMaxCurve(min, max);
+
+        // 回転速度
+        var Rotation = PS.rotationOverLifetime;
+        min = RotateSpeedMIN * Mathf.Deg2Rad;
+        max = RotateSpeedMAX * Mathf.Deg2Rad;
         Rotation.x = new ParticleSystem.MinMaxCurve(min, max);
         Rotation.y = new ParticleSystem.MinMaxCurve(min, max);
         Rotation.z = new ParticleSystem.MinMaxCurve(min, max);
 
-
+        // エフェクト再生
         PS.Play();
-
-        // カメラ制御
-    }
-
-    // クリア演出終了
-    public void End()
-    {
-        // クリア演出を終了する処理をここに記述
-        // 例えば、UIの非表示や次のシーンへの遷移など
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

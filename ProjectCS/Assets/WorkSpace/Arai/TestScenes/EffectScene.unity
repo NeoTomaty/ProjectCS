@@ -153,7 +153,8 @@ MonoBehaviour:
   ParticleMesh: {fileID: 4300000, guid: 43fe7f3cd9492f048a1243fa8139c78a, type: 2}
   ParticleMaterial: {fileID: 2100000, guid: 131d8153421870945a8a8117b85dda74, type: 2}
   Size: 1
-  Speed: 1
+  SpeedMIN: 0.5
+  SpeedMAX: 1.5
   RotateSpeedMIN: 30
   RotateSpeedMAX: 200
 --- !u!4 &395157175
@@ -183,7 +184,7 @@ GameObject:
   - component: {fileID: 648385796}
   - component: {fileID: 648385795}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Effect_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,7 +214,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3033667219593020291, guid: 38bb2b566b013b545be8eef13bdf62c0, type: 3}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -257,7 +258,7 @@ ParticleSystemRenderer:
   m_VertexStreams: 00010304
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
-  m_Mesh: {fileID: 4068373912626513877, guid: 2cd3e631351203b4ba2374b6e2d003fe, type: 3}
+  m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -274,7 +275,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 648385794}
   serializedVersion: 8
-  lengthInSec: 3
+  lengthInSec: 10
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -349,7 +350,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 10
       minScalar: 5
       maxCurve:
         serializedVersion: 2
