@@ -111,7 +111,7 @@ public class BlownAway_Ver3 : MonoBehaviour
         }
     }
 
-    // 落下スピードを制限する
+    // 落下スピードと打ちあがる力を制限する
     void FixedUpdate()
     {
         // 落下中かつ速度が上限を超えていたら制限
@@ -156,12 +156,20 @@ public class BlownAway_Ver3 : MonoBehaviour
             // 力を計算：基本 + 回数 × 増加量
             float force = baseForce + (liftingCount * forcePerLift);
 
+            Debug.Log($"力：{force}");
+
+            // 力の制限
+            if (force > MaxUpwardForce)
+            {
+                force = MaxUpwardForce;
+                Debug.Log($"制限後の力：{force}");
+            }
+
             // 上方向のベクトルに力を加える
             Vector3 forceDir = Vector3.up * force;
             Rb.AddForce(forceDir, ForceMode.Impulse);
 
             Debug.Log(liftingCount);
-
 
             // snackの座標のログ
             Debug.Log($"snackの座標: {transform.position}");
@@ -181,6 +189,7 @@ public class BlownAway_Ver3 : MonoBehaviour
                     {
                         flyingPoint.CalculateScore();
                         Debug.LogWarning("スコア計算開始");
+                        Debug.LogWarning($"打ちあがる力{Rb.linearVelocity.y}");
                     }
                 }
             }
