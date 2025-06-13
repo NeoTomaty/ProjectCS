@@ -11,6 +11,7 @@
 // 05/10 高下 ターゲットオブジェクトの地面までの距離をテキストに表示する機能を追加
 // 05/13 高下 GetIsTargetContactin関数追加
 // 05/14 高下 テキストに関する処理を削除
+// 06/13 高下 エリア複製時に必要なコンポーネントを参照するSetTarget関数を追加
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
@@ -25,6 +26,7 @@ public class LiftingAreaManager : MonoBehaviour
 
     [SerializeField] private GameObject Player; // プレイヤーオブジェクト
     [SerializeField] private GameObject Target; // ターゲットオブジェクト
+    [SerializeField] private GameClearSequence ClearSequenceComponent;
 
     private bool IsPlayerContacting = false; // Playerがエリア内に入ったかどうか
     private bool IsTargetContacting = false; // Targetがエリア内に入ったかどうか
@@ -57,6 +59,13 @@ public class LiftingAreaManager : MonoBehaviour
         transform.localScale = new Vector3(Diameter, Height, Diameter);
     }
 
+    public void SetTarget(GameObject PlayerObj, GameObject SnackObj, GameClearSequence GCS)
+    {
+        Player = PlayerObj;
+        Target = SnackObj;
+        ClearSequenceComponent = GCS;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         // プレイヤーがエリア内に入ったかどうか判定
@@ -76,6 +85,9 @@ public class LiftingAreaManager : MonoBehaviour
         {
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.LiftingPart);
             ObjectRenderer.material.SetColor("_Color", LiftingPartColor);
+            LiftingJump LJ = Player.GetComponent<LiftingJump>();
+            LJ.SetTargetObject(Target);
+            ClearSequenceComponent.SetSnackObject(Target);
         }
     }
 

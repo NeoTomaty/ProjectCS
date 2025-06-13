@@ -13,6 +13,7 @@
 // 05/19　荒井　クリアUI以外のキャンバスを非表示にする処理を追加
 // 05/29　中町　クリア演出SE実装
 // 05/30　荒井　BlownAway_Ver3に対応
+// 06/13  高下　スナックオブジェクトを変更する関数を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -297,5 +298,10 @@ public class GameClearSequence : MonoBehaviour
                 IsUIVisible = true;
             }
         }
+    }
+
+    public void SetSnackObject(GameObject snack)
+    {
+        SnackObject = snack;
     }
 }

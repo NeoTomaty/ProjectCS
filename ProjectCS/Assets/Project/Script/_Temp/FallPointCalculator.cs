@@ -8,6 +8,7 @@
 // 04/27 高下 スクリプト作成
 // 05/13 高下 地面との当たり判定をタグからレイヤーに変更
 // 05/14 高下 地面の座標とオブジェクトの落下座標を分けて処理をすることに変更
+// 06/13 高下 スナック複製時に必要なコンポーネントを参照するSetTarget関数を追加
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
@@ -33,7 +34,13 @@ public class FallPointCalculator : MonoBehaviour
     {
         if(!LAManager) Debug.LogError("LiftingAreaManagerが設定されていません");
 
-        CalculateGroundPoint(); // test
+        //CalculateGroundPoint(); // test
+    }
+
+    public void SetTarget(LiftingAreaManager LAM)
+    {
+        LAManager = LAM;
+        CalculateGroundPoint();
     }
 
     // スナックが地面に接しているかつリフティングエリア外のときは

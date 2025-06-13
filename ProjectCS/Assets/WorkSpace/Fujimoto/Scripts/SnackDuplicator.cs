@@ -4,6 +4,7 @@
 // 内容：時間経過でSnackを複製
 // [Log]
 // 06/09 藤本　スクリプト作成
+// 06/13 高下 生成時にBlownAway_Ver3の関数を呼び出す処理を追加
 //====================================================
 
 using UnityEngine;
@@ -14,6 +15,9 @@ public class SnackDuplicator : MonoBehaviour
     [Header("複製する元オブジェクト")]
     [SerializeField] private GameObject originalObject;
 
+    [Header("複製するリフティングエリアオブジェクト")]
+    [SerializeField] private GameObject LiftingAreaObject;
+
     [Header("生成位置")]
     [SerializeField] private Transform spawnArea;
 
@@ -22,6 +26,15 @@ public class SnackDuplicator : MonoBehaviour
 
     [Header("最大複製数")]
     [SerializeField] private int maxCount = 10;
+
+    [SerializeField] private CameraFunction CameraFunctionComponent;
+    [SerializeField] private FlyingPoint FlyingPointComponent;
+    [SerializeField] private ClearConditions ClearConditionsComponent;
+    [SerializeField] private LiftingJump LiftingJumpComponent;
+    [SerializeField] private GameObject PlayerObject;
+    [SerializeField] private Transform SnackRespawnPoint;
+    [SerializeField] private Transform GroundArea;
+    [SerializeField] private GameClearSequence ClearSequenceComponent;
 
     private int currentCount = 0;
 
@@ -52,7 +65,29 @@ public class SnackDuplicator : MonoBehaviour
 
             Vector3 spawnPos = new Vector3(randomX, fixedY, randomZ);
 
-            Instantiate(originalObject, spawnPos, Quaternion.identity);
+            GameObject SnackInstance = Instantiate(originalObject, spawnPos, Quaternion.identity);
+            BlownAway_Ver3 BA3 = SnackInstance.GetComponent<BlownAway_Ver3>();
+            BA3.SetTarget(
+                CameraFunctionComponent,
+                FlyingPointComponent, 
+                ClearConditionsComponent, 
+                LiftingJumpComponent,
+                SnackRespawnPoint,
+                GroundArea
+                );
+
+           
+            GameObject LiftingAreaInstance = Instantiate(LiftingAreaObject, new Vector3(0f, -1000f, 0f), Quaternion.identity);
+            LiftingAreaManager LAM = LiftingAreaInstance.GetComponent<LiftingAreaManager>();
+            LAM.SetTarget(PlayerObject, SnackInstance, ClearSequenceComponent);
+
+            FallPointCalculator FPC = SnackInstance.GetComponent<FallPointCalculator>();
+            FPC.SetTarget(LAM);
+
+            SnackRespawner SR = SnackInstance.GetComponent<SnackRespawner>();
+            SR.SetTarget(SnackRespawnPoint);
+
+
             currentCount++;
         }
 

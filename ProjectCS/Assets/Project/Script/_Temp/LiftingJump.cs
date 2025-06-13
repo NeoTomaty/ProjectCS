@@ -27,6 +27,7 @@
 // 05/29　荒井　QTE廃止
 // 06/05　荒井　高さを条件としてリフティングジャンプを強制終了する処理を追加
 // 06/07　荒井　カウントダウン中にリフティングジャンプを発動しないように修正
+// 06/13  高下　ターゲットを変更する関数を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -191,5 +192,10 @@ public class LiftingJump : MonoBehaviour
             // リフティングジャンプを終了
             FinishLiftingJump();
         }
+    }
+
+    public void SetTargetObject(GameObject target)
+    {
+        TargetObject = target;
     }
 }

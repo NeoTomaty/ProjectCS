@@ -263,7 +263,6 @@ public class StageSelectManager_Ver2 : MonoBehaviour
                 ScaleChangeTimer = 0f;
                 StageImage.sprite = StageImageSprites[StageSelectorComponent.GetStageNumber()];
                 StageName01.sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
-                StageName02.GetComponent<Image>().sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
             }
         }
 
@@ -286,6 +285,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             StageName02.SetActive(true);
             ScoreUI.SetActive(true);
             DrawScore.SetScore(StageScore.GetStageScore(StageSelectorComponent.GetStageNumber()));
+            StageName02.GetComponent<Image>().sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
         }
         else if (!MoveCamera.GetIsSwitched())
         {

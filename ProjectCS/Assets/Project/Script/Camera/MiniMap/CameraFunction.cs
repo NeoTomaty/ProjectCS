@@ -10,6 +10,8 @@
 // 05/04 高下 プレイヤーの速度に応じて、カメラの高さを変更できるように調整
 // 05/08 宮林 カメラ感度調整用のコードを追加
 // 05/22 高下 通常ロックオン時と強制ロックオン時の補完速度を分けて処理できるように調整
+// 06/13 高下 通常のロックオンを廃止
+// 06/13 高下 ターゲットを変更するSetSnack関数を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -100,7 +102,8 @@ public class CameraFunction : MonoBehaviour
     {
         if (Player == null) return;
 
-        bool rtPressed = LookTargetAction.ReadValue<float>() > 0.5f;
+        //bool rtPressed = LookTargetAction.ReadValue<float>() > 0.5f;
+        bool rtPressed = false;
         bool isManual = false;
 
         // プレイヤーの速度に応じてカメラの高さを補間
@@ -287,5 +290,11 @@ public class CameraFunction : MonoBehaviour
     public void SetRatio(float ratio)
     {
         RotationRatio = ratio;
+    }
+
+    // ロックオンする対象を設定する
+    public void SetSnack(Transform Snack)
+    {
+        Target = Snack;
     }
 }
