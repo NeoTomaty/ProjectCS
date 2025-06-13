@@ -1727,6 +1727,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3537125814049663471}
   - component: {fileID: 7491256374663754645}
+  - component: {fileID: 4052710969838647154}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -1764,7 +1765,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 603d244418daefc4cb471ad5fa4ec426, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -1773,6 +1774,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4052710969838647154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4205717202939884373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cda75b9293c6f24e99ccefa8ecfbece, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snackObject: {fileID: 0}
+  cameraFunction: {fileID: 0}
+  specialViewPosition: {x: 0, y: 2, z: -4}
 --- !u!1 &4451444497042982840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1957,7 +1973,7 @@ Transform:
   m_GameObject: {fileID: 4874249585817461011}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.05, y: 1.9, z: -139.96}
+  m_LocalPosition: {x: 23.05, y: 0.72, z: -139.96}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2252,6 +2268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 0}
   PauseInput: {fileID: 0}
+  GameStartCountdownScript: {fileID: 0}
   JumpSpeed: 2
   IgnoreNonTargetCollisions: 0
   playerAnimController: {fileID: 784657071238269402}
@@ -2589,6 +2606,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 562217a3-21ad-4b4d-a740-2aee5329107e
     m_ActionName: 'Option/Pause[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 40101708-0f8f-47c0-8467-d3fb4f9952a5
+    m_ActionName: 'StageSelect/Confirm[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0eb84fef-53d0-4d20-8d31-9c3a382b3cc3
+    m_ActionName: 'StageSelect/Cancel[/Keyboard/backspace]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2dffe1c3-a4de-4109-980d-7030938d5ee1
+    m_ActionName: 'StageSelect/LeftMove[/Keyboard/a]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f9591cd5-4798-49db-b13b-9eade7d058ed
+    m_ActionName: 'StageSelect/RightMove[/Keyboard/d]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2612,6 +2645,10 @@ MonoBehaviour:
   modelAnimator: {fileID: 7491256374663754645}
   randomAnimationCount: 4
   randomIndexParameterName: RandomIndex
+  transformEffectPrefab: {fileID: 0}
+  effectSpawnPoint: {fileID: 0}
+  cameraFunction: {fileID: 0}
+  specialViewPosition: {x: 50, y: 0, z: 0}
 --- !u!114 &7344648348217904998
 MonoBehaviour:
   m_ObjectHideFlags: 0

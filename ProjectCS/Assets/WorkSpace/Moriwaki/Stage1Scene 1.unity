@@ -688,24 +688,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &373948849 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4205717202939884373, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
-  m_PrefabInstance: {fileID: 1511878579910881572}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &373948854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 373948849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cda75b9293c6f24e99ccefa8ecfbece, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  snackObject: {fileID: 756912130}
 --- !u!1 &375693732
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,6 +1073,8 @@ MonoBehaviour:
   LockOnDistance: 8
   LockOnHeight: 6
   ForceLockOnTime: 2
+  SpecialViewTransitionSpeed: 3
+  specialViewTransitionDuration: 1
 --- !u!114 &594655329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3458,12 +3442,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1984033651}
     m_Modifications:
     - target: {fileID: 784657071238269402, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
-      propertyPath: effectSpawnPoint
+      propertyPath: cameraFunction
       value: 
+      objectReference: {fileID: 594655328}
+    - target: {fileID: 784657071238269402, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: specialViewPosition.x
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 784657071238269402, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
-      propertyPath: transformEffectPrefab
-      value: 
+      propertyPath: specialViewPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 784657071238269402, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: specialViewPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3109540996412661342, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3513,6 +3505,14 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 594655331}
+    - target: {fileID: 4052710969838647154, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: snackObject
+      value: 
+      objectReference: {fileID: 756912130}
+    - target: {fileID: 4052710969838647154, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: cameraFunction
+      value: 
+      objectReference: {fileID: 594655328}
     - target: {fileID: 4874249585817461011, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3529,17 +3529,10 @@ PrefabInstance:
       propertyPath: GaugeController
       value: 
       objectReference: {fileID: 510015326}
-    - target: {fileID: 7491256374663754645, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4205717202939884373, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 373948854}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
 --- !u!114 &1947499481666951066 stripped
 MonoBehaviour:

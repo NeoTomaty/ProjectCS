@@ -7,6 +7,7 @@
 // 05/30 荒井 スコアのコンボボーナスのリセットを実装
 // 06/05 藤本 多段ヒット防止処理を追加
 // 06/06 森脇 アニメーションとタイミング動悸させるためにヒットストップ変更
+// 06/13　森脇 カメラの制御フラグ追加
 //====================================================
 using UnityEngine;
 using System.Collections;
@@ -196,13 +197,12 @@ public class BlownAway_Ver3 : MonoBehaviour
             StartCoroutine(HitStop());
 
             // カメラの強制ロックオン開始
-            CameraFunction.StartLockOn(true);
-
+            // CameraFunction.StartLockOn(true);
         }
     }
 
-    //// ヒットストップ関数
-    //System.Collections.IEnumerator HitStop()
+    // ヒットストップ関数
+    //private System.Collections.IEnumerator HitStop()
     //{
     //    Time.timeScale = 0f; // 時間を止める（スローモーション）
     //    float timer = 0f;
@@ -219,18 +219,19 @@ public class BlownAway_Ver3 : MonoBehaviour
     //    Debug.Log("ヒットストップ開始");
     //}
 
-    private System.Collections.IEnumerator HitStop()
+    private IEnumerator HitStop()
     {
+        if (isHitStopActive) yield break;
+
         Time.timeScale = 0f;
         isHitStopActive = true;
         shouldEndHitStop = false;
-        float timer = 0f;
 
-        // 終了指示が来るまでリアルタイムで待つ
-        // リアルタイムで一定時間待つ
-        while (timer < hitStopTime)
+        Debug.Log("ヒットストップ開始");
+
+        // 外部から EndHitStop() が呼ばれるまで待機
+        while (!shouldEndHitStop)
         {
-            timer += Time.unscaledDeltaTime;
             yield return null;
         }
 

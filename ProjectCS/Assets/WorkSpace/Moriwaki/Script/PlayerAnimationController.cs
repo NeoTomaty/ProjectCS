@@ -6,6 +6,7 @@
 // [Log]
 // 05/22　森脇 アニメーターの管理
 // 06/06　森脇 カウントダウン時に特定アニメーション再生追加
+// 06/13　森脇 カメラの制御フラグ追加
 //======================================================
 
 using UnityEngine;
@@ -34,6 +35,13 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private GameObject transformEffectPrefab;
 
     [SerializeField] private Transform effectSpawnPoint; // エフェクトの再生位置（任意）
+
+    [Header("カメラ連携")]
+    [Tooltip("カメラ制御スクリプト")]
+    [SerializeField] private CameraFunction cameraFunction;
+
+    [Tooltip("特別視点時のプレイヤーからの相対的なカメラ位置")]
+    [SerializeField] private Vector3 specialViewPosition = new Vector3(0, 2, -4);
 
     private void Update()
     {
@@ -76,6 +84,10 @@ public class PlayerAnimationController : MonoBehaviour
         useNormalModel = true;
         waitingForAnimFinish = true;
         UpdateModelVisibility();
+        if (cameraFunction != null)
+        {
+            cameraFunction.StartSpecialView(specialViewPosition);
+        }
     }
 
     // 外部から通常通り切り替えたい場合
