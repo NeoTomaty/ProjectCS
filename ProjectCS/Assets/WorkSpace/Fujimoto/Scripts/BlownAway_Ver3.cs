@@ -233,7 +233,7 @@ public class BlownAway_Ver3 : MonoBehaviour
             CameraFunction.SetSnack(gameObject.transform);
 
             // カメラの強制ロックオン開始
-            // CameraFunction.StartLockOn(true);
+            CameraFunction.StartLockOn(true);
         }
     }
 

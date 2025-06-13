@@ -382,6 +382,5 @@ public class CameraFunction : MonoBehaviour
     public void SetSnack(Transform Snack)
     {
         Target = Snack;
-
     }
 }
