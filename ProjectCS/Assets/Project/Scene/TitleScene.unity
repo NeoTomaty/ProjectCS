@@ -312,7 +312,7 @@ PrefabInstance:
     - target: {fileID: -4824517571176065220, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: BGMClip
       value: 
-      objectReference: {fileID: 8300000, guid: ae382ea177cc34748bcfdbe497ba9379, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 3038314023033373163, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: m_Name
       value: BGMPlayer
@@ -1274,6 +1274,8 @@ MonoBehaviour:
   - {fileID: 1546346904}
   - {fileID: 1796737234}
   - {fileID: 777579979}
+  NavigationSE: {fileID: 0}
+  DecisionSE: {fileID: 0}
 --- !u!114 &1546346910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1780,6 +1782,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2480967975528976704, guid: fe75d09c941d65940ae0a38b43ca24e0, type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2480967975528976704, guid: fe75d09c941d65940ae0a38b43ca24e0, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 368486d338801c3488cf11568cd8aac2, type: 3}
+    - target: {fileID: 2480967975528976704, guid: fe75d09c941d65940ae0a38b43ca24e0, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 368486d338801c3488cf11568cd8aac2, type: 3}
     - target: {fileID: 2480967975528976704, guid: fe75d09c941d65940ae0a38b43ca24e0, type: 3}
       propertyPath: OutputAudioMixerGroup
       value: 
