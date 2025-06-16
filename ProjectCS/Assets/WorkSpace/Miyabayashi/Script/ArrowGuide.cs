@@ -18,6 +18,13 @@ public class ArrowGuide: MonoBehaviour
 
     Vector3 previousDirection = Vector3.right;
 
+    private AllSnackManager ASM;
+
+    private void Start()
+    {
+        ASM = Object.FindFirstObjectByType<AllSnackManager>();
+    }
+
     void Update()
     {
         if (!player || !target || !mainCamera || !arrowObject)
@@ -60,5 +67,10 @@ public class ArrowGuide: MonoBehaviour
         arrowObject.rotation = Quaternion.Slerp(arrowObject.rotation, targetRot, Time.deltaTime * rotationSmoothSpeed);
 
         arrowObject.gameObject.SetActive(true);
+
+        if(ASM)
+        {
+            target = ASM.GetClosestSnackToGround().transform;
+        }
     }
 }

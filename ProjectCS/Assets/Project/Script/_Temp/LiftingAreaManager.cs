@@ -57,6 +57,13 @@ public class LiftingAreaManager : MonoBehaviour
         // エリアのサイズを初期化
         float Diameter = Radius * 2.0f;
         transform.localScale = new Vector3(Diameter, Height, Diameter);
+
+        AllSnackManager ASM = Object.FindFirstObjectByType<AllSnackManager>();
+        if(ASM)
+        {
+            // データの追加
+            ASM.AddSnackData(Target, gameObject);
+        }
     }
 
     public void SetTarget(GameObject PlayerObj, GameObject SnackObj, GameClearSequence GCS)
@@ -117,7 +124,7 @@ public class LiftingAreaManager : MonoBehaviour
     public void SetFallPoint(Vector3 fallPoint)
     {
         // エリアのY座標を調整
-        fallPoint.y += transform.localScale.y - 0.1f;
+        fallPoint.y += Height - 0.1f;
         transform.position = fallPoint;
     }
 

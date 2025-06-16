@@ -24,7 +24,8 @@ public class FallPointCalculator : MonoBehaviour
     private Vector3 FallPoint;           // 落下地点
     private Vector3 GroundPoint;         // 地面の座標
     private bool IsGround = false;       // 地面に着地しているかどうか
-   
+    private float SnackOffsetY = 0f;
+
     [SerializeField] private LiftingAreaManager LAManager; // LiftingAreaManagerを参照
    
     [Tooltip("BaseGroundのレイヤーを設定")]
@@ -35,6 +36,8 @@ public class FallPointCalculator : MonoBehaviour
         if(!LAManager) Debug.LogError("LiftingAreaManagerが設定されていません");
 
         //CalculateGroundPoint(); // test
+
+        SnackOffsetY = GetComponent<Collider>().bounds.extents.y;
     }
 
     public void SetTarget(LiftingAreaManager LAM)
@@ -106,5 +109,10 @@ public class FallPointCalculator : MonoBehaviour
     public bool GetIsGround()
     {
         return IsGround;
+    }
+
+    public float GetDistanceToGround()
+    {
+        return (transform.position.y - SnackOffsetY) - GroundPoint.y;
     }
 }
