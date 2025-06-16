@@ -9,6 +9,7 @@
 // 06/06 森脇 アニメーションとタイミング動悸させるためにヒットストップ変更
 // 06/13 森脇 カメラの制御フラグ追加
 // 06/13 高下 スナック複製時に必要なコンポーネントを参照するSetTarget関数を追加
+// 06/13 荒井 クリアカウントのタイミングをリフティング時→落下時に変更
 //====================================================
 using UnityEngine;
 using System.Collections;
@@ -154,6 +155,7 @@ public class BlownAway_Ver3 : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             flyingPoint.ResetComboBonus();
+            ClearConditionsScript.CheckLiftingCount(gameObject);
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
@@ -163,7 +165,6 @@ public class BlownAway_Ver3 : MonoBehaviour
             // 多段ヒット防止フラグfalse
             HitSnack = false;
 
-            ClearConditionsScript.CheckLiftingCount();
 
             //ClearConditionsScript.
             // Snackに触れたらHitNextFallAreaをtrueに戻す

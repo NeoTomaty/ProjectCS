@@ -1,7 +1,7 @@
 //======================================================
 // [GameClearSequence]
 // 作成者：荒井修
-// 最終更新日：05/30
+// 最終更新日：06/16
 // 
 // [Log]
 // 05/08　荒井　仮のクリア演出を作成
@@ -14,6 +14,7 @@
 // 05/29　中町　クリア演出SE実装
 // 05/30　荒井　BlownAway_Ver3に対応
 // 06/13  高下　スナックオブジェクトを変更する関数を追加
+// 06/16　荒井　クリア演出の内容を大幅に変更
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,25 +30,30 @@ public class GameClearSequence : MonoBehaviour
     [SerializeField] private GameObject PlayerObject;           // プレイヤーオブジェクト
     [SerializeField] private GameObject SnackObject;            // スナックオブジェクト
     [SerializeField] private GameObject CameraObject;           // カメラ
-    [SerializeField] private GameObject StarObject;             // 星
 
     [Header("カメラの設定")]
     [SerializeField] private float CameraTiltAngle = 0f;    // カメラの傾き角度
     [SerializeField] private float Offset = 30f;            // カメラの距離を調整するオフセット値
     private float CameraDistance = 0f;                      // ゲーム中のカメラの距離
 
-    [Header("星の設定")]
-    [SerializeField] private float StarHeight = 300f; // 星の高さ
-    [SerializeField] private float StarToStarDistance = 200f; // 星と星の距離
-    [SerializeField] private int[] StarScoreThresholdArray; // スコアの閾値
-
-    [Header("スナックの速度")]
-    [SerializeField] private int SnackSpeed = 700;
-
     [Header("クリアUIを強制的に表示する時間")]
     [SerializeField] private float UIShowTime = 10f; // クリアUIを強制的に表示する時間
 
-    private GameObject SnackClone; // スナックのクローン
+
+    [Header("エフェクトの設定")]
+    [SerializeField] GameObject SnackEffect;
+    [SerializeField] float EffectSize = 1.0f;
+
+    [Header("パーティクルのメッシュ")]
+    [SerializeField] Mesh ParticleMesh;
+    [SerializeField] Material ParticleMaterial;
+
+    [Header("パーティクルのパラメータ")]
+    [SerializeField] float Size = 1.0f;
+    [SerializeField] float SpeedMIN = 0.5f;
+    [SerializeField] float SpeedMAX = 1.5f;
+    [SerializeField] float RotateSpeedMIN = 30.0f;
+    [SerializeField] float RotateSpeedMAX = 200.0f;
 
     private GameObject ClearBackImage;
 
@@ -72,8 +78,7 @@ public class GameClearSequence : MonoBehaviour
     // 背景表示フラグ
     private bool IsBackVisible = false;
 
-    // カメラ追跡フラグ
-    private bool IsCameraStop = false;
+    private float FocusHeight = 0f;
 
     [Header("サウンド設定")]
 
@@ -87,7 +92,7 @@ public class GameClearSequence : MonoBehaviour
     // 正常に終了した場合はtrueを、そうでない場合はfalseを返す
     public bool OnGameClear()
     {
-        if (ClearConditions == null || FlyingPoint == null || ClearUI == null || PlayerObject == null || SnackObject == null || CameraObject == null || StarObject == null)
+        if (ClearConditions == null || FlyingPoint == null || ClearUI == null || PlayerObject == null || SnackObject == null || CameraObject == null)
         {
             Debug.LogError("GameClearSequence >> インスペクターでの設定が不十分です");
             return false;
@@ -132,37 +137,58 @@ public class GameClearSequence : MonoBehaviour
 
         // スナックのクローンを作成
         Vector3 SpawnPos = SnackObject.transform.position;
-        SnackClone = Instantiate(SnackObject, SpawnPos, Quaternion.identity);
-
-        // 元のスナックを移動させる
-        SnackObject.transform.localPosition = new Vector3(10000f, 10f, 10000f);
 
         // 元のスナックを非表示にする
         SnackObject.GetComponent<MeshRenderer>().enabled = false;
 
         // プレイヤーとスナックの当たり判定を無効化
         Collider PlayerCollider = PlayerObject.GetComponent<Collider>();
-        Collider SnackCollider = SnackClone.GetComponent<Collider>();
+        Collider SnackCollider = SnackObject.GetComponent<Collider>();
         Physics.IgnoreCollision(PlayerCollider, SnackCollider);
-
-        SnackClone.GetComponent<BlownAway_Ver3>().OnClear();        // スナックのリスポーンを無効化
-        SnackClone.GetComponent<ObjectGravity>().IsActive = false;  // スナックの重力を無効化
-        SnackClone.GetComponent<Rigidbody>().AddForce(Vector3.up * SnackSpeed, ForceMode.Impulse);  // スナックを上に吹っ飛ばす
 
         // CameraFunctionを無効化
         CameraFunction.enabled = false;
 
         // ゲーム中のカメラの距離を取得
-        Vector3 CameraDirection = SnackClone.transform.position - CameraObject.transform.position;
+        Vector3 CameraDirection = SnackObject.transform.position - CameraObject.transform.position;
         CameraDistance = CameraDirection.magnitude;
 
-        // 星を配置する
-        Vector3 StarPos = SnackClone.transform.position;
-        for (int i = 0; i < StarScoreThresholdArray.Length; i++)
+        FocusHeight = SnackObject.transform.position.y;
+
+        if (SnackEffect != null || ParticleMesh != null || ParticleMaterial != null)
         {
-            // スコアの閾値の数だけ星を配置
-            StarPos.y = StarHeight + (StarToStarDistance * i); // スナックの上に星を配置
-            GameObject StarClone = Instantiate(StarObject, StarPos, Quaternion.identity);
+            // エフェクト生成
+            GameObject Effect = Instantiate(SnackEffect, SpawnPos, Quaternion.identity);
+
+            // エフェクトサイズ設定
+            Effect.transform.localScale = new Vector3(EffectSize, EffectSize, EffectSize);
+
+            // パーティクルメッシュ設定
+            ParticleSystem PS = Effect.GetComponent<ParticleSystem>();
+            var PSRenderer = PS.GetComponent<ParticleSystemRenderer>();
+            PSRenderer.mesh = ParticleMesh;
+            PSRenderer.material = ParticleMaterial;
+
+            // パーティクルパラメータ設定
+            var PSMain = PS.main;
+            // サイズ
+            PSMain.startSize = Size;
+
+            // 射出速度
+            float min = SpeedMIN;
+            float max = SpeedMAX;
+            PSMain.startSpeed = new ParticleSystem.MinMaxCurve(min, max);
+
+            // 回転速度
+            var Rotation = PS.rotationOverLifetime;
+            min = RotateSpeedMIN * Mathf.Deg2Rad;
+            max = RotateSpeedMAX * Mathf.Deg2Rad;
+            Rotation.x = new ParticleSystem.MinMaxCurve(min, max);
+            Rotation.y = new ParticleSystem.MinMaxCurve(min, max);
+            Rotation.z = new ParticleSystem.MinMaxCurve(min, max);
+
+            // エフェクト再生
+            PS.Play();
         }
 
         //効果音(SE)が設定されていて、AudioSourceも存在するときに再生する
@@ -199,9 +225,6 @@ public class GameClearSequence : MonoBehaviour
         // タイマー進行
         AfterTimer += Time.deltaTime;
 
-        // 10秒経過でクリアUIを強制的に表示
-        if (AfterTimer > UIShowTime) IsUIVisible = true;
-
         // キー・ボタン入力でシーン遷移
         // 演出が終わってから入力受付
         if (IsUIVisible)
@@ -210,48 +233,35 @@ public class GameClearSequence : MonoBehaviour
             {
                 ClearConditions.TriggerSceneTransition();
             }
-
-            // クリアUI表示済みなら以降の処理をスキップ
-            return;
         }
 
-        // カメラにスナックを追跡させる
+         // 一定時間経過で後の処理をスキップ
+        if (AfterTimer > UIShowTime) return;
+
+       // カメラにスナックを追跡させる
         // 座標
-        if (!IsCameraStop)
-        {
-            Vector3 TargetPos = SnackClone.transform.position;
-            Vector3 CameraPos = CameraObject.transform.position;
+        Vector3 TargetPos = SnackObject.transform.position;
+        Vector3 CameraPos = CameraObject.transform.position;
 
-            float OffsetTime = AfterTimer * 1f;
-            OffsetTime = Mathf.Clamp01(OffsetTime);
-            float CurrentOffset = Mathf.Lerp(CameraDistance, Offset, OffsetTime);
+        float OffsetTime = AfterTimer * 1f;
+        OffsetTime = Mathf.Clamp01(OffsetTime);
+        float CurrentOffset = Mathf.Lerp(CameraDistance, Offset, OffsetTime);
 
-            // カメラ距離
-            Vector3 CameraDirection = TargetPos - CameraPos;
-            Vector3 DirectionOffset = CameraDirection.normalized * CurrentOffset; // カメラの距離を調整
-            CameraPos = TargetPos - DirectionOffset;
+        // カメラ距離
+        Vector3 CameraDirection = TargetPos - CameraPos;
+        Vector3 DirectionOffset = CameraDirection.normalized * CurrentOffset; // カメラの距離を調整
+        CameraPos = TargetPos - DirectionOffset;
 
-            // カメラのY座標をスナックのY座標に合わせる
-            float HeightMatchTime = AfterTimer * 5f;
-            HeightMatchTime = Mathf.Clamp01(HeightMatchTime);
-            float CurrentHeight = Mathf.Lerp(CameraPos.y, TargetPos.y, HeightMatchTime);
-            CameraPos.y = CurrentHeight;
-            CameraObject.transform.position = CameraPos; // カメラの位置を調整
-        }
+        // カメラの高さを調整
+        FocusHeight += 1f * Time.deltaTime * EffectSize;
+        //CameraPos.y = FocusHeight;
+
+        CameraObject.transform.position = CameraPos; // カメラの位置を調整
 
         // 視線
-        CameraObject.transform.LookAt(SnackClone.transform.position);
-        //float FocusTime = AfterTimer * CameraFocusSpeed;
-        //FocusTime = Mathf.Clamp01(FocusTime);
-        //Vector3 TargetFocus = Vector3.Lerp(CameraObject.transform.position, SnackClone.transform.position, FocusTime);
-        //CameraObject.transform.LookAt(TargetFocus);
-
-        //// 傾き
-        //float TiltTime = AfterTimer * 1f;
-        //TiltTime = Mathf.Clamp01(TiltTime);
-        //float CurrentTiltAngle = Mathf.LerpAngle(0f, CameraTiltAngle, TiltTime);
-        //CameraObject.transform.Rotate(0f, 0f, CurrentTiltAngle);
-
+        Vector3 Target = SnackObject.transform.position;
+        Target.y = FocusHeight;
+        CameraObject.transform.LookAt(Target);
 
         // スナックを吹っ飛ばした後プレイヤーを停止
         if (!IsPlayerStop && AfterTimer > 0.1f)
@@ -263,40 +273,27 @@ public class GameClearSequence : MonoBehaviour
         }
 
         // クリア演出中のUIを表示
-        Vector3 SnackPos = SnackClone.transform.position;
+        Vector3 SnackPos = SnackObject.transform.position;
 
-        // UIを表示するスナックのY座標を計算
-        float PosY = 100f;
-        if (StarScoreThresholdArray.Length > 0)
+        if (!IsBackVisible)
         {
-            PosY += 300f + ((StarScoreThresholdArray.Length - 1) * StarToStarDistance);
+            UITimer += Time.deltaTime * 0.5f;
+            UITimer = Mathf.Clamp01(UITimer);
+
+            Color C = Color.black;
+            C.a = Mathf.Lerp(0f, 0.6f, UITimer);
+            ClearBackImage.GetComponent<Image>().color = C;
+
+            if (UITimer >= 1f) IsBackVisible = true;
         }
-
-        if (!IsUIVisible && SnackPos.y > PosY)
+        else
         {
-            if (!IsBackVisible)
-            {
-                // カメラの動きを止める
-                IsCameraStop = true;
+            // UIを表示
+            ClearUI.transform.GetChild(1).gameObject.SetActive(true);
+            ClearUI.transform.GetChild(2).gameObject.SetActive(true);
 
-                UITimer += Time.deltaTime*0.5f;
-                UITimer=Mathf.Clamp01(UITimer);
-
-                Color C = Color.black;
-                C.a = Mathf.Lerp(0f, 0.6f, UITimer);
-                ClearBackImage.GetComponent<Image>().color = C;
-
-                if(UITimer>=1f) IsBackVisible = true;
-            }
-            else
-            {
-                // UIを表示
-                ClearUI.transform.GetChild(1).gameObject.SetActive(true);
-                ClearUI.transform.GetChild(2).gameObject.SetActive(true);
-
-                // UI表示フラグを立てる
-                IsUIVisible = true;
-            }
+            // UI表示フラグを立てる
+            IsUIVisible = true;
         }
     }
 

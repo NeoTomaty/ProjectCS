@@ -169,7 +169,7 @@ public class BlownAway_Ver2 : MonoBehaviour
         {
             StartCoolTime(collision.gameObject.GetComponent<Collider>()); // クールタイムを開始
 
-            ClearConditionsScript.CheckLiftingCount();
+            ClearConditionsScript.CheckLiftingCount(gameObject);
 
             // Snackに触れたらHitNextFallAreaをtrueに戻す
             HitNextFallArea = true;

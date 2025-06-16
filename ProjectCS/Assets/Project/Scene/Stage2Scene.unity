@@ -3447,14 +3447,18 @@ MonoBehaviour:
   PlayerObject: {fileID: 1516824312}
   SnackObject: {fileID: 1846973834}
   CameraObject: {fileID: 946110160}
-  StarObject: {fileID: 1938181473}
   CameraTiltAngle: 0
-  Offset: 30
-  StarHeight: 300
-  StarToStarDistance: 200
-  StarScoreThresholdArray: 
-  SnackSpeed: 700
+  Offset: 5
   UIShowTime: 10
+  SnackEffect: {fileID: 5598513039792137163, guid: ba2d54bfd48456648a9f26f2f60a62b9, type: 3}
+  EffectSize: 1
+  ParticleMesh: {fileID: 4300000, guid: 43fe7f3cd9492f048a1243fa8139c78a, type: 2}
+  ParticleMaterial: {fileID: 2100000, guid: 131d8153421870945a8a8117b85dda74, type: 2}
+  Size: 1
+  SpeedMIN: 0.5
+  SpeedMAX: 1.5
+  RotateSpeedMIN: 30
+  RotateSpeedMAX: 200
   ClearSE: {fileID: 0}
 --- !u!114 &2103750996 stripped
 MonoBehaviour:

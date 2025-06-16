@@ -1,7 +1,7 @@
 //======================================================
 // ClearConditionsスクリプト
 // 作成者：藤本
-// 最終更新日：06/05
+// 最終更新日：06/16
 // 
 // [Log]
 // 04/29 藤本　クリア条件の追加
@@ -9,6 +9,7 @@
 // 05/08 荒井　クリア演出を実行できるように変更
 // 05/10 荒井　クリア演出に関する例外処理を追加
 // 06/05 荒井　シーン遷移時にフェードアウトする処理を追加
+// 06/16 荒井　クリア時の処理を開始済みかどうかを判定するフラグを追加
 //======================================================
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -31,6 +32,8 @@ public class ClearConditions : MonoBehaviour
 
     private int currentCount; // 現在のリフティング回数（外部から受け取る）
 
+    private bool isClear = false; // クリア状態を管理するフラグ
+
     // 開始時処理
     private void Start()
     {
@@ -40,8 +43,10 @@ public class ClearConditions : MonoBehaviour
     }
 
     // 外部からリフティング回数を減らすメソッド
-    public void CheckLiftingCount()
+    public void CheckLiftingCount(GameObject SnackObject)
     {
+        if (isClear) return; // 既にクリア状態の場合は何もしない
+
         currentCount--;
         Debug.Log("Current Lifting Count: " + currentCount);
 
@@ -52,12 +57,15 @@ public class ClearConditions : MonoBehaviour
         {
             Debug.Log("ClearConditionsスクリプト：条件を満たしたためシーン遷移を行います");
 
-            if(GameClearSequence == null)
+            isClear = true;
+
+            if (GameClearSequence == null)
             {
                 TriggerSceneTransition();
             }
             else
             {
+                GameClearSequence.SetSnackObject(SnackObject);
                 bool Res = GameClearSequence.OnGameClear();
 
                 // OnGameClear関数が正常に終了しなかった場合
