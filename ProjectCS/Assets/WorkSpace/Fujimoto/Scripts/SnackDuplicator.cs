@@ -35,6 +35,7 @@ public class SnackDuplicator : MonoBehaviour
     [SerializeField] private Transform SnackRespawnPoint;
     [SerializeField] private Transform GroundArea;
     [SerializeField] private GameClearSequence ClearSequenceComponent;
+    [SerializeField] private Transform SceneObjectTransform;
 
     private int currentCount = 0;
 
@@ -65,7 +66,7 @@ public class SnackDuplicator : MonoBehaviour
 
             Vector3 spawnPos = new Vector3(randomX, fixedY, randomZ);
 
-            GameObject SnackInstance = Instantiate(originalObject, spawnPos, Quaternion.identity);
+            GameObject SnackInstance = Instantiate(originalObject, spawnPos, Quaternion.identity, SceneObjectTransform);
             BlownAway_Ver3 BA3 = SnackInstance.GetComponent<BlownAway_Ver3>();
             BA3.SetTarget(
                 CameraFunctionComponent,
@@ -77,7 +78,7 @@ public class SnackDuplicator : MonoBehaviour
                 );
 
            
-            GameObject LiftingAreaInstance = Instantiate(LiftingAreaObject, new Vector3(0f, -1000f, 0f), Quaternion.identity);
+            GameObject LiftingAreaInstance = Instantiate(LiftingAreaObject, new Vector3(0f, -1000f, 0f), Quaternion.identity, SceneObjectTransform);
             LiftingAreaManager LAM = LiftingAreaInstance.GetComponent<LiftingAreaManager>();
             LAM.SetTarget(PlayerObject, SnackInstance, ClearSequenceComponent);
 
