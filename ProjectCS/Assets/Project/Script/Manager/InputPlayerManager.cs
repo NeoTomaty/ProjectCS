@@ -33,6 +33,9 @@ public class InputPlayerManager : MonoBehaviour
     //UI移動時に再生する効果音
     [SerializeField] private AudioClip MoveSE;
 
+    //決定時に再生する効果音
+    [SerializeField] private AudioClip DecideSE;
+
     //最後に選択されていたUIオブジェクト
     private GameObject LastSelected;
 
@@ -59,6 +62,9 @@ public class InputPlayerManager : MonoBehaviour
 
         //現在選択されているUIオブジェクトを取得
         LastSelected = EventSystem.current.currentSelectedGameObject;
+
+        //全てのボタンにクリックSEを追加
+        AddClickSEToAllButtons();
     }
 
     void Update()
@@ -111,6 +117,26 @@ public class InputPlayerManager : MonoBehaviour
                 //一回だけ効果音を再生する
                 audioSource.PlayOneShot(MoveSE);
             }
+        }
+    }
+
+    //UI決定時に鳴らすSE
+    private void PlayDecideSE()
+    {
+        if(audioSource != null && DecideSE != null)
+        {
+            audioSource.PlayOneShot(DecideSE);
+        }
+    }
+
+    //シーン内の全てのボタンに「決定SE」を追加する処理
+    private void AddClickSEToAllButtons()
+    {
+        Button[] buttons = FindObjectsOfType<Button>(true);
+
+        foreach (var button in buttons)
+        {
+            button.onClick.AddListener(() => PlayDecideSE());
         }
     }
 }
