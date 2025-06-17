@@ -12,17 +12,14 @@ using UnityEngine;
 // 新しいクリア演出
 public class GameClearSequence_Ver2 : MonoBehaviour
 {
-    // エフェクト
     [Header("エフェクトの設定")]
     [SerializeField] GameObject SnackEffect;
     [SerializeField] float EffectSize = 1.0f;
 
-    // パーティクルのメッシュ
     [Header("パーティクルのメッシュ")]
     [SerializeField] Mesh ParticleMesh;
     [SerializeField] Material ParticleMaterial;
 
-    // パーティクルの制御
     [Header("パーティクルのパラメータ")]
     [SerializeField] float Size = 1.0f;
     [SerializeField] float SpeedMIN = 0.5f;
@@ -33,7 +30,7 @@ public class GameClearSequence_Ver2 : MonoBehaviour
     // クリア演出開始
     public void Play()
     {
-        if (SnackEffect == null) return;
+        if (SnackEffect == null || ParticleMesh == null || ParticleMaterial == null) return;
 
         // エフェクト生成
         GameObject Effect = Instantiate(SnackEffect, new Vector3(0f, 0f, 0f), Quaternion.identity);
