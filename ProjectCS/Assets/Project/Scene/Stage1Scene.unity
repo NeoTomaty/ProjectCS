@@ -2234,6 +2234,26 @@ PrefabInstance:
       propertyPath: MiddleToHighSpeedThreshold
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 465607145124265530, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: LowToMiddleSpeedThreshold
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 465607145124265530, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: MiddleToHighSpeedThreshold
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 784657071238269402, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: cameraFunction
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 784657071238269402, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: specialViewPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 784657071238269402, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: specialViewPosition.y
+      value: -2
+      objectReference: {fileID: 0}
     - target: {fileID: 1788967242641193304, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: MoveSE
       value: 
@@ -2356,7 +2376,7 @@ PrefabInstance:
       objectReference: {fileID: 1371884540}
     - target: {fileID: 8166748469896893238, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: time
-      value: 0.7
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2875,11 +2895,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: interval
-      value: 0.01
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: maxCount
-      value: 10000
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: spawnArea
