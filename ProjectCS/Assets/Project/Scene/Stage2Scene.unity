@@ -1536,6 +1536,14 @@ PrefabInstance:
       value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3806229488573800879, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 861520482}
+    - target: {fileID: 3806229488573800879, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: AccelerationSE
+      value: 
+      objectReference: {fileID: 8300000, guid: 9d0068f7cbb666f4fad36e00b227622c, type: 3}
+    - target: {fileID: 3806229488573800879, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
       propertyPath: MaxPlayerSpeed
       value: 150
       objectReference: {fileID: 0}
@@ -1555,6 +1563,10 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 946110162}
+    - target: {fileID: 6888533415978220274, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: JumpSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 54d84d5cffbd8734ab271657a304b411, type: 3}
     - target: {fileID: 8812200255025461458, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
       propertyPath: Acceleration
       value: 10
@@ -1567,6 +1579,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1720338048}
   m_SourcePrefab: {fileID: 100100000, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+--- !u!82 &861520482 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8116789812960719590, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 861520481}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &893592370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6002520690514501987, guid: 3e67990691dd1674ab23408cdeb172f0, type: 3}
