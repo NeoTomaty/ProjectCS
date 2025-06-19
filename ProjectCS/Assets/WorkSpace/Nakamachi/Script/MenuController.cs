@@ -4,6 +4,7 @@
 //アタッチ:StartButtonにアタッチ
 //[Log]
 //05/22　中町　タイトルのキーボード操作とコントローラー操作処理
+//06/17　中町　ボタン選択時と決定時のSE実装
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +26,11 @@ public class MenuController : MonoBehaviour
     public float InputDelay = 0.3f;
     private float InputTimer = 0.0f;
 
+    //SE用のAudioClipとAudioSourceを追加
+    public AudioClip SelectSE;
+    public AudioClip SubmitSE;
+    private AudioSource audioSource;
+
     void Start()
     {
         //ボタンを配列に格納
@@ -32,6 +38,14 @@ public class MenuController : MonoBehaviour
         {
             StartButton, ExitButton, OptionButton
         };
+
+        //AudioSourceを取得
+        audioSource = GetComponent<AudioSource>();
+
+        if(audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
 
         //初期選択状態を更新
         UpdateButtonSelection();
@@ -90,6 +104,9 @@ public class MenuController : MonoBehaviour
 
                 //ボタンの見た目を更新
                 UpdateButtonSelection();
+
+                //選択時のSEを再生
+                PlaySE(SelectSE);
             }
         }
 
@@ -97,6 +114,9 @@ public class MenuController : MonoBehaviour
         if (Input.GetButtonDown("Submit"))
         {
             Buttons[SelectedIndex].onClick.Invoke();
+
+            //決定時のSE再生
+            PlaySE(SubmitSE);
         }
     }
 
@@ -141,6 +161,14 @@ public class MenuController : MonoBehaviour
                     ButtonText.transform.localScale = Vector3.one;
                 }
             }
+        }
+    }
+
+    void PlaySE(AudioClip clip)
+    {
+        if(clip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 }
