@@ -63,9 +63,15 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     private InputAction CancelAction;
     private InputAction LeftMoveAction;
     private InputAction RightMoveAction;
+    private InputAction OptionAction;
 
     // フェード管理
     private FadeManager fade;
+
+    // オプション管理
+    [SerializeField] private GameObject OptionCanvasObject;
+    private bool IsOptionsOpen = false;
+
 
     // SE管理
     [SerializeField] private StageSelectSEPlayer SEPlayer;
@@ -78,6 +84,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
         CancelAction = PlayerInput.actions["Cancel"];
         LeftMoveAction = PlayerInput.actions["LeftMove"];
         RightMoveAction = PlayerInput.actions["RightMove"];
+        OptionAction = PlayerInput.actions["Option"];
     }
 
     void Start()
@@ -165,6 +172,25 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
     void Update()
     {
+        if (IsOptionsOpen)
+        {
+            if (!OptionCanvasObject.activeSelf || OptionAction.WasPerformedThisFrame())
+            {
+                IsOptionsOpen = false;
+                OptionCanvasObject.SetActive(false);
+            }
+
+            return;
+        }
+        else
+        {
+            if (OptionAction.WasPerformedThisFrame() && !MoveCamera.GetIsSwitched() && !BezierMoverComponent.GetIsMoving())
+            {
+                IsOptionsOpen = true;
+                OptionCanvasObject.SetActive(true);
+            }
+        }
+
         // ベジェ曲線とステージ数の整合性チェック
         if (StageChildArray.Length - 1 != BezierCurveChildArray.Length) return;
 
