@@ -10,6 +10,7 @@
 // 06/13 森脇 カメラの制御フラグ追加
 // 06/13 高下 スナック複製時に必要なコンポーネントを参照するSetTarget関数を追加
 // 06/13 荒井 クリアカウントのタイミングをリフティング時→落下時に変更
+// 06/19 中町 プレイヤーがスナックに当たったときのSE実装
 //====================================================
 using UnityEngine;
 using System.Collections;
@@ -78,6 +79,13 @@ public class BlownAway_Ver3 : MonoBehaviour
     private ClearConditions ClearConditionsScript; // リフティング回数管理のスクリプト
 
     private bool IsRespawn = true;
+
+    [Header("SE")]
+    //効果音を鳴らすためのAudioSource
+    [SerializeField] private AudioSource audioSource;
+
+    //プレイヤーが当たったときの効果音
+    [SerializeField] private AudioClip HitSE;
 
     private void Start()
     {
@@ -159,6 +167,12 @@ public class BlownAway_Ver3 : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
+            //SEを再生
+            if(audioSource != null && HitSE != null)
+            {
+                audioSource.PlayOneShot(HitSE);
+            }
+
             // 多段ヒット防止
             if (!HitSnack) return;
 
