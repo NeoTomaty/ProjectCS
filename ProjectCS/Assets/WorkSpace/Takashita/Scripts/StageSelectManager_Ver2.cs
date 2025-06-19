@@ -67,6 +67,9 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     // フェード管理
     private FadeManager fade;
 
+    // SE管理
+    [SerializeField] private StageSelectSEPlayer SEPlayer;
+
     private void Awake()
     {
         // PlayerInputの取得とアクションの割り当て
@@ -171,6 +174,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             if (StageSelectorComponent.GetStageNumber() <= 0) return;
             if (BezierMoverComponent.GetIsMoving() && IsReverse) return;
 
+            SEPlayer.PlaySE(StageSelectSEPlayer.StageSelectSE.Select);
             IsReverse = true;
             BezierMoverComponent.StartMove(true, BezierCurveChildArray[StageSelectorComponent.GetStageNumber() - 1]);
             StageSelectorComponent.SetStageNumber(-1);
@@ -182,6 +186,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             if (StageSelectorComponent.GetStageNumber() == BezierCurveChildArray.Length) return;
             if (BezierMoverComponent.GetIsMoving() && !IsReverse) return;
 
+            SEPlayer.PlaySE(StageSelectSEPlayer.StageSelectSE.Select);
             IsReverse = false;
             BezierMoverComponent.StartMove(false, BezierCurveChildArray[StageSelectorComponent.GetStageNumber()]);
             StageSelectorComponent.SetStageNumber(1);
@@ -191,6 +196,8 @@ public class StageSelectManager_Ver2 : MonoBehaviour
         if (ConfirmAction.WasPerformedThisFrame() && !BezierMoverComponent.GetIsMoving())
         {
             if (GameSceneNames.Length == StageSelectorComponent.GetStageNumber()) return;
+
+            SEPlayer.PlaySE(StageSelectSEPlayer.StageSelectSE.Confirm);
 
             if (!MoveCamera.GetIsSwitched())
             {
@@ -205,6 +212,8 @@ public class StageSelectManager_Ver2 : MonoBehaviour
         // キャンセルボタン処理（戻る or タイトルに戻る）
         if (CancelAction.WasPerformedThisFrame() && !BezierMoverComponent.GetIsMoving())
         {
+            SEPlayer.PlaySE(StageSelectSEPlayer.StageSelectSE.Cancel);
+
             if (MoveCamera.GetIsSwitched())
             {
                 MoveCamera.SetIsSwitched(false);
