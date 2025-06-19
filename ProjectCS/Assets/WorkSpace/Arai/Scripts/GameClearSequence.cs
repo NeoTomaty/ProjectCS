@@ -1,7 +1,7 @@
 //======================================================
 // [GameClearSequence]
 // 作成者：荒井修
-// 最終更新日：06/18
+// 最終更新日：06/19
 // 
 // [Log]
 // 05/08　荒井　仮のクリア演出を作成
@@ -16,6 +16,7 @@
 // 06/13  高下　スナックオブジェクトを変更する関数を追加
 // 06/16　荒井　クリア演出の内容を大幅に変更
 // 06/18　荒井　カメラの動かし方を変更し、意図しないカメラワークを対策
+// 06/19　荒井　ポーズ入力無効化を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -31,6 +32,7 @@ public class GameClearSequence : MonoBehaviour
     [SerializeField] private GameObject PlayerObject;           // プレイヤーオブジェクト
     [SerializeField] private GameObject SnackObject;            // スナックオブジェクト
     [SerializeField] private GameObject CameraObject;           // カメラ
+    [SerializeField] private PlayerInput PauseInput;
 
     [Header("カメラの設定")]
     [SerializeField] private float CameraTiltAngle = 0f;    // カメラの傾き角度
@@ -116,7 +118,12 @@ public class GameClearSequence : MonoBehaviour
             return false;
         }
 
-        PlayerInput.actions.Disable(); // 入力を無効にする
+        // 入力を無効化
+        PlayerInput.actions.Disable();
+        if (PauseInput != null)
+        {
+            PauseInput.actions.Disable();
+        }
 
         // 背景を表示
         ClearBackImage = ClearUI.transform.GetChild(0).gameObject;
