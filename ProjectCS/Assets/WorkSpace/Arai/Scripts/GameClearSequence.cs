@@ -1,7 +1,7 @@
 //======================================================
 // [GameClearSequence]
 // 作成者：荒井修
-// 最終更新日：06/16
+// 最終更新日：06/18
 // 
 // [Log]
 // 05/08　荒井　仮のクリア演出を作成
@@ -15,6 +15,7 @@
 // 05/30　荒井　BlownAway_Ver3に対応
 // 06/13  高下　スナックオブジェクトを変更する関数を追加
 // 06/16　荒井　クリア演出の内容を大幅に変更
+// 06/18　荒井　カメラの動かし方を変更し、意図しないカメラワークを対策
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,7 +35,6 @@ public class GameClearSequence : MonoBehaviour
     [Header("カメラの設定")]
     [SerializeField] private float CameraTiltAngle = 0f;    // カメラの傾き角度
     [SerializeField] private float Offset = 30f;            // カメラの距離を調整するオフセット値
-    private float CameraDistance = 0f;                      // ゲーム中のカメラの距離
 
     [Header("クリアUIを強制的に表示する時間")]
     [SerializeField] private float UIShowTime = 10f; // クリアUIを強制的に表示する時間
@@ -78,6 +78,10 @@ public class GameClearSequence : MonoBehaviour
     // 背景表示フラグ
     private bool IsBackVisible = false;
 
+    // カメラの制御情報
+    private Vector3 CameraStartPos = Vector3.zero;
+    private Vector3 CameraTargetPos = Vector3.zero;
+    private Vector3 SnackPos = Vector3.zero;
     private float FocusHeight = 0f;
 
     [Header("サウンド設定")]
@@ -149,11 +153,14 @@ public class GameClearSequence : MonoBehaviour
         // CameraFunctionを無効化
         CameraFunction.enabled = false;
 
-        // ゲーム中のカメラの距離を取得
-        Vector3 CameraDirection = SnackObject.transform.position - CameraObject.transform.position;
-        CameraDistance = CameraDirection.magnitude;
+        // カメラの移動開始座標と目標座標を設定
+        CameraStartPos = CameraObject.transform.position;
+        SnackPos = SnackObject.transform.position;
+        Vector3 CameraToSnack = SnackPos - CameraStartPos;
+        Vector3 CameraDirection = CameraToSnack.normalized * Offset; // カメラの距離を調整
+        CameraTargetPos = SnackPos - CameraDirection;
 
-        FocusHeight = SnackObject.transform.position.y;
+        FocusHeight = SnackPos.y;
 
         if (SnackEffect != null || ParticleMesh != null || ParticleMaterial != null)
         {
@@ -240,26 +247,14 @@ public class GameClearSequence : MonoBehaviour
 
        // カメラにスナックを追跡させる
         // 座標
-        Vector3 TargetPos = SnackObject.transform.position;
-        Vector3 CameraPos = CameraObject.transform.position;
-
         float OffsetTime = AfterTimer * 1f;
         OffsetTime = Mathf.Clamp01(OffsetTime);
-        float CurrentOffset = Mathf.Lerp(CameraDistance, Offset, OffsetTime);
-
-        // カメラ距離
-        Vector3 CameraDirection = TargetPos - CameraPos;
-        Vector3 DirectionOffset = CameraDirection.normalized * CurrentOffset; // カメラの距離を調整
-        CameraPos = TargetPos - DirectionOffset;
-
-        // カメラの高さを調整
-        FocusHeight += 1f * Time.deltaTime * EffectSize;
-        //CameraPos.y = FocusHeight;
-
-        CameraObject.transform.position = CameraPos; // カメラの位置を調整
+        Vector3 CarrentCameraPos=Vector3.Lerp(CameraStartPos, CameraTargetPos, OffsetTime);
+        CameraObject.transform.position = CarrentCameraPos;
 
         // 視線
-        Vector3 Target = SnackObject.transform.position;
+        Vector3 Target = SnackPos;
+        FocusHeight += 1f * Time.deltaTime * EffectSize;
         Target.y = FocusHeight;
         CameraObject.transform.LookAt(Target);
 
@@ -273,8 +268,6 @@ public class GameClearSequence : MonoBehaviour
         }
 
         // クリア演出中のUIを表示
-        Vector3 SnackPos = SnackObject.transform.position;
-
         if (!IsBackVisible)
         {
             UITimer += Time.deltaTime * 0.5f;
