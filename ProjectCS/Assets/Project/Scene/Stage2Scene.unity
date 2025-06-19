@@ -508,6 +508,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1073458115}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: HitSE
+      value: 
+      objectReference: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: baseForce
       value: 200
       objectReference: {fileID: 0}
@@ -523,6 +527,10 @@ PrefabInstance:
       propertyPath: RespawnArea
       value: 
       objectReference: {fileID: 1073458115}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 861520482}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: flyingPoint
       value: 
@@ -3464,6 +3472,7 @@ MonoBehaviour:
   PlayerObject: {fileID: 1516824312}
   SnackObject: {fileID: 1846973834}
   CameraObject: {fileID: 946110160}
+  PauseInput: {fileID: 0}
   CameraTiltAngle: 0
   Offset: 5
   UIShowTime: 10
