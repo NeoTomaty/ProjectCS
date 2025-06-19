@@ -4,6 +4,7 @@
 // 内容：フィニッシュ時のアニメーション終了トリガー
 // [Log]
 // 06/13　森脇 カメラの制御フラグ追加
+// 06/19　森脇  SE再生機能を追加
 //====================================================
 
 using UnityEngine;
@@ -25,6 +26,13 @@ public class AnimationFinishTrigger : MonoBehaviour
     [Tooltip("エフェクト再生位置（例：snackの位置）")]
     [SerializeField] private Transform effectSpawnPoint;
 
+    [Header("SE")]
+    [Tooltip("ヒット時に再生するSE")]
+    [SerializeField] private AudioClip hitSound;
+
+    [Tooltip("SEを再生するAudioSource")]
+    [SerializeField] private AudioSource audioSource;
+
     [Header("ヒットストップ時間")]
     [Tooltip("ヒット時に全体を止める秒数")]
     [SerializeField] private float hitStopDuration = 0.5f;
@@ -40,37 +48,44 @@ public class AnimationFinishTrigger : MonoBehaviour
 
     private IEnumerator HitStopRoutine()
     {
-        // ① エフェクト生成
+        // SE再生とエフェクト生成
+        // SE再生
+        if (audioSource != null && hitSound != null)
+        {
+            audioSource.PlayOneShot(hitSound);
+        }
+
+        // エフェクト生成
         if (hitEffectPrefab != null && effectSpawnPoint != null)
         {
             Instantiate(hitEffectPrefab, effectSpawnPoint.position, Quaternion.identity);
         }
 
-        // ② アニメーション停止（player）
+        // アニメーション停止（player）
         if (playerAnimator != null)
         {
             playerAnimator.speed = 0f;
         }
 
-        // ③ ヒットストップ
+        // ヒットストップ
         Time.timeScale = 0f;
 
-        // ④ リアルタイムで待つ（タイムスケール0でも動くように）
+        // リアルタイムで待つ（タイムスケール0でも動くように）
         yield return new WaitForSecondsRealtime(hitStopDuration);
 
-        // ⑤ ヒットストップ解除
+        // ヒットストップ解除
         Time.timeScale = 1f;
 
-        // ⑥ アニメーション再開
+        // アニメーション再開
         if (playerAnimator != null)
         {
             playerAnimator.speed = 1f;
         }
 
-        // ⑦ snack 側のヒットストップ解除
+        // snack 側のヒットストップ解除
         snackObject.GetComponent<BlownAway_Ver3>()?.EndHitStop();
 
-        // ⑧ カメラの特殊視点解除
+        // カメラの特殊視点解除
         cameraFunction?.StopSpecialView();
     }
 }

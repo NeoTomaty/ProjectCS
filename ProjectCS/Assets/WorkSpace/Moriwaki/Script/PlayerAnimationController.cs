@@ -7,6 +7,7 @@
 // 05/22　森脇 アニメーターの管理
 // 06/06　森脇 カウントダウン時に特定アニメーション再生追加
 // 06/13　森脇 カメラの制御フラグ追加
+// 06/19　森脇  地面との衝突時に rotationModel に戻る機能を追加
 //======================================================
 
 using UnityEngine;
@@ -41,7 +42,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private CameraFunction cameraFunction;
 
     [Tooltip("特別視点時のプレイヤーからの相対的なカメラ位置")]
-    [SerializeField] private Vector3 specialViewPosition = new Vector3(0, 2, -4);
+    [SerializeField] private Transform specialViewTarget;
 
     private void Update()
     {
@@ -53,22 +54,24 @@ public class PlayerAnimationController : MonoBehaviour
             AnimatorStateInfo stateInfo = modelAnimator.GetCurrentAnimatorStateInfo(0);
 
             // ループせずに再生されたアニメーションが終了したら
-            if (stateInfo.normalizedTime >= 1.0f /*&& !stateInfo.loop*/)
+            if (stateInfo.normalizedTime >= 1.0f)
             {
+                PlayTransformEffect();
+
                 useNormalModel = false;
                 waitingForAnimFinish = false;
                 UpdateModelVisibility();
+                EndSpecialCameraView(); // カメラを通常視点に戻す
             }
         }
     }
 
     private void UpdateModelVisibility()
     {
-        if (rotationModel == null || model == null)
-            return;
+        if (rotationModel == null || model == null) return;
 
-        model.SetActive(useNormalModel);
-        rotationModel.SetActive(!useNormalModel);
+        if (model.activeSelf != useNormalModel) model.SetActive(useNormalModel);
+        if (rotationModel.activeSelf == useNormalModel) rotationModel.SetActive(!useNormalModel);
     }
 
     public void PlayRandomAnimation()
@@ -78,50 +81,63 @@ public class PlayerAnimationController : MonoBehaviour
         modelAnimator.SetInteger(randomIndexParameterName, randomIndex);
     }
 
-    // 外部から model を表示（アニメーション再生）させるときに呼ぶ
     public void SetUseNormalModelWithWait()
     {
+        if (!useNormalModel) PlayTransformEffect();
+
         useNormalModel = true;
         waitingForAnimFinish = true;
         UpdateModelVisibility();
-        if (cameraFunction != null)
-        {
-            cameraFunction.StartSpecialView(specialViewPosition);
-        }
+        StartSpecialCameraView(); // カメラ制御開始
     }
 
-    // 外部から通常通り切り替えたい場合
     public void SetUseNormalModel(bool value)
     {
+        if (useNormalModel == value) return;
+
+        PlayTransformEffect();
         useNormalModel = value;
-        waitingForAnimFinish = false;
         UpdateModelVisibility();
-        PlayTransformEffect(); // エフェクトを再生
-    }
 
-    // 特定のTriggerアニメーションを再生したいときに使う
-    public void PlaySpecificAnimation(string triggerName)
-    {
-        if (modelAnimator != null)
+        if (useNormalModel)
         {
-            useNormalModel = true;
             waitingForAnimFinish = false;
-            UpdateModelVisibility();
-
-            // アニメーターの時間をUnscaledTimeに設定（Time.timeScaleの影響を受けない）
-            modelAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-
-            modelAnimator.SetTrigger(triggerName);
+            StartSpecialCameraView();
+        }
+        else
+        {
+            waitingForAnimFinish = false;
+            EndSpecialCameraView();
         }
     }
 
-    // RandomIndex方式を使いたい場合の代替
-    public void PlayAnimationByIndex(int index)
+    public void PlaySpecificAnimation(string triggerName)
     {
+        if (modelAnimator == null) return;
+
+        if (!useNormalModel) PlayTransformEffect();
+
         useNormalModel = true;
+        // 特定トリガーのアニメーションは終了を待たないことが多いので waitingForAnimFinish は false のまま
         waitingForAnimFinish = false;
         UpdateModelVisibility();
+
+        modelAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        modelAnimator.SetTrigger(triggerName);
+
+        // StartSpecialCameraView(); // カメラ制御開始
+    }
+
+    public void PlayAnimationByIndex(int index)
+    {
+        if (!useNormalModel) PlayTransformEffect();
+
+        useNormalModel = true;
+        waitingForAnimFinish = true; // Index指定のアニメーションは終了を待つ想定
+        UpdateModelVisibility();
         modelAnimator.SetInteger(randomIndexParameterName, index);
+
+        StartSpecialCameraView(); // カメラ制御開始
     }
 
     private void PlayTransformEffect()
@@ -130,6 +146,43 @@ public class PlayerAnimationController : MonoBehaviour
         {
             Vector3 spawnPos = effectSpawnPoint != null ? effectSpawnPoint.position : transform.position;
             Instantiate(transformEffectPrefab, spawnPos, Quaternion.identity);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (useNormalModel && collision.gameObject.CompareTag("Ground"))
+        {
+            PlayTransformEffect();
+
+            useNormalModel = false;
+            waitingForAnimFinish = false;
+            UpdateModelVisibility();
+            EndSpecialCameraView(); // カメラを通常視点に戻す
+        }
+    }
+
+    // メラ特別視点開始用のメソッドをシンプル化
+    private void StartSpecialCameraView()
+    {
+        if (cameraFunction != null && specialViewTarget != null)
+        {
+            // CameraFunctionに目標地点のTransformを渡す（状態チェックはしない）
+            cameraFunction.StartSpecialView(specialViewTarget);
+        }
+        else if (specialViewTarget == null)
+        {
+            Debug.LogWarning("Special View Targetが設定されていません。", this);
+        }
+    }
+
+    // カメラ特別視点終了用のメソッドをシンプル化
+    private void EndSpecialCameraView()
+    {
+        if (cameraFunction != null)
+        {
+            // CameraFunction.StopSpecialView() を呼び出す（状態チェックはしない）
+            cameraFunction.StopSpecialView();
         }
     }
 }
