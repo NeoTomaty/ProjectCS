@@ -13,6 +13,7 @@
 // 05/03　荒井　ジャンプ時にスピードを元に戻す処理をswitch分岐内に移動
 // 05/03　森脇　ジャンプ外部へ渡す
 // 06/05　荒井　効果音の再生処理を追加（ジャンプ＆着地）
+// 06/19　藤本　チャージエフェクト開始処理を追記
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -43,6 +44,9 @@ public class ChargeJumpPlayer : MonoBehaviour
 
     [SerializeField] private ParticleSystem chargeEffectPrefab; // プレハブを指定！
     private ParticleSystem chargeEffectInstance; // インスタンスを保存する用
+
+    [Header("エフェクト")]
+    [SerializeField] private PlayerEffectController playerEffectController;
 
     private Rigidbody rb;
     private bool isGrounded;
@@ -138,6 +142,9 @@ public class ChargeJumpPlayer : MonoBehaviour
             chargeTimer += Time.deltaTime;
             if (!isOverheated && chargeTimer < overheatTime)
             {
+                // チャージエフェクト開始
+                playerEffectController.StartChargeJumpEffect();
+
                 float targetSpeed = originalSpeed * chargingSpeedMultiplier;
                 SetSpeedDirectly(targetSpeed);
             }
