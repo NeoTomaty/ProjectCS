@@ -2075,6 +2075,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b831209e703c1640a1b8686acea5d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &738128322 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8116789812960719590, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 1047860082}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &753521818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6002520690514501987, guid: 5f57d8c0731e3a740b67174b7417dac6, type: 3}
@@ -2607,6 +2612,14 @@ PrefabInstance:
       propertyPath: time
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 1097230114656252054, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: MoveStartSE
+      value: 
+      objectReference: {fileID: 8300000, guid: ba134a053cb72824e84bb6951baca5e3, type: 3}
+    - target: {fileID: 1097230114656252054, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 738128322}
     - target: {fileID: 1511810113584449987, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.15
@@ -2739,6 +2752,10 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[9].m_ActionName
       value: 'StageSelect/RightMove[/Keyboard/d]'
       objectReference: {fileID: 0}
+    - target: {fileID: 6888533415978220274, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+      propertyPath: JumpSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 54d84d5cffbd8734ab271657a304b411, type: 3}
     - target: {fileID: 8812200255025461458, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
       propertyPath: Acceleration
       value: 7
@@ -5566,6 +5583,7 @@ MonoBehaviour:
   PlayerObject: {fileID: 738128298}
   SnackObject: {fileID: 887690920}
   CameraObject: {fileID: 1794035150}
+  PauseInput: {fileID: 0}
   CameraTiltAngle: 0
   Offset: 5
   UIShowTime: 10
