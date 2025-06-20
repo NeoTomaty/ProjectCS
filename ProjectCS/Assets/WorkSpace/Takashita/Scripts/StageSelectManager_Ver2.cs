@@ -34,7 +34,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
     // スコア読み込み・スコア表示クラス
     [SerializeField] private LoadStageScore StageScore;
-    [SerializeField] private DrawScore DrawScore;
+    [SerializeField] private DrawScoreText DrawScore;
 
     // ステージ情報
     private Transform[] StageChildArray;
@@ -174,26 +174,26 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
     void Update()
     {
-        if (IsOptionsOpen)
-        {
-            if (!OptionCanvasObject.activeSelf || OptionAction.WasPerformedThisFrame())
-            {
-                IsOptionsOpen = false;
-                OptionCanvasObject.SetActive(false);
-                if(PlayerAnimation) PlayerAnimation.speed = 1f;
-            }
+        //if (IsOptionsOpen)
+        //{
+        //    if (!OptionCanvasObject.activeSelf || OptionAction.WasPerformedThisFrame())
+        //    {
+        //        IsOptionsOpen = false;
+        //        OptionCanvasObject.SetActive(false);
+        //        if(PlayerAnimation) PlayerAnimation.speed = 1f;
+        //    }
 
-            return;
-        }
-        else
-        {
-            if (OptionAction.WasPerformedThisFrame() && !MoveCamera.GetIsSwitched() && !BezierMoverComponent.GetIsMoving())
-            {
-                IsOptionsOpen = true;
-                OptionCanvasObject.SetActive(true);
-                if (PlayerAnimation) PlayerAnimation.speed = 0f;
-            }
-        }
+        //    return;
+        //}
+        //else
+        //{
+        //    if (OptionAction.WasPerformedThisFrame() && !MoveCamera.GetIsSwitched() && !BezierMoverComponent.GetIsMoving())
+        //    {
+        //        IsOptionsOpen = true;
+        //        OptionCanvasObject.SetActive(true);
+        //        if (PlayerAnimation) PlayerAnimation.speed = 0f;
+        //    }
+        //}
 
         // ベジェ曲線とステージ数の整合性チェック
         if (StageChildArray.Length - 1 != BezierCurveChildArray.Length) return;
