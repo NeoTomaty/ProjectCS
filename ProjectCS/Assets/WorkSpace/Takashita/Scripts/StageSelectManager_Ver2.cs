@@ -72,9 +72,11 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private GameObject OptionCanvasObject;
     private bool IsOptionsOpen = false;
 
+    // アニメーション管理
+    [SerializeField] private Animator PlayerAnimation;
 
     // SE管理
-    [SerializeField] private StageSelectSEPlayer SEPlayer;
+     [SerializeField] private StageSelectSEPlayer SEPlayer;
 
     private void Awake()
     {
@@ -178,6 +180,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             {
                 IsOptionsOpen = false;
                 OptionCanvasObject.SetActive(false);
+                if(PlayerAnimation) PlayerAnimation.speed = 1f;
             }
 
             return;
@@ -188,6 +191,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             {
                 IsOptionsOpen = true;
                 OptionCanvasObject.SetActive(true);
+                if (PlayerAnimation) PlayerAnimation.speed = 0f;
             }
         }
 
