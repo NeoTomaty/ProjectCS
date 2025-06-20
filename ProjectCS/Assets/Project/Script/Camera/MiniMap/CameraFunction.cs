@@ -13,6 +13,7 @@
 // 06/13　森脇 フィニッシュ時のカメラ制御
 // 06/13 高下 通常のロックオンを廃止
 // 06/13 高下 ターゲットを変更するSetSnack関数を追加
+// 06/19　森脇 フィニッシュ時のカメラ制御
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -64,7 +65,7 @@ public class CameraFunction : MonoBehaviour
     [SerializeField] private float ForceLockOnTime = 2.0f;          // 強制ロックオンの持続秒数
 
     private bool isSpecialViewActive = false;    // 特別視点モードが有効かどうかのフラグ
-    private Vector3 specialViewRelativePosition; // プレイヤーからの相対座標を保持する変数
+    private Transform specialViewTargetTransform;// プレイヤーからの相対座標を保持する変数
 
     // カメラの回転状態（ヨー・ピッチ）
     private float yaw = 0f;
@@ -101,9 +102,9 @@ public class CameraFunction : MonoBehaviour
 
     [Header("特別視点設定")]
     [Tooltip("特別視点への移行速度")]
-    [SerializeField] private float SpecialViewTransitionSpeed = 3.0f;
+    [SerializeField] private float SpecialViewTransitionSpeed = 0.3f;
 
-    [SerializeField] private float specialViewTransitionDuration = 1.0f;
+    [SerializeField] private float specialViewTransitionDuration = 0.3f;
     private Vector3 specialViewStartPos;
     private Quaternion specialViewStartRot;
     private float specialViewElapsedTime = 0f;
@@ -127,6 +128,13 @@ public class CameraFunction : MonoBehaviour
 
         if (isSpecialViewActive)
         {
+            if (specialViewTargetTransform == null)
+            {
+                Debug.LogWarning("特別視点のターゲットが失われました。通常視点に復帰します。");
+                StopSpecialView();
+                return;
+            }
+
             if (!wasInSpecialView)
             {
                 specialViewStartPos = transform.position;
@@ -135,10 +143,10 @@ public class CameraFunction : MonoBehaviour
                 wasInSpecialView = true;
             }
 
-            specialViewElapsedTime += Time.deltaTime;
+            specialViewElapsedTime += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(specialViewElapsedTime / specialViewTransitionDuration);
 
-            Vector3 desiredPosition = Player.transform.TransformPoint(specialViewRelativePosition);
+            Vector3 desiredPosition = specialViewTargetTransform.position;
             Vector3 lookAtPoint = Player.position + Vector3.up * 1.0f;
             Quaternion desiredRotation = Quaternion.LookRotation(lookAtPoint - desiredPosition);
 
@@ -347,33 +355,40 @@ public class CameraFunction : MonoBehaviour
         RotationRatio = ratio;
     }
 
-
-    public void StartSpecialView(Vector3 relativePosition)
+    public void StartSpecialView(Transform targetTransform)
     {
-        // 特別視点モードを有効にし、目標の相対位置を保存
-        this.isSpecialViewActive = true;
-        this.specialViewRelativePosition = relativePosition;
+        if (targetTransform == null)
+        {
+            Debug.LogError("特別視点のターゲットが設定されていません。");
+            return;
+        }
 
-        Debug.Log("特別視点モード開始。目標相対位置: " + relativePosition);
+        IsLookingTarget = false;
+        IsTransitioningToTarget = false;
+        IsReturningToNormal = false;
+        IsForceLockOn = false;
+
+        isSpecialViewActive = true;
+        specialViewTargetTransform = targetTransform;
+        wasInSpecialView = false;
+
+        Debug.Log("特別視点モード開始。目標地点: " + targetTransform.name);
     }
 
     public void StopSpecialView()
     {
-        // モードが有効でなければ何もしない
         if (!isSpecialViewActive) return;
 
         isSpecialViewActive = false;
+        specialViewTargetTransform = null; // 参照をクリア
 
-        // 通常視点へのスムーズな復帰処理を開始する
-        // 既存の復帰ロジック(IsReturningToNormal)を再利用
         IsReturningToNormal = true;
         ReturnTime = 0.0f;
         ReturnStartPos = transform.position;
         ReturnStartRot = transform.rotation;
-
-        // 復帰後のカメラ角度をプレイヤーの現在の向きに合わせることで、自然な視点復帰を促す
         yaw = Player.eulerAngles.y;
-        pitch = 20f; // デフォルトのピッチ角に戻す
+        pitch = 20f;
+        currentReturnDuration = NormalLockOnReturnDuration;
 
         Debug.Log("特別視点モード終了。通常視点へ復帰します。");
     }
