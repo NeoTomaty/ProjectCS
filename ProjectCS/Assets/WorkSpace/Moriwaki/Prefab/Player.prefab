@@ -1786,10 +1786,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cda75b9293c6f24e99ccefa8ecfbece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snackObject: {fileID: 0}
+  snackObject: {fileID: 1779649352305782782, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
   cameraFunction: {fileID: 0}
   specialViewPosition: {x: 0, y: 2, z: -4}
-  hitEffectPrefab: {fileID: 8937284706041968978, guid: 419ac2ca37c258c42bbea96ef89a3454, type: 3}
+  hitEffectPrefab: {fileID: 6441873369525384307, guid: 0f3d407feb92ebb49b98d0157de5008a, type: 3}
   effectSpawnPoint: {fileID: 3537125814049663471}
   hitSound: {fileID: 8300000, guid: 5c5de228247c462419371259ce036236, type: 3}
   audioSource: {fileID: 6702316114717174668}
@@ -1964,6 +1964,8 @@ GameObject:
   - component: {fileID: 784657071238269402}
   - component: {fileID: 7344648348217904998}
   - component: {fileID: 8166748469896893238}
+  - component: {fileID: 4626364061913869061}
+  - component: {fileID: 7306514920274885548}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1980,7 +1982,7 @@ Transform:
   m_GameObject: {fileID: 4874249585817461011}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.05, y: 0.72, z: -139.96}
+  m_LocalPosition: {x: 23.05, y: 0.72, z: -139.4}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2122,6 +2124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
   MoveSE: {fileID: 0}
+  DecideSE: {fileID: 0}
 --- !u!114 &163882227025291501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2260,6 +2263,7 @@ MonoBehaviour:
   overheatTime: 2
   chargingSpeedMultiplier: 0.8
   chargeEffectPrefab: {fileID: 4782991280154357332, guid: 11ddb81fcff55a5428885c55431038b2, type: 3}
+  playerEffectController: {fileID: 7306514920274885548}
   JumpPower: 0
   chargeThresholdTime: 0.3
 --- !u!114 &6803385135700698291
@@ -2630,6 +2634,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: f9591cd5-4798-49db-b13b-9eade7d058ed
     m_ActionName: 'StageSelect/RightMove[/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 50b97f8c-9ae3-449a-918d-0941fc5985a5
+    m_ActionName: 'StageSelect/Option[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2672,6 +2680,7 @@ MonoBehaviour:
   LiftingJump: {fileID: 6803385135700698291}
   GaugeController: {fileID: 0}
   PlayerSpeed: {fileID: 0}
+  ScoreUI: {fileID: 0}
   Score: 0
   totalScore: 0
   ComboBonusUpValue: 0.2
@@ -2689,6 +2698,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   time: 1
   decelerationAmount: 1
+--- !u!114 &4626364061913869061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4874249585817461011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeb9b29e252f22246b8eafc1212e262d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerRigidbody: {fileID: 5660187365558275549}
+  maxInterval: 0.5
+  minInterval: 0.05
+  minSpeed: 40
+  maxSpeed: 100
+  playerEffectController: {fileID: 7306514920274885548}
+--- !u!114 &7306514920274885548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4874249585817461011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5edd7a3812fb100499214f179b2d3e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChargeJumpEffect:
+    prefab: {fileID: 6441873369525384307, guid: 0f3d407feb92ebb49b98d0157de5008a, type: 3}
+    offset: {fileID: 3109540996412661342}
+    duration: 1
+    rotationEuler: {x: 0, y: 0, z: 0}
+  SparkEffect:
+    prefab: {fileID: 4503612902121041701, guid: 5a936c83b1746f14f9100db745e94f04, type: 3}
+    offset: {fileID: 3109540996412661342}
+    duration: 1
+    rotationEuler: {x: 0, y: 180, z: 0}
 --- !u!1 &5218775462136679864
 GameObject:
   m_ObjectHideFlags: 0
