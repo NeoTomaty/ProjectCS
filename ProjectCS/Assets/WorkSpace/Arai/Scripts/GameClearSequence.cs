@@ -17,6 +17,7 @@
 // 06/16　荒井　クリア演出の内容を大幅に変更
 // 06/18　荒井　カメラの動かし方を変更し、意図しないカメラワークを対策
 // 06/19　荒井　ポーズ入力無効化を追加
+// 06/20　高下　スコア保存の処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -245,6 +246,22 @@ public class GameClearSequence : MonoBehaviour
         {
             if (Input.anyKeyDown)
             {
+                // スコア保存
+                ScoreManager scoreManager = Object.FindFirstObjectByType<ScoreManager>();
+                StageSelector stageSelector = Object.FindFirstObjectByType<StageSelector>();
+
+                if (scoreManager && stageSelector)
+                {
+                    int selectStageNumber = stageSelector.GetStageNumber();
+                    int stageScore = scoreManager.GetStageScore(selectStageNumber);
+
+                    if (stageScore < Score)
+                    {
+                        scoreManager.SetStageScore(selectStageNumber, (int)Score);
+                        Debug.Log("スコア更新");
+                    }
+                }
+
                 ClearConditions.TriggerSceneTransition();
             }
         }
