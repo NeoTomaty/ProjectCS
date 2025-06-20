@@ -80,7 +80,13 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     private bool IsRespawn = true;
 
+<<<<<<< HEAD
     private bool IsFlyingAway = true;
+=======
+    [SerializeField]
+    [Header("吹っ飛びエフェクト")]
+    private SnackEffectController snackEffectController;
+>>>>>>> origin/Fujimoto
 
     [Header("SE")]
     //効果音を鳴らすためのAudioSource
@@ -156,6 +162,9 @@ public class BlownAway_Ver3 : MonoBehaviour
             // プレイヤーが離れたら多段ヒット防止フラグをtrue
             HitSnack = true;
 
+            // 吹っ飛びエフェクト停止
+            snackEffectController.StopFlyingEffect();
+
             Debug.Log($"落下速度を制限しました: {Rb.linearVelocity.y}");
         }
     }
@@ -190,9 +199,12 @@ public class BlownAway_Ver3 : MonoBehaviour
             // 多段ヒット防止フラグfalse
             HitSnack = false;
 
+<<<<<<< HEAD
             // 吹っ飛ばし状態へ以降
             IsFlyingAway = true;
 
+=======
+>>>>>>> origin/Fujimoto
             //ClearConditionsScript.
             // Snackに触れたらHitNextFallAreaをtrueに戻す
             HitNextFallArea = true;
@@ -326,6 +338,9 @@ public class BlownAway_Ver3 : MonoBehaviour
         isHitStopActive = false;
 
         Debug.Log("ヒットストップ終了（自動）");
+
+        // 吹っ飛びエフェクト開始
+        snackEffectController.PlayFlyingEffect();
     }
 
     private IEnumerator HitStopManual()
@@ -348,6 +363,9 @@ public class BlownAway_Ver3 : MonoBehaviour
         isHitStopActive = false;
 
         Debug.Log("ヒットストップ終了（手動）");
+
+        // 吹っ飛びエフェクト開始
+        snackEffectController.PlayFlyingEffect();
     }
 
     // 外部スクリプトから呼び出してヒットストップを終了させる
