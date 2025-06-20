@@ -1669,7 +1669,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: optionUI
       value: 
-      objectReference: {fileID: 1769501208}
+      objectReference: {fileID: 0}
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: audioSource
       value: 
@@ -1682,6 +1682,10 @@ PrefabInstance:
       propertyPath: firstOptionButton
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
+      propertyPath: gameStartCountdown
+      value: 
+      objectReference: {fileID: 1470448485}
     - target: {fileID: 6272492561119360749, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: m_Name
       value: PauseManager
@@ -6641,11 +6645,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2839981040254738891, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
   m_PrefabInstance: {fileID: 1767057985}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1769501208 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3953504118774940546, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
-  m_PrefabInstance: {fileID: 1801492987}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1797881377 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 646192129808312765, guid: ee4d0e94c1029f94188267c04960cfd9, type: 3}
@@ -8108,6 +8107,7 @@ MonoBehaviour:
   PlayerObject: {fileID: 177602515}
   SnackObject: {fileID: 177602515}
   CameraObject: {fileID: 946110160}
+  PauseInput: {fileID: 0}
   CameraTiltAngle: 0
   Offset: 5
   UIShowTime: 10
