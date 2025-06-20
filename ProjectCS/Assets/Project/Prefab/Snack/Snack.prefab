@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: -8557121049052341146}
   - component: {fileID: 6941872024859815481}
   - component: {fileID: -5528020564993694346}
+  - component: {fileID: -9214584986695595477}
   m_Layer: 0
   m_Name: Snack
   m_TagString: Untagged
@@ -168,6 +169,10 @@ MonoBehaviour:
   CameraFunction: {fileID: 0}
   flyingPoint: {fileID: 0}
   ClearConditionsScript: {fileID: 0}
+  snackEffectController: {fileID: 0}
+  audioSource: {fileID: 0}
+  HitSE: {fileID: 0}
+  playerAnimController: {fileID: 0}
 --- !u!114 &-1825022298241199866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,3 +231,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launchForce: 600
+--- !u!114 &-9214584986695595477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779649352305782782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e9362f78980448b6a07e2120c3f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SnackFlyingEffect:
+    prefab: {fileID: 389821699222927281, guid: 856f1f18fb8861d4499813c38a5963ae, type: 3}
+    offset: {fileID: 7554536379738216804}
+    duration: 1
+    rotationEuler: {x: 0, y: 50, z: 0}
