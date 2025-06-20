@@ -28,6 +28,7 @@
 // 06/05　荒井　高さを条件としてリフティングジャンプを強制終了する処理を追加
 // 06/07　荒井　カウントダウン中にリフティングジャンプを発動しないように修正
 // 06/13  高下　ターゲットを変更する関数を追加
+// 06/20  森脇　アニメーターの不要な部分コメントアウト
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -38,14 +39,18 @@ public class LiftingJump : MonoBehaviour
 {
     [Header("参照")]
     [SerializeField] private GameObject TargetObject; // 目標地点
+
     [SerializeField] private PlayerInput PauseInput; //ポーズ画面の操作受け取り
     [SerializeField] private GameStartCountdown GameStartCountdownScript; // ゲーム開始カウントダウンのスクリプト
+
     [Header("ジャンプ時の移動速度の基礎倍率")]
     [SerializeField] private float JumpSpeed = 2f; // ジャンプ時の移動速度補正
+
     [Header("オブジェクト貫通設定")]
-    [SerializeField] private bool IgnoreNonTargetCollisions = false;     
-    [Header("アニメーション")]
-    [SerializeField] private PlayerAnimationController playerAnimController;
+    [SerializeField] private bool IgnoreNonTargetCollisions = false;
+
+    //[Header("アニメーション")]
+    //[SerializeField] private PlayerAnimationController playerAnimController;
 
     private MovePlayer MovePlayer; // プレイヤーの移動スクリプトの参照
     private ObjectGravity ObjectGravityScript; // 重力スクリプトの参照
@@ -63,7 +68,6 @@ public class LiftingJump : MonoBehaviour
 
     private float OnStartedPlayerHeight = 0f; // リフティングジャンプ開始時のプレイヤーの高さ
     private float TerminateHeight = 200f; // リフティングジャンプを強制的に終了させる高度
-
 
     public void SetJumpPower(float Power)
     {
@@ -107,7 +111,7 @@ public class LiftingJump : MonoBehaviour
         IsJumping = true;
 
         // プレイヤーの高さを保存
-        OnStartedPlayerHeight=transform.position.y;
+        OnStartedPlayerHeight = transform.position.y;
 
         // プレイヤーから目標地点へのベクトルを計算
         Vector3 JumpDirection = (TargetObject.transform.position - transform.position);
@@ -148,7 +152,7 @@ public class LiftingJump : MonoBehaviour
         // 移動速度を元に戻す
         MovePlayer.MoveSpeedMultiplier = 1f;
 
-        playerAnimController.PlayRandomAnimation();
+        // playerAnimController.PlayRandomAnimation();
     }
 
     private void Awake()

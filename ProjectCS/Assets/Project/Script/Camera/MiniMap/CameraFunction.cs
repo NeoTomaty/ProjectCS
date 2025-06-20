@@ -22,7 +22,6 @@ public class CameraFunction : MonoBehaviour
 {
     public Transform Player;     // プレイヤーのTransform
     public Transform Target;     // ロックオン対象のTransform
-
     [SerializeField] private PlayerInput PlayerInput;            // プレイヤーの入力処理コンポーネント
     [SerializeField] private PlayerSpeedManager PlayerSpeedManager;  // プレイヤーの速度管理コンポーネント
 
@@ -102,9 +101,9 @@ public class CameraFunction : MonoBehaviour
 
     [Header("特別視点設定")]
     [Tooltip("特別視点への移行速度")]
-    [SerializeField] private float SpecialViewTransitionSpeed = 0.3f;
+    [SerializeField] private float SpecialViewTransitionSpeed = 0.2f;
 
-    [SerializeField] private float specialViewTransitionDuration = 0.3f;
+    [SerializeField] private float specialViewTransitionDuration = 0.2f;
     private Vector3 specialViewStartPos;
     private Quaternion specialViewStartRot;
     private float specialViewElapsedTime = 0f;
@@ -128,13 +127,6 @@ public class CameraFunction : MonoBehaviour
 
         if (isSpecialViewActive)
         {
-            if (specialViewTargetTransform == null)
-            {
-                Debug.LogWarning("特別視点のターゲットが失われました。通常視点に復帰します。");
-                StopSpecialView();
-                return;
-            }
-
             if (!wasInSpecialView)
             {
                 specialViewStartPos = transform.position;
@@ -372,7 +364,7 @@ public class CameraFunction : MonoBehaviour
         specialViewTargetTransform = targetTransform;
         wasInSpecialView = false;
 
-        Debug.Log("特別視点モード開始。目標地点: " + targetTransform.name);
+        Debug.Log("特別視点モード開始。目標相対位置: " + targetTransform);
     }
 
     public void StopSpecialView()
@@ -380,8 +372,6 @@ public class CameraFunction : MonoBehaviour
         if (!isSpecialViewActive) return;
 
         isSpecialViewActive = false;
-        specialViewTargetTransform = null; // 参照をクリア
-
         IsReturningToNormal = true;
         ReturnTime = 0.0f;
         ReturnStartPos = transform.position;

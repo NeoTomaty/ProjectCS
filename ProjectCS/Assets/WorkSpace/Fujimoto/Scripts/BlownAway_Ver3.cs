@@ -11,6 +11,7 @@
 // 06/13 高下 スナック複製時に必要なコンポーネントを参照するSetTarget関数を追加
 // 06/13 荒井 クリアカウントのタイミングをリフティング時→落下時に変更
 // 06/19 中町 プレイヤーがスナックに当たったときのSE実装
+// 06/20 森脇 アニメーションの設定
 //====================================================
 using UnityEngine;
 using System.Collections;
@@ -92,6 +93,9 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     //プレイヤーが当たったときの効果音
     [SerializeField] private AudioClip HitSE;
+
+    [Header("アニメーション")]
+    [SerializeField] private PlayerAnimationController playerAnimController;
 
     private void Start()
     {
@@ -186,7 +190,7 @@ public class BlownAway_Ver3 : MonoBehaviour
         else if (collision.gameObject.CompareTag("Player"))
         {
             //SEを再生
-            if(audioSource != null && HitSE != null)
+            if (audioSource != null && HitSE != null)
             {
                 audioSource.PlayOneShot(HitSE);
             }
@@ -197,8 +201,10 @@ public class BlownAway_Ver3 : MonoBehaviour
             // 多段ヒット防止フラグfalse
             HitSnack = false;
 
+
             // 吹っ飛ばし状態へ以降
             IsFlyingAway = true;
+
 
             //ClearConditionsScript.
             // Snackに触れたらHitNextFallAreaをtrueに戻す
@@ -347,6 +353,8 @@ public class BlownAway_Ver3 : MonoBehaviour
         shouldEndHitStop = false;
 
         Debug.Log("ヒットストップ（手動解除）開始");
+
+        playerAnimController.PlayRandomAnimation();
 
         // 外部から EndHitStop() が呼ばれるまで待つ
         while (!shouldEndHitStop)
