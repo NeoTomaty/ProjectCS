@@ -8,6 +8,7 @@
 // 06/06　森脇 カウントダウン時に特定アニメーション再生追加
 // 06/13　森脇 カメラの制御フラグ追加
 // 06/19　森脇  地面との衝突時に rotationModel に戻る機能を追加
+// 06/20　森脇  予期しない場合に rotationModel に戻る機能を追加
 //======================================================
 
 using UnityEngine;
@@ -43,6 +44,30 @@ public class PlayerAnimationController : MonoBehaviour
 
     [Tooltip("特別視点時のプレイヤーからの相対的なカメラ位置")]
     [SerializeField] private Transform specialViewTarget;
+
+    [Header("衝突によるリセット")]
+    [Tooltip("これに衝突するとrotationModelに戻るオブジェクト")]
+    [SerializeField] private GameObject resetTriggerObject;
+
+    public void ReturnToRotationModel()
+    {
+        // すでに rotationModel が表示されている場合は何もしない
+        if (!useNormalModel)
+        {
+            return;
+        }
+
+        // 状態をリセット
+        useNormalModel = false;
+        waitingForAnimFinish = false;
+
+        // エフェクト再生とカメラ制御終了
+        PlayTransformEffect();
+        EndSpecialCameraView();
+
+        // モデルの表示を更新
+        UpdateModelVisibility();
+    }
 
     private void Update()
     {
@@ -151,7 +176,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (useNormalModel && collision.gameObject.CompareTag("Ground"))
+        // "Ground" タグと衝突したか、またはインスペクターで指定したオブジェクトと衝突したか判定
+        bool isGround = collision.gameObject.CompareTag("Ground");
+        bool isTriggerObject = (resetTriggerObject != null && collision.gameObject == resetTriggerObject);
+
+        if (useNormalModel && (isGround || isTriggerObject))
         {
             PlayTransformEffect();
 
