@@ -80,6 +80,8 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     private bool IsRespawn = true;
 
+    private bool IsFlyingAway = true;
+
     [Header("SE")]
     //効果音を鳴らすためのAudioSource
     [SerializeField] private AudioSource audioSource;
@@ -162,8 +164,17 @@ public class BlownAway_Ver3 : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            flyingPoint.ResetComboBonus();
-            ClearConditionsScript.CheckLiftingCount(gameObject);
+            // 吹っ飛ばし状態の時だけ実行
+            if (IsFlyingAway)
+            {
+                // コンボボーナスリセット
+                flyingPoint.ResetComboBonus();
+
+                // クリアカウント進行
+                ClearConditionsScript.CheckLiftingCount(gameObject);
+
+                IsFlyingAway = false;
+            }
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
@@ -179,6 +190,8 @@ public class BlownAway_Ver3 : MonoBehaviour
             // 多段ヒット防止フラグfalse
             HitSnack = false;
 
+            // 吹っ飛ばし状態へ以降
+            IsFlyingAway = true;
 
             //ClearConditionsScript.
             // Snackに触れたらHitNextFallAreaをtrueに戻す
