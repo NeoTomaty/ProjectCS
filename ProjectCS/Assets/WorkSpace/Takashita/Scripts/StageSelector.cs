@@ -21,6 +21,9 @@ public class StageSelector : MonoBehaviour
         Stage4,
         Stage5,
         Stage6,
+        Stage7,
+        Stage8,
+        Stage9,
     }
 
     // 現在選択中のステージ（static：どのシーンからでも参照可能）
