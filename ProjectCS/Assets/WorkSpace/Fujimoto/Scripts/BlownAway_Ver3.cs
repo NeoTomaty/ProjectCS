@@ -212,7 +212,7 @@ public class BlownAway_Ver3 : MonoBehaviour
             HitSnack = true;
 
             // 吹っ飛びエフェクト停止
-            //snackEffectController.StopFlyingEffect();
+            snackEffectController.StopFlyingEffect();
 
             Debug.Log($"落下速度を制限しました: {Rb.linearVelocity.y}");
         }
