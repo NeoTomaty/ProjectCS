@@ -14,6 +14,8 @@
 // 06/13 高下 通常のロックオンを廃止
 // 06/13 高下 ターゲットを変更するSetSnack関数を追加
 // 06/19　森脇 フィニッシュ時のカメラ制御
+// 06/23 高下 強制ロックオン時のカメラの回転角度を制限
+// 06/23 高下 強制ロックオン時にプレイヤーの頭上の矢印を一時的に非表示にする処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -50,6 +52,9 @@ public class CameraFunction : MonoBehaviour
     [SerializeField] private float ForceLockOnReturnDuration = 0.3f;      // 強制ロックオン解除時の補完時間
 
     [SerializeField] private float TransitionEndThreshold = 0.01f;
+
+    [SerializeField] private float minXAngle = -35f;
+    [SerializeField] private float maxXAngle = 35f;
 
     private float currentTransitionDuration = 0.5f; // ロックオン補完時間（動的切替）
     private float currentReturnDuration = 0.4f;     // ロックオン解除補完時間（動的切替）
@@ -109,8 +114,10 @@ public class CameraFunction : MonoBehaviour
     private float specialViewElapsedTime = 0f;
     private bool wasInSpecialView = false;
 
-    private void Start()
-    {
+    [SerializeField] private GameObject PlayerArrow;
+
+   private void Start()
+   {
         if (!PlayerInput) Debug.LogError("PlayerInput が設定されていません");
         if (!PlayerSpeedManager) Debug.LogError("PlayerSpeedManager が設定されていません");
 
@@ -203,7 +210,10 @@ public class CameraFunction : MonoBehaviour
             }
 
             Vector3 playerPos = Player.position;
-            Vector3 targetPos = Target.position;
+            Vector3 targetPos = Vector3.zero;
+
+            targetPos = Target.transform.position;
+
             Vector3 toTarget = (targetPos - playerPos).normalized;
 
             // プレイヤーから後方に配置（ターゲット反対方向）
@@ -211,6 +221,18 @@ public class CameraFunction : MonoBehaviour
             desiredPos.y += LockOnHeight;
 
             Quaternion desiredRot = Quaternion.LookRotation((targetPos + Vector3.up * cameraHeight) - desiredPos);
+
+            // desiredRot の直後に制限を適用
+            Vector3 euler = desiredRot.eulerAngles;
+
+            // UnityのEuler角は0～360なので一度-180～180に正規化
+            if (euler.x > 180f) euler.x -= 360f;
+
+            // X軸の回転を制限
+            euler.x = Mathf.Clamp(euler.x, minXAngle, maxXAngle);
+
+            // 制限後の回転をQuaternionに戻す
+            desiredRot = Quaternion.Euler(euler);
 
             if (IsTransitioningToTarget)
             {
@@ -312,6 +334,7 @@ public class CameraFunction : MonoBehaviour
         if (IsForceLockOn)
         {
             ForceLockOnTimeLeft = ForceLockOnTime;
+            if(PlayerArrow) PlayerArrow.SetActive(false);
         }
     }
 
@@ -331,6 +354,8 @@ public class CameraFunction : MonoBehaviour
         currentReturnDuration = IsForceLockOn
             ? ForceLockOnReturnDuration
             : NormalLockOnReturnDuration;
+
+        if (PlayerArrow) PlayerArrow.SetActive(true);
 
         Debug.Log("ロックオン終了速度" + currentReturnDuration);
     }
