@@ -2,7 +2,7 @@
 // スクリプト名：ChargeJumpPlayer
 // 作成者：宮林
 // 内容：プレイヤーのジャンプ処理
-// 最終更新日：06/05
+// 最終更新日：06/23
 //
 // [Log]
 // 04/26　宮林　スクリプト作成
@@ -14,6 +14,7 @@
 // 05/03　森脇　ジャンプ外部へ渡す
 // 06/05　荒井　効果音の再生処理を追加（ジャンプ＆着地）
 // 06/19　藤本　チャージエフェクト開始処理を追記
+// 06/23　荒井　カウントダウン中だったらジャンプをしないように変更
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -47,6 +48,9 @@ public class ChargeJumpPlayer : MonoBehaviour
 
     [Header("エフェクト")]
     [SerializeField] private PlayerEffectController playerEffectController;
+
+    [Header("カウントダウン参照")]
+    [SerializeField] private GameStartCountdown GameStartCountdownScript;
 
     private Rigidbody rb;
     private bool isGrounded;
@@ -280,6 +284,9 @@ public class ChargeJumpPlayer : MonoBehaviour
     // ジャンプボタン押したとき
     private void OnJumpStarted(InputAction.CallbackContext context)
     {
+        // カウントダウン中は無効化
+        if (GameStartCountdownScript != null && GameStartCountdownScript.IsCountingDown) return;
+
         isJumpButtonPressed = true;
         jumpButtonHoldTime = 0.0f;
         isOverheated = false;
@@ -289,6 +296,9 @@ public class ChargeJumpPlayer : MonoBehaviour
     // ジャンプボタン離したとき
     private void OnJumpCanceled(InputAction.CallbackContext context)
     {
+        // カウントダウン中は無効化
+        if (GameStartCountdownScript != null && GameStartCountdownScript.IsCountingDown) return;
+
         isJumpButtonPressed = false;
 
         if (isCharging && isGrounded)

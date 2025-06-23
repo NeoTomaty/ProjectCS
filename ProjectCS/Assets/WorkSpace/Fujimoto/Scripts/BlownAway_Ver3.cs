@@ -172,7 +172,6 @@ public class BlownAway_Ver3 : MonoBehaviour
                 // 一定時間ごとにスコア減少
                 if (PenaltyCount > ScoreDecreaseInterval)
                 {
-                    // 関数呼び出し
                     if (flyingPoint != null)
                     {
                         flyingPoint.DecreaseScore(ScoreDecreasePoint);
@@ -187,6 +186,11 @@ public class BlownAway_Ver3 : MonoBehaviour
                 // ペナルティ開始時間を超えたらスコア減少開始
                 if (PenaltyCount > ScorePenaltyStartTime)
                 {
+                    if (flyingPoint != null)
+                    {
+                        flyingPoint.DecreaseScore(ScoreDecreasePoint);
+                    }
+
                     IsPenaltyTime = true;
 
                     // カウントリセット
