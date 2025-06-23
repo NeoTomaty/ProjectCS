@@ -9,6 +9,7 @@
 // 05/13 高下 地面との当たり判定をタグからレイヤーに変更
 // 05/14 高下 地面の座標とオブジェクトの落下座標を分けて処理をすることに変更
 // 06/13 高下 スナック複製時に必要なコンポーネントを参照するSetTarget関数を追加
+// 06/23 高下 あらかじめ設定されたワープ先で落下地点を計算するように変更
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
@@ -31,6 +32,8 @@ public class FallPointCalculator : MonoBehaviour
     [Tooltip("BaseGroundのレイヤーを設定")]
     [SerializeField] private LayerMask BaseGroundLayerMask; // ベースとなる地面のレイヤー
 
+    private BlownAway_Ver3 BAV3;
+
     void Start()
     {
         if(!LAManager) Debug.LogError("LiftingAreaManagerが設定されていません");
@@ -38,12 +41,19 @@ public class FallPointCalculator : MonoBehaviour
         //CalculateGroundPoint(); // test
 
         SnackOffsetY = GetComponent<Collider>().bounds.extents.y;
+
+        BAV3 = GetComponent<BlownAway_Ver3>();
+
+        // クローンで複製されたスナックのみ初回の落下地点の計算を行う
+        if (gameObject.name.EndsWith("(Clone)"))
+        {
+            CalculateGroundPoint();
+        }
     }
 
     public void SetTarget(LiftingAreaManager LAM)
     {
         LAManager = LAM;
-        CalculateGroundPoint();
     }
 
     // スナックが地面に接しているかつリフティングエリア外のときは
@@ -76,7 +86,7 @@ public class FallPointCalculator : MonoBehaviour
     public void CalculateGroundPoint()
     {
         RaycastHit hit;
-        Vector3 origin = transform.position;
+        Vector3 origin = BAV3.NextWarpPosition;
         Vector3 direction = Vector3.down;
 
         // BaseGroundLayerのみ判定
