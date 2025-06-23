@@ -12,6 +12,8 @@
 // 06/13 荒井 クリアカウントのタイミングをリフティング時→落下時に変更
 // 06/19 中町 プレイヤーがスナックに当たったときのSE実装
 // 06/20 森脇 アニメーションの設定
+// 06/23 高下 打ち上げと同じタイミングで次のワープ先を計算するように変更
+// 06/23 高下 落下が始まったタイミングでワープするように設定
 //====================================================
 using UnityEngine;
 using System.Collections;
@@ -97,6 +99,10 @@ public class BlownAway_Ver3 : MonoBehaviour
     [Header("アニメーション")]
     [SerializeField] private PlayerAnimationController playerAnimController;
 
+    // 次のワープ先を保持する
+    private Vector3 nextWarpPosition = Vector3.zero;
+    public Vector3 NextWarpPosition => nextWarpPosition;
+
     private void Start()
     {
         Rb = GetComponent<Rigidbody>();
@@ -107,7 +113,7 @@ public class BlownAway_Ver3 : MonoBehaviour
     }
 
     // 複製時に引数で渡されたコンポーネントを設定する
-    public void SetTarget(CameraFunction CF, FlyingPoint FP, ClearConditions CC, LiftingJump LJ, Transform respawnArea, Transform groundArea)
+    public void SetTarget(CameraFunction CF, FlyingPoint FP, ClearConditions CC, LiftingJump LJ, Transform respawnArea, Transform groundArea, PlayerAnimationController PAC)
     {
         CameraFunction = CF;
         flyingPoint = FP;
@@ -115,6 +121,9 @@ public class BlownAway_Ver3 : MonoBehaviour
         LiftingJump = LJ;
         RespawnArea = respawnArea;
         GroundArea = groundArea;
+        playerAnimController = PAC;
+
+        nextWarpPosition = transform.position;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -136,7 +145,7 @@ public class BlownAway_Ver3 : MonoBehaviour
     private void Update()
     {
         // Respawnオブジェクトのより高い位置にいたらリスポーン
-        if (RespawnArea && transform.position.y > RespawnArea.position.y && HitNextFallArea == true)
+        if (RespawnArea && Rb.linearVelocity.y < 0f && HitNextFallArea == true)
         {
             HitNextFallArea = false;
             // 現在のY方向速度を保存
@@ -145,8 +154,8 @@ public class BlownAway_Ver3 : MonoBehaviour
             // リスポーン無効でなければ
             if (IsRespawn)
             {
-                Debug.Log($"Respawnオブジェクトの高さを超えたためリスポーン");
-                MoveToRandomXZInRespawnArea();
+                Debug.Log($"落下が始まったため、ワープしました");
+                DoWarp();
             }
         }
     }
@@ -270,6 +279,9 @@ public class BlownAway_Ver3 : MonoBehaviour
             // ヒットストップを開始する
             //  StartCoroutine(HitStop());
 
+            // ワープ先を計算
+            MoveToRandomXZInRespawnArea();
+
             // ロックオンする対象を設定
             CameraFunction.SetSnack(gameObject.transform);
 
@@ -381,7 +393,7 @@ public class BlownAway_Ver3 : MonoBehaviour
     }
 
     // リスポーン位置
-    private void MoveToRandomXZInRespawnArea()
+    public void MoveToRandomXZInRespawnArea()
     {
         if (RespawnArea == null || GroundArea == null)
         {
@@ -411,8 +423,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         // 保存した上方向の力を代入
         Vector3 newPos = new Vector3(randomX, y, randomZ);
-        transform.position = newPos;
-        Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
+        nextWarpPosition = newPos;
 
         Debug.Log($"上昇速度: {Rb.linearVelocity.y}");
         Debug.Log($"リスポーン座標（グラウンド内）: {newPos}");
@@ -425,4 +436,18 @@ public class BlownAway_Ver3 : MonoBehaviour
     {
         IsRespawn = false;
     }
+
+    // ワープ処理を実行
+    private void DoWarp()
+    {
+        // ワープ時の高さを最低補償
+        if(transform.position.y > nextWarpPosition.y)
+        {
+            nextWarpPosition.y = transform.position.y;
+        }
+     
+        transform.position = nextWarpPosition;
+        Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
+    }
+
 }
