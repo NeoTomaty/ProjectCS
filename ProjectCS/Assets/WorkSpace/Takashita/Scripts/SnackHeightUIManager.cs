@@ -2,11 +2,12 @@
 // スクリプト名：SnackHeightUIManager
 // 作成者：高下
 // 内容：スナックの地面までの距離をUIで管理するスクリプト
-// 最終更新日：05/14
+// 最終更新日：06/25
 // 
 // [Log]
 // 05/14 高下 スクリプト作成
 // 05/15 高下 ポインター表示のときの高さ上限値を超えられるように仮で実装
+// 06/25 荒井 複数のスナックに対応するように変更
 //====================================================
 
 // ******* このスクリプトの使い方 ******* //
@@ -15,6 +16,7 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class SnackHeightUIManager : MonoBehaviour
 {
@@ -69,6 +71,8 @@ public class SnackHeightUIManager : MonoBehaviour
     private bool IsObjectCurrentlyActive = false;          // 現在UIオブジェクトがアクティブかどうか
     private bool HasStartedRising = true;                  // 一度でも上昇が始まったかどうか
 
+    private List<GameObject> SnackObjects = new List<GameObject>(); // スナックオブジェクトのリスト
+
 
     void Start()
     {
@@ -90,6 +94,11 @@ public class SnackHeightUIManager : MonoBehaviour
         MeterRect = MeterObject.GetComponent<RectTransform>();
         PointerRect = PointerObject.GetComponent<RectTransform>();
         DistanceToGroundText = TextObject.GetComponent<Text>();
+
+        if (SnackObject != null)
+        {
+            SnackObjects.Add(SnackObject);
+        }
 
         switch (DisplayType)
         {
@@ -114,12 +123,32 @@ public class SnackHeightUIManager : MonoBehaviour
 
     void Update()
     {
-        if (!SnackObject) return;
+        if (SnackObjects.Count == 0) return;
+        //if (!SnackObject) return;
+
+        float SnackHeight = 100000f;
+        bool IsSnackGround = true;
+        float SnackVelocityY = 0f;
+        foreach (var Snack in SnackObjects)
+        {
+            // 地面に着いていない
+            if (!Snack.GetComponent<FallPointCalculator>().GetIsGround())
+            {
+                IsSnackGround = false; // 地面に着いてないスナックがある
+                // より低い位置のスナック
+                if (Snack.transform.position.y < SnackHeight)
+                {
+                    SnackHeight = Snack.transform.position.y;
+                    SnackVelocityY = Snack.GetComponent<Rigidbody>().linearVelocity.y;
+                }
+            }
+        }
 
         if (IsTextVisible)
         {
             // 地面までの距離を計算
-            DistanceToGround = Mathf.Max(0f, (SnackObject.transform.position.y - SnackOffsetY) - GroundPoint.y);
+            DistanceToGround = Mathf.Max(0f, (SnackHeight - SnackOffsetY) - GroundPoint.y);
+            //DistanceToGround = Mathf.Max(0f, (SnackObject.transform.position.y - SnackOffsetY) - GroundPoint.y);
 
             // 数値をテキストに反映
             DistanceToGroundText.text = Mathf.FloorToInt(DistanceToGround).ToString() + "m";
@@ -132,7 +161,8 @@ public class SnackHeightUIManager : MonoBehaviour
         GroundPoint = FPCalculator.GetFallPoint();
 
         // 現在の高さを割合で取得
-        float HeightRatio = ((SnackObject.transform.position.y - SnackOffsetY) - GroundPoint.y) / (MaxHeight - GroundPoint.y);
+        float HeightRatio = ((SnackHeight - SnackOffsetY) - GroundPoint.y) / (MaxHeight - GroundPoint.y);
+        //float HeightRatio = ((SnackObject.transform.position.y - SnackOffsetY) - GroundPoint.y) / (MaxHeight - GroundPoint.y);
 
         switch (DisplayType)
         {
@@ -161,13 +191,14 @@ public class SnackHeightUIManager : MonoBehaviour
 
             case GaugeDisplayMethod.RisingStarted:
                 // 上昇開始検出
-                if (!HasStartedRising && !IsGround && SnackRb.linearVelocity.y > 1f)
+                if (!HasStartedRising && !IsSnackGround && SnackVelocityY > 1f)
+                //if (!HasStartedRising && !IsGround && SnackRb.linearVelocity.y > 1f)
                 {
-                    HasStartedRising = true;
+                        HasStartedRising = true;
                 }
 
                 // 地面に着いたらリセット
-                if (IsGround)
+                if (IsSnackGround)
                 {
                     HasStartedRising = false;
                 }
@@ -177,7 +208,8 @@ public class SnackHeightUIManager : MonoBehaviour
                 break;
 
             case GaugeDisplayMethod.FallingStarted:
-                ShouldBeVisible = !IsGround && SnackRb.linearVelocity.y < 1f;
+                ShouldBeVisible = !IsSnackGround && SnackVelocityY < 1f;
+                //ShouldBeVisible = !IsGround && SnackRb.linearVelocity.y < 1f;
 
                 break;
         }
@@ -200,5 +232,19 @@ public class SnackHeightUIManager : MonoBehaviour
         {
             TextObject.SetActive(isActive);
         }
+    }
+
+    public void AddSnack(GameObject snackClone)
+    {
+        if (snackClone == null)
+        {
+            return;
+        }
+
+        // 要素被りチェック
+        if (SnackObjects.Contains(snackClone)) return;
+
+        // スナックの新たなクローンをリストに追加
+        SnackObjects.Add(snackClone);
     }
 }
