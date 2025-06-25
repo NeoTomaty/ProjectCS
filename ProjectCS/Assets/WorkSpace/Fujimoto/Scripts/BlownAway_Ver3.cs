@@ -107,7 +107,7 @@ public class BlownAway_Ver3 : MonoBehaviour
     }
 
     // 複製時に引数で渡されたコンポーネントを設定する
-    public void SetTarget(CameraFunction CF, FlyingPoint FP, ClearConditions CC, LiftingJump LJ, Transform respawnArea, Transform groundArea)
+    public void SetTarget(CameraFunction CF, FlyingPoint FP, ClearConditions CC, LiftingJump LJ, Transform respawnArea, Transform groundArea, PlayerAnimationController PAController)
     {
         CameraFunction = CF;
         flyingPoint = FP;
@@ -115,6 +115,7 @@ public class BlownAway_Ver3 : MonoBehaviour
         LiftingJump = LJ;
         RespawnArea = respawnArea;
         GroundArea = groundArea;
+        playerAnimController = PAController;
     }
 
     private void OnTriggerEnter(Collider other)

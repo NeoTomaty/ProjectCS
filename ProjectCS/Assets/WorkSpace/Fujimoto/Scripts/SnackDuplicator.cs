@@ -24,9 +24,10 @@ public class SnackDuplicator : MonoBehaviour
     [Header("複製間隔（秒）")]
     [SerializeField] private float interval = 5f;
 
-    [Header("最大複製数")]
+    [Header("複製されるダミースナックの最大数")]
     [SerializeField] private int maxCount = 10;
 
+    [Header("ダミーに適用する参照オブジェクト")]
     [SerializeField] private CameraFunction CameraFunctionComponent;
     [SerializeField] private FlyingPoint FlyingPointComponent;
     [SerializeField] private ClearConditions ClearConditionsComponent;
@@ -36,6 +37,7 @@ public class SnackDuplicator : MonoBehaviour
     [SerializeField] private Transform GroundArea;
     [SerializeField] private GameClearSequence ClearSequenceComponent;
     [SerializeField] private Transform SceneObjectTransform;
+    [SerializeField] private PlayerAnimationController PlayerAnimationController;
 
     private int currentCount = 0;
 
@@ -74,7 +76,8 @@ public class SnackDuplicator : MonoBehaviour
                 ClearConditionsComponent, 
                 LiftingJumpComponent,
                 SnackRespawnPoint,
-                GroundArea
+                GroundArea,
+                PlayerAnimationController
                 );
 
            
