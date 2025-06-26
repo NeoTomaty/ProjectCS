@@ -38,6 +38,8 @@ public class SnackDuplicator : MonoBehaviour
     [SerializeField] private GameClearSequence ClearSequenceComponent;
     [SerializeField] private Transform SceneObjectTransform;
     [SerializeField] private PlayerAnimationController PlayerAnimationController;
+    //[SerializeField] private SnackHeightUIManager_Ver2 SnackHeightUIManagerComponent;
+
 
     private int currentCount = 0;
 
@@ -80,6 +82,8 @@ public class SnackDuplicator : MonoBehaviour
                 PlayerAnimationController
                 );
 
+            //if(SnackHeightUIManagerComponent) SnackHeightUIManagerComponent.SetSnackObject(SnackInstance);
+
            
             GameObject LiftingAreaInstance = Instantiate(LiftingAreaObject, new Vector3(0f, -1000f, 0f), Quaternion.identity, SceneObjectTransform);
             LiftingAreaManager LAM = LiftingAreaInstance.GetComponent<LiftingAreaManager>();
@@ -96,5 +100,14 @@ public class SnackDuplicator : MonoBehaviour
         }
 
         Debug.Log("ï°êªäÆóπ");
+    }
+
+    public int GetMaxSnackCount()
+    {
+        return maxCount + 1;
+    }
+    public int GetCurrentSnackCound()
+    {
+        return currentCount + 1;
     }
 }
