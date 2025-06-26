@@ -37,11 +37,10 @@ public class GameStartCountdown : MonoBehaviour
     [Header("カウントダウン中に再生するアニメーショントリガー名")]
     [SerializeField] private string countdownAnimTrigger = "CountdownIdle";
 
-
     private bool isCountingDown = false;
     public bool IsCountingDown => isCountingDown;
 
-    void Start()
+    private void Start()
     {
         StartCoroutine(CountdownCoroutine());
 
@@ -50,7 +49,6 @@ public class GameStartCountdown : MonoBehaviour
         {
             playerAnimController.PlaySpecificAnimation(countdownAnimTrigger);
         }
-
     }
 
     private IEnumerator CountdownCoroutine()
@@ -68,7 +66,6 @@ public class GameStartCountdown : MonoBehaviour
         countdownCanvas.gameObject.SetActive(false);
 
         Time.timeScale = 1f;
-
 
         // model非表示 or 通常状態に戻す
         if (playerAnimController != null)
