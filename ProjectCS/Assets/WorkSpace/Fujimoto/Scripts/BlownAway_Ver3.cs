@@ -86,8 +86,6 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     [Header("スナック放置時のペナルティ設定")]
     [SerializeField]
-    FlyingPoint FlyingPointScript;
-    [SerializeField]
     private float ScorePenaltyStartTime = 40f;
     [SerializeField]
     private float ScoreDecreaseInterval = 10f;
@@ -176,9 +174,9 @@ public class BlownAway_Ver3 : MonoBehaviour
                 if (PenaltyCount > ScoreDecreaseInterval)
                 {
                     // 関数呼び出し
-                    if (FlyingPointScript != null)
+                    if (flyingPoint != null)
                     {
-                        FlyingPointScript.DecreaseScore(ScoreDecreasePoint);
+                        flyingPoint.DecreaseScore(ScoreDecreasePoint);
                     }
 
                     // カウントリセット
