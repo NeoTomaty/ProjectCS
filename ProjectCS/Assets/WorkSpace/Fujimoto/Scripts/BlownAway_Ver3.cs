@@ -12,6 +12,7 @@
 // 06/13 荒井 クリアカウントのタイミングをリフティング時→落下時に変更
 // 06/19 中町 プレイヤーがスナックに当たったときのSE実装
 // 06/20 森脇 アニメーションの設定
+// 06/20 荒井 スナック放置時のペナルティ処理を追加
 //====================================================
 using UnityEngine;
 using System.Collections;
@@ -83,6 +84,19 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     private bool IsFlyingAway = true;
 
+    [Header("スナック放置時のペナルティ設定")]
+    [SerializeField]
+    FlyingPoint FlyingPointScript;
+    [SerializeField]
+    private float ScorePenaltyStartTime = 40f;
+    [SerializeField]
+    private float ScoreDecreaseInterval = 10f;
+    [SerializeField]
+    private float ScoreDecreasePoint = 100f;
+
+    private float PenaltyCount = 0f;
+    private bool IsPenaltyTime = false;
+
     [SerializeField]
     [Header("吹っ飛びエフェクト")]
     private SnackEffectController snackEffectController;
@@ -150,6 +164,39 @@ public class BlownAway_Ver3 : MonoBehaviour
                 MoveToRandomXZInRespawnArea();
             }
         }
+
+        // スナック放置ペナルティの処理
+        if (!IsFlyingAway)
+        {
+            PenaltyCount += Time.deltaTime;
+
+            if (IsPenaltyTime)
+            {
+                // 一定時間ごとにスコア減少
+                if (PenaltyCount > ScoreDecreaseInterval)
+                {
+                    // 関数呼び出し
+                    if (FlyingPointScript != null)
+                    {
+                        FlyingPointScript.DecreaseScore(ScoreDecreasePoint);
+                    }
+
+                    // カウントリセット
+                    PenaltyCount = 0f;
+                }
+            }
+            else
+            {
+                // ペナルティ開始時間を超えたらスコア減少開始
+                if (PenaltyCount > ScorePenaltyStartTime)
+                {
+                    IsPenaltyTime = true;
+
+                    // カウントリセット
+                    PenaltyCount = 0f;
+                }
+            }
+        }
     }
 
     // 落下スピードと打ちあがる力を制限する
@@ -166,7 +213,7 @@ public class BlownAway_Ver3 : MonoBehaviour
             HitSnack = true;
 
             // 吹っ飛びエフェクト停止
-            snackEffectController.StopFlyingEffect();
+            //snackEffectController.StopFlyingEffect();
 
             Debug.Log($"落下速度を制限しました: {Rb.linearVelocity.y}");
         }
@@ -205,7 +252,8 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             // 吹っ飛ばし状態へ以降
             IsFlyingAway = true;
-
+            IsPenaltyTime = false;
+            PenaltyCount = 0f;　// カウントリセット
 
             //ClearConditionsScript.
             // Snackに触れたらHitNextFallAreaをtrueに戻す

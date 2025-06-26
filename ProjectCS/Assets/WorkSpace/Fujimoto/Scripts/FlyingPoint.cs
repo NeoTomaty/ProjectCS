@@ -2,13 +2,14 @@
 //======================================================
 // FlyingPointスクリプト
 // 作成者：藤本
-// 最終更新日：6/19
+// 最終更新日：6/20
 //
 // [Log]
 // 4/22 藤本　飛距離に応じたポイント計算実装
 // 5/09 藤本　スコアを計算を（チャージジャンプ＋QTEゲージ）×プレイヤーの速度＝スコアに変更
 // 5/24 荒井　コンボボーナスを追加
 // 6/19 荒井　スコア表示の更新処理を追加
+// 6/20 荒井　スコア減少処理を追加
 //======================================================
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,6 +40,16 @@ public class FlyingPoint : MonoBehaviour
     {
         ComboBonusRate = 1.0f; // コンボボーナス倍率をリセット
         Debug.Log("コンボボーナスをリセットしました");
+    }
+
+    public void DecreaseScore(float score)
+    {
+        totalScore -= score;
+        if(totalScore < 0)
+        {
+            totalScore = 0;
+        }
+        Debug.Log($"PlayerScore：放置ペナルティによりスコア -{score}");
     }
 
     // スコアを計算する関数
