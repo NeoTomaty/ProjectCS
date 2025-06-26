@@ -75,6 +75,9 @@ public class IsHitAny : MonoBehaviour
     //SEを再生するためのAudioSource
     private AudioSource audioSource;
 
+    [Header("チュートリアル処理の参照（チュートリアル以外では不要）")]
+    [SerializeField] private TutorialGanarateSnack TutorialGanarateSnackScript;
+
     void Start()
     {
         MovePlayerScript = GetComponent<MovePlayer>();
@@ -151,6 +154,12 @@ public class IsHitAny : MonoBehaviour
             {
                 IsHitWall = true;
                 InputAcceptTimer = InputAcceptDuration;
+            }
+
+            // チュートリアル中の処理
+            if(TutorialGanarateSnackScript != null)
+            {
+                TutorialGanarateSnackScript.OnCollided();
             }
 
             // プレイヤーの移動ベクトルを取得
