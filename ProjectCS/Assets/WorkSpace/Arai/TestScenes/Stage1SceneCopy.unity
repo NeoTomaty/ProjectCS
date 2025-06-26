@@ -2653,6 +2653,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca237208ad5bf51429d652c50e06f5b4, type: 3}
+--- !u!114 &1541221556 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1855852027085458705, guid: ca237208ad5bf51429d652c50e06f5b4, type: 3}
+  m_PrefabInstance: {fileID: 1541221555}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631f67b3a6528754e9d8dac04f73bf2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1563025577
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2943,6 +2954,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1717145085}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: SceneObjectTransform
+      value: 
+      objectReference: {fileID: 756912131}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: ClearSequenceComponent
       value: 
       objectReference: {fileID: 1797112511}
@@ -2954,6 +2969,10 @@ PrefabInstance:
       propertyPath: ClearConditionsComponent
       value: 
       objectReference: {fileID: 1731900030}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: SnackHeightUIManagerComponent
+      value: 
+      objectReference: {fileID: 1541221556}
     - target: {fileID: 1852285221364492741, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: m_Name
       value: SnackDuplicator

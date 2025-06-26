@@ -5,6 +5,7 @@
 // [Log]
 // 06/09 藤本　スクリプト作成
 // 06/13 高下 生成時にBlownAway_Ver3の関数を呼び出す処理を追加
+// 06/25 荒井 スナックの高さのUIへの操作を追加
 //====================================================
 
 using UnityEngine;
@@ -39,7 +40,7 @@ public class SnackDuplicator : MonoBehaviour
     [SerializeField] private Transform SceneObjectTransform;
     [SerializeField] private PlayerAnimationController PlayerAnimationController;
     //[SerializeField] private SnackHeightUIManager_Ver2 SnackHeightUIManagerComponent;
-
+    [SerializeField] private SnackHeightUIManager SnackHeightUIManagerComponent;
 
     private int currentCount = 0;
 
@@ -94,6 +95,8 @@ public class SnackDuplicator : MonoBehaviour
 
             SnackRespawner SR = SnackInstance.GetComponent<SnackRespawner>();
             SR.SetTarget(SnackRespawnPoint);
+
+            SnackHeightUIManagerComponent.AddSnack(SnackInstance);
 
 
             currentCount++;
