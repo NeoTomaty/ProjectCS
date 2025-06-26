@@ -204,13 +204,5 @@ public class OptionManager : MonoBehaviour
         }
     }
 
-    //public float GetVolume() // ‰¹—Ê‚Ì’l
-    //{
-    //    return volumeSlider.value;
-    //}
 
-    //public float GetSensitivity() // Š´“x‚Ì’l
-    //{
-    //    return sensitivitySlider.value;
-    //}
 }
