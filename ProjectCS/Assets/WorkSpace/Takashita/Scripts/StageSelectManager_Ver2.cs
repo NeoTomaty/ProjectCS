@@ -326,7 +326,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             StageName02.SetActive(true);
             ScoreUI.SetActive(true);
             DrawScore.SetScore(StageScore.GetStageScore(StageSelectorComponent.GetStageNumber()));
-            StageName02.GetComponent<Image>().sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
+            StageName02.transform.GetChild(1).GetComponent<Image>().sprite = StageNameSprites[StageSelectorComponent.GetStageNumber()];
         }
         else if (!MoveCamera.GetIsSwitched())
         {
