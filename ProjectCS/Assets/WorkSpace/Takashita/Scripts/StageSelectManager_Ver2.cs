@@ -33,7 +33,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private GameObject PointLineUI;
 
     // スコア読み込み・スコア表示クラス
-    [SerializeField] private LoadStageScore StageScore;
+    private ScoreManager StageScore;
     [SerializeField] private DrawScoreText DrawScore;
 
     // ステージ情報
@@ -144,6 +144,8 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
         LineConnector = PointLineUI.GetComponent<UILineConnector>();
         LineConnector.SetArrayNumber(StageSelectorComponent.GetStageNumber());
+
+        StageScore = Object.FindFirstObjectByType<ScoreManager>();
     }
 
     // エディタ上で配列の要素数がズレたとき自動修正
