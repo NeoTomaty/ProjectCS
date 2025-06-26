@@ -64,6 +64,23 @@ public class AllSnackManager : MonoBehaviour
             }
         }
 
-        return closest?.Snack;
+        return closest?.LiftingArea;
+    }
+
+    public float GetDistanceToGround()
+    {
+        SnackData closest = null;
+        float minDistance = float.MaxValue;
+
+        foreach (var data in SnackList)
+        {
+            if (data.DistanceToGround < minDistance)
+            {
+                minDistance = data.DistanceToGround;
+                closest = data;
+            }
+        }
+
+        return closest.DistanceToGround;
     }
 }
