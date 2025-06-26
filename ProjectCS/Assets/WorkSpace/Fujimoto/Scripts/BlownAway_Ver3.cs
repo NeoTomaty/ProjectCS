@@ -1,100 +1,100 @@
 //====================================================
-// ƒXƒNƒŠƒvƒg–¼FBlownAway_Ver3
-// ì¬ÒF“¡–{
-// “à—eFƒŠƒtƒeƒBƒ“ƒO‰ñ”‚É‰‚¶‚Ä”ò‚Ô—Í‚ª’iŠK“I‚Éã‚ª‚é
+// ã‚¹ã‚¯ãƒªãƒ—ãƒˆåï¼šBlownAway_Ver3
+// ä½œæˆè€…ï¼šè—¤æœ¬
+// å†…å®¹ï¼šãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°å›æ•°ã«å¿œã˜ã¦é£›ã¶åŠ›ãŒæ®µéšçš„ã«ä¸ŠãŒã‚‹
 // [Log]
-// 05/13 “¡–{ ƒŠƒtƒeƒBƒ“ƒO‰ñ”‚É‰‚¶‚Ä”ò‚Ô—Í‚ª’iŠK“I‚Éã‚ª‚é
-// 05/30 rˆä ƒXƒRƒA‚ÌƒRƒ“ƒ{ƒ{[ƒiƒX‚ÌƒŠƒZƒbƒg‚ğÀ‘•
-// 06/05 “¡–{ ‘½’iƒqƒbƒg–h~ˆ—‚ğ’Ç‰Á
-// 06/06 X˜e ƒAƒjƒ[ƒVƒ‡ƒ“‚Æƒ^ƒCƒ~ƒ“ƒO“®œ§‚³‚¹‚é‚½‚ß‚ÉƒqƒbƒgƒXƒgƒbƒv•ÏX
-// 06/13 X˜e ƒJƒƒ‰‚Ì§Œäƒtƒ‰ƒO’Ç‰Á
-// 06/13 ‚‰º ƒXƒiƒbƒN•¡»‚É•K—v‚ÈƒRƒ“ƒ|[ƒlƒ“ƒg‚ğQÆ‚·‚éSetTargetŠÖ”‚ğ’Ç‰Á
-// 06/13 rˆä ƒNƒŠƒAƒJƒEƒ“ƒg‚Ìƒ^ƒCƒ~ƒ“ƒO‚ğƒŠƒtƒeƒBƒ“ƒO¨—‰º‚É•ÏX
-// 06/19 ’†’¬ ƒvƒŒƒCƒ„[‚ªƒXƒiƒbƒN‚É“–‚½‚Á‚½‚Æ‚«‚ÌSEÀ‘•
-// 06/20 X˜e ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìİ’è
+// 05/13 è—¤æœ¬ ãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°å›æ•°ã«å¿œã˜ã¦é£›ã¶åŠ›ãŒæ®µéšçš„ã«ä¸ŠãŒã‚‹
+// 05/30 è’äº• ã‚¹ã‚³ã‚¢ã®ã‚³ãƒ³ãƒœãƒœãƒ¼ãƒŠã‚¹ã®ãƒªã‚»ãƒƒãƒˆã‚’å®Ÿè£…
+// 06/05 è—¤æœ¬ å¤šæ®µãƒ’ãƒƒãƒˆé˜²æ­¢å‡¦ç†ã‚’è¿½åŠ 
+// 06/06 æ£®è„‡ ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¨ã‚¿ã‚¤ãƒŸãƒ³ã‚°å‹•æ‚¸ã•ã›ã‚‹ãŸã‚ã«ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—å¤‰æ›´
+// 06/13 æ£®è„‡ ã‚«ãƒ¡ãƒ©ã®åˆ¶å¾¡ãƒ•ãƒ©ã‚°è¿½åŠ 
+// 06/13 é«˜ä¸‹ ã‚¹ãƒŠãƒƒã‚¯è¤‡è£½æ™‚ã«å¿…è¦ãªã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å‚ç…§ã™ã‚‹SetTargeté–¢æ•°ã‚’è¿½åŠ 
+// 06/13 è’äº• ã‚¯ãƒªã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚’ãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°æ™‚â†’è½ä¸‹æ™‚ã«å¤‰æ›´
+// 06/19 ä¸­ç”º ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚¹ãƒŠãƒƒã‚¯ã«å½“ãŸã£ãŸã¨ãã®SEå®Ÿè£…
+// 06/20 æ£®è„‡ ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®è¨­å®š
 //====================================================
 using UnityEngine;
 using System.Collections;
 
 public class BlownAway_Ver3 : MonoBehaviour
 {
-    [Header("ƒqƒbƒgƒXƒgƒbƒvŠÔ")]
-    [SerializeField] private float hitStopTime = 0.5f;            // ƒqƒbƒgƒXƒgƒbƒv‚ÌŠÔi•bj
+    [Header("ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—æ™‚é–“")]
+    [SerializeField] private float hitStopTime = 0.5f;            // ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—ã®æ™‚é–“ï¼ˆç§’ï¼‰
 
-    [Header("‚Á”ò‚Ñ‚ÌŠî–{İ’è")]
-    [SerializeField] private float baseForce = 100f;      // ‰Šú”ò‚Ô—Í
+    [Header("å¹ã£é£›ã³ã®åŸºæœ¬è¨­å®š")]
+    [SerializeField] private float baseForce = 100f;      // åˆæœŸé£›ã¶åŠ›
 
-    [SerializeField] private float forcePerLift = 100f;    // ƒŠƒtƒeƒBƒ“ƒO1‰ñ‚²‚Æ‚É’Ç‰Á‚·‚é—Í
-
-    [SerializeField]
-    private float MinUpwardForce = 50.0f;  // ^ã‚Ö‚Ì—ÍiÅ¬j
+    [SerializeField] private float forcePerLift = 100f;    // ãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°1å›ã”ã¨ã«è¿½åŠ ã™ã‚‹åŠ›
 
     [SerializeField]
-    private float MaxUpwardForce = 200.0f; // ^ã‚Ö‚Ì—ÍiÅ‘åj
+    private float MinUpwardForce = 50.0f;  // çœŸä¸Šã¸ã®åŠ›ï¼ˆæœ€å°ï¼‰
 
     [SerializeField]
-    private float MinRandomXYRange = 0.0f; // ƒ‰ƒ“ƒ_ƒ€‚É‰Á‚¦‚éXY²‚Ì”ÍˆÍiÅ¬j
+    private float MaxUpwardForce = 200.0f; // çœŸä¸Šã¸ã®åŠ›ï¼ˆæœ€å¤§ï¼‰
 
     [SerializeField]
-    private float MaxRandomXYRange = 0.0f; // ƒ‰ƒ“ƒ_ƒ€‚É‰Á‚¦‚éXY²‚Ì”ÍˆÍiÅ‘åj
+    private float MinRandomXYRange = 0.0f; // ãƒ©ãƒ³ãƒ€ãƒ ã«åŠ ãˆã‚‹XYè»¸ã®ç¯„å›²ï¼ˆæœ€å°ï¼‰
 
     [SerializeField]
-    private float MinFallSpeed = 0.0f; // —‰º‚ÌƒXƒs[ƒgiÅ¬j
+    private float MaxRandomXYRange = 0.0f; // ãƒ©ãƒ³ãƒ€ãƒ ã«åŠ ãˆã‚‹XYè»¸ã®ç¯„å›²ï¼ˆæœ€å¤§ï¼‰
 
     [SerializeField]
-    private float MaxFallSpeed = 30.0f; // —‰º‚ÌƒXƒs[ƒgiÅ‘åj
+    private float MinFallSpeed = 0.0f; // è½ä¸‹æ™‚ã®ã‚¹ãƒ”ãƒ¼ãƒˆï¼ˆæœ€å°ï¼‰
 
     [SerializeField]
-    private Transform RespawnArea;         // ˆÚ“®‚³‚¹‚é”ÍˆÍƒIƒuƒWƒFƒg
+    private float MaxFallSpeed = 30.0f; // è½ä¸‹æ™‚ã®ã‚¹ãƒ”ãƒ¼ãƒˆï¼ˆæœ€å¤§ï¼‰
 
     [SerializeField]
-    private LiftingJump LiftingJump; // ƒŠƒtƒeƒBƒ“ƒOƒWƒƒƒ“ƒv‚ÌƒXƒNƒŠƒvƒg
+    private Transform RespawnArea;         // ç§»å‹•ã•ã›ã‚‹ç¯„å›²ã‚ªãƒ–ã‚¸ã‚§ãƒˆ
 
     [SerializeField]
-    private Transform GroundArea;   // ƒXƒe[ƒW‚Ì”ÍˆÍ‚ğ¦‚·ƒIƒuƒWƒFƒNƒg
+    private LiftingJump LiftingJump; // ãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°ã‚¸ãƒ£ãƒ³ãƒ—ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+
+    [SerializeField]
+    private Transform GroundArea;   // ã‚¹ãƒ†ãƒ¼ã‚¸ã®ç¯„å›²ã‚’ç¤ºã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
     [SerializeField]
     private CameraFunction CameraFunction;
 
     [SerializeField]
-    private FlyingPoint flyingPoint;@// ƒXƒRƒAŒvZ—pƒXƒNƒŠƒvƒg
+    private FlyingPoint flyingPoint;ã€€// ã‚¹ã‚³ã‚¢è¨ˆç®—ç”¨ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
 
-    private FallPointCalculator FallPoint; // —‰º’n“_‚ğŒvZ‚·‚éƒXƒNƒŠƒvƒg
+    private FallPointCalculator FallPoint; // è½ä¸‹åœ°ç‚¹ã‚’è¨ˆç®—ã™ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
 
-    private float previousVerticalVelocity = 0f;  // ƒŠƒXƒ|[ƒ“‘O‚ÌY•ûŒü‘¬“x‚ğ•Û‘¶
+    private float previousVerticalVelocity = 0f;  // ãƒªã‚¹ãƒãƒ¼ãƒ³å‰ã®Yæ–¹å‘é€Ÿåº¦ã‚’ä¿å­˜
 
-    private bool HitNextFallArea = true;    // ƒŠƒXƒ|[ƒ“ƒGƒŠƒA‚É˜A‘±‚Å“–‚½‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+    private bool HitNextFallArea = true;    // ãƒªã‚¹ãƒãƒ¼ãƒ³ã‚¨ãƒªã‚¢ã«é€£ç¶šã§å½“ãŸã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 
-    private bool HitSnack = true; // snack‚É‘½’iƒqƒbƒg‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+    private bool HitSnack = true; // snackã«å¤šæ®µãƒ’ãƒƒãƒˆã—ãªã„ã‚ˆã†ã«ã™ã‚‹
 
     private Rigidbody Rb;
 
-    private int liftingCount = 1; // ‚·‚Á”ò‚Ô—Í‚Åg—p‚·‚éƒŠƒtƒeƒBƒ“ƒO‰ñ”
+    private int liftingCount = 1; // ã™ã£é£›ã¶åŠ›ã§ä½¿ç”¨ã™ã‚‹ãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°å›æ•°
 
     private bool isHitStopActive = false;
 
     private bool shouldEndHitStop = false;
 
     [SerializeField]
-    [Header("ƒNƒŠƒAğŒ‚ğŠÇ—‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg")]
-    private ClearConditions ClearConditionsScript; // ƒŠƒtƒeƒBƒ“ƒO‰ñ”ŠÇ—‚ÌƒXƒNƒŠƒvƒg
+    [Header("ã‚¯ãƒªã‚¢æ¡ä»¶ã‚’ç®¡ç†ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")]
+    private ClearConditions ClearConditionsScript; // ãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°å›æ•°ç®¡ç†ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
 
     private bool IsRespawn = true;
 
     private bool IsFlyingAway = true;
 
     [SerializeField]
-    [Header("‚Á”ò‚ÑƒGƒtƒFƒNƒg")]
+    [Header("å¹ã£é£›ã³ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ")]
     private SnackEffectController snackEffectController;
 
     [Header("SE")]
-    //Œø‰Ê‰¹‚ğ–Â‚ç‚·‚½‚ß‚ÌAudioSource
+    //åŠ¹æœéŸ³ã‚’é³´ã‚‰ã™ãŸã‚ã®AudioSource
     [SerializeField] private AudioSource audioSource;
 
-    //ƒvƒŒƒCƒ„[‚ª“–‚½‚Á‚½‚Æ‚«‚ÌŒø‰Ê‰¹
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå½“ãŸã£ãŸã¨ãã®åŠ¹æœéŸ³
     [SerializeField] private AudioClip HitSE;
 
-    [Header("ƒAƒjƒ[ƒVƒ‡ƒ“")]
+    [Header("ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³")]
     [SerializeField] private PlayerAnimationController playerAnimController;
 
     private void Start()
@@ -103,10 +103,10 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         FallPoint = GetComponent<FallPointCalculator>();
 
-        if (!CameraFunction) Debug.LogError("CameraFunction‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+        if (!CameraFunction) Debug.LogError("CameraFunctionãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“");
     }
 
-    // •¡»‚Éˆø”‚Å“n‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğİ’è‚·‚é
+    // è¤‡è£½æ™‚ã«å¼•æ•°ã§æ¸¡ã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¨­å®šã™ã‚‹
     public void SetTarget(CameraFunction CF, FlyingPoint FP, ClearConditions CC, LiftingJump LJ, Transform respawnArea, Transform groundArea)
     {
         CameraFunction = CF;
@@ -119,55 +119,55 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"ÚG: {other.name}");
+        Debug.Log($"æ¥è§¦: {other.name}");
 
         if (other.CompareTag("Respawn") && HitNextFallArea == true)
         {
             HitNextFallArea = false;
 
-            // Œ»İ‚ÌY•ûŒü‘¬“x‚ğ•Û‘¶
+            // ç¾åœ¨ã®Yæ–¹å‘é€Ÿåº¦ã‚’ä¿å­˜
             previousVerticalVelocity = Rb.linearVelocity.y;
 
             MoveToRandomXZInRespawnArea();
         }
     }
 
-    // snack‚ªRespawnƒIƒuƒWƒFƒNƒg‚ğƒXƒŒ”²‚¯‚Ä‚àƒŠƒXƒ|[ƒ“‚·‚é
+    // snackãŒRespawnã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚¹ãƒ¬æŠœã‘ã¦ã‚‚ãƒªã‚¹ãƒãƒ¼ãƒ³ã™ã‚‹
     private void Update()
     {
-        // RespawnƒIƒuƒWƒFƒNƒg‚Ì‚æ‚è‚‚¢ˆÊ’u‚É‚¢‚½‚çƒŠƒXƒ|[ƒ“
+        // Respawnã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚ˆã‚Šé«˜ã„ä½ç½®ã«ã„ãŸã‚‰ãƒªã‚¹ãƒãƒ¼ãƒ³
         if (RespawnArea && transform.position.y > RespawnArea.position.y && HitNextFallArea == true)
         {
             HitNextFallArea = false;
-            // Œ»İ‚ÌY•ûŒü‘¬“x‚ğ•Û‘¶
+            // ç¾åœ¨ã®Yæ–¹å‘é€Ÿåº¦ã‚’ä¿å­˜
             previousVerticalVelocity = Rb.linearVelocity.y;
 
-            // ƒŠƒXƒ|[ƒ“–³Œø‚Å‚È‚¯‚ê‚Î
+            // ãƒªã‚¹ãƒãƒ¼ãƒ³ç„¡åŠ¹ã§ãªã‘ã‚Œã°
             if (IsRespawn)
             {
-                Debug.Log($"RespawnƒIƒuƒWƒFƒNƒg‚Ì‚‚³‚ğ’´‚¦‚½‚½‚ßƒŠƒXƒ|[ƒ“");
+                Debug.Log($"Respawnã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é«˜ã•ã‚’è¶…ãˆãŸãŸã‚ãƒªã‚¹ãƒãƒ¼ãƒ³");
                 MoveToRandomXZInRespawnArea();
             }
         }
     }
 
-    // —‰ºƒXƒs[ƒh‚Æ‘Å‚¿‚ ‚ª‚é—Í‚ğ§ŒÀ‚·‚é
+    // è½ä¸‹ã‚¹ãƒ”ãƒ¼ãƒ‰ã¨æ‰“ã¡ã‚ãŒã‚‹åŠ›ã‚’åˆ¶é™ã™ã‚‹
     private void FixedUpdate()
     {
-        // —‰º’†‚©‚Â‘¬“x‚ªãŒÀ‚ğ’´‚¦‚Ä‚¢‚½‚ç§ŒÀ
+        // è½ä¸‹ä¸­ã‹ã¤é€Ÿåº¦ãŒä¸Šé™ã‚’è¶…ãˆã¦ã„ãŸã‚‰åˆ¶é™
         if (Rb.linearVelocity.y < -MaxFallSpeed)
         {
             Vector3 clampedVelocity = Rb.linearVelocity;
             clampedVelocity.y = -MaxFallSpeed;
             Rb.linearVelocity = clampedVelocity;
 
-            // ƒvƒŒƒCƒ„[‚ª—£‚ê‚½‚ç‘½’iƒqƒbƒg–h~ƒtƒ‰ƒO‚ğtrue
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒé›¢ã‚ŒãŸã‚‰å¤šæ®µãƒ’ãƒƒãƒˆé˜²æ­¢ãƒ•ãƒ©ã‚°ã‚’true
             HitSnack = true;
 
-            // ‚Á”ò‚ÑƒGƒtƒFƒNƒg’â~
+            // å¹ã£é£›ã³ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåœæ­¢
             snackEffectController.StopFlyingEffect();
 
-            Debug.Log($"—‰º‘¬“x‚ğ§ŒÀ‚µ‚Ü‚µ‚½: {Rb.linearVelocity.y}");
+            Debug.Log($"è½ä¸‹é€Ÿåº¦ã‚’åˆ¶é™ã—ã¾ã—ãŸ: {Rb.linearVelocity.y}");
         }
     }
 
@@ -175,13 +175,13 @@ public class BlownAway_Ver3 : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            // ‚Á”ò‚Î‚µó‘Ô‚Ì‚¾‚¯Às
+            // å¹ã£é£›ã°ã—çŠ¶æ…‹ã®æ™‚ã ã‘å®Ÿè¡Œ
             if (IsFlyingAway)
             {
-                // ƒRƒ“ƒ{ƒ{[ƒiƒXƒŠƒZƒbƒg
+                // ã‚³ãƒ³ãƒœãƒœãƒ¼ãƒŠã‚¹ãƒªã‚»ãƒƒãƒˆ
                 flyingPoint.ResetComboBonus();
 
-                // ƒNƒŠƒAƒJƒEƒ“ƒgis
+                // ã‚¯ãƒªã‚¢ã‚«ã‚¦ãƒ³ãƒˆé€²è¡Œ
                 ClearConditionsScript.CheckLiftingCount(gameObject);
 
                 IsFlyingAway = false;
@@ -189,111 +189,124 @@ public class BlownAway_Ver3 : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
-            //SE‚ğÄ¶
+            //SEã‚’å†ç”Ÿ
             if (audioSource != null && HitSE != null)
             {
                 audioSource.PlayOneShot(HitSE);
             }
 
-            // ‘½’iƒqƒbƒg–h~
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Colliderã‚’ä¸€æ™‚çš„ã«è¡çªç„¡åŠ¹åŒ–
+            Collider snackCollider = GetComponent<Collider>();
+            Collider playerCollider = collision.collider; // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®Collider
+
+            Physics.IgnoreCollision(snackCollider, playerCollider, true);
+            StartCoroutine(EnableCollisionLater(snackCollider, playerCollider, 1.0f));
+
+            // å¤šæ®µãƒ’ãƒƒãƒˆé˜²æ­¢
             if (!HitSnack) return;
 
-            // ‘½’iƒqƒbƒg–h~ƒtƒ‰ƒOfalse
+            // å¤šæ®µãƒ’ãƒƒãƒˆé˜²æ­¢ãƒ•ãƒ©ã‚°false
             HitSnack = false;
 
 
-            // ‚Á”ò‚Î‚µó‘Ô‚ÖˆÈ~
+            // å¹ã£é£›ã°ã—çŠ¶æ…‹ã¸ä»¥é™
             IsFlyingAway = true;
 
 
             //ClearConditionsScript.
-            // Snack‚ÉG‚ê‚½‚çHitNextFallArea‚ğtrue‚É–ß‚·
+            // Snackã«è§¦ã‚ŒãŸã‚‰HitNextFallAreaã‚’trueã«æˆ»ã™
             HitNextFallArea = true;
 
-            // ƒŠƒtƒeƒBƒ“ƒO‰ñ”‚ğ‰ÁZ
+            // ãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°å›æ•°ã‚’åŠ ç®—
             liftingCount++;
 
-            // —Í‚ğŒvZFŠî–{ + ‰ñ” ~ ‘‰Á—Ê
+            // åŠ›ã‚’è¨ˆç®—ï¼šåŸºæœ¬ + å›æ•° Ã— å¢—åŠ é‡
             float force = baseForce + (liftingCount * forcePerLift);
 
-            Debug.Log($"—ÍF{force}");
+            Debug.Log($"åŠ›ï¼š{force}");
 
-            // —Í‚Ì§ŒÀ
+            // åŠ›ã®åˆ¶é™
             if (force > MaxUpwardForce)
             {
                 force = MaxUpwardForce;
-                Debug.Log($"§ŒÀŒã‚Ì—ÍF{force}");
+                Debug.Log($"åˆ¶é™å¾Œã®åŠ›ï¼š{force}");
             }
-
-            // ã•ûŒü‚ÌƒxƒNƒgƒ‹‚É—Í‚ğ‰Á‚¦‚é
-            Vector3 forceDir = Vector3.up * force;
-            Rb.AddForce(forceDir, ForceMode.Impulse);
-
+            
             Debug.Log(liftingCount);
 
-            // snack‚ÌÀ•W‚ÌƒƒO
-            Debug.Log($"snack‚ÌÀ•W: {transform.position}");
+            // snackã®åº§æ¨™ã®ãƒ­ã‚°
+            Debug.Log($"snackã®åº§æ¨™: {transform.position}");
 
-            // ƒQ[ƒW‚É‚æ‚é•â³
+            // ã‚²ãƒ¼ã‚¸ã«ã‚ˆã‚‹è£œæ­£
             if (LiftingJump != null)
             {
-                Debug.Log("ƒŠƒtƒeƒBƒ“ƒOŠJn");
+                Debug.Log("ãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°é–‹å§‹");
                 if (LiftingJump.IsLiftingPart)
                 {
-                    // ƒvƒŒƒCƒ„[‚ÌƒŠƒtƒeƒBƒ“ƒOƒp[ƒg‚ğI—¹‚·‚é
+                    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒªãƒ•ãƒ†ã‚£ãƒ³ã‚°ãƒ‘ãƒ¼ãƒˆã‚’çµ‚äº†ã™ã‚‹
                     LiftingJump.FinishLiftingJump();
 
                     if (flyingPoint != null)
                     {
                         flyingPoint.CalculateScore();
-                        Debug.LogWarning("ƒXƒRƒAŒvZŠJn");
-                        Debug.LogWarning($"‘Å‚¿‚ ‚ª‚é—Í{Rb.linearVelocity.y}");
+                        Debug.LogWarning("ã‚¹ã‚³ã‚¢è¨ˆç®—é–‹å§‹");
+                        Debug.LogWarning($"æ‰“ã¡ã‚ãŒã‚‹åŠ›{Rb.linearVelocity.y}");
                     }
 
-                    // ƒQ[ƒW‚ªg‚í‚ê‚½‚Æ‚«‚Íè“®‰ğœƒ^ƒCƒv
+                    // ã‚²ãƒ¼ã‚¸ãŒä½¿ã‚ã‚ŒãŸã¨ãã¯æ‰‹å‹•è§£é™¤ã‚¿ã‚¤ãƒ—
                     StartCoroutine(HitStopManual());
                 }
                 else
                 {
-                    // ƒQ[ƒW‚ğg‚Á‚Ä‚¢‚È‚¢‚Æ‚«‚Í0.5•b‚Å©“®‰ğœ
+                    // ã‚²ãƒ¼ã‚¸ã‚’ä½¿ã£ã¦ã„ãªã„ã¨ãã¯0.5ç§’ã§è‡ªå‹•è§£é™¤
                     StartCoroutine(HitStopTimed(0.5f));
                 }
             }
             else
             {
-                // LiftingJump ‚ª nulli’Êíƒqƒbƒg‚È‚Çj‚Å‚à©“®‰ğœ
+                // LiftingJump ãŒ nullï¼ˆé€šå¸¸ãƒ’ãƒƒãƒˆãªã©ï¼‰ã§ã‚‚è‡ªå‹•è§£é™¤
                 StartCoroutine(HitStopTimed(0.5f));
             }
 
             flyingPoint.CalculateScore();
 
-            // ƒqƒbƒgƒXƒgƒbƒv‚ğŠJn‚·‚é
+            // ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—ã‚’é–‹å§‹ã™ã‚‹
             //  StartCoroutine(HitStop());
 
-            // ƒƒbƒNƒIƒ“‚·‚é‘ÎÛ‚ğİ’è
+            // ãƒ­ãƒƒã‚¯ã‚ªãƒ³ã™ã‚‹å¯¾è±¡ã‚’è¨­å®š
             CameraFunction.SetSnack(gameObject.transform);
 
-            // ƒJƒƒ‰‚Ì‹­§ƒƒbƒNƒIƒ“ŠJn
+            // ã‚«ãƒ¡ãƒ©ã®å¼·åˆ¶ãƒ­ãƒƒã‚¯ã‚ªãƒ³é–‹å§‹
             CameraFunction.StartLockOn(true);
+
+            // ç¾åœ¨ã®é€Ÿåº¦ã‚’ãƒªã‚»ãƒƒãƒˆ
+            Rb.linearVelocity = Vector3.zero;
+            Rb.angularVelocity = Vector3.zero;
+
+            // çœŸä¸Šã«åŠ›ã‚’åŠ ãˆã‚‹ï¼ˆæ–œã‚ã«é£›ã°ãªã„ã‚ˆã†ã«ï¼‰
+            //Vector3 forceDir = Vector3.up * force;
+            //Rb.AddForce(forceDir, ForceMode.Impulse);
+
+            Debug.Log("AddForceå®Œäº†");
         }
     }
 
-    // ƒqƒbƒgƒXƒgƒbƒvŠÖ”
+    // ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—é–¢æ•°
     //private System.Collections.IEnumerator HitStop()
     //{
-    //    Time.timeScale = 0f; // ŠÔ‚ğ~‚ß‚éiƒXƒ[ƒ‚[ƒVƒ‡ƒ“j
+    //    Time.timeScale = 0f; // æ™‚é–“ã‚’æ­¢ã‚ã‚‹ï¼ˆã‚¹ãƒ­ãƒ¼ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰
     //    float timer = 0f;
 
-    //    // ƒŠƒAƒ‹ƒ^ƒCƒ€‚Åˆê’èŠÔ‘Ò‚Â
+    //    // ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ ã§ä¸€å®šæ™‚é–“å¾…ã¤
     //    while (timer < hitStopTime)
     //    {
     //        timer += Time.unscaledDeltaTime;
     //        yield return null;
     //    }
 
-    //    Time.timeScale = 1f; // ŠÔ‚ğÄŠJ‚·‚é
+    //    Time.timeScale = 1f; // æ™‚é–“ã‚’å†é–‹ã™ã‚‹
 
-    //    Debug.Log("ƒqƒbƒgƒXƒgƒbƒvŠJn");
+    //    Debug.Log("ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—é–‹å§‹");
     //}
 
     //private IEnumerator HitStop()
@@ -304,9 +317,9 @@ public class BlownAway_Ver3 : MonoBehaviour
     //    isHitStopActive = true;
     //    shouldEndHitStop = false;
 
-    //    Debug.Log("ƒqƒbƒgƒXƒgƒbƒvŠJn");
+    //    Debug.Log("ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—é–‹å§‹");
 
-    //    // ŠO•”‚©‚ç EndHitStop() ‚ªŒÄ‚Î‚ê‚é‚Ü‚Å‘Ò‹@
+    //    // å¤–éƒ¨ã‹ã‚‰ EndHitStop() ãŒå‘¼ã°ã‚Œã‚‹ã¾ã§å¾…æ©Ÿ
     //    while (!shouldEndHitStop)
     //    {
     //        yield return null;
@@ -315,7 +328,7 @@ public class BlownAway_Ver3 : MonoBehaviour
     //    Time.timeScale = 1f;
     //    isHitStopActive = false;
 
-    //    Debug.Log("ƒqƒbƒgƒXƒgƒbƒvI—¹");
+    //    Debug.Log("ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—çµ‚äº†");
     //}
 
     private IEnumerator HitStopTimed(float duration)
@@ -325,7 +338,7 @@ public class BlownAway_Ver3 : MonoBehaviour
         Time.timeScale = 0f;
         isHitStopActive = true;
 
-        Debug.Log($"ƒqƒbƒgƒXƒgƒbƒvi©“®‰ğœjŠJn: {duration}•b");
+        Debug.Log($"ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—ï¼ˆè‡ªå‹•è§£é™¤ï¼‰é–‹å§‹: {duration}ç§’");
 
         float timer = 0f;
 
@@ -338,10 +351,12 @@ public class BlownAway_Ver3 : MonoBehaviour
         Time.timeScale = 1f;
         isHitStopActive = false;
 
-        Debug.Log("ƒqƒbƒgƒXƒgƒbƒvI—¹i©“®j");
+        Debug.Log("ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—çµ‚äº†ï¼ˆè‡ªå‹•ï¼‰");
 
-        // ‚Á”ò‚ÑƒGƒtƒFƒNƒgŠJn
+        // å¹ã£é£›ã³ã‚¨ãƒ•ã‚§ã‚¯ãƒˆé–‹å§‹
         snackEffectController.PlayFlyingEffect();
+
+        StartCoroutine(AddForceUpwardDelayed());
     }
 
     private IEnumerator HitStopManual()
@@ -352,11 +367,11 @@ public class BlownAway_Ver3 : MonoBehaviour
         isHitStopActive = true;
         shouldEndHitStop = false;
 
-        Debug.Log("ƒqƒbƒgƒXƒgƒbƒviè“®‰ğœjŠJn");
+        Debug.Log("ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—ï¼ˆæ‰‹å‹•è§£é™¤ï¼‰é–‹å§‹");
 
         playerAnimController.PlayRandomAnimation();
 
-        // ŠO•”‚©‚ç EndHitStop() ‚ªŒÄ‚Î‚ê‚é‚Ü‚Å‘Ò‚Â
+        // å¤–éƒ¨ã‹ã‚‰ EndHitStop() ãŒå‘¼ã°ã‚Œã‚‹ã¾ã§å¾…ã¤
         while (!shouldEndHitStop)
         {
             yield return null;
@@ -365,13 +380,15 @@ public class BlownAway_Ver3 : MonoBehaviour
         Time.timeScale = 1f;
         isHitStopActive = false;
 
-        Debug.Log("ƒqƒbƒgƒXƒgƒbƒvI—¹iè“®j");
+        Debug.Log("ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—çµ‚äº†ï¼ˆæ‰‹å‹•ï¼‰");
 
-        // ‚Á”ò‚ÑƒGƒtƒFƒNƒgŠJn
+        // å¹ã£é£›ã³ã‚¨ãƒ•ã‚§ã‚¯ãƒˆé–‹å§‹
         snackEffectController.PlayFlyingEffect();
+
+        StartCoroutine(AddForceUpwardDelayed());
     }
 
-    // ŠO•”ƒXƒNƒŠƒvƒg‚©‚çŒÄ‚Ño‚µ‚ÄƒqƒbƒgƒXƒgƒbƒv‚ğI—¹‚³‚¹‚é
+    // å¤–éƒ¨ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‹ã‚‰å‘¼ã³å‡ºã—ã¦ãƒ’ãƒƒãƒˆã‚¹ãƒˆãƒƒãƒ—ã‚’çµ‚äº†ã•ã›ã‚‹
     public void EndHitStop()
     {
         if (isHitStopActive)
@@ -380,23 +397,23 @@ public class BlownAway_Ver3 : MonoBehaviour
         }
     }
 
-    // ƒŠƒXƒ|[ƒ“ˆÊ’u
+    // ãƒªã‚¹ãƒãƒ¼ãƒ³ä½ç½®
     private void MoveToRandomXZInRespawnArea()
     {
         if (RespawnArea == null || GroundArea == null)
         {
-            Debug.LogWarning("RespawnArea‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+            Debug.LogWarning("RespawnAreaãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“");
             return;
         }
 
-        // ”ÍˆÍæ“¾
+        // ç¯„å›²å–å¾—
         Vector3 respawnCenter = RespawnArea.position;
         Vector3 respawnSize = RespawnArea.localScale;
 
         Vector3 groundCenter = GroundArea.position;
         Vector3 groundSize = GroundArea.localScale;
 
-        // X‚ÆZ‚ÌÅ¬EÅ‘å‚ğ—¼•û‚Ì”ÍˆÍ‚Å‹¤’Ê‚·‚é•”•ª‚É§ŒÀ
+        // Xã¨Zã®æœ€å°ãƒ»æœ€å¤§ã‚’ä¸¡æ–¹ã®ç¯„å›²ã§å…±é€šã™ã‚‹éƒ¨åˆ†ã«åˆ¶é™
         float minX = Mathf.Max(respawnCenter.x - respawnSize.x / 2, groundCenter.x - groundSize.x / 2);
         float maxX = Mathf.Min(respawnCenter.x + respawnSize.x / 2, groundCenter.x + groundSize.x / 2);
 
@@ -406,23 +423,51 @@ public class BlownAway_Ver3 : MonoBehaviour
         float randomX = Random.Range(minX, maxX);
         float randomZ = Random.Range(minZ, maxZ);
 
-        // YÀ•W‚ÍRespawnArea‚Ì‚‚³‚Éİ’è
+        // Yåº§æ¨™ã¯RespawnAreaã®é«˜ã•ã«è¨­å®š
         float y = respawnCenter.y;
 
-        // •Û‘¶‚µ‚½ã•ûŒü‚Ì—Í‚ğ‘ã“ü
+        // ä¿å­˜ã—ãŸä¸Šæ–¹å‘ã®åŠ›ã‚’ä»£å…¥
         Vector3 newPos = new Vector3(randomX, y, randomZ);
         transform.position = newPos;
         Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
 
-        Debug.Log($"ã¸‘¬“x: {Rb.linearVelocity.y}");
-        Debug.Log($"ƒŠƒXƒ|[ƒ“À•WiƒOƒ‰ƒEƒ“ƒh“àj: {newPos}");
+        Debug.Log($"ä¸Šæ˜‡é€Ÿåº¦: {Rb.linearVelocity.y}");
+        Debug.Log($"ãƒªã‚¹ãƒãƒ¼ãƒ³åº§æ¨™ï¼ˆã‚°ãƒ©ã‚¦ãƒ³ãƒ‰å†…ï¼‰: {newPos}");
 
         FallPoint?.CalculateGroundPoint();
     }
 
-    // ƒNƒŠƒAˆ—
+    // ã‚¯ãƒªã‚¢æ™‚å‡¦ç†
     public void OnClear()
     {
         IsRespawn = false;
     }
+
+    private IEnumerator EnableCollisionLater(Collider colA, Collider colB, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Physics.IgnoreCollision(colA, colB, false);
+    }
+
+    // Snackã«åŠ›ã‚’åŠ ãˆã‚‹é–¢æ•°
+    private IEnumerator AddForceUpwardDelayed()
+    {
+        yield return new WaitForFixedUpdate(); // ç‰©ç†æ¼”ç®—ãŒå¾©å¸°ã™ã‚‹ã¾ã§å¾…ã¤
+
+        Rb.linearVelocity = Vector3.zero;
+        Rb.angularVelocity = Vector3.zero;
+
+        float force = baseForce + (liftingCount * forcePerLift);
+        if (force > MaxUpwardForce) force = MaxUpwardForce;
+
+        Debug.Log($"Delayed AddForce: {force}");
+
+        Vector3 forceDir = Vector3.up * force;
+        Rb.AddForce(forceDir, ForceMode.Impulse);
+
+        Debug.Log("Delayed AddForce å®Œäº†ï¼ˆFixedUpdateå¾Œï¼‰");
+    }
+
+
 }
+
