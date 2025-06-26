@@ -77,13 +77,6 @@ public class LiftingJump : MonoBehaviour
     // リフティングジャンプを開始する関数
     public void StartLiftingJump()
     {
-        // カウントダウン中は無効
-        if (GameStartCountdownScript != null && GameStartCountdownScript.IsCountingDown)
-        {
-            Debug.Log("LiftingJump >> カウントダウン中なので無効");
-            return;
-        }
-
         PlayerInput.actions.Disable(); // 入力を無効にする
         PauseInput.actions.Disable(); // 入力を無効にする
         if (IgnoreNonTargetCollisions)   // すり抜け有効時
