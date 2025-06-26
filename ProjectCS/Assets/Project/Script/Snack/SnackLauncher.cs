@@ -15,9 +15,12 @@ public class SnackLauncher : MonoBehaviour
 
     private Rigidbody rb;
 
+    private BlownAway_Ver3 BAV3;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        BAV3 = GetComponent<BlownAway_Ver3>();
     }
 
     // SnackÇë≈Çøè„Ç∞ÇÈä÷êî
@@ -26,6 +29,7 @@ public class SnackLauncher : MonoBehaviour
         if (rb != null)
         {
             rb.AddForce(Vector3.up * launchForce, ForceMode.Impulse);
+            BAV3.MoveToRandomXZInRespawnArea();
             Debug.Log("SnackÇë≈Çøè„Ç∞Ç‹ÇµÇΩÅI");
         }
     }
