@@ -44,6 +44,12 @@ public class FadeManager : MonoBehaviour
     //SE再生用のAudioSource
     private AudioSource audioSource;
 
+    [Range(0.0f, 1.0f)]
+    public float FadeInSEVolume = 1.0f;
+
+    [Range(0.0f, 1.0f)]
+    public float FadeOutSEVolume = 1.0f;
+
     //初期化処理(シングルトンの設定とAudioSourceの追加)
     void Awake()
     {
@@ -113,7 +119,7 @@ public class FadeManager : MonoBehaviour
         DisableInput();
 
         //フェードアウトSEを再生
-        PlaySE(FadeOutSE);
+        PlaySE(FadeOutSE,FadeOutSEVolume);
 
         while (t < fadeDuration)
         {
@@ -133,7 +139,7 @@ public class FadeManager : MonoBehaviour
         EnableInput();
 
         //フェードインSEを再生
-        PlaySE(FadeInSE);
+        PlaySE(FadeInSE,FadeInSEVolume);
 
         while (t > 0f)
         {
@@ -205,11 +211,11 @@ public class FadeManager : MonoBehaviour
     }
 
     //SEを再生する共通処理
-    private void PlaySE(AudioClip clip)
+    private void PlaySE(AudioClip clip,float volume)
     {
         if(clip != null && audioSource != null)
         {
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clip,volume);
         }
     }
 }
