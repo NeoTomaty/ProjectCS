@@ -1,7 +1,4 @@
 //====================================================
-// スクリプト名：BlownAway_Ver3
-// 作成者：藤本
-// 内容：リフティング回数に応じて飛ぶ力が段階的に上がる
 // [Log]
 // 05/13 藤本 リフティング回数に応じて飛ぶ力が段階的に上がる
 // 05/30 荒井 スコアのコンボボーナスのリセットを実装
@@ -21,66 +18,62 @@ using System.Collections;
 
 public class BlownAway_Ver3 : MonoBehaviour
 {
-    [Header("ヒットストップ時間")]
-    [SerializeField] private float hitStopTime = 0.5f;            // ヒットストップの時間（秒）
+    [SerializeField] private float hitStopTime = 0.5f;
+    [SerializeField] private float baseForce = 100f;
 
-    [Header("吹っ飛びの基本設定")]
-    [SerializeField] private float baseForce = 100f;      // 初期飛ぶ力
-
-    [SerializeField] private float forcePerLift = 100f;    // リフティング1回ごとに追加する力
+    [SerializeField] private float forcePerLift = 100f;
 
     [SerializeField]
-    private float MinUpwardForce = 50.0f;  // 真上への力（最小）
+    private float MinUpwardForce = 50.0f; 
 
     [SerializeField]
-    private float MaxUpwardForce = 200.0f; // 真上への力（最大）
+    private float MaxUpwardForce = 200.0f;
 
     [SerializeField]
-    private float MinRandomXYRange = 0.0f; // ランダムに加えるXY軸の範囲（最小）
+    private float MinRandomXYRange = 0.0f;
 
     [SerializeField]
-    private float MaxRandomXYRange = 0.0f; // ランダムに加えるXY軸の範囲（最大）
+    private float MaxRandomXYRange = 0.0f;
 
     [SerializeField]
-    private float MinFallSpeed = 0.0f; // 落下時のスピート（最小）
+    private float MinFallSpeed = 0.0f;
 
     [SerializeField]
-    private float MaxFallSpeed = 30.0f; // 落下時のスピート（最大）
+    private float MaxFallSpeed = 30.0f;
 
     [SerializeField]
-    private Transform RespawnArea;         // 移動させる範囲オブジェト
+    private Transform RespawnArea;
 
     [SerializeField]
-    private LiftingJump LiftingJump; // リフティングジャンプのスクリプト
+    private LiftingJump LiftingJump;
 
     [SerializeField]
-    private Transform GroundArea;   // ステージの範囲を示すオブジェクト
+    private Transform GroundArea;
 
     [SerializeField]
     private CameraFunction CameraFunction;
 
     [SerializeField]
-    private FlyingPoint flyingPoint;　// スコア計算用スクリプト
+    private FlyingPoint flyingPoint;
 
-    private FallPointCalculator FallPoint; // 落下地点を計算するスクリプト
+    private FallPointCalculator FallPoint;
 
-    private float previousVerticalVelocity = 0f;  // リスポーン前のY方向速度を保存
+    private float previousVerticalVelocity = 0f;
 
-    private bool HitNextFallArea = true;    // リスポーンエリアに連続で当たらないようにする
+    private bool HitNextFallArea = true;
 
-    private bool HitSnack = true; // snackに多段ヒットしないようにする
+    private bool HitSnack = true;
 
     private Rigidbody Rb;
 
-    private int liftingCount = 1; // すっ飛ぶ力で使用するリフティング回数
+    private int liftingCount = 1;
 
     private bool isHitStopActive = false;
 
     private bool shouldEndHitStop = false;
 
     [SerializeField]
-    [Header("クリア条件を管理しているオブジェクト")]
-    private ClearConditions ClearConditionsScript; // リフティング回数管理のスクリプト
+    private ClearConditions ClearConditionsScript;
 
     private bool IsRespawn = true;
 
@@ -98,17 +91,13 @@ public class BlownAway_Ver3 : MonoBehaviour
     private bool IsPenaltyTime = false;
 
     [SerializeField]
-    [Header("吹っ飛びエフェクト")]
     private SnackEffectController snackEffectController;
 
     [Header("SE")]
-    //効果音を鳴らすためのAudioSource
     [SerializeField] private AudioSource audioSource;
 
-    //プレイヤーが当たったときの効果音
     [SerializeField] private AudioClip HitSE;
 
-    [Header("アニメーション")]
     [SerializeField] private PlayerAnimationController playerAnimController;
 
     // 次のワープ先を保持する
@@ -121,7 +110,6 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         FallPoint = GetComponent<FallPointCalculator>();
 
-        if (!CameraFunction) Debug.LogError("CameraFunctionが設定されていません");
     }
 
     // 複製時に引数で渡されたコンポーネントを設定する
@@ -138,30 +126,25 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"接触: {other.name}");
 
         if (other.CompareTag("Respawn") && HitNextFallArea == true)
         {
             HitNextFallArea = false;
 
-            // 現在のY方向速度を保存
             previousVerticalVelocity = Rb.linearVelocity.y;
 
             MoveToRandomXZInRespawnArea();
         }
     }
 
-    // snackがRespawnオブジェクトをスレ抜けてもリスポーンする
     private void Update()
     {
-        // Respawnオブジェクトのより高い位置にいたらリスポーン
+
         if (RespawnArea && Rb.linearVelocity.y < 0f && HitNextFallArea == true)
         {
             HitNextFallArea = false;
-            // 現在のY方向速度を保存
             previousVerticalVelocity = Rb.linearVelocity.y;
 
-            // リスポーン無効でなければ
             if (IsRespawn)
             {
                 Debug.Log($"落下が始まったため、ワープしました");
@@ -207,23 +190,18 @@ public class BlownAway_Ver3 : MonoBehaviour
         }
     }
 
-    // 落下スピードと打ちあがる力を制限する
     private void FixedUpdate()
     {
-        // 落下中かつ速度が上限を超えていたら制限
         if (Rb.linearVelocity.y < -MaxFallSpeed)
         {
             Vector3 clampedVelocity = Rb.linearVelocity;
             clampedVelocity.y = -MaxFallSpeed;
             Rb.linearVelocity = clampedVelocity;
 
-            // プレイヤーが離れたら多段ヒット防止フラグをtrue
             HitSnack = true;
 
-            // 吹っ飛びエフェクト停止
             snackEffectController.StopFlyingEffect();
 
-            Debug.Log($"落下速度を制限しました: {Rb.linearVelocity.y}");
         }
     }
 
@@ -231,13 +209,10 @@ public class BlownAway_Ver3 : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            // 吹っ飛ばし状態の時だけ実行
             if (IsFlyingAway)
             {
-                // コンボボーナスリセット
                 flyingPoint.ResetComboBonus();
 
-                // クリアカウント進行
                 ClearConditionsScript.CheckLiftingCount(gameObject);
 
                 IsFlyingAway = false;
@@ -245,87 +220,67 @@ public class BlownAway_Ver3 : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
-            //SEを再生
             if (audioSource != null && HitSE != null)
             {
                 audioSource.PlayOneShot(HitSE);
             }
 
-            // 多段ヒット防止
+            Collider snackCollider = GetComponent<Collider>();
+            Collider playerCollider = collision.collider;
+
+            Physics.IgnoreCollision(snackCollider, playerCollider, true);
+            StartCoroutine(EnableCollisionLater(snackCollider, playerCollider, 1.0f));
+
             if (!HitSnack) return;
 
-            // 多段ヒット防止フラグfalse
             HitSnack = false;
 
 
-            // 吹っ飛ばし状態へ以降
             IsFlyingAway = true;
             IsPenaltyTime = false;
             PenaltyCount = 0f;　// カウントリセット
 
             //ClearConditionsScript.
-            // Snackに触れたらHitNextFallAreaをtrueに戻す
             HitNextFallArea = true;
 
-            // リフティング回数を加算
             liftingCount++;
 
-            // 力を計算：基本 + 回数 × 増加量
             float force = baseForce + (liftingCount * forcePerLift);
 
-            Debug.Log($"力：{force}");
 
-            // 力の制限
             if (force > MaxUpwardForce)
             {
                 force = MaxUpwardForce;
-                Debug.Log($"制限後の力：{force}");
             }
-
-            // 上方向のベクトルに力を加える
-            Vector3 forceDir = Vector3.up * force;
-            Rb.AddForce(forceDir, ForceMode.Impulse);
-
+            
             Debug.Log(liftingCount);
 
-            // snackの座標のログ
-            Debug.Log($"snackの座標: {transform.position}");
 
-            // ゲージによる補正
             if (LiftingJump != null)
             {
-                Debug.Log("リフティング開始");
+
                 if (LiftingJump.IsLiftingPart)
                 {
-                    // プレイヤーのリフティングパートを終了する
                     LiftingJump.FinishLiftingJump();
 
                     if (flyingPoint != null)
                     {
                         flyingPoint.CalculateScore();
-                        Debug.LogWarning("スコア計算開始");
-                        Debug.LogWarning($"打ちあがる力{Rb.linearVelocity.y}");
                     }
 
-                    // ゲージが使われたときは手動解除タイプ
                     StartCoroutine(HitStopManual());
                 }
                 else
                 {
-                    // ゲージを使っていないときは0.5秒で自動解除
                     StartCoroutine(HitStopTimed(0.5f));
                 }
             }
             else
             {
-                // LiftingJump が null（通常ヒットなど）でも自動解除
                 StartCoroutine(HitStopTimed(0.5f));
             }
 
             flyingPoint.CalculateScore();
-
-            // ヒットストップを開始する
-            //  StartCoroutine(HitStop());
 
             // ワープ先を計算
             MoveToRandomXZInRespawnArea();
@@ -333,50 +288,14 @@ public class BlownAway_Ver3 : MonoBehaviour
             // ロックオンする対象を設定
             CameraFunction.SetSnack(gameObject.transform);
 
-            // カメラの強制ロックオン開始
             CameraFunction.StartLockOn(true);
+
+            Rb.linearVelocity = Vector3.zero;
+            Rb.angularVelocity = Vector3.zero;
+
         }
     }
 
-    // ヒットストップ関数
-    //private System.Collections.IEnumerator HitStop()
-    //{
-    //    Time.timeScale = 0f; // 時間を止める（スローモーション）
-    //    float timer = 0f;
-
-    //    // リアルタイムで一定時間待つ
-    //    while (timer < hitStopTime)
-    //    {
-    //        timer += Time.unscaledDeltaTime;
-    //        yield return null;
-    //    }
-
-    //    Time.timeScale = 1f; // 時間を再開する
-
-    //    Debug.Log("ヒットストップ開始");
-    //}
-
-    //private IEnumerator HitStop()
-    //{
-    //    if (isHitStopActive) yield break;
-
-    //    Time.timeScale = 0f;
-    //    isHitStopActive = true;
-    //    shouldEndHitStop = false;
-
-    //    Debug.Log("ヒットストップ開始");
-
-    //    // 外部から EndHitStop() が呼ばれるまで待機
-    //    while (!shouldEndHitStop)
-    //    {
-    //        yield return null;
-    //    }
-
-    //    Time.timeScale = 1f;
-    //    isHitStopActive = false;
-
-    //    Debug.Log("ヒットストップ終了");
-    //}
 
     private IEnumerator HitStopTimed(float duration)
     {
@@ -384,8 +303,6 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         Time.timeScale = 0f;
         isHitStopActive = true;
-
-        Debug.Log($"ヒットストップ（自動解除）開始: {duration}秒");
 
         float timer = 0f;
 
@@ -398,10 +315,9 @@ public class BlownAway_Ver3 : MonoBehaviour
         Time.timeScale = 1f;
         isHitStopActive = false;
 
-        Debug.Log("ヒットストップ終了（自動）");
-
-        // 吹っ飛びエフェクト開始
         snackEffectController.PlayFlyingEffect();
+
+        StartCoroutine(AddForceUpwardDelayed());
     }
 
     private IEnumerator HitStopManual()
@@ -412,11 +328,9 @@ public class BlownAway_Ver3 : MonoBehaviour
         isHitStopActive = true;
         shouldEndHitStop = false;
 
-        Debug.Log("ヒットストップ（手動解除）開始");
 
         playerAnimController.PlayRandomAnimation();
 
-        // 外部から EndHitStop() が呼ばれるまで待つ
         while (!shouldEndHitStop)
         {
             yield return null;
@@ -425,13 +339,12 @@ public class BlownAway_Ver3 : MonoBehaviour
         Time.timeScale = 1f;
         isHitStopActive = false;
 
-        Debug.Log("ヒットストップ終了（手動）");
 
-        // 吹っ飛びエフェクト開始
         snackEffectController.PlayFlyingEffect();
+
+        StartCoroutine(AddForceUpwardDelayed());
     }
 
-    // 外部スクリプトから呼び出してヒットストップを終了させる
     public void EndHitStop()
     {
         if (isHitStopActive)
@@ -445,18 +358,15 @@ public class BlownAway_Ver3 : MonoBehaviour
     {
         if (RespawnArea == null || GroundArea == null)
         {
-            Debug.LogWarning("RespawnAreaが設定されていません");
             return;
         }
 
-        // 範囲取得
         Vector3 respawnCenter = RespawnArea.position;
         Vector3 respawnSize = RespawnArea.localScale;
 
         Vector3 groundCenter = GroundArea.position;
         Vector3 groundSize = GroundArea.localScale;
 
-        // XとZの最小・最大を両方の範囲で共通する部分に制限
         float minX = Mathf.Max(respawnCenter.x - respawnSize.x / 2, groundCenter.x - groundSize.x / 2);
         float maxX = Mathf.Min(respawnCenter.x + respawnSize.x / 2, groundCenter.x + groundSize.x / 2);
 
@@ -466,20 +376,13 @@ public class BlownAway_Ver3 : MonoBehaviour
         float randomX = Random.Range(minX, maxX);
         float randomZ = Random.Range(minZ, maxZ);
 
-        // Y座標はRespawnAreaの高さに設定
         float y = respawnCenter.y;
 
-        // 保存した上方向の力を代入
         Vector3 newPos = new Vector3(randomX, y, randomZ);
         nextWarpPosition = newPos;
-
-        Debug.Log($"上昇速度: {Rb.linearVelocity.y}");
-        Debug.Log($"リスポーン座標（グラウンド内）: {newPos}");
-
         FallPoint?.CalculateGroundPoint();
     }
 
-    // クリア時処理
     public void OnClear()
     {
         IsRespawn = false;
@@ -497,5 +400,30 @@ public class BlownAway_Ver3 : MonoBehaviour
         transform.position = nextWarpPosition;
         Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
     }
+    private IEnumerator EnableCollisionLater(Collider colA, Collider colB, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Physics.IgnoreCollision(colA, colB, false);
+    }
+
+    private IEnumerator AddForceUpwardDelayed()
+    {
+        yield return new WaitForFixedUpdate();
+
+        Rb.linearVelocity = Vector3.zero;
+        Rb.angularVelocity = Vector3.zero;
+
+        float force = baseForce + (liftingCount * forcePerLift);
+        if (force > MaxUpwardForce) force = MaxUpwardForce;
+
+        Debug.Log($"Delayed AddForce: {force}");
+
+        Vector3 forceDir = Vector3.up * force;
+        Rb.AddForce(forceDir, ForceMode.Impulse);
+
+    }
 
 }
+
+
+
