@@ -119,7 +119,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 2
 --- !u!65 &4609241152821256124
 BoxCollider:
@@ -155,10 +155,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitStopTime: 0.5
-  baseForce: 100
-  forcePerLift: 100
-  MinUpwardForce: 50
-  MaxUpwardForce: 200
+  baseForce: 350
+  forcePerLift: 20
+  MinUpwardForce: 350
+  MaxUpwardForce: 1000
   MinRandomXYRange: 0
   MaxRandomXYRange: 0
   MinFallSpeed: 0
