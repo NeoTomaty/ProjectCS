@@ -122,6 +122,7 @@ public class BlownAway_Ver3 : MonoBehaviour
         RespawnArea = respawnArea;
         GroundArea = groundArea;
         playerAnimController = PAC;
+        nextWarpPosition = transform.position;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -129,11 +130,11 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         if (other.CompareTag("Respawn") && HitNextFallArea == true)
         {
-            HitNextFallArea = false;
+            //HitNextFallArea = false;
 
-            previousVerticalVelocity = Rb.linearVelocity.y;
+            //previousVerticalVelocity = Rb.linearVelocity.y;
 
-            MoveToRandomXZInRespawnArea();
+            //MoveToRandomXZInRespawnArea();
         }
     }
 
