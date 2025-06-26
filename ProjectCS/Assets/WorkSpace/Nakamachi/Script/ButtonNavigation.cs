@@ -26,27 +26,27 @@ public class ButtonNavigation : MonoBehaviour
     //現在選択中のボタンのインデックス
     private int CurrentIndex = 0;
 
-    //テキストの元のスケール(拡大・縮小用)
-    private Vector3 OriginalScale;
-
-    //テキストの元の色(選択色切り替え用)
-    private Color OriginalColor;
+    //各ボタンの元のスケールを保存する配列(拡大・縮小の基準)
+    private Vector3[] OriginalScales;
 
     void Start()
     {
         //AudioSourceをこのオブジェクトに追加(SE再生用)
         audioSource = gameObject.AddComponent<AudioSource>();
 
+        //各ボタンの元のスケールを保存(後で元に戻すため)
+        OriginalScales = new Vector3[Buttons.Length];
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            OriginalScales[i] = Buttons[i].transform.localScale;
+        }
+
+
         //最初のボタンを選択状態に設定
         EventSystem.current.SetSelectedGameObject(Buttons[CurrentIndex].gameObject);
 
-        //選択中ボタンのテキストの元のスケールと色を保存
-        OriginalScale = Buttons[CurrentIndex].GetComponentInChildren<Text>().transform.localScale;
-        OriginalColor = Buttons[CurrentIndex].GetComponentInChildren<Text>().color;
-
-        //最初のボタンのテキストを強調表示(拡大＋色変更)
-        EnlargeText(Buttons[CurrentIndex]);
-        ChangeTextColor(Buttons[CurrentIndex], Color.red);
+        //最初のボタンを拡大表示(選択中の強調)
+        EnlargeButton(Buttons[CurrentIndex]);
     }
 
     void Update()
@@ -57,8 +57,8 @@ public class ButtonNavigation : MonoBehaviour
             //SE再生
             PlayNavigationSE();
 
-            //現在のボタンの強調を解除
-            ResetText(Buttons[CurrentIndex]);
+            //現在のボタンの拡大を解除
+            ResetButton(Buttons[CurrentIndex]);
 
             //インデックスを前に移動(ループ)
             CurrentIndex = (CurrentIndex - 1 + Buttons.Length) % Buttons.Length;
@@ -66,9 +66,8 @@ public class ButtonNavigation : MonoBehaviour
             //新しいボタンを選択
             EventSystem.current.SetSelectedGameObject(Buttons[CurrentIndex].gameObject);
 
-            //新しいボタンを強調
-            EnlargeText(Buttons[CurrentIndex]);
-            ChangeTextColor(Buttons[CurrentIndex], Color.red);
+            //新しいボタンを拡大表示
+            EnlargeButton(Buttons[CurrentIndex]);
         }
 
         //→キーが押されたら次のボタンに移動
@@ -77,8 +76,8 @@ public class ButtonNavigation : MonoBehaviour
             //SE再生
             PlayNavigationSE();
 
-            //現在のボタンの強調を解除
-            ResetText(Buttons[CurrentIndex]);
+            //現在のボタンの拡大を解除
+            ResetButton(Buttons[CurrentIndex]);
 
             //インデックスを次に移動(ループ)
             CurrentIndex = (CurrentIndex + 1) % Buttons.Length;
@@ -86,9 +85,8 @@ public class ButtonNavigation : MonoBehaviour
             //新しいボタンを選択
             EventSystem.current.SetSelectedGameObject(Buttons[CurrentIndex].gameObject);
 
-            //新しいボタンを強調
-            EnlargeText(Buttons[CurrentIndex]);
-            ChangeTextColor(Buttons[CurrentIndex], Color.red);
+            //新しいボタンを拡大表示
+            EnlargeButton(Buttons[CurrentIndex]);
         }
 
         //Enterキーが押されたら現在のボタンを実行(クリック)
@@ -102,29 +100,28 @@ public class ButtonNavigation : MonoBehaviour
         }
     }
 
-    //テキストを拡大表示する処理
-    void EnlargeText(Button button)
+    //選択中のボタンを拡大表示する処理(画像も含めて拡大)
+    void EnlargeButton(Button button)
     {
-        button.GetComponentInChildren<Text>().transform.localScale = OriginalScale * 1.2f;
+        button.transform.localScale = OriginalScales[CurrentIndex] * 1.2f;
     }
 
-    //テキストの拡大と色を元に戻す処理
-    void ResetText(Button button)
+    //選択解除されたボタンのスケールを元に戻す処理
+    void ResetButton(Button button)
     {
-        button.GetComponentInChildren<Text>().transform.localScale = OriginalScale;
-        button.GetComponentInChildren<Text>().color = OriginalColor;
+        //配列内のインデックスを取得して元のスケールに戻す
+        int index = System.Array.IndexOf(Buttons, button);
+        if (index >= 0)
+        {
+            button.transform.localScale = OriginalScales[index];
+        }
     }
 
-    //テキストの色を変更する処理
-    void ChangeTextColor(Button button, Color color)
-    {
-        button.GetComponentInChildren<Text>().color = color;
-    }
 
     //ボタン移動時の効果音を再生する処理
     void PlayNavigationSE()
     {
-        if(NavigationSE != null && audioSource != null)
+        if (NavigationSE != null && audioSource != null)
         {
             audioSource.PlayOneShot(NavigationSE);
         }
@@ -133,7 +130,7 @@ public class ButtonNavigation : MonoBehaviour
     //ボタン決定時の効果音を再生する処理
     void PlayDecisionSE()
     {
-        if(DecisionSE != null && audioSource != null)
+        if (DecisionSE != null && audioSource != null)
         {
             audioSource.PlayOneShot(DecisionSE);
         }
