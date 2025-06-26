@@ -87,6 +87,7 @@ public class FallPointCalculator : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 origin = BAV3.NextWarpPosition;
+        Debug.Log("‰‰ñƒ[ƒvˆÊ’u" + BAV3.NextWarpPosition);
         Vector3 direction = Vector3.down;
 
         // BaseGroundLayer‚Ì‚İ”»’è
