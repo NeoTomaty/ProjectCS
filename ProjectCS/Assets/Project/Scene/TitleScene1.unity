@@ -360,6 +360,14 @@ PrefabInstance:
       propertyPath: uiInputModule
       value: 
       objectReference: {fileID: 1533310291}
+    - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
+      propertyPath: FadeInSEVolume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
+      propertyPath: FadeOutSEVolume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7902525595534074878, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
       propertyPath: m_SortingOrder
       value: 5
@@ -605,6 +613,9 @@ MonoBehaviour:
   CameraFunction: {fileID: 0}
   flyingPoint: {fileID: 0}
   ClearConditionsScript: {fileID: 0}
+  ScorePenaltyStartTime: 40
+  ScoreDecreaseInterval: 10
+  ScoreDecreasePoint: 100
   snackEffectController: {fileID: 280879704}
   audioSource: {fileID: 0}
   HitSE: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
