@@ -1,9 +1,10 @@
 // ButtonNavigation.cs
 // 作成者: 中町雷我
-// 最終更新日: 2025/05/11
+// 最終更新日: 2025/06/25
 // アタッチ対象: StartボタンなどのUIオブジェクト
 // [Log]
 // 05/11 中町 メニュー選択＆決定処理
+// 06/25 中町 コントローラーの修正&キーボード操作の修正&ボタンの拡大表示
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,7 @@ public class ButtonNavigation : MonoBehaviour
     private Vector3[] OriginalScales;
 
     //スティック操作のクールダウン時間(秒)
-    private float StickCoolDown = 1.0f;
+    private float StickCoolDown = 0.3f;
 
     //クールダウンタイマー(時間経過で減少)
     private float StickTimer = 0.0f;
@@ -63,10 +64,10 @@ public class ButtonNavigation : MonoBehaviour
         StickTimer -= Time.unscaledDeltaTime;
 
         //左スティックの横方向の入力値を取得
-        float Horizontal = Input.GetAxis("Horizontal");
+        float Vertical = Input.GetAxis("Vertical");
 
         //スティックがニュートラルに戻ったらフラグを立てる
-        if (Mathf.Abs(Horizontal) < 0.2f)
+        if (Mathf.Abs(Vertical) < 0.2f)
         {
             StickReleased = true;
         }
@@ -81,48 +82,55 @@ public class ButtonNavigation : MonoBehaviour
             Buttons[CurrentIndex].onClick.Invoke();
         }
 
-        //←キーまたは左スティック左で前のボタンに移動
-        if ((Input.GetKeyDown(KeyCode.LeftArrow) || (Horizontal < -0.5f && StickTimer <= 0.0f && StickReleased)))
+        //↓キーまたは左スティック下で次のボタンに移動
+        if ((Input.GetKeyDown(KeyCode.DownArrow) || (Vertical < -0.5f && StickTimer <= 0.0f && StickReleased)))
+        {
+
+            StickReleased = false;
+            StickTimer = StickCoolDown;
+
+            int nextIndex = CurrentIndex + 1;
+
+            //配列の範囲外なら何もしない
+            if (nextIndex >= Buttons.Length) return;
+
+            //選択音を再生
+            PlayNavigationSE();
+
+            //現在のボタンのスケールを元に戻す
+            ResetButton(Buttons[CurrentIndex]);
+
+            //インデックス更新
+            CurrentIndex = nextIndex;
+
+            //新しいボタンを選択状態に
+            EventSystem.current.SetSelectedGameObject(Buttons[CurrentIndex].gameObject);
+
+            //新しいボタンを拡大表示
+            EnlargeButton(Buttons[CurrentIndex]);
+        }
+
+        //↑キーまたは左スティック上で前のボタンに移動
+        if ((Input.GetKeyDown(KeyCode.UpArrow) || (Vertical > 0.5f && StickTimer <= 0.0f && StickReleased)))
         {
             StickReleased = false;
             StickTimer = StickCoolDown;
 
             int nextIndex = CurrentIndex - 1;
 
-            //Option(1)→Start(0)の移動を禁止
-            if (nextIndex < 0 || (CurrentIndex == 1 && nextIndex == 0)) return;
+            //配列の範囲外なら何もしない
+            if (nextIndex < 0) return;
 
-            //移動SEを再生
+            //選択音を再生
             PlayNavigationSE();
 
-            //現在のボタンの拡大を解除
+            //現在のボタンのスケールを元に戻す
             ResetButton(Buttons[CurrentIndex]);
+
+            //インデックス更新
             CurrentIndex = nextIndex;
 
-            //新しいボタンを選択
-            EventSystem.current.SetSelectedGameObject(Buttons[CurrentIndex].gameObject);
-            EnlargeButton(Buttons[CurrentIndex]);
-        }
-
-        //→キーまたは左スティック右で次のボタンに移動
-        if ((Input.GetKeyDown(KeyCode.RightArrow) || (Horizontal > 0.5f && StickTimer <= 0.0f && StickReleased)))
-        {
-            StickReleased = false;
-            StickTimer = StickCoolDown;
-
-            int nextIndex = CurrentIndex + 1;
-
-            //Start(0)→Option(1)の移動を禁止
-            if (nextIndex >= Buttons.Length || (CurrentIndex == 0 && nextIndex == 1)) return;
-
-            //移動SEを再生
-            PlayNavigationSE();
-
-            //現在のボタンの拡大を解除
-            ResetButton(Buttons[CurrentIndex]);
-            CurrentIndex = nextIndex;
-
-            //新しいボタンを選択
+            //新しいボタンを選択状態に
             EventSystem.current.SetSelectedGameObject(Buttons[CurrentIndex].gameObject);
 
             //新しいボタンを拡大表示
@@ -165,6 +173,15 @@ public class ButtonNavigation : MonoBehaviour
         if (DecisionSE != null && audioSource != null)
         {
             audioSource.PlayOneShot(DecisionSE);
+        }
+    }
+
+    //全てのボタンのスケールを元に戻す処理
+    void ResetAllButtons()
+    {
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            Buttons[i].transform.localScale = OriginalScales[i];
         }
     }
 }
