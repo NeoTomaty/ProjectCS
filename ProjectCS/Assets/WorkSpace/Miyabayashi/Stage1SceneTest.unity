@@ -647,6 +647,27 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &286164592 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 82545236650177308, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+  m_PrefabInstance: {fileID: 1563025577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &286164594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 286164592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ea679cdcc27cd24dbf2e5d5e33434f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivityButton: {fileID: 286164592}
+  sensitivitySlider: {fileID: 1392344450}
+  adjustAction: {fileID: -8784545083839296357, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+  cameraFunction: {fileID: 594655328}
 --- !u!1 &311888505
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,11 +1167,14 @@ MonoBehaviour:
   ForceLockOnTransitionDuration: 0.2
   ForceLockOnReturnDuration: 0.3
   TransitionEndThreshold: 0.01
+  minXAngle: -35
+  maxXAngle: 35
   LockOnDistance: 8
   LockOnHeight: 6
   ForceLockOnTime: 2
   SpecialViewTransitionSpeed: 3
   specialViewTransitionDuration: 1
+  PlayerArrow: {fileID: 0}
 --- !u!114 &594655329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1577,6 +1601,23 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7929386102323417175, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
   m_PrefabInstance: {fileID: 1563025577}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &764480061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764480059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1d30efb1b6d21145a779d08bd857cce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmVolumeSlider: {fileID: 474370028}
+  sensitivitySlider: {fileID: 1392344450}
+  seVolumeSlider: {fileID: 1924685226}
+  cameraFunction: {fileID: 594655328}
+  volumeSetting: {fileID: 1857091212}
 --- !u!1 &773421366 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5149087011742517647, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
@@ -2605,6 +2646,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e5072c5027ede4bb6e099c5678b9e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1392344450 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6060240847439978762, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+  m_PrefabInstance: {fileID: 1563025577}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1501969184
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2800,6 +2852,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2104618539}
     - target: {fileID: 1109982751235517900, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1109982751235517900, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
       propertyPath: pauseManager
       value: 
       objectReference: {fileID: 1866824032}
@@ -2975,6 +3031,14 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5424711982992653608, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5424711982992653608, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5695970682574380034, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
       propertyPath: sceneName
       value: StageSelectScene
@@ -2991,6 +3055,18 @@ PrefabInstance:
       propertyPath: cameraFunction
       value: 
       objectReference: {fileID: 594655328}
+    - target: {fileID: 7285594185220997225, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7285594185220997225, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7498622750932158407, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7498622750932158407, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
       propertyPath: pauseManager
       value: 
@@ -3039,12 +3115,21 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7929386102323417175, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 764480061}
     - targetCorrespondingSourceObject: {fileID: 3526192076026800037, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 758073036}
     - targetCorrespondingSourceObject: {fileID: 3671378459846382434, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2112972302}
+    - targetCorrespondingSourceObject: {fileID: 3186453286798332364, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1766264060}
+    - targetCorrespondingSourceObject: {fileID: 82545236650177308, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 286164594}
   m_SourcePrefab: {fileID: 100100000, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
 --- !u!1001 &1583368510
 PrefabInstance:
@@ -3260,6 +3345,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 503559882}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1766264059 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3186453286798332364, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
+  m_PrefabInstance: {fileID: 1563025577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1766264060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766264059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c856c38f7647e4ab3d57378c6a64b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seVolumeButton: {fileID: 1766264059}
+  seVolumeSlider: {fileID: 1924685226}
+  adjustAction: {fileID: -8784545083839296357, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+  volumeSetting: {fileID: 1857091212}
 --- !u!1 &1796874481
 GameObject:
   m_ObjectHideFlags: 0
@@ -3759,7 +3865,7 @@ PrefabInstance:
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstOptionButton
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 758073032}
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: gameStartCountdown
       value: 
