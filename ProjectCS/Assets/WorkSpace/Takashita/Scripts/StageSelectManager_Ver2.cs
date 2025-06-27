@@ -72,7 +72,9 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
     // オプション管理
     [SerializeField] private GameObject OptionCanvasObject;
+    [SerializeField] private PauseManager PauseManagerComponent;
     private bool IsOptionsOpen = false;
+    private bool IgnoreConfirm = true;
 
     // アニメーション管理
     [SerializeField] private Animator PlayerAnimation;
@@ -178,26 +180,24 @@ public class StageSelectManager_Ver2 : MonoBehaviour
 
     void Update()
     {
-        //if (IsOptionsOpen)
-        //{
-        //    if (!OptionCanvasObject.activeSelf || OptionAction.WasPerformedThisFrame())
-        //    {
-        //        IsOptionsOpen = false;
-        //        OptionCanvasObject.SetActive(false);
-        //        if(PlayerAnimation) PlayerAnimation.speed = 1f;
-        //    }
 
-        //    return;
-        //}
-        //else
-        //{
-        //    if (OptionAction.WasPerformedThisFrame() && !MoveCamera.GetIsSwitched() && !BezierMoverComponent.GetIsMoving())
-        //    {
-        //        IsOptionsOpen = true;
-        //        OptionCanvasObject.SetActive(true);
-        //        if (PlayerAnimation) PlayerAnimation.speed = 0f;
-        //    }
-        //}
+        if(PauseManagerComponent)
+        {
+            if(PauseManagerComponent.IsMenuOpen())
+            {
+                IgnoreConfirm = false;
+                return;
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                if (!IgnoreConfirm)
+                {
+                    IgnoreConfirm = true;
+                    return;
+                }
+            }
+        }
 
         // ベジェ曲線とステージ数の整合性チェック
         if (StageChildArray.Length - 1 != BezierCurveChildArray.Length) return;
