@@ -10,6 +10,7 @@
 // 06/05 竹内 減速処理の仕様を変更（タイプB追加）
 // 06/05 竹内 加速処理の仕様を追加（タイプC追加）
 // 06/05 竹内 SpeedEffectAreaに改名
+// 06/27 中町 減速SE音量調整実装
 //====================================================
 using UnityEngine;
 // ※このスクリプトをアタッチしている減速エリアはプレハブで作ってます
@@ -39,6 +40,9 @@ public class SpeedEffectArea : MonoBehaviour
     [Header("SE設定")]
     [Tooltip("減速時に再生するSE")]
     [SerializeField] private AudioClip DecelerationSE;
+
+    [Header("SE音量設定(0.0～1.0)")]
+    [SerializeField] private float SEVolume = 1.0f;
 
     [Header("使用する加減速タイプ A:一時減速 B:減速 C:加速")]
     [SerializeField] private SpeedEffectType effectType;
@@ -78,6 +82,7 @@ public class SpeedEffectArea : MonoBehaviour
         //AudioSourceをこのオブジェクトに追加し、SE再生用に設定
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
+        audioSource.volume = SEVolume;
     }
 
     void Update()
