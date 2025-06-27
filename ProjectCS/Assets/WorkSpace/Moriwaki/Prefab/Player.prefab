@@ -2163,8 +2163,9 @@ MonoBehaviour:
   PlayerSpeed: 40
   MaxPlayerSpeed: 90
   MinPlayerSpeed: 40
-  audioSource: {fileID: 0}
-  AccelerationSE: {fileID: 0}
+  audioSource: {fileID: 6702316114717174668}
+  AccelerationSE: {fileID: 8300000, guid: 9d0068f7cbb666f4fad36e00b227622c, type: 3}
+  SEVolume: 0.5
 --- !u!114 &1788967242641193304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2177,9 +2178,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bb27cd06dbf744a8e577b72e026a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
-  MoveSE: {fileID: 0}
-  DecideSE: {fileID: 0}
+  audioSource: {fileID: 6702316114717174668}
+  MoveSE: {fileID: 8300000, guid: c3737dbb0df70cf4db274ca0707acc6d, type: 3}
+  DecideSE: {fileID: 8300000, guid: aa4c1a94c601acf468e74f0c2c7df32b, type: 3}
+  SEVolume: 0.5
 --- !u!114 &163882227025291501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2223,9 +2225,9 @@ MonoBehaviour:
   PlayerSpeedManager: {fileID: 5470652416083580870}
   RayDistance: 1
   HitStopDuration: 0.02
-  audioSource: {fileID: 0}
-  MoveStartSE: {fileID: 0}
-  MoveStartSEVolume: 1
+  audioSource: {fileID: 6702316114717174668}
+  MoveStartSE: {fileID: 8300000, guid: ba134a053cb72824e84bb6951baca5e3, type: 3}
+  MoveStartSEVolume: 0.5
 --- !u!114 &8724982865499982231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2274,8 +2276,9 @@ MonoBehaviour:
   IsInputEnabled: 0
   InputAcceptDuration: 1
   warpPosition: {x: 0, y: 10, z: 0}
-  RespawnSE: {fileID: 0}
+  RespawnSE: {fileID: 8300000, guid: 29ad2944473aeee49aa77a8e15597431, type: 3}
   TutorialGanarateSnackScript: {fileID: 0}
+  RespawnSEVolume: 0.5
 --- !u!114 &98891520927704644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2487,8 +2490,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 57d2f61693dcc5c44a6398adf951dd3f, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 1faee15383812634496f94be6686ce4e, type: 3}
-  m_Resource: {fileID: 8300000, guid: 1faee15383812634496f94be6686ce4e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c577216a2b3f81a4b84e32f33a3ece55, type: 3}
+  m_Resource: {fileID: 8300000, guid: c577216a2b3f81a4b84e32f33a3ece55, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2586,7 +2589,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e853504470f454d40ab1f5fa19df177a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WallSound: {fileID: 8300000, guid: 1faee15383812634496f94be6686ce4e, type: 3}
+  WallSound: {fileID: 8300000, guid: c577216a2b3f81a4b84e32f33a3ece55, type: 3}
+  volume: 0.5
 --- !u!114 &5920583418372483330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2599,8 +2603,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fcf5c7e554267d49b482f2f68bcc309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JumpSound: {fileID: 8300000, guid: f555a31d9f09bf34fb0123fc473657c4, type: 3}
-  JumpVolume: 1
+  JumpSound: {fileID: 8300000, guid: 54d84d5cffbd8734ab271657a304b411, type: 3}
+  JumpVolume: 0.5
 --- !u!114 &2581601592503768132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2613,7 +2617,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9548f2eb319d4874a8f138f1bbabc2bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SnackSound: {fileID: 8300000, guid: 5c5de228247c462419371259ce036236, type: 3}
+  SnackSound: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
+  volume: 0.5
 --- !u!114 &8355876325621931706
 MonoBehaviour:
   m_ObjectHideFlags: 0
