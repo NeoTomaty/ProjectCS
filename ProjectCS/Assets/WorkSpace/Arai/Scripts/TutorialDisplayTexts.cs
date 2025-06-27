@@ -11,16 +11,16 @@ using UnityEngine;
 public class TutorialDisplayTexts : MonoBehaviour
 {
     [Header("チュートリアル用のUI")]
-    [SerializeField] private GameObject OnSnackGanarateUI;
-    [SerializeField] private GameObject OnJumpUI;
+    [SerializeField] private GameObject OnStartUI;
+    [SerializeField] private GameObject OnCollideUI;
 
-    private bool IsDisplayUI = false;
+    public bool IsDisplayUI = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        OnSnackGanarateUI.SetActive(false);
-        OnJumpUI.SetActive(false);
+        OnStartUI.SetActive(false);
+        OnCollideUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -30,8 +30,8 @@ public class TutorialDisplayTexts : MonoBehaviour
         {
             if (Input.anyKeyDown)
             {
-                OnSnackGanarateUI.SetActive(false);
-                OnJumpUI.SetActive(false);
+                OnStartUI.SetActive(false);
+                OnCollideUI.SetActive(false);
                 IsDisplayUI = false;
                 Time.timeScale = 1f;
             }
@@ -40,14 +40,14 @@ public class TutorialDisplayTexts : MonoBehaviour
 
     public void DisplayTutorialUI1()
     {
-        OnSnackGanarateUI.SetActive(true);
+        OnStartUI.SetActive(true);
         IsDisplayUI = true;
         Time.timeScale = 0f;
     }
 
     public void DisplayTutorialUI2()
     {
-        OnJumpUI.SetActive(true);
+        OnCollideUI.SetActive(true);
         IsDisplayUI = true;
         Time.timeScale = 0f;
     }

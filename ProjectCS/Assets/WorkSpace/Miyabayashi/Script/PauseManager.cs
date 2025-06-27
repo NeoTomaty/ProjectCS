@@ -1,11 +1,12 @@
 ﻿//======================================================
 // PauseManager スクリプト
 // 作成者：宮林
-// 最終更新日：5/28
+// 最終更新日：6/27
 //
 // [Log]5/5 宮林　ポーズ画面を実装
 // 5/28　中町　メニュー開閉SE実装
 // 6/26　森脇 フィニッシュ時のポーズ適応
+// 6/27　荒井　チュートリアル用の処理を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -50,6 +51,9 @@ public class PauseManager : MonoBehaviour
 
     [SerializeField] private Animator playerAnimator;
 
+    [Header("チュートリアル用（チュートリアル以外では割り当てNG）")]
+    [SerializeField] private TutorialDisplayTexts TutorialDisplayTexts;
+
     //ゲーム開始時に呼ばれる(初期化処理)
     private void Awake()
     {
@@ -93,6 +97,12 @@ public class PauseManager : MonoBehaviour
     private void OnPausePerformed(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
+
+        // チュートリアル時
+        if(TutorialDisplayTexts != null && TutorialDisplayTexts.IsDisplayUI)
+        {
+            return;
+        }
 
         // カウントダウン中ならポーズ禁止
         if (gameStartCountdown != null && gameStartCountdown.IsCountingDown)
