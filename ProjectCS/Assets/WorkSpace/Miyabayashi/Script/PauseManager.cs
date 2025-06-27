@@ -13,8 +13,6 @@ using UnityEngine.InputSystem;
 
 public class PauseManager : MonoBehaviour
 {
-    public static PauseManager Instance { get; private set; }
-
     //ポーズメニューのUIオブジェクト
     [SerializeField] private GameObject pauseUI;
 
