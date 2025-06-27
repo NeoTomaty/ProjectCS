@@ -2,7 +2,7 @@
 // スクリプト名：PlayerSpeedManager
 // 作成者：高下
 // 内容：プレイヤーの速度管理
-// 最終更新日：05/22
+// 最終更新日：06/27
 // 
 // [Log]
 // 03/31 高下 スクリプト作成 
@@ -14,6 +14,7 @@
 // 05/03 荒井 SetOverAccelerationValue関数を削除
 // 05/08 高下 GetMaxSpeedとGetMinSpeed関数追加
 // 05/22 中町 加速音SE実装
+// 06/27 中町 加速音SE音量調整実装
 //====================================================
 using UnityEngine;
 
@@ -35,6 +36,10 @@ public class PlayerSpeedManager : MonoBehaviour
     //加速時に再生する効果音(インスペクターで設定)
     [SerializeField] private AudioClip AccelerationSE;
 
+    //効果音の音量(0.0～1.0)
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float SEVolume = 1.0f;
+
     // プレイヤーの速度の加算関数
     public void SetAccelerationValue(float AccelerationValue)
     {
@@ -47,6 +52,8 @@ public class PlayerSpeedManager : MonoBehaviour
         //実際に加速したときのみ効果音を再生
         if(PlayerSpeed > PreviousSpeed && AccelerationSE != null && audioSource != null)
         {
+            //音量を設定
+            audioSource.volume = SEVolume;
             audioSource.PlayOneShot(AccelerationSE);
         }
     }
