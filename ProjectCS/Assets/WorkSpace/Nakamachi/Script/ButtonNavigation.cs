@@ -1,10 +1,11 @@
 // ButtonNavigation.cs
 // 作成者: 中町雷我
-// 最終更新日: 2025/06/25
+// 最終更新日: 2025/06/26
 // アタッチ対象: StartボタンなどのUIオブジェクト
 // [Log]
-// 05/11 中町 メニュー選択＆決定処理
+// 05/11 中町 メニュー選択&決定処理
 // 06/25 中町 コントローラーの修正&キーボード操作の修正&ボタンの拡大表示
+// 06/26 中町 メニュー選択&決定SE音量調整実装
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,10 +40,15 @@ public class ButtonNavigation : MonoBehaviour
     //スティックがニュートラルに戻ったかどうかの判定
     private bool StickReleased = true;
 
+    //効果音の音量(0.0～1.0の範囲で設定可能)
+    [Range(0.0f, 1.0f)]
+    public float SEVolume = 1.0f;
+
     void Start()
     {
         //AudioSourceをこのオブジェクトに追加(SE再生用)
         audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.volume = SEVolume;
 
         //各ボタンの元のスケールを保存(後で元に戻すため)
         OriginalScales = new Vector3[Buttons.Length];
@@ -163,7 +169,7 @@ public class ButtonNavigation : MonoBehaviour
     {
         if (NavigationSE != null && audioSource != null)
         {
-            audioSource.PlayOneShot(NavigationSE);
+            audioSource.PlayOneShot(NavigationSE,SEVolume);
         }
     }
 
@@ -172,7 +178,7 @@ public class ButtonNavigation : MonoBehaviour
     {
         if (DecisionSE != null && audioSource != null)
         {
-            audioSource.PlayOneShot(DecisionSE);
+            audioSource.PlayOneShot(DecisionSE,SEVolume);
         }
     }
 

@@ -478,6 +478,14 @@ PrefabInstance:
       propertyPath: uiInputModule
       value: 
       objectReference: {fileID: 1533310291}
+    - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
+      propertyPath: FadeInSEVolume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
+      propertyPath: FadeOutSEVolume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7902525595534074878, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
       propertyPath: m_SortingOrder
       value: 5
@@ -5541,6 +5549,7 @@ MonoBehaviour:
   - {fileID: 575828897}
   NavigationSE: {fileID: 8300000, guid: 04bded0f9b99df04a8c09fbf30dcefd0, type: 3}
   DecisionSE: {fileID: 8300000, guid: aa4c1a94c601acf468e74f0c2c7df32b, type: 3}
+  SEVolume: 0.5
 --- !u!114 &1489842370
 MonoBehaviour:
   m_ObjectHideFlags: 0

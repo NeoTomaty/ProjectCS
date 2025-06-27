@@ -1,11 +1,12 @@
 //======================================================
 // FadeManager  スクリプト
 // 作成者：宮林
-// 最終更新日：5/29
+// 最終更新日：6/26
 // 
 // [Log]4/25 宮林　fade処理の管理
 //          最初のシーンにfadeCanvasのPrefabを置く
 // 5/29 中町 フェードイン・フェードアウトSE実装
+// 6/26 中町 フェードイン・フェードアウトSE音量調整実装
 //======================================================
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -44,25 +45,29 @@ public class FadeManager : MonoBehaviour
     //SE再生用のAudioSource
     private AudioSource audioSource;
 
+    //フェードイン時のSE音量(0.0～1.0)
     [Range(0.0f, 1.0f)]
     public float FadeInSEVolume = 1.0f;
 
+    //フェードアウト時のSE音量(0.0～1.0)
     [Range(0.0f, 1.0f)]
     public float FadeOutSEVolume = 1.0f;
 
     //初期化処理(シングルトンの設定とAudioSourceの追加)
     void Awake()
     {
+        //AudioSourceを追加し、SE再生に使用
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
 
+        //すでにインスタンスが存在するときは破棄
         if (instance != null)
         {
-            //すでに存在していれば破棄
             Destroy(gameObject);
             return;
         }
 
+        //このインスタンスを唯一のものとして保持
         instance = this;
 
         //シーンをまたいでも破棄されないようにする
@@ -121,12 +126,15 @@ public class FadeManager : MonoBehaviour
         //フェードアウトSEを再生
         PlaySE(FadeOutSE,FadeOutSEVolume);
 
+        //時間経過に応じてアルファ値を増加
         while (t < fadeDuration)
         {
             t += Time.unscaledDeltaTime;
             fadeImage.alpha = Mathf.Clamp01(t / fadeDuration);
             yield return null;
         }
+
+        //完全に黒にする
         fadeImage.alpha = 1f;
     }
 
@@ -141,12 +149,15 @@ public class FadeManager : MonoBehaviour
         //フェードインSEを再生
         PlaySE(FadeInSE,FadeInSEVolume);
 
+        //時間経過に応じてアルファ値を減少
         while (t > 0f)
         {
             t -= Time.unscaledDeltaTime;
             fadeImage.alpha = Mathf.Clamp01(t / fadeDuration);
             yield return null;
         }
+
+        //完全に透明にする
         fadeImage.alpha = 0f;
     }
 
@@ -159,6 +170,7 @@ public class FadeManager : MonoBehaviour
         //念のため時間を通常に戻す
         Time.timeScale = 1f;
 
+        //フェードアウト完了を待つ
         yield return StartCoroutine(FadeOut());
 
         //シーンを読み込む
@@ -210,7 +222,7 @@ public class FadeManager : MonoBehaviour
         return isInputBlocked;
     }
 
-    //SEを再生する共通処理
+    //SEを再生する共通処理(音量指定付き)
     private void PlaySE(AudioClip clip,float volume)
     {
         if(clip != null && audioSource != null)
