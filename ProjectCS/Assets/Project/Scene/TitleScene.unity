@@ -612,6 +612,7 @@ MonoBehaviour:
   GroundArea: {fileID: 0}
   CameraFunction: {fileID: 0}
   flyingPoint: {fileID: 0}
+  isHitStopActive: 0
   ClearConditionsScript: {fileID: 0}
   ScorePenaltyStartTime: 40
   ScoreDecreaseInterval: 10
@@ -620,6 +621,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   HitSE: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
   playerAnimController: {fileID: 0}
+  SEVolume: 1
 --- !u!65 &280879710
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2391,7 +2393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4335771431771811628, guid: de7e38631a7e6ef478f7a723d9df327e, type: 3}
       propertyPath: 'SceneNames.Array.data[0]'
-      value: TitleScene1
+      value: TitleScene
       objectReference: {fileID: 0}
     - target: {fileID: 4335771431771811628, guid: de7e38631a7e6ef478f7a723d9df327e, type: 3}
       propertyPath: 'SceneNames.Array.data[1]'

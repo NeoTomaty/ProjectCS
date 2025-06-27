@@ -6,11 +6,8 @@
 // [Log]5/5 宮林　ポーズ画面を実装
 // 5/28　中町　メニュー開閉SE実装
 // 6/26　森脇 フィニッシュ時のポーズ適応
-<<<<<<< HEAD
 // 6/27　荒井　チュートリアル用の処理を追加
-=======
 // 6/27　中町 メニュー開閉SE音量調整実装
->>>>>>> origin/Nakamachi
 //======================================================
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -58,12 +55,12 @@ public class PauseManager : MonoBehaviour
 
     [SerializeField] private Animator playerAnimator;
 
-<<<<<<< HEAD
+
     [SerializeField] private BlownAway_Ver3 targetSnack;
-=======
+
     [Header("チュートリアル用（チュートリアル以外では割り当てNG）")]
     [SerializeField] private TutorialDisplayTexts TutorialDisplayTexts;
->>>>>>> origin/Arai
+
 
     //ゲーム開始時に呼ばれる(初期化処理)
     private void Awake()
