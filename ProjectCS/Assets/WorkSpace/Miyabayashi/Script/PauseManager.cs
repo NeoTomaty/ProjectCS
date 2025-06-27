@@ -105,19 +105,46 @@ public class PauseManager : MonoBehaviour
 
         if (!isPaused)
         {
-            Time.timeScale = 0f;
-            // アニメーション停止
-            if (playerAnimator != null)
-                playerAnimator.speed = 0f;
-            pauseUI.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(firstPauseButton);
-            isPaused = true;
-            PlaySE(OpenSE);
+            if (pauseUI == null)
+            {
+                Time.timeScale = 0f; // ゲーム進行を止める（タイトルなら不要）
+                optionUI.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(null);
+                EventSystem.current.SetSelectedGameObject(firstOptionButton);
+            }
+            else
+            {
+                Time.timeScale = 0f;
+                // アニメーション停止
+                if (playerAnimator != null)
+                    playerAnimator.speed = 0f;
+                pauseUI.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(null);
+                EventSystem.current.SetSelectedGameObject(firstPauseButton);
+                isPaused = true;
+                PlaySE(OpenSE);
+            }
         }
         else
         {
             ResumeGame();
+        }
+    }
+
+
+    public void OpenOptionStandalone()
+    {
+        // PauseUI が存在しない場合
+        if (pauseUI == null)
+        {
+            Time.timeScale = 0f; // ゲーム進行を止める（タイトルなら不要）
+            optionUI.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(firstOptionButton);
+        }
+        else
+        {
+         
         }
     }
 
@@ -158,6 +185,12 @@ public class PauseManager : MonoBehaviour
     {
         return isPaused;
     }
+
+    public bool IsMenuOpen()
+    {
+        return (optionUI != null && optionUI.activeSelf) || (pauseUI != null && pauseUI.activeSelf);
+    }
+
 
     //ポーズUIの表示・非表示を切り替える関数
     public void SetPauseUIVisible(bool visible)
