@@ -19,7 +19,6 @@ public class FlyingPoint : MonoBehaviour
 {
     [Header("必要な参照")]
     [SerializeField] private LiftingJump LiftingJump;
-    [SerializeField] private GaugeController GaugeController;
     [SerializeField] private PlayerSpeedManager PlayerSpeed;
     [SerializeField] private Text ScoreUI;
 
@@ -55,15 +54,13 @@ public class FlyingPoint : MonoBehaviour
     // スコアを計算する関数
     public void CalculateScore()
     {
-        if (LiftingJump == null || GaugeController == null || PlayerSpeed == null)
+        if (LiftingJump == null|| PlayerSpeed == null)
         {
             Debug.LogWarning("PlayerScore：参照が不足しています");
             return;
         }
 
         float jumpPower = LiftingJump.GetJumpPower;
-        float rawValue = GaugeController.GetGaugeValue;
-        int gaugeScore = Mathf.Clamp(Mathf.CeilToInt(rawValue * 10f), 1, 10); // ゲージのポイントを1～10にする
         float speed = PlayerSpeed.GetPlayerSpeed;
 
         // スコア計算

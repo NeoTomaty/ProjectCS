@@ -4,7 +4,7 @@
 // 最終更新日：06/26
 // 
 // [Log]
-// 06/26　荒井　
+// 06/26　荒井　壁に一定回数ぶつかるとスナックが生成されるように実装
 // 06/27  高下 参照オブジェクトの追加
 //======================================================
 using UnityEngine;
@@ -37,6 +37,7 @@ public class TutorialGanarateSnack : MonoBehaviour
     [SerializeField] private PlayerAnimationController PlayerAnimationController;
     [SerializeField] private SnackHeightUIManager SnackHeightUIManagerComponent;
     [SerializeField] private AnimationFinishTrigger AnimationFinishComponent;
+    [SerializeField] private TutorialDisplayTexts TutorialDisplayTextsComponent;
 
     private int CollidedIndex = 0;
 
@@ -72,6 +73,8 @@ public class TutorialGanarateSnack : MonoBehaviour
             SR.SetTarget(SnackRespawnPoint);
 
             SnackHeightUIManagerComponent.AddSnack(SnackInstance);
+
+            TutorialDisplayTextsComponent.DisplayTutorialUI1();
         }
     }
 }
