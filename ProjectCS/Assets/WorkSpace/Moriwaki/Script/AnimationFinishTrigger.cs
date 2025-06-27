@@ -5,6 +5,7 @@
 // [Log]
 // 06/13　森脇 カメラの制御フラグ追加
 // 06/19　森脇  SE再生機能を追加
+// 06/27  高下　ターゲットを変更する関数を追加
 //====================================================
 
 using UnityEngine;
@@ -87,5 +88,10 @@ public class AnimationFinishTrigger : MonoBehaviour
 
         // カメラの特殊視点解除
         cameraFunction?.StopSpecialView();
+    }
+
+    public void SetTargetObject(GameObject target)
+    {
+        snackObject = target;
     }
 }

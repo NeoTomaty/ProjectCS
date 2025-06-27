@@ -34,6 +34,8 @@ public class LiftingAreaManager : MonoBehaviour
     PlayerStateManager PlayerState = null; // プレイヤーの状態管理コンポーネント
 
     private Renderer ObjectRenderer;
+    private LiftingJump LiftingJumpComponent;
+    [SerializeField] private AnimationFinishTrigger AnimationFinishComponent;
 
     [Header("エリアの大きさ設定")]
     [SerializeField] private float Radius = 35.0f;  // 半径
@@ -64,13 +66,16 @@ public class LiftingAreaManager : MonoBehaviour
             // データの追加
             ASM.AddSnackData(Target, gameObject);
         }
+
+        LiftingJumpComponent = Player.GetComponent<LiftingJump>();
     }
 
-    public void SetTarget(GameObject PlayerObj, GameObject SnackObj, GameClearSequence GCS)
+    public void SetTarget(GameObject PlayerObj, GameObject SnackObj, GameClearSequence GCS, AnimationFinishTrigger AFT)
     {
         Player = PlayerObj;
         Target = SnackObj;
         ClearSequenceComponent = GCS;
+        AnimationFinishComponent = AFT;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -93,8 +98,10 @@ public class LiftingAreaManager : MonoBehaviour
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.LiftingPart);
             ObjectRenderer.material.SetColor("_Color", LiftingPartColor);
             LiftingJump LJ = Player.GetComponent<LiftingJump>();
-            LJ.SetTargetObject(Target);
+           
+            if (LiftingJumpComponent) LiftingJumpComponent.SetTargetObject(Target);
             ClearSequenceComponent.SetSnackObject(Target);
+            if(AnimationFinishComponent) AnimationFinishComponent.SetTargetObject(Target);
         }
     }
 
