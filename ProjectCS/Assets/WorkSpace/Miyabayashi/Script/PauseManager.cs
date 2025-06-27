@@ -1,10 +1,11 @@
-//======================================================
-// PauseManager ƒXƒNƒŠƒvƒg
-// ì¬ÒF‹{—Ñ
-// ÅIXV“úF5/28
-// 
-// [Log]5/5 ‹{—Ñ@ƒ|[ƒY‰æ–Ê‚ğÀ‘•
-// 5/28@’†’¬@ƒƒjƒ…[ŠJ•ÂSEÀ‘•
+ï»¿//======================================================
+// PauseManager ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
+// ä½œæˆè€…ï¼šå®®æ—
+// æœ€çµ‚æ›´æ–°æ—¥ï¼š5/28
+//
+// [Log]5/5 å®®æ—ã€€ãƒãƒ¼ã‚ºç”»é¢ã‚’å®Ÿè£…
+// 5/28ã€€ä¸­ç”ºã€€ãƒ¡ãƒ‹ãƒ¥ãƒ¼é–‹é–‰SEå®Ÿè£…
+// 6/26ã€€æ£®è„‡ ãƒ•ã‚£ãƒ‹ãƒƒã‚·ãƒ¥æ™‚ã®ãƒãƒ¼ã‚ºé©å¿œ
 //======================================================
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,89 +13,93 @@ using UnityEngine.InputSystem;
 
 public class PauseManager : MonoBehaviour
 {
-    //ƒ|[ƒYƒƒjƒ…[‚ÌUIƒIƒuƒWƒFƒNƒg
+    public static PauseManager Instance { get; private set; }
+
+    //ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®UIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
     [SerializeField] private GameObject pauseUI;
 
-    //ƒIƒvƒVƒ‡ƒ“ƒƒjƒ…[‚ÌUIƒIƒuƒWƒFƒNƒg
+    //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®UIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
     [SerializeField] private GameObject optionUI;
 
-    //ƒ|[ƒYƒƒjƒ…[‚ÅÅ‰‚É‘I‘ğ‚³‚ê‚éƒ{ƒ^ƒ“
+    //ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã§æœ€åˆã«é¸æŠã•ã‚Œã‚‹ãƒœã‚¿ãƒ³
     [SerializeField] private GameObject firstPauseButton;
 
-    //ƒIƒvƒVƒ‡ƒ“ƒƒjƒ…[‚ÅÅ‰‚É‘I‘ğ‚³‚ê‚éƒ{ƒ^ƒ“
+    //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã§æœ€åˆã«é¸æŠã•ã‚Œã‚‹ãƒœã‚¿ãƒ³
     [SerializeField] private GameObject firstOptionButton;
 
     [Header("SE Settings")]
 
-    //Œø‰Ê‰¹‚ğÄ¶‚·‚é‚½‚ß‚ÌAudioSource
+    //åŠ¹æœéŸ³ã‚’å†ç”Ÿã™ã‚‹ãŸã‚ã®AudioSource
     [SerializeField] private AudioSource audioSource;
 
-    //ƒ|[ƒYƒƒjƒ…[‚ğŠJ‚¢‚½‚Æ‚«‚É–Â‚ç‚·Œø‰Ê‰¹
+    //ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ã„ãŸã¨ãã«é³´ã‚‰ã™åŠ¹æœéŸ³
     [SerializeField] private AudioClip OpenSE;
 
-    //ƒ|[ƒYƒƒjƒ…[‚ğ•Â‚¶‚½‚Æ‚«‚É–Â‚ç‚·Œø‰Ê‰¹
+    //ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‰ã˜ãŸã¨ãã«é³´ã‚‰ã™åŠ¹æœéŸ³
     [SerializeField] private AudioClip CloseSE;
 
-    //Œ»İƒ|[ƒY’†‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
+    //ç¾åœ¨ãƒãƒ¼ã‚ºä¸­ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
     private bool isPaused = false;
 
-    //ƒvƒŒƒCƒ„[‚Ì“ü—Í‚ğŠÇ—‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ã‚’ç®¡ç†ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
     private PlayerInput playerInput;
 
-    //uPausevƒAƒNƒVƒ‡ƒ“(EscƒL[)‚ğæ“¾‚·‚é‚½‚ß‚Ì•Ï”
+    //ã€ŒPauseã€ã‚¢ã‚¯ã‚·ãƒ§ãƒ³(Escã‚­ãƒ¼)ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®å¤‰æ•°
     private InputAction pauseAction;
 
     [Header("Reference to Countdown")]
     [SerializeField] private GameStartCountdown gameStartCountdown;
 
-    //ƒQ[ƒ€ŠJn‚ÉŒÄ‚Î‚ê‚é(‰Šú‰»ˆ—)
+    [SerializeField] private Animator playerAnimator;
+
+    //ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã«å‘¼ã°ã‚Œã‚‹(åˆæœŸåŒ–å‡¦ç†)
     private void Awake()
     {
-        //PlayerInputƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾
+        //PlayerInputã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—
         playerInput = GetComponent<PlayerInput>();
 
         if (playerInput != null)
         {
-            //“ü—ÍƒAƒNƒVƒ‡ƒ“ƒ}ƒbƒv‚©‚çuPausevƒAƒNƒVƒ‡ƒ“‚ğæ“¾
+            //å…¥åŠ›ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—ã‹ã‚‰ã€ŒPauseã€ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å–å¾—
             pauseAction = playerInput.actions["Pause"];
         }
         else
         {
-            Debug.LogError("PlayerInput‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñI");
+            Debug.LogError("PlayerInputãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ï¼");
         }
     }
 
-    //ƒIƒuƒWƒFƒNƒg‚ª—LŒø‚É‚È‚Á‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚é
+    //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæœ‰åŠ¹ã«ãªã£ãŸã¨ãã«å‘¼ã°ã‚Œã‚‹
     private void OnEnable()
     {
         if (pauseAction != null)
         {
-            //PauseƒAƒNƒVƒ‡ƒ“‚ªÀs‚³‚ê‚½‚Æ‚«‚ÌƒCƒxƒ“ƒg‚ğ“o˜^
+            //Pauseã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒå®Ÿè¡Œã•ã‚ŒãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™»éŒ²
             pauseAction.performed += OnPausePerformed;
             pauseAction.Enable();
         }
     }
 
-    //ƒIƒuƒWƒFƒNƒg‚ª–³Œø‚É‚È‚Á‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚é
+    //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç„¡åŠ¹ã«ãªã£ãŸã¨ãã«å‘¼ã°ã‚Œã‚‹
     private void OnDisable()
     {
         if (pauseAction != null && playerInput.actions != null)
         {
-            //ƒCƒxƒ“ƒg“o˜^‚ğ‰ğœ
+            //ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²ã‚’è§£é™¤
             pauseAction.performed -= OnPausePerformed;
             pauseAction.Disable();
         }
     }
 
-    //PauseƒAƒNƒVƒ‡ƒ“‚ªÀs‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éˆ—
+    //Pauseã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒå®Ÿè¡Œã•ã‚ŒãŸã¨ãã«å‘¼ã°ã‚Œã‚‹å‡¦ç†
     private void OnPausePerformed(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
 
-        // ƒJƒEƒ“ƒgƒ_ƒEƒ“’†‚È‚çƒ|[ƒY‹Ö~
+        // ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ä¸­ãªã‚‰ãƒãƒ¼ã‚ºç¦æ­¢
         if (gameStartCountdown != null && gameStartCountdown.IsCountingDown)
         {
-            Debug.Log("ƒJƒEƒ“ƒgƒ_ƒEƒ“’†‚È‚Ì‚Åƒ|[ƒY•s‰Â");
+            Debug.Log("ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ä¸­ãªã®ã§ãƒãƒ¼ã‚ºä¸å¯");
             return;
         }
 
@@ -103,6 +108,9 @@ public class PauseManager : MonoBehaviour
         if (!isPaused)
         {
             Time.timeScale = 0f;
+            // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åœæ­¢
+            if (playerAnimator != null)
+                playerAnimator.speed = 0f;
             pauseUI.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(firstPauseButton);
@@ -115,50 +123,54 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-    //ƒIƒvƒVƒ‡ƒ“ƒƒjƒ…[‚ğŠJ‚­ˆ—
+    //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ãå‡¦ç†
     public void OpenOption()
     {
-        //ƒIƒvƒVƒ‡ƒ“UI‚ğ•\¦‚µAƒ|[ƒYUI‚ğ”ñ•\¦‚É
+        //ã‚ªãƒ—ã‚·ãƒ§ãƒ³UIã‚’è¡¨ç¤ºã—ã€ãƒãƒ¼ã‚ºUIã‚’éè¡¨ç¤ºã«
         optionUI.SetActive(true);
         pauseUI.SetActive(false);
 
-        //Å‰‚É‘I‘ğ‚³‚ê‚éƒIƒvƒVƒ‡ƒ“ƒ{ƒ^ƒ“‚ğ‘I‘ğó‘Ô‚É‚·‚é
+        //æœ€åˆã«é¸æŠã•ã‚Œã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒœã‚¿ãƒ³ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(firstOptionButton);
     }
 
-    //ƒ|[ƒY‚ğ‰ğœ‚µ‚ÄƒQ[ƒ€‚ğÄŠJ‚·‚éˆ—
+    //ãƒãƒ¼ã‚ºã‚’è§£é™¤ã—ã¦ã‚²ãƒ¼ãƒ ã‚’å†é–‹ã™ã‚‹å‡¦ç†
     public void ResumeGame()
     {
-        //ƒQ[ƒ€“à‚ÌŠÔ‚ğÄŠJ
+        //ã‚²ãƒ¼ãƒ å†…ã®æ™‚é–“ã‚’å†é–‹
         Time.timeScale = 1f;
 
-        //ƒ|[ƒYUI‚ğ”ñ•\¦‚É
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†é–‹
+        if (playerAnimator != null)
+            playerAnimator.speed = 1f;
+
+        //ãƒãƒ¼ã‚ºUIã‚’éè¡¨ç¤ºã«
         pauseUI.SetActive(false);
 
-        //ƒ|[ƒYó‘Ô‚ğ‰ğœ
+        //ãƒãƒ¼ã‚ºçŠ¶æ…‹ã‚’è§£é™¤
         isPaused = false;
 
-        //•Â‚¶‚é‚Æ‚«‚ÌŒø‰Ê‰¹‚ğÄ¶
+        //é–‰ã˜ã‚‹ã¨ãã®åŠ¹æœéŸ³ã‚’å†ç”Ÿ
         PlaySE(CloseSE);
     }
 
-    //Œ»İƒ|[ƒY’†‚©‚Ç‚¤‚©‚ğŠO•”‚©‚çæ“¾‚·‚é‚½‚ß‚ÌŠÖ”
+    //ç¾åœ¨ãƒãƒ¼ã‚ºä¸­ã‹ã©ã†ã‹ã‚’å¤–éƒ¨ã‹ã‚‰å–å¾—ã™ã‚‹ãŸã‚ã®é–¢æ•°
     public bool IsPaused()
     {
         return isPaused;
     }
 
-    //ƒ|[ƒYUI‚Ì•\¦E”ñ•\¦‚ğØ‚è‘Ö‚¦‚éŠÖ”
+    //ãƒãƒ¼ã‚ºUIã®è¡¨ç¤ºãƒ»éè¡¨ç¤ºã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹é–¢æ•°
     public void SetPauseUIVisible(bool visible)
     {
         pauseUI.SetActive(visible);
     }
 
-    //Œø‰Ê‰¹‚ğÄ¶‚·‚é‹¤’ÊŠÖ”
+    //åŠ¹æœéŸ³ã‚’å†ç”Ÿã™ã‚‹å…±é€šé–¢æ•°
     private void PlaySE(AudioClip clip)
     {
-        if(audioSource != null && clip != null)
+        if (audioSource != null && clip != null)
         {
             audioSource.PlayOneShot(clip);
         }

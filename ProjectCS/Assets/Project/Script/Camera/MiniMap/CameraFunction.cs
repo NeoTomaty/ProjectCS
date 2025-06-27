@@ -16,6 +16,7 @@
 // 06/19　森脇 フィニッシュ時のカメラ制御
 // 06/23 高下 強制ロックオン時のカメラの回転角度を制限
 // 06/23 高下 強制ロックオン時にプレイヤーの頭上の矢印を一時的に非表示にする処理を追加
+// 06/27　森脇 フィニッシュ時のポーズ適応
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -114,10 +115,14 @@ public class CameraFunction : MonoBehaviour
     private float specialViewElapsedTime = 0f;
     private bool wasInSpecialView = false;
 
+    [Header("Pause Manager Reference")]
+    [Tooltip("シーン内のPauseManagerを持つオブジェクトをここに設定")]
+    public PauseManager pauseManager;
+
     [SerializeField] private GameObject PlayerArrow;
 
-   private void Start()
-   {
+    private void Start()
+    {
         if (!PlayerInput) Debug.LogError("PlayerInput が設定されていません");
         if (!PlayerSpeedManager) Debug.LogError("PlayerSpeedManager が設定されていません");
 
@@ -131,6 +136,11 @@ public class CameraFunction : MonoBehaviour
     private void LateUpdate()
     {
         if (Player == null) return;
+
+        if (pauseManager != null && pauseManager.IsPaused())
+        {
+            return; // カメラ移動処理を実行しない
+        }
 
         if (isSpecialViewActive)
         {
@@ -334,7 +344,7 @@ public class CameraFunction : MonoBehaviour
         if (IsForceLockOn)
         {
             ForceLockOnTimeLeft = ForceLockOnTime;
-            if(PlayerArrow) PlayerArrow.SetActive(false);
+            if (PlayerArrow) PlayerArrow.SetActive(false);
         }
     }
 
