@@ -311,7 +311,7 @@ public class BlownAway_Ver2 : MonoBehaviour
         Debug.Log($"上昇速度: {Rb.linearVelocity.y}");
         Debug.Log($"リスポーン座標（グラウンド内）: {newPos}");
 
-        FallPoint?.CalculateGroundPoint();
+        FallPoint?.CalculateGroundPoint(Vector3.zero);
 
     }
 

@@ -18,6 +18,7 @@
 // 3. オブジェクトを飛ばした後のワープ後の座標が決定したときに、CalculateGroundPointを呼び出す（他スクリプトから参照）
 // 4. BaseGroundLayerMaskにベースとなる地面（一番下の地面）のレイヤーを設定する
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class FallPointCalculator : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class FallPointCalculator : MonoBehaviour
         // クローンで複製されたスナックのみ初回の落下地点の計算を行う
         if (gameObject.name.EndsWith("(Clone)"))
         {
-            CalculateGroundPoint();
+            CalculateGroundPoint(BAV3.NextWarpPosition);
         }
     }
 
@@ -64,7 +65,7 @@ public class FallPointCalculator : MonoBehaviour
 
         if(!LAManager.GetIsTargetContacting())
         {
-            CalculateGroundPoint(); // リフティングエリアのポイントを再計算
+            CalculateGroundPoint(transform.position); // リフティングエリアのポイントを再計算
             Debug.Log("リフティングエリア再計算実行");
         }
     }
@@ -83,11 +84,10 @@ public class FallPointCalculator : MonoBehaviour
         IsGround = false; // 地面に着いていない
     }
 
-    public void CalculateGroundPoint()
+    public void CalculateGroundPoint(Vector3 originPos)
     {
         RaycastHit hit;
-        Vector3 origin = BAV3.NextWarpPosition;
-        Debug.Log("初回ワープ位置" + BAV3.NextWarpPosition);
+        Vector3 origin = originPos;
         Vector3 direction = Vector3.down;
 
         // BaseGroundLayerのみ判定

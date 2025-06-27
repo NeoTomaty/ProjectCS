@@ -104,6 +104,8 @@ public class BlownAway_Ver3 : MonoBehaviour
     private Vector3 nextWarpPosition = Vector3.zero;
     public Vector3 NextWarpPosition => nextWarpPosition;
 
+    private bool IsWaiting = false;
+
     private void Start()
     {
         Rb = GetComponent<Rigidbody>();
@@ -128,31 +130,18 @@ public class BlownAway_Ver3 : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.CompareTag("Respawn") && HitNextFallArea == true)
-        {
-            //HitNextFallArea = false;
+        //if (other.CompareTag("Respawn") && HitNextFallArea == true)
+        //{
+        //    HitNextFallArea = false;
 
-            //previousVerticalVelocity = Rb.linearVelocity.y;
+        //    previousVerticalVelocity = Rb.linearVelocity.y;
 
-            //MoveToRandomXZInRespawnArea();
-        }
+        //    MoveToRandomXZInRespawnArea();
+        //}
     }
 
     private void Update()
     {
-
-        if (RespawnArea && Rb.linearVelocity.y < 0f && HitNextFallArea == true)
-        {
-            HitNextFallArea = false;
-            previousVerticalVelocity = Rb.linearVelocity.y;
-
-            if (IsRespawn)
-            {
-                Debug.Log($"落下が始まったため、ワープしました");
-                DoWarp();
-            }
-        }
-
         // スナック放置ペナルティの処理
         if (!IsFlyingAway)
         {
@@ -189,6 +178,29 @@ public class BlownAway_Ver3 : MonoBehaviour
                 }
             }
         }
+
+        if(IsWaiting)
+        {
+            IsWaiting = false;
+            return;
+        }
+
+        if (RespawnArea && Rb.linearVelocity.y < 0f && HitNextFallArea == true)
+        {
+            HitNextFallArea = false;
+            previousVerticalVelocity = Rb.linearVelocity.y;
+
+            if (IsRespawn)
+            {
+                Debug.Log($"落下が始まったため、ワープしました");
+                DoWarp();
+            }
+        }
+
+        Vector3 tempVelocity = Rb.linearVelocity;
+        tempVelocity.x = 0f;
+        tempVelocity.z = 0f;
+        Rb.linearVelocity = tempVelocity;
     }
 
     private void FixedUpdate()
@@ -226,11 +238,11 @@ public class BlownAway_Ver3 : MonoBehaviour
                 audioSource.PlayOneShot(HitSE);
             }
 
-            Collider snackCollider = GetComponent<Collider>();
-            Collider playerCollider = collision.collider;
+            //Collider snackCollider = GetComponent<Collider>();
+            //Collider playerCollider = collision.collider;
 
-            Physics.IgnoreCollision(snackCollider, playerCollider, true);
-            StartCoroutine(EnableCollisionLater(snackCollider, playerCollider, 1.0f));
+            //Physics.IgnoreCollision(snackCollider, playerCollider, true);
+            //StartCoroutine(EnableCollisionLater(snackCollider, playerCollider, 1.0f));
 
             if (!HitSnack) return;
 
@@ -253,7 +265,7 @@ public class BlownAway_Ver3 : MonoBehaviour
             {
                 force = MaxUpwardForce;
             }
-            
+
             Debug.Log(liftingCount);
 
 
@@ -294,6 +306,9 @@ public class BlownAway_Ver3 : MonoBehaviour
             Rb.linearVelocity = Vector3.zero;
             Rb.angularVelocity = Vector3.zero;
 
+            Vector3 forceDir = Vector3.up * force;
+            Rb.AddForce(forceDir, ForceMode.Impulse);
+
         }
     }
 
@@ -318,7 +333,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         snackEffectController.PlayFlyingEffect();
 
-        StartCoroutine(AddForceUpwardDelayed());
+       // StartCoroutine(AddForceUpwardDelayed());
     }
 
     private IEnumerator HitStopManual()
@@ -343,7 +358,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         snackEffectController.PlayFlyingEffect();
 
-        StartCoroutine(AddForceUpwardDelayed());
+        //StartCoroutine(AddForceUpwardDelayed());
     }
 
     public void EndHitStop()
@@ -381,7 +396,8 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         Vector3 newPos = new Vector3(randomX, y, randomZ);
         nextWarpPosition = newPos;
-        FallPoint?.CalculateGroundPoint();
+        IsWaiting = true;
+        FallPoint?.CalculateGroundPoint(nextWarpPosition);
     }
 
     public void OnClear()
@@ -400,31 +416,34 @@ public class BlownAway_Ver3 : MonoBehaviour
      
         transform.position = nextWarpPosition;
         Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
+        FallPoint?.CalculateGroundPoint(nextWarpPosition);
     }
-    private IEnumerator EnableCollisionLater(Collider colA, Collider colB, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        Physics.IgnoreCollision(colA, colB, false);
-    }
+    //private IEnumerator EnableCollisionLater(Collider colA, Collider colB, float delay)
+    //{
+    //    yield return new WaitForSeconds(delay);
+    //    Physics.IgnoreCollision(colA, colB, false);
+    //}
 
-    private IEnumerator AddForceUpwardDelayed()
-    {
-        yield return new WaitForFixedUpdate();
+    //private IEnumerator AddForceUpwardDelayed()
+    //{
+    //    yield return new WaitForFixedUpdate();
 
-        Rb.linearVelocity = Vector3.zero;
-        Rb.angularVelocity = Vector3.zero;
+    //    Rb.linearVelocity = Vector3.zero;
+    //    Rb.angularVelocity = Vector3.zero;
 
-        float force = baseForce + (liftingCount * forcePerLift);
-        if (force > MaxUpwardForce) force = MaxUpwardForce;
+    //    float force = baseForce + (liftingCount * forcePerLift);
+    //    if (force > MaxUpwardForce) force = MaxUpwardForce;
 
-        Debug.Log($"Delayed AddForce: {force}");
+    //    Debug.Log($"Delayed AddForce: {force}");
 
-        Vector3 forceDir = Vector3.up * force;
-        Rb.AddForce(forceDir, ForceMode.Impulse);
+    //    Vector3 forceDir = Vector3.up * force;
+    //    Rb.AddForce(forceDir, ForceMode.Impulse);
 
-    }
+    //}
 
 }
+
+
 
 
 
