@@ -1,10 +1,11 @@
 //BidirectionalRapidMove.cs
 //作成者:中町雷我
-//最終更新日:2025/06/10
+//最終更新日:2025/06/27
 //アタッチ:Playerにアタッチ
 //[Log]
 //06/10　中町　Playerが強制移動ギミックに触れると強制移動する処理
 //06/19　中町　強制移動中のSE実装
+//06/27　中町　強制移動中のSE音量調整実装
 
 using UnityEngine;
 using System.Collections;
@@ -36,12 +37,21 @@ public class BidirectionalRapidMove : MonoBehaviour
     //AudioSourceコンポーネント
     private AudioSource audioSource;
 
+    [Range(0.0f, 1.0f)]
+    [Tooltip("強制移動中のSE音量")]
+    public float MoveSEVolume = 0.5f;
+
     private void Start()
     {
         //RigidbodyとMovePlayerスクリプトを取得
         rb = GetComponent<Rigidbody>();
         PlayerController = GetComponent<MovePlayer>();
         audioSource = GetComponent<AudioSource>();
+
+        if(audioSource != null)
+        {
+            audioSource.volume = MoveSEVolume;
+        }
 
         //ForwardPointsとBackwardPointsのコライダーを無視設定
         IgnoreCollisions(ForwardPoints);
