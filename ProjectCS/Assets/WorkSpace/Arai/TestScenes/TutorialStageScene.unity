@@ -951,7 +951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 459857626}
   m_Layer: 0
-  m_Name: OnSnackGanarate
+  m_Name: OnSnackGanarateUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -988,12 +988,12 @@ GameObject:
   m_Component:
   - component: {fileID: 468069655}
   m_Layer: 0
-  m_Name: OnJump
+  m_Name: OnJumpUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &468069655
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1388,6 +1388,7 @@ MonoBehaviour:
   ForceLockOnTime: 2
   SpecialViewTransitionSpeed: 3
   specialViewTransitionDuration: 1
+  pauseManager: {fileID: 0}
   PlayerArrow: {fileID: 0}
 --- !u!114 &594655329
 MonoBehaviour:
@@ -1994,6 +1995,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3920739853951747858, guid: ba8c041ca1552864a850f469cd5957a3, type: 3}
   m_PrefabInstance: {fileID: 806004612}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &806004614 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 645233711407933695, guid: ba8c041ca1552864a850f469cd5957a3, type: 3}
+  m_PrefabInstance: {fileID: 806004612}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &834941659
 GameObject:
   m_ObjectHideFlags: 0
@@ -2573,6 +2585,10 @@ PrefabInstance:
       propertyPath: specialViewPosition.y
       value: -2
       objectReference: {fileID: 0}
+    - target: {fileID: 803199485305183893, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: GameStartCountdownScript
+      value: 
+      objectReference: {fileID: 20560759}
     - target: {fileID: 1788967242641193304, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: MoveSE
       value: 
@@ -2713,6 +2729,10 @@ PrefabInstance:
       propertyPath: FallSE
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7344648348217904998, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: ScoreUI
+      value: 
+      objectReference: {fileID: 806004614}
     - target: {fileID: 7344648348217904998, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: PlayerSpeed
       value: 
@@ -3515,7 +3535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 262f03875cc530e4694fa53ef22a0e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearCondition: 4
+  clearCondition: 2
   nextSceneName: StageSelectScene
   liftingCounterText: {fileID: 722749050}
   GameClearSequence: {fileID: 1797112511}
@@ -3794,7 +3814,7 @@ MonoBehaviour:
   PlayerObject: {fileID: 1717145073}
   SnackObject: {fileID: 5488207771516596298}
   CameraObject: {fileID: 594655327}
-  PauseInput: {fileID: 0}
+  PauseInput: {fileID: 1866824034}
   CameraTiltAngle: 0
   Offset: 5
   UIShowTime: 10
@@ -3882,6 +3902,8 @@ MonoBehaviour:
   SceneObjectTransform: {fileID: 1984033651}
   PlayerAnimationController: {fileID: 1717145076}
   SnackHeightUIManagerComponent: {fileID: 1541221556}
+  AnimationFinishComponent: {fileID: 2048789928}
+  TutorialDisplayTextsComponent: {fileID: 1798833354}
 --- !u!114 &1798833354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3894,6 +3916,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61350cb80b908da49a094b26d8326e4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnSnackGanarateUI: {fileID: 459857625}
+  OnJumpUI: {fileID: 468069654}
 --- !u!114 &1857091212 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1984497887297718973, guid: 116de4429214a9a40832273c179d98f2, type: 3}
@@ -4357,6 +4381,17 @@ Transform:
   - {fileID: 113936896}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2048789928 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4052710969838647154, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+  m_PrefabInstance: {fileID: 1286759468}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cda75b9293c6f24e99ccefa8ecfbece, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2104618539 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4710431160877490182, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
@@ -4380,7 +4415,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2105335908
 RectTransform:
   m_ObjectHideFlags: 0
