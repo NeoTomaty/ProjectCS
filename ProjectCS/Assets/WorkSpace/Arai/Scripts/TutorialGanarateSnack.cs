@@ -5,6 +5,7 @@
 // 
 // [Log]
 // 06/26　荒井　
+// 06/27  高下 参照オブジェクトの追加
 //======================================================
 using UnityEngine;
 
@@ -35,6 +36,7 @@ public class TutorialGanarateSnack : MonoBehaviour
     [SerializeField] private Transform SceneObjectTransform;
     [SerializeField] private PlayerAnimationController PlayerAnimationController;
     [SerializeField] private SnackHeightUIManager SnackHeightUIManagerComponent;
+    [SerializeField] private AnimationFinishTrigger AnimationFinishComponent;
 
     private int CollidedIndex = 0;
 
@@ -61,7 +63,7 @@ public class TutorialGanarateSnack : MonoBehaviour
 
             GameObject LiftingAreaInstance = Instantiate(LiftingAreaObject, new Vector3(0f, -1000f, 0f), Quaternion.identity, SceneObjectTransform);
             LiftingAreaManager LAM = LiftingAreaInstance.GetComponent<LiftingAreaManager>();
-            LAM.SetTarget(PlayerObject, SnackInstance, ClearSequenceComponent);
+            LAM.SetTarget(PlayerObject, SnackInstance, ClearSequenceComponent, AnimationFinishComponent);
 
             FallPointCalculator FPC = SnackInstance.GetComponent<FallPointCalculator>();
             FPC.SetTarget(LAM);

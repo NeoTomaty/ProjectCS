@@ -28,6 +28,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private BezierMover BezierMoverComponent;
     [SerializeField] private StageSelectMoveCamera MoveCamera;
     [SerializeField] private StageSelectChangeModel ChangeModel;
+    [SerializeField] private float RotationSpeed = 10.0f;
 
     // UI要素（選択位置のライン）
     [SerializeField] private GameObject PointLineUI;
@@ -55,6 +56,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private float ScaleChangeDuration = 0.5f;
     private bool IsScaling = true;
     [SerializeField] private Vector3 SmallStageModelSize = new Vector3(0.5f, 0.5f, 0.5f);
+    [SerializeField] private Vector3 BigStageModelSize = new Vector3(1f, 1f, 1f);
     private UILineConnector LineConnector;
 
     // 入力関連
@@ -76,7 +78,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
     [SerializeField] private Animator PlayerAnimation;
 
     // SE管理
-     [SerializeField] private StageSelectSEPlayer SEPlayer;
+    [SerializeField] private StageSelectSEPlayer SEPlayer;
 
     private void Awake()
     {
@@ -270,13 +272,13 @@ public class StageSelectManager_Ver2 : MonoBehaviour
                 {
                     if (StageModelTransform[i].localScale != Vector3.one)
                     {
-                        StageModelTransform[i].localScale = Vector3.Lerp(SmallStageModelSize, Vector3.one, t);
+                        StageModelTransform[i].localScale = Vector3.Lerp(SmallStageModelSize, BigStageModelSize, t);
                     }
-                    StageModelTransform[i].Rotate(0f, 10.0f * Time.deltaTime, 0f);
+                    StageModelTransform[i].Rotate(0f, RotationSpeed * Time.deltaTime, 0f);
                 }
                 else
                 {
-                    StageModelTransform[i].rotation = Quaternion.identity;
+                    StageModelTransform[i].rotation = Quaternion.Euler(0f, 180f, 0f);
                 }
             }
 

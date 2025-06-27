@@ -41,6 +41,7 @@ public class SnackDuplicator : MonoBehaviour
     [SerializeField] private PlayerAnimationController PlayerAnimationController;
     [SerializeField] private SnackHeightUIManager_Ver2 SnackHeightUIManagerVer2Component;
     [SerializeField] private SnackHeightUIManager SnackHeightUIManagerComponent;
+    [SerializeField] private AnimationFinishTrigger AnimationFinishComponent;
 
     private int currentCount = 0;
 
@@ -88,7 +89,7 @@ public class SnackDuplicator : MonoBehaviour
            
             GameObject LiftingAreaInstance = Instantiate(LiftingAreaObject, new Vector3(0f, -1000f, 0f), Quaternion.identity, SceneObjectTransform);
             LiftingAreaManager LAM = LiftingAreaInstance.GetComponent<LiftingAreaManager>();
-            LAM.SetTarget(PlayerObject, SnackInstance, ClearSequenceComponent);
+            LAM.SetTarget(PlayerObject, SnackInstance, ClearSequenceComponent, AnimationFinishComponent);
 
             FallPointCalculator FPC = SnackInstance.GetComponent<FallPointCalculator>();
             FPC.SetTarget(LAM);
@@ -96,7 +97,7 @@ public class SnackDuplicator : MonoBehaviour
             SnackRespawner SR = SnackInstance.GetComponent<SnackRespawner>();
             SR.SetTarget(SnackRespawnPoint);
 
-            SnackHeightUIManagerComponent.AddSnack(SnackInstance);
+            if(SnackHeightUIManagerComponent) SnackHeightUIManagerComponent.AddSnack(SnackInstance);
 
 
             currentCount++;
