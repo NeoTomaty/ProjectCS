@@ -6,6 +6,7 @@
 // 05/07 藤本　カウントダウン処理実装
 // 05/29　宮林　ポーズ画面表示ボタンの停止
 // 06/06　森脇　カウント時の待機Animation制御
+// 06/27　荒井　チュートリアル用の処理を追加
 //====================================================
 
 using UnityEngine;
@@ -36,6 +37,9 @@ public class GameStartCountdown : MonoBehaviour
 
     [Header("カウントダウン中に再生するアニメーショントリガー名")]
     [SerializeField] private string countdownAnimTrigger = "CountdownIdle";
+
+    [Header("チュートリアル用（チュートリアル以外では割り当てNG）")]
+    [SerializeField] private TutorialDisplayTexts TutorialDisplayTexts;
 
     private bool isCountingDown = false;
     public bool IsCountingDown => isCountingDown;
@@ -79,6 +83,11 @@ public class GameStartCountdown : MonoBehaviour
         if (snackLauncher != null)
         {
             snackLauncher.Launch();
+        }
+
+        if(TutorialDisplayTexts != null)
+        {
+            TutorialDisplayTexts.DisplayTutorialUI1();
         }
     }
 
