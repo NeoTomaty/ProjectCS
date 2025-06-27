@@ -19,6 +19,7 @@
 // 04/30　竹内　Playerタグ及びGoalWallタグに当たった際の挙動を削除
 // 04/30　竹内　RespawnAreaタグに当たった際の挙動を追加
 // 05/30　中町　リスポーンSE実装
+// 06/27　中町　リスポーンSE音量調整実装
 //======================================================
 
 using UnityEngine;
@@ -78,6 +79,10 @@ public class IsHitAny : MonoBehaviour
     [Header("チュートリアル処理の参照（チュートリアル以外では不要）")]
     [SerializeField] private TutorialGanarateSnack TutorialGanarateSnackScript;
 
+    [Header("リスポーンSEの音量(0.0～1.0)")]
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float RespawnSEVolume = 0.5f;
+
     void Start()
     {
         MovePlayerScript = GetComponent<MovePlayer>();
@@ -96,6 +101,8 @@ public class IsHitAny : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        audioSource.volume = RespawnSEVolume;
     }
 
     private void Update()
@@ -218,7 +225,7 @@ public class IsHitAny : MonoBehaviour
             //リスポーンSEを再生
             if(RespawnSE != null && audioSource != null)
             {
-                audioSource.PlayOneShot(RespawnSE);
+                audioSource.PlayOneShot(RespawnSE,RespawnSEVolume);
             }
         }
     }
