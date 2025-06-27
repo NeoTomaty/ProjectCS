@@ -1304,6 +1304,7 @@ MonoBehaviour:
   ConfirmSE: {fileID: 8300000, guid: aa4c1a94c601acf468e74f0c2c7df32b, type: 3}
   CancelSE: {fileID: 8300000, guid: fc58efd9d0397e847a08fc2618f49d73, type: 3}
   SelectSE: {fileID: 8300000, guid: c3737dbb0df70cf4db274ca0707acc6d, type: 3}
+  SEVolume: 0.5
 --- !u!1 &434542237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1975,6 +1976,14 @@ PrefabInstance:
       propertyPath: uiInputModule
       value: 
       objectReference: {fileID: 1266594258}
+    - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
+      propertyPath: FadeInSEVolume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
+      propertyPath: FadeOutSEVolume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7902525595534074878, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
       propertyPath: m_SortingOrder
       value: 1
