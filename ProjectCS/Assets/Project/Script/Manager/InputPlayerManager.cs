@@ -10,6 +10,7 @@
 // 04/23 高下 コントローラーの割り当て処理を追加
 // 04/25 高下 スクリプト名変更、1人モード固定に修正
 // 05/29 中町 UI選択SE実装
+// 06/27 中町 UI選択SE音量調整実装
 //====================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -39,8 +40,18 @@ public class InputPlayerManager : MonoBehaviour
     //最後に選択されていたUIオブジェクト
     private GameObject LastSelected;
 
+    //音量調整(0.0～1.0)
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float SEVolume = 0.5f;
+
     void Start()
     {
+        //AudioSourceの音量を初期値に設定
+        if (audioSource != null)
+        {
+            audioSource.volume = SEVolume;
+        }
+
         // PlayerInputComponentを取得
         PlayerInput PlayerInputComponent = gameObject.GetComponent<PlayerInput>();
        
