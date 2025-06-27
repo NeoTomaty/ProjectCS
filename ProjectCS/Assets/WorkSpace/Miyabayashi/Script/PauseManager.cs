@@ -6,7 +6,11 @@
 // [Log]5/5 宮林　ポーズ画面を実装
 // 5/28　中町　メニュー開閉SE実装
 // 6/26　森脇 フィニッシュ時のポーズ適応
+<<<<<<< HEAD
 // 6/27　荒井　チュートリアル用の処理を追加
+=======
+// 6/27　中町 メニュー開閉SE音量調整実装
+>>>>>>> origin/Nakamachi
 //======================================================
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -36,6 +40,9 @@ public class PauseManager : MonoBehaviour
 
     //ポーズメニューを閉じたときに鳴らす効果音
     [SerializeField] private AudioClip CloseSE;
+
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float SEVolume = 0.5f;
 
     //現在ポーズ中かどうかを示すフラグ
     private bool isPaused = false;
@@ -217,7 +224,7 @@ public class PauseManager : MonoBehaviour
     {
         if (audioSource != null && clip != null)
         {
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clip,SEVolume);
         }
     }
 }
