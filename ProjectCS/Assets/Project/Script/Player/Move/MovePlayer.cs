@@ -13,6 +13,7 @@
 // 05/07 荒井 LiftingJumpのすり抜けモードに対応するように変更
 // 05/15 荒井 MoveSpeedMultiplier変数を追加し、移動処理に速度の補正を乗せられるように変更
 // 05/22 中町 移動開始音SE実装
+// 06/27 中町 移動開始音SE音量調整実装
 //====================================================
 using UnityEngine;
 
@@ -44,6 +45,9 @@ public class MovePlayer : MonoBehaviour
 
     //移動開始後に鳴らすSE
     [SerializeField] private AudioClip MoveStartSE;
+
+    //SEの音量(0～1の範囲)
+    [SerializeField, Range(0.0f, 1.0f)] private float MoveStartSEVolume = 1.0f;
 
     //前フレームで移動していたかどうかを記録
     private bool WasMoving = false;
@@ -128,8 +132,8 @@ public class MovePlayer : MonoBehaviour
                 {
                     if(audioSource != null && MoveStartSE != null)
                     {
-                        //SEを一度だけ再生
-                        audioSource.PlayOneShot(MoveStartSE);
+                        //指定した音量でSEを一度だけ再生
+                        audioSource.PlayOneShot(MoveStartSE,MoveStartSEVolume);
 
                         //再生済みフラグを立てる
                         HasPlayedSE = true;
