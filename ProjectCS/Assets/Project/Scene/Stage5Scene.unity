@@ -1469,6 +1469,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1709717134}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 974495344}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: flyingPoint
       value: 
       objectReference: {fileID: 845482238}
@@ -1480,6 +1484,10 @@ PrefabInstance:
       propertyPath: CameraFunction
       value: 
       objectReference: {fileID: 720667280}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: playerAnimController
+      value: 
+      objectReference: {fileID: 974495343}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: ClearConditionsScript
       value: 
@@ -2124,6 +2132,22 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7877650294379209864, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
   m_PrefabInstance: {fileID: 906183681}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &974495343 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7195205485715558476, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 845482235}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845482242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd4e1f2497ca0345a8218c9ea421b8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &974495344 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8116789812960719590, guid: a7bcb608451fd964d9d8a6d3c5df1f61, type: 3}
+  m_PrefabInstance: {fileID: 845482235}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &986904625
 PrefabInstance:
@@ -3881,7 +3905,8 @@ MonoBehaviour:
   SpeedMAX: 1.5
   RotateSpeedMIN: 30
   RotateSpeedMAX: 200
-  ClearSE: {fileID: 0}
+  ClearSE: {fileID: 8300000, guid: 29ad2944473aeee49aa77a8e15597431, type: 3}
+  SEVolume: 0.5
 --- !u!4 &2050187939
 Transform:
   m_ObjectHideFlags: 0
