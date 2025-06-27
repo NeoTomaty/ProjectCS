@@ -12,6 +12,7 @@
 // 06/20 荒井 スナック放置時のペナルティ処理を追加
 // 06/23 高下 打ち上げと同じタイミングで次のワープ先を計算するように変更
 // 06/23 高下 落下が始まったタイミングでワープするように設定
+// 06/27 中町 プレイヤーがスナックに当たったときのSE音量調整実装
 //====================================================
 using UnityEngine;
 using System.Collections;
@@ -99,6 +100,9 @@ public class BlownAway_Ver3 : MonoBehaviour
     [SerializeField] private AudioClip HitSE;
 
     [SerializeField] private PlayerAnimationController playerAnimController;
+
+    [SerializeField, Range(0.0f, 1.0f)]
+    private float SEVolume = 1.0f;
 
     // 次のワープ先を保持する
     private Vector3 nextWarpPosition = Vector3.zero;
@@ -235,7 +239,7 @@ public class BlownAway_Ver3 : MonoBehaviour
         {
             if (audioSource != null && HitSE != null)
             {
-                audioSource.PlayOneShot(HitSE);
+                audioSource.PlayOneShot(HitSE,SEVolume);
             }
 
             //Collider snackCollider = GetComponent<Collider>();
