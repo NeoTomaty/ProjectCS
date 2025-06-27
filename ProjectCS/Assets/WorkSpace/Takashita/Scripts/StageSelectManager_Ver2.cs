@@ -270,7 +270,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             {
                 if (i == StageSelectorComponent.GetStageNumber())
                 {
-                    if (StageModelTransform[i].localScale != Vector3.one)
+                    if (StageModelTransform[i].localScale != BigStageModelSize)
                     {
                         StageModelTransform[i].localScale = Vector3.Lerp(SmallStageModelSize, BigStageModelSize, t);
                     }
@@ -297,7 +297,7 @@ public class StageSelectManager_Ver2 : MonoBehaviour
             {
                 if (StageModelTransform[i].localScale != SmallStageModelSize)
                 {
-                    StageModelTransform[i].localScale = Vector3.Lerp(SmallStageModelSize, Vector3.one, t);
+                    StageModelTransform[i].localScale = Vector3.Lerp(SmallStageModelSize, BigStageModelSize, t);
                 }
             }
 
