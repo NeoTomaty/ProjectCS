@@ -28,49 +28,35 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private GameObject firstOptionButton;
 
     [Header("SE Settings")]
-
-    //効果音を再生するためのAudioSource
     [SerializeField] private AudioSource audioSource;
-
-    //ポーズメニューを開いたときに鳴らす効果音
     [SerializeField] private AudioClip OpenSE;
-
-    //ポーズメニューを閉じたときに鳴らす効果音
     [SerializeField] private AudioClip CloseSE;
-
     [Range(0.0f, 1.0f)]
     [SerializeField] private float SEVolume = 0.5f;
 
-    //現在ポーズ中かどうかを示すフラグ
+    [Header("Inputs")]
+    [SerializeField] private InputActionReference cancelAction;
+
     private bool isPaused = false;
 
-    //プレイヤーの入力を管理するコンポーネント
     private PlayerInput playerInput;
-
-    //「Pause」アクション(Escキー)を取得するための変数
     private InputAction pauseAction;
 
     [Header("Reference to Countdown")]
     [SerializeField] private GameStartCountdown gameStartCountdown;
 
     [SerializeField] private Animator playerAnimator;
-
-
     [SerializeField] private BlownAway_Ver3 targetSnack;
 
     [Header("チュートリアル用（チュートリアル以外では割り当てNG）")]
     [SerializeField] private TutorialDisplayTexts TutorialDisplayTexts;
 
-
-    //ゲーム開始時に呼ばれる(初期化処理)
     private void Awake()
     {
-        //PlayerInputコンポーネントを取得
         playerInput = GetComponent<PlayerInput>();
 
         if (playerInput != null)
         {
-            //入力アクションマップから「Pause」アクションを取得
             pauseAction = playerInput.actions["Pause"];
         }
         else
@@ -79,40 +65,42 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-    //オブジェクトが有効になったときに呼ばれる
     private void OnEnable()
     {
         if (pauseAction != null)
         {
-            //Pauseアクションが実行されたときのイベントを登録
             pauseAction.performed += OnPausePerformed;
             pauseAction.Enable();
         }
+
+        if (cancelAction != null)
+        {
+            cancelAction.action.performed += OnCancelPerformed;
+            cancelAction.action.Enable();
+        }
     }
 
-    //オブジェクトが無効になったときに呼ばれる
     private void OnDisable()
     {
         if (pauseAction != null && playerInput.actions != null)
         {
-            //イベント登録を解除
             pauseAction.performed -= OnPausePerformed;
             pauseAction.Disable();
         }
+
+        if (cancelAction != null)
+        {
+            cancelAction.action.performed -= OnCancelPerformed;
+            cancelAction.action.Disable();
+        }
     }
 
-    //Pauseアクションが実行されたときに呼ばれる処理
     private void OnPausePerformed(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
 
-        // チュートリアル時
-        if(TutorialDisplayTexts != null && TutorialDisplayTexts.IsDisplayUI)
-        {
-            return;
-        }
+        if (TutorialDisplayTexts != null && TutorialDisplayTexts.IsDisplayUI) return;
 
-        // カウントダウン中ならポーズ禁止
         if (gameStartCountdown != null && gameStartCountdown.IsCountingDown)
         {
             Debug.Log("カウントダウン中なのでポーズ不可");
@@ -125,7 +113,7 @@ public class PauseManager : MonoBehaviour
         {
             if (pauseUI == null)
             {
-                Time.timeScale = 0f; // ゲーム進行を止める（タイトルなら不要）
+                Time.timeScale = 0f;
                 optionUI.SetActive(true);
                 EventSystem.current.SetSelectedGameObject(null);
                 EventSystem.current.SetSelectedGameObject(firstOptionButton);
@@ -135,7 +123,6 @@ public class PauseManager : MonoBehaviour
                 if (!targetSnack.isHitStopActive)
                 {
                     Time.timeScale = 0f;
-                    // アニメーション停止
                     if (playerAnimator != null)
                         playerAnimator.speed = 0f;
                     pauseUI.SetActive(true);
@@ -151,55 +138,72 @@ public class PauseManager : MonoBehaviour
             ResumeGame();
         }
     }
+    private void OnCancelPerformed(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        // オプション画面が開いているとき
+        if (optionUI != null && optionUI.activeSelf)
+        {
+            optionUI.SetActive(false);
+
+            // PauseUIが存在する場合はポーズ画面に戻る
+            if (pauseUI != null)
+            {
+                pauseUI.SetActive(true);
+
+                if (firstPauseButton != null)
+                {
+                    EventSystem.current.SetSelectedGameObject(null);
+                    EventSystem.current.SetSelectedGameObject(firstPauseButton);
+                }
+
+                isPaused = true; // ここが大事：Pause状態に戻す
+            }
+            else
+            {
+                // タイトル画面など、Pauseが存在しないなら完全に閉じる
+                Time.timeScale = 1f;
+                isPaused = false;
+            }
+
+            PlaySE(CloseSE);
+        }
+    }
 
     public void OpenOptionStandalone()
     {
-        // PauseUI が存在しない場合
         if (pauseUI == null)
         {
-            Time.timeScale = 0f; // ゲーム進行を止める（タイトルなら不要）
+            Time.timeScale = 0f;
             optionUI.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(firstOptionButton);
         }
-        else
-        {
-        }
     }
 
-    //オプションメニューを開く処理
     public void OpenOption()
     {
-        //オプションUIを表示し、ポーズUIを非表示に
         optionUI.SetActive(true);
         pauseUI.SetActive(false);
 
-        //最初に選択されるオプションボタンを選択状態にする
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(firstOptionButton);
     }
 
-    //ポーズを解除してゲームを再開する処理
     public void ResumeGame()
     {
-        //ゲーム内の時間を再開
         Time.timeScale = 1f;
 
-        // アニメーションを再開
         if (playerAnimator != null)
             playerAnimator.speed = 1f;
 
-        //ポーズUIを非表示に
         pauseUI.SetActive(false);
-
-        //ポーズ状態を解除
         isPaused = false;
 
-        //閉じるときの効果音を再生
         PlaySE(CloseSE);
     }
 
-    //現在ポーズ中かどうかを外部から取得するための関数
     public bool IsPaused()
     {
         return isPaused;
@@ -210,18 +214,16 @@ public class PauseManager : MonoBehaviour
         return (optionUI != null && optionUI.activeSelf) || (pauseUI != null && pauseUI.activeSelf);
     }
 
-    //ポーズUIの表示・非表示を切り替える関数
     public void SetPauseUIVisible(bool visible)
     {
         pauseUI.SetActive(visible);
     }
 
-    //効果音を再生する共通関数
     private void PlaySE(AudioClip clip)
     {
         if (audioSource != null && clip != null)
         {
-            audioSource.PlayOneShot(clip,SEVolume);
+            audioSource.PlayOneShot(clip, SEVolume);
         }
     }
 }
