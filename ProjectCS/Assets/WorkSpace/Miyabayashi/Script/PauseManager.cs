@@ -50,6 +50,8 @@ public class PauseManager : MonoBehaviour
 
     [SerializeField] private Animator playerAnimator;
 
+    [SerializeField] private BlownAway_Ver3 targetSnack;
+
     //ゲーム開始時に呼ばれる(初期化処理)
     private void Awake()
     {
@@ -114,15 +116,18 @@ public class PauseManager : MonoBehaviour
             }
             else
             {
-                Time.timeScale = 0f;
-                // アニメーション停止
-                if (playerAnimator != null)
-                    playerAnimator.speed = 0f;
-                pauseUI.SetActive(true);
-                EventSystem.current.SetSelectedGameObject(null);
-                EventSystem.current.SetSelectedGameObject(firstPauseButton);
-                isPaused = true;
-                PlaySE(OpenSE);
+                if (!targetSnack.isHitStopActive)
+                {
+                    Time.timeScale = 0f;
+                    // アニメーション停止
+                    if (playerAnimator != null)
+                        playerAnimator.speed = 0f;
+                    pauseUI.SetActive(true);
+                    EventSystem.current.SetSelectedGameObject(null);
+                    EventSystem.current.SetSelectedGameObject(firstPauseButton);
+                    isPaused = true;
+                    PlaySE(OpenSE);
+                }
             }
         }
         else
@@ -130,7 +135,6 @@ public class PauseManager : MonoBehaviour
             ResumeGame();
         }
     }
-
 
     public void OpenOptionStandalone()
     {
@@ -144,7 +148,6 @@ public class PauseManager : MonoBehaviour
         }
         else
         {
-         
         }
     }
 
@@ -190,7 +193,6 @@ public class PauseManager : MonoBehaviour
     {
         return (optionUI != null && optionUI.activeSelf) || (pauseUI != null && pauseUI.activeSelf);
     }
-
 
     //ポーズUIの表示・非表示を切り替える関数
     public void SetPauseUIVisible(bool visible)
