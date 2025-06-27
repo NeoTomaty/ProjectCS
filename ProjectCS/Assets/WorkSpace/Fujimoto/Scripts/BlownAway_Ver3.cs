@@ -24,7 +24,7 @@ public class BlownAway_Ver3 : MonoBehaviour
     [SerializeField] private float forcePerLift = 100f;
 
     [SerializeField]
-    private float MinUpwardForce = 50.0f; 
+    private float MinUpwardForce = 50.0f;
 
     [SerializeField]
     private float MaxUpwardForce = 200.0f;
@@ -68,7 +68,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     private int liftingCount = 1;
 
-    private bool isHitStopActive = false;
+    public bool isHitStopActive = false;
 
     private bool shouldEndHitStop = false;
 
@@ -82,8 +82,10 @@ public class BlownAway_Ver3 : MonoBehaviour
     [Header("スナック放置時のペナルティ設定")]
     [SerializeField]
     private float ScorePenaltyStartTime = 40f;
+
     [SerializeField]
     private float ScoreDecreaseInterval = 10f;
+
     [SerializeField]
     private float ScoreDecreasePoint = 100f;
 
@@ -102,6 +104,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     // 次のワープ先を保持する
     private Vector3 nextWarpPosition = Vector3.zero;
+
     public Vector3 NextWarpPosition => nextWarpPosition;
 
     private bool IsWaiting = false;
@@ -111,7 +114,6 @@ public class BlownAway_Ver3 : MonoBehaviour
         Rb = GetComponent<Rigidbody>();
 
         FallPoint = GetComponent<FallPointCalculator>();
-
     }
 
     // 複製時に引数で渡されたコンポーネントを設定する
@@ -129,7 +131,6 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         //if (other.CompareTag("Respawn") && HitNextFallArea == true)
         //{
         //    HitNextFallArea = false;
@@ -179,7 +180,7 @@ public class BlownAway_Ver3 : MonoBehaviour
             }
         }
 
-        if(IsWaiting)
+        if (IsWaiting)
         {
             IsWaiting = false;
             return;
@@ -214,7 +215,6 @@ public class BlownAway_Ver3 : MonoBehaviour
             HitSnack = true;
 
             snackEffectController.StopFlyingEffect();
-
         }
     }
 
@@ -248,7 +248,6 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             HitSnack = false;
 
-
             IsFlyingAway = true;
             IsPenaltyTime = false;
             PenaltyCount = 0f;　// カウントリセット
@@ -260,7 +259,6 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             float force = baseForce + (liftingCount * forcePerLift);
 
-
             if (force > MaxUpwardForce)
             {
                 force = MaxUpwardForce;
@@ -268,10 +266,8 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             Debug.Log(liftingCount);
 
-
             if (LiftingJump != null)
             {
-
                 if (LiftingJump.IsLiftingPart)
                 {
                     LiftingJump.FinishLiftingJump();
@@ -308,10 +304,8 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             Vector3 forceDir = Vector3.up * force;
             Rb.AddForce(forceDir, ForceMode.Impulse);
-
         }
     }
-
 
     private IEnumerator HitStopTimed(float duration)
     {
@@ -333,7 +327,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         snackEffectController.PlayFlyingEffect();
 
-       // StartCoroutine(AddForceUpwardDelayed());
+        // StartCoroutine(AddForceUpwardDelayed());
     }
 
     private IEnumerator HitStopManual()
@@ -344,7 +338,6 @@ public class BlownAway_Ver3 : MonoBehaviour
         isHitStopActive = true;
         shouldEndHitStop = false;
 
-
         playerAnimController.PlayRandomAnimation();
 
         while (!shouldEndHitStop)
@@ -354,7 +347,6 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         Time.timeScale = 1f;
         isHitStopActive = false;
-
 
         snackEffectController.PlayFlyingEffect();
 
@@ -409,15 +401,16 @@ public class BlownAway_Ver3 : MonoBehaviour
     private void DoWarp()
     {
         // ワープ時の高さを最低補償
-        if(transform.position.y > nextWarpPosition.y)
+        if (transform.position.y > nextWarpPosition.y)
         {
             nextWarpPosition.y = transform.position.y;
         }
-     
+
         transform.position = nextWarpPosition;
         Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
         FallPoint?.CalculateGroundPoint(nextWarpPosition);
     }
+
     //private IEnumerator EnableCollisionLater(Collider colA, Collider colB, float delay)
     //{
     //    yield return new WaitForSeconds(delay);
@@ -440,10 +433,4 @@ public class BlownAway_Ver3 : MonoBehaviour
     //    Rb.AddForce(forceDir, ForceMode.Impulse);
 
     //}
-
 }
-
-
-
-
-

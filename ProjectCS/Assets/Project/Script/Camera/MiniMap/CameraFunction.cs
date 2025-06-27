@@ -139,7 +139,7 @@ public class CameraFunction : MonoBehaviour
 
         if (pauseManager != null && pauseManager.IsPaused())
         {
-            return; // カメラ移動処理を実行しない
+            return; // アニメーションも停止中カメラ移動処理を実行しない
         }
 
         if (isSpecialViewActive)
