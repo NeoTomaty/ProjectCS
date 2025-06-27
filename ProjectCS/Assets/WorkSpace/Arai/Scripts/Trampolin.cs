@@ -6,6 +6,7 @@
 // [Log]
 // 05/20　荒井　触れたプレイヤーをジャンプさせる処理を実装
 // 06/19　中町　トランポリンSE実装
+// 06/25　中町　トランポリンSE音量調整実装
 //======================================================
 using UnityEngine;
 
@@ -14,6 +15,10 @@ public class Trampolin : MonoBehaviour
     [SerializeField] private float JumpPower = 100f; // ジャンプ力
 
     [SerializeField] private AudioClip JumpSE;
+
+    //SE音量(0～1)
+    [SerializeField, Range(0.0f, 1.0f)] private float JumpSEVolume = 1.0f;
+
     private AudioSource audioSource;
 
     private void Start()
@@ -24,6 +29,9 @@ public class Trampolin : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        //音量を設定
+        audioSource.volume = JumpSEVolume;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -40,7 +48,8 @@ public class Trampolin : MonoBehaviour
 
                 if(JumpSE != null)
                 {
-                    audioSource.PlayOneShot(JumpSE);
+                    //音量付きで再生
+                    audioSource.PlayOneShot(JumpSE,JumpSEVolume);
                 }
             }
         }
