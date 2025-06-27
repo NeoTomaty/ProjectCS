@@ -8,6 +8,7 @@
 //05/04　荒井　壁が破壊される時にプレイヤーを反射させない処理を追加
 //05/04　荒井　反射 or 貫通を切り替えられるように変更
 //06/05　中町　壁破壊SE実装
+//06/27　中町　壁破壊SE音量調整実装
 
 using UnityEngine;
 
@@ -37,6 +38,10 @@ public class DestroyWallOnCollision : MonoBehaviour
     //効果音を再生するためのAudioSource(PlayClipAtPointを使うので未使用)
     private AudioSource audioSource;
 
+    //効果音の音量(0.0～1.0)
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float DestroySEVolume = 1.0f;
+
     //初期化処理(AudioSourceがなければ追加)
     private void Start()
     {
@@ -46,6 +51,11 @@ public class DestroyWallOnCollision : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        audioSource.playOnAwake = false;
+
+        //3Dサウンドにする場合
+        audioSource.spatialBlend = 1.0f;
     }
 
     //プレイヤーを反射させる関数
@@ -76,7 +86,7 @@ public class DestroyWallOnCollision : MonoBehaviour
                 //効果音が設定されていれば再生(壁が破壊されても音が鳴るようにPlayClipAtPointを使用)
                 if (DestroySE != null)
                 {
-                    AudioSource.PlayClipAtPoint(DestroySE,transform.position);
+                    AudioSource.PlayClipAtPoint(DestroySE,transform.position,DestroySEVolume);
                 }
 
                 //パーティクルエフェクトを生成
