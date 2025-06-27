@@ -15,6 +15,7 @@ public class StageSelector : MonoBehaviour
     // ステージの番号（列挙型）
     public enum SelectStageNumber
     {
+        Tutorial,
         Stage1,
         Stage2,
         Stage3,
@@ -27,7 +28,7 @@ public class StageSelector : MonoBehaviour
     }
 
     // 現在選択中のステージ（static：どのシーンからでも参照可能）
-    private static SelectStageNumber SelectStage = SelectStageNumber.Stage1;
+    private static SelectStageNumber SelectStage = SelectStageNumber.Tutorial;
 
     // 現在のステージ番号（0～5）を int で取得
     private int CurrentIndex => (int)SelectStage;
