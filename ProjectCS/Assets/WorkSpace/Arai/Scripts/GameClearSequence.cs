@@ -18,6 +18,7 @@
 // 06/18　荒井　カメラの動かし方を変更し、意図しないカメラワークを対策
 // 06/19　荒井　ポーズ入力無効化を追加
 // 06/20　高下　スコア保存の処理を追加
+// 06/27　中町　クリア演出SE音量調整実装
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -94,6 +95,10 @@ public class GameClearSequence : MonoBehaviour
 
     //効果音を再生するためのAudioSourceコンポーネント
     private AudioSource audioSource;
+
+    //効果音の音量(0.0～1.0)
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float SEVolume = 0.5f;
 
     // クリア条件を満たした時に呼び出す関数
     // 正常に終了した場合はtrueを、そうでない場合はfalseを返す
@@ -225,6 +230,9 @@ public class GameClearSequence : MonoBehaviour
 
         //AudioSourceコンポーネントをこのGameObjectに追加し、効果音再生用に保持しておく
         audioSource = gameObject.AddComponent<AudioSource>();
+
+        //音量を設定
+        audioSource.volume = SEVolume;
     }
     private void Start()
     {
