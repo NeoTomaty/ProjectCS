@@ -3,7 +3,8 @@
 // 作成者：宮林
 // 最終更新日：4/16
 // 
-// [Log]4/16 宮林 壁に当たった時のSEを追加　
+// [Log]4/16 宮林 壁に当たった時のSEを追加
+// 6/27 中町 SE音量調整実装
 //======================================================
 using UnityEngine;
 public class HitWallSound : MonoBehaviour
@@ -13,6 +14,10 @@ public class HitWallSound : MonoBehaviour
 
     //AudioSourceコンポーネントを保持するための変数
     private AudioSource AudioSource;
+
+    //SEの音量を調整するための変数(0.0～1.0)
+    [Range(0.0f, 1.0f)]
+    public float volume = 1.0f;
 
     void Start()
     {
@@ -25,7 +30,8 @@ public class HitWallSound : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            AudioSource.PlayOneShot(WallSound);
+            //指定された音量でSEを再生
+            AudioSource.PlayOneShot(WallSound,volume);
         }
     }
 }
