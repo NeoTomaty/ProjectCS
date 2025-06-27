@@ -35,7 +35,7 @@ public class StageSelectSEPlayer : MonoBehaviour
     //SEの音量調整
     [Header("SE音量(0.0～1.0)")]
     [Range(0.0f, 1.0f)]
-    [SerializeField] private float SEVolume = 1.0f;
+    [SerializeField] private float SEVolume = 0.5f;
 
     //SE再生用のAudioSourceコンポーネント
     private AudioSource AudioSourceComponent;

@@ -104,7 +104,7 @@ public class BlownAway_Ver3 : MonoBehaviour
     [SerializeField] private PlayerAnimationController playerAnimController;
 
     [SerializeField, Range(0.0f, 1.0f)]
-    private float SEVolume = 1.0f;
+    private float SEVolume = 0.5f;
 
     // Ÿ‚Ìƒ[ƒvæ‚ğ•Û‚·‚é
     private Vector3 nextWarpPosition = Vector3.zero;

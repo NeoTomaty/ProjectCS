@@ -47,11 +47,11 @@ public class FadeManager : MonoBehaviour
 
     //フェードイン時のSE音量(0.0～1.0)
     [Range(0.0f, 1.0f)]
-    public float FadeInSEVolume = 1.0f;
+    public float FadeInSEVolume = 0.5f;
 
     //フェードアウト時のSE音量(0.0～1.0)
     [Range(0.0f, 1.0f)]
-    public float FadeOutSEVolume = 1.0f;
+    public float FadeOutSEVolume = 0.5f;
 
     //初期化処理(シングルトンの設定とAudioSourceの追加)
     void Awake()

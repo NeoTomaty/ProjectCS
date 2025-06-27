@@ -17,7 +17,7 @@ public class HitWallSound : MonoBehaviour
 
     //SE‚Ì‰¹—Ê‚ğ’²®‚·‚é‚½‚ß‚Ì•Ï”(0.0`1.0)
     [Range(0.0f, 1.0f)]
-    public float volume = 1.0f;
+    public float volume = 0.5f;
 
     void Start()
     {

@@ -18,7 +18,7 @@ public class PlayerJumpSound : MonoBehaviour
     private AudioSource AudioSource;
 
     [Range(0.0f, 1.0f)]
-    public float JumpVolume = 1.0f;
+    public float JumpVolume = 0.5f;
 
     void Start()
     {

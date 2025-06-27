@@ -42,7 +42,7 @@ public class ButtonNavigation : MonoBehaviour
 
     //Œø‰Ê‰¹‚Ì‰¹—Ê(0.0`1.0‚Ì”ÍˆÍ‚Åİ’è‰Â”\)
     [Range(0.0f, 1.0f)]
-    public float SEVolume = 1.0f;
+    public float SEVolume = 0.5f;
 
     void Start()
     {

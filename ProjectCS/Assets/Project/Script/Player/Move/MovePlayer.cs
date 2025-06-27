@@ -47,7 +47,7 @@ public class MovePlayer : MonoBehaviour
     [SerializeField] private AudioClip MoveStartSE;
 
     //SEの音量(0～1の範囲)
-    [SerializeField, Range(0.0f, 1.0f)] private float MoveStartSEVolume = 1.0f;
+    [SerializeField, Range(0.0f, 1.0f)] private float MoveStartSEVolume = 0.5f;
 
     //前フレームで移動していたかどうかを記録
     private bool WasMoving = false;
