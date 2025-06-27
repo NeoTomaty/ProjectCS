@@ -1729,6 +1729,8 @@ GameObject:
   - component: {fileID: 7491256374663754645}
   - component: {fileID: 4052710969838647154}
   - component: {fileID: 5134761857107816169}
+  - component: {fileID: 8307497638812995984}
+  - component: {fileID: 4486171604062251394}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -1808,6 +1810,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198ae2040049dc34d92b0a62dddfb9db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8307497638812995984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4205717202939884373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd4e1f2497ca0345a8218c9ea421b8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationModel: {fileID: 0}
+  model: {fileID: 0}
+  useNormalModel: 1
+  modelAnimator: {fileID: 0}
+  randomAnimationCount: 3
+  randomIndexParameterName: RandomIndex
+  transformEffectPrefab: {fileID: 0}
+  effectSpawnPoint: {fileID: 0}
+  cameraFunction: {fileID: 0}
+  specialViewTarget: {fileID: 0}
+  resetTriggerObject: {fileID: 0}
+--- !u!114 &4486171604062251394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4205717202939884373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d3696323af0ba46adc1b7d1bb3eab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetObject: {fileID: 0}
+  PauseInput: {fileID: 0}
+  GameStartCountdownScript: {fileID: 0}
+  JumpSpeed: 2
+  IgnoreNonTargetCollisions: 0
 --- !u!1 &4451444497042982840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2183,6 +2225,7 @@ MonoBehaviour:
   HitStopDuration: 0.02
   audioSource: {fileID: 0}
   MoveStartSE: {fileID: 0}
+  MoveStartSEVolume: 1
 --- !u!114 &8724982865499982231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2232,6 +2275,7 @@ MonoBehaviour:
   InputAcceptDuration: 1
   warpPosition: {x: 0, y: 10, z: 0}
   RespawnSE: {fileID: 0}
+  TutorialGanarateSnackScript: {fileID: 0}
 --- !u!114 &98891520927704644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2277,6 +2321,7 @@ MonoBehaviour:
   chargingSpeedMultiplier: 0.8
   chargeEffectPrefab: {fileID: 4782991280154357332, guid: 11ddb81fcff55a5428885c55431038b2, type: 3}
   playerEffectController: {fileID: 7306514920274885548}
+  GameStartCountdownScript: {fileID: 0}
   JumpPower: 0
   chargeThresholdTime: 0.3
 --- !u!114 &6803385135700698291
@@ -2296,7 +2341,6 @@ MonoBehaviour:
   GameStartCountdownScript: {fileID: 0}
   JumpSpeed: 2
   IgnoreNonTargetCollisions: 0
-  playerAnimController: {fileID: 784657071238269402}
 --- !u!96 &924197299234803573
 TrailRenderer:
   serializedVersion: 3
@@ -2556,6 +2600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpSound: {fileID: 8300000, guid: f555a31d9f09bf34fb0123fc473657c4, type: 3}
+  JumpVolume: 1
 --- !u!114 &2581601592503768132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2678,6 +2723,7 @@ MonoBehaviour:
   effectSpawnPoint: {fileID: 3537125814049663471}
   cameraFunction: {fileID: 0}
   specialViewTarget: {fileID: 1881129100486900069}
+  resetTriggerObject: {fileID: 0}
 --- !u!114 &7344648348217904998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2691,7 +2737,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LiftingJump: {fileID: 6803385135700698291}
-  GaugeController: {fileID: 0}
   PlayerSpeed: {fileID: 0}
   ScoreUI: {fileID: 0}
   Score: 0
@@ -2724,8 +2769,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRigidbody: {fileID: 5660187365558275549}
-  maxInterval: 0.5
-  minInterval: 0.05
+  maxInterval: 1
+  minInterval: 0.1
   minSpeed: 40
   maxSpeed: 100
   playerEffectController: {fileID: 7306514920274885548}
