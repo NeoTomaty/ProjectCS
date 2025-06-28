@@ -2697,6 +2697,10 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5470652416083580870, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: PlayerSpeed
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 5470652416083580870, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 1717145082}
@@ -2704,6 +2708,14 @@ PrefabInstance:
       propertyPath: AccelerationSE
       value: 
       objectReference: {fileID: 8300000, guid: 9d0068f7cbb666f4fad36e00b227622c, type: 3}
+    - target: {fileID: 5470652416083580870, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: MaxPlayerSpeed
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 5470652416083580870, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: MinPlayerSpeed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5920583418372483330, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: JumpSound
       value: 
@@ -3132,6 +3144,10 @@ PrefabInstance:
     - target: {fileID: 648377048813291116, guid: 16347cf26bba3fc479c7fd95e65dc5c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 762497459511677694, guid: 16347cf26bba3fc479c7fd95e65dc5c8, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 822781705395306677, guid: 16347cf26bba3fc479c7fd95e65dc5c8, type: 3}
       propertyPath: m_Enabled
