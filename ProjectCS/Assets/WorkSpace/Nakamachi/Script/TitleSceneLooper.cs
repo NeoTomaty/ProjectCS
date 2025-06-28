@@ -8,35 +8,40 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//タイトルシーンを一定時間ごとに切り替えてループさせるスクリプト
 public class TitleSceneLooper : MonoBehaviour
 {
-    //シーンを切り替えるまでの待ち時間(秒)
-    public float Delay = 10.0f;
+    public float Delay = 10.0f;             // シーンを切り替えるまでの待ち時間
+    public string[] SceneNames;            // タイトルシーンの名前配列
 
-    //タイトルシーンの名前を順番に格納する配列
-    public string[] SceneNames;
+    [SerializeField]
+    private GameObject optionUI;           // オプションUI（アクティブ状態を見る）
 
-    //ゲーム開始時に呼ばれる関数
     private void Start()
     {
-        //指定した秒数後にLoadNextScene関数を呼び出す
+        // 指定秒後にLoadNextSceneを実行
         Invoke("LoadNextScene", Delay);
     }
 
-    //次のシーンを読み込む処理
-    void LoadNextScene()
+    private void LoadNextScene()
     {
-        //現在アクティブなシーンの名前を取得
-        string CurrentScene = SceneManager.GetActiveScene().name;
+        // オプションが開いている場合はシーン遷移しない（再スケジュール）
+        if (optionUI != null && optionUI.activeSelf)
+        {
+            // オプションを閉じるまで再チェックを待機（再Invoke）
+            Invoke("LoadNextScene", 1.0f); // 1秒後にもう一度確認
+            return;
+        }
 
-        //現在のシーンがSceneNames配列の何番目かを取得
-        int CurrentIndex = System.Array.IndexOf(SceneNames, CurrentScene);
+        // 現在のシーン名を取得
+        string currentScene = SceneManager.GetActiveScene().name;
 
-        //次に読み込みシーンのインデックスを計算(最後のシーンの次は最初に戻る)
-        int NextIndex = (CurrentIndex + 1) % SceneNames.Length;
+        // 現在のシーンが配列の何番目か
+        int currentIndex = System.Array.IndexOf(SceneNames, currentScene);
 
-        //次のシーンを読み込む
-        SceneManager.LoadScene(SceneNames[NextIndex]);
+        // 次のインデックスを計算（最後なら最初に戻る）
+        int nextIndex = (currentIndex + 1) % SceneNames.Length;
+
+        // 次のシーンを読み込む
+        SceneManager.LoadScene(SceneNames[nextIndex]);
     }
 }

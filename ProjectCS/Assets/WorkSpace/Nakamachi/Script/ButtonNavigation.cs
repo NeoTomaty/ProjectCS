@@ -13,138 +13,103 @@ using UnityEngine.EventSystems;
 
 public class ButtonNavigation : MonoBehaviour
 {
-    //メニューとして使用するボタンの配列
+    // メニューとして使用するボタンの配列
     public Button[] Buttons;
 
-    //ボタン移動時に再生する効果音(AudioClip)
+    // ボタン移動時に再生する効果音
     public AudioClip NavigationSE;
 
-    //ボタン決定時に再生する効果音(AudioClip)
+    // ボタン決定時に再生する効果音
     public AudioClip DecisionSE;
 
-    //効果音を再生するためのAudioSource(スクリプト内で自動追加)
+    // 効果音を再生するためのAudioSource
     private AudioSource audioSource;
 
-    //現在選択中のボタンのインデックス(配列の何番目か)
+    // 現在選択中のボタンのインデックス
     private int CurrentIndex = 0;
 
-    //各ボタンの元のスケールを保存する配列(拡大・縮小の基準)
+    // 各ボタンの元のスケールを保存する配列
     private Vector3[] OriginalScales;
 
-    //スティック操作のクールダウン時間(秒)
+    // スティック操作のクールダウン時間
     private float StickCoolDown = 0.3f;
 
-    //クールダウンタイマー(時間経過で減少)
+    // クールダウンタイマー
     private float StickTimer = 0.0f;
 
-    //スティックがニュートラルに戻ったかどうかの判定
+    // スティックがニュートラルに戻ったかどうか
     private bool StickReleased = true;
 
-    //効果音の音量(0.0～1.0の範囲で設定可能)
+    // 効果音の音量
     [Range(0.0f, 1.0f)]
     public float SEVolume = 0.5f;
 
+    [Header("UI Blocks Input")]
+    [SerializeField] private GameObject optionUI; // Option UIをインスペクターから設定
+
     void Start()
     {
-        //AudioSourceをこのオブジェクトに追加(SE再生用)
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.volume = SEVolume;
 
-        //各ボタンの元のスケールを保存(後で元に戻すため)
         OriginalScales = new Vector3[Buttons.Length];
         for (int i = 0; i < Buttons.Length; i++)
         {
             OriginalScales[i] = Buttons[i].transform.localScale;
         }
 
-        //最初のボタンを選択状態に設定(EventSystemでUIの選択状態を管理)
         EventSystem.current.SetSelectedGameObject(Buttons[CurrentIndex].gameObject);
-
-        //最初のボタンを拡大表示(選択中の強調)
         EnlargeButton(Buttons[CurrentIndex]);
     }
 
     void Update()
     {
-        //クールダウンタイマーを減少させる
-        StickTimer -= Time.unscaledDeltaTime;
+        // Option画面がアクティブならキー操作をすべて無効化
+        if (optionUI != null && optionUI.activeSelf) return;
 
-        //左スティックの横方向の入力値を取得
+        StickTimer -= Time.unscaledDeltaTime;
         float Vertical = Input.GetAxis("Vertical");
 
-        //スティックがニュートラルに戻ったらフラグを立てる
         if (Mathf.Abs(Vertical) < 0.2f)
         {
             StickReleased = true;
         }
 
-        //Aボタン(Submit)またはEnterキーで決定
         if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Return))
         {
-            //決定SEを再生
             PlayDecisionSE();
-
-            //ボタンのクリックイベントを呼び出す
             Buttons[CurrentIndex].onClick.Invoke();
         }
 
-        //↓キーまたは左スティック下で次のボタンに移動
         if ((Input.GetKeyDown(KeyCode.DownArrow) || (Vertical < -0.5f && StickTimer <= 0.0f && StickReleased)))
         {
-
             StickReleased = false;
             StickTimer = StickCoolDown;
-
             int nextIndex = CurrentIndex + 1;
-
-            //配列の範囲外なら何もしない
             if (nextIndex >= Buttons.Length) return;
 
-            //選択音を再生
             PlayNavigationSE();
-
-            //現在のボタンのスケールを元に戻す
             ResetButton(Buttons[CurrentIndex]);
-
-            //インデックス更新
             CurrentIndex = nextIndex;
-
-            //新しいボタンを選択状態に
             EventSystem.current.SetSelectedGameObject(Buttons[CurrentIndex].gameObject);
-
-            //新しいボタンを拡大表示
             EnlargeButton(Buttons[CurrentIndex]);
         }
 
-        //↑キーまたは左スティック上で前のボタンに移動
         if ((Input.GetKeyDown(KeyCode.UpArrow) || (Vertical > 0.5f && StickTimer <= 0.0f && StickReleased)))
         {
             StickReleased = false;
             StickTimer = StickCoolDown;
-
             int nextIndex = CurrentIndex - 1;
-
-            //配列の範囲外なら何もしない
             if (nextIndex < 0) return;
 
-            //選択音を再生
             PlayNavigationSE();
-
-            //現在のボタンのスケールを元に戻す
             ResetButton(Buttons[CurrentIndex]);
-
-            //インデックス更新
             CurrentIndex = nextIndex;
-
-            //新しいボタンを選択状態に
             EventSystem.current.SetSelectedGameObject(Buttons[CurrentIndex].gameObject);
-
-            //新しいボタンを拡大表示
             EnlargeButton(Buttons[CurrentIndex]);
         }
     }
 
-    //選択中のボタンを拡大表示する処理(画像も含めて拡大)
     void EnlargeButton(Button button)
     {
         int index = System.Array.IndexOf(Buttons, button);
@@ -154,7 +119,6 @@ public class ButtonNavigation : MonoBehaviour
         }
     }
 
-    //選択解除されたボタンのスケールを元に戻す処理
     void ResetButton(Button button)
     {
         int index = System.Array.IndexOf(Buttons, button);
@@ -164,25 +128,22 @@ public class ButtonNavigation : MonoBehaviour
         }
     }
 
-    //ボタン移動時の効果音を再生する処理
     void PlayNavigationSE()
     {
         if (NavigationSE != null && audioSource != null)
         {
-            audioSource.PlayOneShot(NavigationSE,SEVolume);
+            audioSource.PlayOneShot(NavigationSE, SEVolume);
         }
     }
 
-    //ボタン決定時の効果音を再生する処理
     void PlayDecisionSE()
     {
         if (DecisionSE != null && audioSource != null)
         {
-            audioSource.PlayOneShot(DecisionSE,SEVolume);
+            audioSource.PlayOneShot(DecisionSE, SEVolume);
         }
     }
 
-    //全てのボタンのスケールを元に戻す処理
     void ResetAllButtons()
     {
         for (int i = 0; i < Buttons.Length; i++)

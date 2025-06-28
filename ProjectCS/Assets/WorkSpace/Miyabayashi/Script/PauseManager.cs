@@ -184,13 +184,18 @@ public class PauseManager : MonoBehaviour
 
     public void OpenOption()
     {
-        optionUI.SetActive(true);
-        pauseUI.SetActive(false);
+        if (optionUI != null)
+            optionUI.SetActive(true);
 
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(firstOptionButton);
+        if (pauseUI != null)
+            pauseUI.SetActive(false);
+
+        if (firstOptionButton != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(firstOptionButton);
+        }
     }
-
     public void ResumeGame()
     {
         Time.timeScale = 1f;
