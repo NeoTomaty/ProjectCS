@@ -1051,6 +1051,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &473484140 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7491256374663754645, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+  m_PrefabInstance: {fileID: 1286759468}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &474370028 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 524124592275024501, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
@@ -1297,7 +1302,7 @@ GameObject:
   - component: {fileID: 563229274}
   - component: {fileID: 563229273}
   m_Layer: 5
-  m_Name: Text
+  m_Name: SpeedMeterText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1703,7 +1708,7 @@ GameObject:
   - component: {fileID: 722749051}
   - component: {fileID: 722749050}
   m_Layer: 5
-  m_Name: Text
+  m_Name: LiftCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2765,17 +2770,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca237208ad5bf51429d652c50e06f5b4, type: 3}
---- !u!114 &1541221556 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1855852027085458705, guid: ca237208ad5bf51429d652c50e06f5b4, type: 3}
-  m_PrefabInstance: {fileID: 1541221555}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 631f67b3a6528754e9d8dac04f73bf2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1563025577
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3605,6 +3599,7 @@ MonoBehaviour:
   RotateSpeedMIN: 30
   RotateSpeedMAX: 200
   ClearSE: {fileID: 8300000, guid: 39e544644abf13349b1dca29c93e118b, type: 3}
+  SEVolume: 0.5
 --- !u!4 &1797112512
 Transform:
   m_ObjectHideFlags: 0
@@ -3667,19 +3662,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SnackObject: {fileID: 5488207771516596298}
   ToGanarateIndex: 3
-  LiftingAreaObject: {fileID: 165383273}
-  CameraFunctionComponent: {fileID: 594655328}
-  FlyingPointComponent: {fileID: 1717145075}
-  ClearConditionsComponent: {fileID: 1731900030}
-  LiftingJumpComponent: {fileID: 1717145085}
-  PlayerObject: {fileID: 1717145073}
-  SnackRespawnPoint: {fileID: 949123409}
-  GroundArea: {fileID: 949123409}
-  ClearSequenceComponent: {fileID: 1797112511}
-  SceneObjectTransform: {fileID: 1984033651}
-  PlayerAnimationController: {fileID: 1717145076}
-  SnackHeightUIManagerComponent: {fileID: 1541221556}
-  AnimationFinishComponent: {fileID: 2048789928}
   TutorialDisplayTextsComponent: {fileID: 1798833354}
 --- !u!114 &1798833354
 MonoBehaviour:
@@ -4130,6 +4112,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1717145082}
     - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
+      propertyPath: targetSnack
+      value: 
+      objectReference: {fileID: 3886667510632653282}
+    - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
+      propertyPath: playerAnimator
+      value: 
+      objectReference: {fileID: 473484140}
+    - target: {fileID: 3528236818945893276, guid: e1fcf71a827741b4fa2732c72488fd8b, type: 3}
       propertyPath: firstPauseButton
       value: 
       objectReference: {fileID: 2104618539}
@@ -4239,17 +4229,6 @@ Transform:
   - {fileID: 113936896}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2048789928 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4052710969838647154, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
-  m_PrefabInstance: {fileID: 1286759468}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cda75b9293c6f24e99ccefa8ecfbece, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2104618539 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4710431160877490182, guid: 0e630677bce7b474db70502a34d1665e, type: 3}
@@ -4790,6 +4769,7 @@ MonoBehaviour:
   GroundArea: {fileID: 949123409}
   CameraFunction: {fileID: 594655328}
   flyingPoint: {fileID: 1717145075}
+  isHitStopActive: 0
   ClearConditionsScript: {fileID: 1731900030}
   ScorePenaltyStartTime: 40
   ScoreDecreaseInterval: 10
@@ -4798,6 +4778,7 @@ MonoBehaviour:
   audioSource: {fileID: 1717145082}
   HitSE: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
   playerAnimController: {fileID: 1717145076}
+  SEVolume: 0.5
 --- !u!114 &4635551290519178661
 MonoBehaviour:
   m_ObjectHideFlags: 0
