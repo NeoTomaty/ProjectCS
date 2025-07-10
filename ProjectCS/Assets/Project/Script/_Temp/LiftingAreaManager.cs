@@ -164,4 +164,15 @@ public class LiftingAreaManager : MonoBehaviour
     {
         return IsTargetContacting;
     }
+
+    public void AdjustXZAreaPosition(Vector3 pos)
+    {
+        if (transform.position.x == pos.x && transform.position.z == pos.z) return;
+
+        Vector3 tempPosition = transform.position;
+        tempPosition.x = pos.x;
+        tempPosition.z = pos.z;
+
+        transform.position = tempPosition;
+    }
 }
