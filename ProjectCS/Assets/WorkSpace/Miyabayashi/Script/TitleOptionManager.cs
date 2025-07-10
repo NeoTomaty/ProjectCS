@@ -68,7 +68,7 @@ public class TitleOptionManager : MonoBehaviour
 
     public void OpenOption()
     {
-        if (optionUI == null) return;
+        if (optionUI == null || isOpen == true) return;
 
         optionUI.SetActive(true);
         isOpen = true;

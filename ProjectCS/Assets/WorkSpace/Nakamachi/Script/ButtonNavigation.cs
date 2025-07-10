@@ -69,10 +69,10 @@ public class ButtonNavigation : MonoBehaviour
         if (optionUI != null && optionUI.activeSelf) return;
 
         StickTimer -= Time.unscaledDeltaTime;
-        float Vertical = Input.GetAxis("Vertical");
+        float Vertical = Input.GetAxisRaw("Vertical");
 
         //ñÓàÛÉLÅ[ÇÃì¸óÕÇñ≥éã
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
         {
             return;
         }
