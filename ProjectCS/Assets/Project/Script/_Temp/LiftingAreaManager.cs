@@ -45,6 +45,10 @@ public class LiftingAreaManager : MonoBehaviour
     [SerializeField] private Color NormalColor = new Color(1.0f, 0.3f, 0.3f, 0.2f); // 通常時の色
     [SerializeField] private Color LiftingPartColor = new Color(1f, 1f, 1f, 0.2f); // リフティングパート時の色
 
+    [SerializeField] private GameObject Effect;
+    private ParticleColorChanger ParticleColorChanger;
+
+
     void Start()
     {
         if (!Player) Debug.LogError("プレイヤーオブジェクトが設定されていません");
@@ -68,6 +72,23 @@ public class LiftingAreaManager : MonoBehaviour
         }
 
         LiftingJumpComponent = Player.GetComponent<LiftingJump>();
+
+        if(Effect)
+        {
+            GetComponent<MeshRenderer>().enabled = false;
+            Effect.SetActive(true);
+            ParticleColorChanger = Effect.GetComponent<ParticleColorChanger>();
+            Effect.transform.localScale = new Vector3(Radius * 0.4f, Radius * 0.4f, Radius * 0.4f);
+            for (int i = 0; i < Effect.transform.childCount; i++)
+            {
+                Effect.transform.GetChild(i).transform.localScale = new Vector3(Radius * 0.4f, Radius * 0.4f, Radius * 0.4f);
+            }
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().enabled = true;
+        }
+      
     }
 
     public void SetTarget(GameObject PlayerObj, GameObject SnackObj, GameClearSequence GCS, AnimationFinishTrigger AFT)
@@ -97,6 +118,8 @@ public class LiftingAreaManager : MonoBehaviour
         {
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.LiftingPart);
             ObjectRenderer.material.SetColor("_Color", LiftingPartColor);
+            if (ParticleColorChanger) ParticleColorChanger.SetColor(LiftingPartColor);
+
             LiftingJump LJ = Player.GetComponent<LiftingJump>();
            
             if (LiftingJumpComponent) LiftingJumpComponent.SetTargetObject(Target);
@@ -124,6 +147,7 @@ public class LiftingAreaManager : MonoBehaviour
         {
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.Normal);
             ObjectRenderer.material.SetColor("_Color", NormalColor);
+            if (ParticleColorChanger) ParticleColorChanger.SetColor(NormalColor);
         }
     }
 
