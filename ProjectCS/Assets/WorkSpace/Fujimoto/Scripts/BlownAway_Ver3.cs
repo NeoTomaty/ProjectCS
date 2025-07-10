@@ -118,6 +118,11 @@ public class BlownAway_Ver3 : MonoBehaviour
         Rb = GetComponent<Rigidbody>();
 
         FallPoint = GetComponent<FallPointCalculator>();
+
+        if (gameObject.name.EndsWith("(Clone)"))
+        {
+            MoveToRandomXZInRespawnArea();
+        }
     }
 
     // 複製時に引数で渡されたコンポーネントを設定する
@@ -419,7 +424,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         // 稀にスナックの落下地点とリフティングエリアのXZ座標がずれるときが
         // あるので、念のため再調整する
-        FallPoint.CalculateGroundPoint(nextWarpPosition);
+        //FallPoint.CalculateGroundPoint(nextWarpPosition);
         //FallPoint.AdjustXZAreaPosition(nextWarpPosition);
     }
 
