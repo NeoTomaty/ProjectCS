@@ -2339,6 +2339,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4205613006848981575, guid: fffd60010ab5cb245b10a10f1f8e4c8b, type: 3}
   m_PrefabInstance: {fileID: 432485976}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &197580953 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6294969581744531310, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+  m_PrefabInstance: {fileID: 2108420071}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &201381256 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5729286241371131192, guid: e530151a1fab1424695090b9c67a1870, type: 3}
@@ -7210,6 +7215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   optionUI: {fileID: 2074209265}
   firstOptionButton: {fileID: 2006088493}
+  titleUIRoot: {fileID: 276071171}
   audioSource: {fileID: 1356039669}
   openSE: {fileID: 0}
   closeSE: {fileID: 0}
@@ -9954,17 +9960,99 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &1134000084 stripped
+--- !u!114 &1134000089
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7214355399350044531, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
-  m_PrefabInstance: {fileID: 2108420071}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 197580953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ae83850a4b657a42adc8a44b1e550c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a8d3ab8f81faee4189f438b1c79e2b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  optionUI: {fileID: 2074209265}
+  firstOptionButton: {fileID: 2006088493}
+  titleUIRoot: {fileID: 276071171}
+  audioSource: {fileID: 0}
+  openSE: {fileID: 0}
+  closeSE: {fileID: 0}
+  SEVolume: 0.5
+--- !u!114 &1134000090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197580953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 17cf4205b2f86dc44a3298d2a6780800, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 67f958b1-13cd-4d4c-99a0-35773cef73f4
+    m_ActionName: 'Player/Jump[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d684f1e2-72c4-421a-afd8-9e08a9c24013
+    m_ActionName: 'Player/LRTurn[/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 058827a0-f460-428b-b319-1b6217a6c910
+    m_ActionName: 'Player/Deceleration[/Keyboard/s]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 888ddd2c-b817-4635-b42e-59fecc3b9d4b
+    m_ActionName: 'Player/LookTargetSnack[/Keyboard/r]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b4127153-14cb-4f6b-b3b4-982eb939f14a
+    m_ActionName: 'Player/RotateCamera[/Keyboard/i,/Keyboard/k,/Keyboard/j,/Keyboard/l]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 562217a3-21ad-4b4d-a740-2aee5329107e
+    m_ActionName: 'Option/Pause[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 40101708-0f8f-47c0-8467-d3fb4f9952a5
+    m_ActionName: 'StageSelect/Confirm[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0eb84fef-53d0-4d20-8d31-9c3a382b3cc3
+    m_ActionName: 'StageSelect/Cancel[/Keyboard/backspace]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2dffe1c3-a4de-4109-980d-7030938d5ee1
+    m_ActionName: 'StageSelect/LeftMove[/Keyboard/a]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f9591cd5-4798-49db-b13b-9eade7d058ed
+    m_ActionName: 'StageSelect/RightMove[/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 50b97f8c-9ae3-449a-918d-0941fc5985a5
+    m_ActionName: 'StageSelect/Option[/Keyboard/escape]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Option
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &1139741073
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12491,10 +12579,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
-        m_MethodName: 
-        m_Mode: 5
+      - m_Target: {fileID: 1546346910}
+        m_TargetAssemblyTypeName: SceneTransition, Assembly-CSharp
+        m_MethodName: StartSceneTransition
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -17238,17 +17326,37 @@ PrefabInstance:
       propertyPath: volumeSetting
       value: 
       objectReference: {fileID: 132380319}
+    - target: {fileID: 1718794665041905568, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615630419332848388, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615630419332848388, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615630419332848388, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2959900835019731462, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3122968401925550140, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1134000084}
+      objectReference: {fileID: 1134000089}
     - target: {fileID: 3122968401925550140, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: CloseOption
       objectReference: {fileID: 0}
     - target: {fileID: 3122968401925550140, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: OptionBackButton, Assembly-CSharp
+      value: TitleOptionManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4153668090816154012, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: m_Pivot.x
@@ -17334,6 +17442,26 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5620596238363896935, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5620596238363896935, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6042290270673497400, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6042290270673497400, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6042290270673497400, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6319392258749819250, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: volumeSetting
       value: 
@@ -17344,7 +17472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7214355399350044531, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7214355399350044531, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: firstPauseButton
@@ -17362,10 +17490,25 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8708070434421957929, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708070434421957929, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7214355399350044531, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6294969581744531310, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1134000089}
+    - targetCorrespondingSourceObject: {fileID: 6294969581744531310, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1134000090}
   m_SourcePrefab: {fileID: 100100000, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
 --- !u!1 &2117251310
 GameObject:
