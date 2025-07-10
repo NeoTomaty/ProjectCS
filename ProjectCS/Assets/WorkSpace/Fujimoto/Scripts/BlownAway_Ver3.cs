@@ -373,27 +373,31 @@ public class BlownAway_Ver3 : MonoBehaviour
             return;
         }
 
-        Vector3 respawnCenter = RespawnArea.position;
-        Vector3 respawnSize = RespawnArea.localScale;
+        do
+        {
+            Vector3 respawnCenter = RespawnArea.position;
+            Vector3 respawnSize = RespawnArea.localScale;
 
-        Vector3 groundCenter = GroundArea.position;
-        Vector3 groundSize = GroundArea.localScale;
+            Vector3 groundCenter = GroundArea.position;
+            Vector3 groundSize = GroundArea.localScale;
 
-        float minX = Mathf.Max(respawnCenter.x - respawnSize.x / 2, groundCenter.x - groundSize.x / 2);
-        float maxX = Mathf.Min(respawnCenter.x + respawnSize.x / 2, groundCenter.x + groundSize.x / 2);
+            float minX = Mathf.Max(respawnCenter.x - respawnSize.x / 2, groundCenter.x - groundSize.x / 2);
+            float maxX = Mathf.Min(respawnCenter.x + respawnSize.x / 2, groundCenter.x + groundSize.x / 2);
 
-        float minZ = Mathf.Max(respawnCenter.z - respawnSize.z / 2, groundCenter.z - groundSize.z / 2);
-        float maxZ = Mathf.Min(respawnCenter.z + respawnSize.z / 2, groundCenter.z + groundSize.z / 2);
+            float minZ = Mathf.Max(respawnCenter.z - respawnSize.z / 2, groundCenter.z - groundSize.z / 2);
+            float maxZ = Mathf.Min(respawnCenter.z + respawnSize.z / 2, groundCenter.z + groundSize.z / 2);
 
-        float randomX = Random.Range(minX, maxX);
-        float randomZ = Random.Range(minZ, maxZ);
+            float randomX = Random.Range(minX, maxX);
+            float randomZ = Random.Range(minZ, maxZ);
 
-        float y = respawnCenter.y;
+            float y = respawnCenter.y;
 
-        Vector3 newPos = new Vector3(randomX, y, randomZ);
-        nextWarpPosition = newPos;
-        IsWaiting = true;
-        FallPoint?.CalculateGroundPoint(nextWarpPosition);
+            Vector3 newPos = new Vector3(randomX, y, randomZ);
+            nextWarpPosition = newPos;
+            IsWaiting = true;
+        }
+        while (!FallPoint.CalculateGroundPoint(nextWarpPosition));
+
     }
 
     public void OnClear()
@@ -412,7 +416,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         transform.position = nextWarpPosition;
         Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
-        FallPoint?.CalculateGroundPoint(nextWarpPosition);
+        //FallPoint?.CalculateGroundPoint(nextWarpPosition);
     }
 
     //private IEnumerator EnableCollisionLater(Collider colA, Collider colB, float delay)
