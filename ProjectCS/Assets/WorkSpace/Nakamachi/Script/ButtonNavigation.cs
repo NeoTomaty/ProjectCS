@@ -6,6 +6,7 @@
 // 05/11 中町 メニュー選択&決定処理
 // 06/25 中町 コントローラーの修正&キーボード操作の修正&ボタンの拡大表示
 // 06/26 中町 メニュー選択&決定SE音量調整実装
+// 07/10 中町 矢印キーからWASDのキー操作に変更
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -70,6 +71,12 @@ public class ButtonNavigation : MonoBehaviour
         StickTimer -= Time.unscaledDeltaTime;
         float Vertical = Input.GetAxis("Vertical");
 
+        //矢印キーの入力を無視
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            return;
+        }
+
         if (Mathf.Abs(Vertical) < 0.2f)
         {
             StickReleased = true;
@@ -81,7 +88,7 @@ public class ButtonNavigation : MonoBehaviour
             Buttons[CurrentIndex].onClick.Invoke();
         }
 
-        if ((Input.GetKeyDown(KeyCode.DownArrow) || (Vertical < -0.5f && StickTimer <= 0.0f && StickReleased)))
+        if ((Input.GetKeyDown(KeyCode.S) || (Vertical < -0.5f && StickTimer <= 0.0f && StickReleased)))
         {
             StickReleased = false;
             StickTimer = StickCoolDown;
@@ -95,7 +102,7 @@ public class ButtonNavigation : MonoBehaviour
             EnlargeButton(Buttons[CurrentIndex]);
         }
 
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || (Vertical > 0.5f && StickTimer <= 0.0f && StickReleased)))
+        if ((Input.GetKeyDown(KeyCode.W) || (Vertical > 0.5f && StickTimer <= 0.0f && StickReleased)))
         {
             StickReleased = false;
             StickTimer = StickCoolDown;
