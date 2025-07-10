@@ -93,30 +93,39 @@ public class FallPointCalculator : MonoBehaviour
         CurrentReCalculateCount = 0;
     }
 
-    public void CalculateGroundPoint(Vector3 originPos)
+    public bool CalculateGroundPoint(Vector3 originPos)
     {
         RaycastHit hit;
         Vector3 origin = originPos;
         Vector3 direction = Vector3.down;
 
-        // BaseGroundLayerのみ判定
-        if (Physics.Raycast(origin, direction, out hit, Mathf.Infinity, BaseGroundLayerMask)) // 一応下方向のレイは無限に設定
-        {
-            Debug.Log("落下地点：" + hit.point);
-            GroundPoint = hit.point;
-
-            // リフティングエリアオブジェクトを移動させる
-            LAManager.SetFallPoint(GroundPoint);
-        }
-
-        // ターゲットオブジェクトの落下地点を計算（すべての地面に対して実行）
+        // ターゲットオブジェクトの落下地点を計算（すべてのオブジェクトに対して実行）
         if (Physics.Raycast(origin, direction, out hit, Mathf.Infinity))
         {
-            if(hit.collider.CompareTag(GroundTag))
+            if (hit.collider.CompareTag(GroundTag))
             {
-               FallPoint = hit.point;
+                FallPoint = hit.point;
+
+                if (Physics.Raycast(origin, direction, out hit, Mathf.Infinity, BaseGroundLayerMask)) // 一応下方向のレイは無限に設定
+                {
+                    GroundPoint = hit.point;
+
+                    // リフティングエリアオブジェクトを移動させる
+                    LAManager.SetFallPoint(GroundPoint);
+
+                    return true;
+                }
+
+                return false;
+            }
+            else
+            {
+                return false;
             }
         }
+
+        return false;
+
     }
 
     // FallPointを取得（使用するか分からないが一応作ってます）
