@@ -128,6 +128,11 @@ public class FallPointCalculator : MonoBehaviour
 
     }
 
+    public void AdjustXZAreaPosition(Vector3 pos)
+    {
+        LAManager.AdjustXZAreaPosition(pos);
+    }
+
     // FallPointを取得（使用するか分からないが一応作ってます）
     public Vector3 GetFallPoint()
     {
@@ -144,4 +149,5 @@ public class FallPointCalculator : MonoBehaviour
     {
         return (transform.position.y - SnackOffsetY) - GroundPoint.y;
     }
+
 }

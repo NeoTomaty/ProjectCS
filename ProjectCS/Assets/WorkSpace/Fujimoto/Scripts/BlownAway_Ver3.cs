@@ -416,7 +416,10 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         transform.position = nextWarpPosition;
         Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
-        //FallPoint?.CalculateGroundPoint(nextWarpPosition);
+
+        // 稀にスナックの落下地点とリフティングエリアのXZ座標がずれるときが
+        // あるので、念のため再調整する
+        FallPoint.AdjustXZAreaPosition(nextWarpPosition);
     }
 
     //private IEnumerator EnableCollisionLater(Collider colA, Collider colB, float delay)
