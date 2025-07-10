@@ -15,9 +15,26 @@ public class SceneTransition : MonoBehaviour
 
     private bool isTransitioning = false;
 
+    [SerializeField] private TitleOptionManager OptionManager;
+
+    private void Start()
+    {
+        OptionManager = FindFirstObjectByType<TitleOptionManager>();
+
+        if(OptionManager == null)
+        {
+            Debug.LogWarning("TitleOptionManager が見つかりませんでした。");
+        }
+    }
+
     private void Update()
     {
         if (isTransitioning) return;
+
+        if (OptionManager != null && OptionManager.IsOpen())
+        {
+            return;
+        }
 
         // Xbox コントローラーの A ボタン
         if (Gamepad.current != null && Gamepad.current.aButton.wasPressedThisFrame)

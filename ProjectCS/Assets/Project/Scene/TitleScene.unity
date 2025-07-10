@@ -6890,6 +6890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: StageSelectScene
+  OptionManager: {fileID: 0}
 --- !u!1001 &739488433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9898,6 +9899,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1134000084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7214355399350044531, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+  m_PrefabInstance: {fileID: 2108420071}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae83850a4b657a42adc8a44b1e550c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1139741073
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12352,8 +12364,8 @@ GameObject:
   - component: {fileID: 1546346906}
   - component: {fileID: 1546346905}
   - component: {fileID: 1546346904}
-  - component: {fileID: 1546346907}
   - component: {fileID: 1546346909}
+  - component: {fileID: 1546346910}
   m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
@@ -12425,15 +12437,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SceneTransitionButton, Assembly-CSharp
-        m_MethodName: StartSceneTransition
-        m_Mode: 1
+        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
+        m_MethodName: 
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: StageSelectScene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1546346905
@@ -12474,19 +12486,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1546346902}
   m_CullTransparentMesh: 1
---- !u!114 &1546346907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1546346902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 615eb4e24befcbc419b961660207cb5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SceneName: StageSelectScene
 --- !u!114 &1546346909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12507,6 +12506,20 @@ MonoBehaviour:
   DecisionSE: {fileID: 8300000, guid: aa4c1a94c601acf468e74f0c2c7df32b, type: 3}
   SEVolume: 0.5
   optionUI: {fileID: 2074209265}
+--- !u!114 &1546346910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546346902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 594c8556d75713d4e8a9fd22016199e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: StageSelectScene
+  OptionManager: {fileID: 777579984}
 --- !u!1001 &1553747357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17170,6 +17183,18 @@ PrefabInstance:
       propertyPath: volumeSetting
       value: 
       objectReference: {fileID: 132380319}
+    - target: {fileID: 3122968401925550140, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1134000084}
+    - target: {fileID: 3122968401925550140, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseOption
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122968401925550140, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: OptionBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 4153668090816154012, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -17261,6 +17286,18 @@ PrefabInstance:
     - target: {fileID: 7124109656350554642, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: m_UiScaleMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7214355399350044531, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7214355399350044531, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: firstPauseButton
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7214355399350044531, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: firstTitleButton
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7626009591324736965, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: m_Name
