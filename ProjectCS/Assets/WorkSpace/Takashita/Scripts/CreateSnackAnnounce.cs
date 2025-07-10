@@ -14,6 +14,8 @@ public class CreateSnackAnnounce : MonoBehaviour
 
     [SerializeField] private float TextMoveSpeed = 100f;
     [SerializeField] private float TextStopTime = 1f;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip AnnounceSE;
     private float leftX = -1500f;
     private float rightX = 1500f;
     private int direction = -1;
@@ -73,6 +75,8 @@ public class CreateSnackAnnounce : MonoBehaviour
         Vector2 pos = TextRectTransform.anchoredPosition;
         pos.x = rightX;
         TextRectTransform.anchoredPosition = pos;
+
+        if (AnnounceSE) audioSource.PlayOneShot(AnnounceSE);
 
     }
 }
