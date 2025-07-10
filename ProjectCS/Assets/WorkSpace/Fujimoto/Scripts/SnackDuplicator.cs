@@ -28,7 +28,11 @@ public class SnackDuplicator : MonoBehaviour
     [Header("複製されるダミースナックの最大数")]
     [SerializeField] private int maxCount = 10;
 
-    [Header("ダミーに適用する参照オブジェクト")]
+    [Header("スナック生成スクリプト")]
+    [SerializeField] private CreateSnackAnnounce AnnounceComponent;
+
+
+   [Header("ダミーに適用する参照オブジェクト")]
     [SerializeField] private CameraFunction CameraFunctionComponent;
     [SerializeField] private FlyingPoint FlyingPointComponent;
     [SerializeField] private ClearConditions ClearConditionsComponent;
@@ -99,6 +103,7 @@ public class SnackDuplicator : MonoBehaviour
 
             if(SnackHeightUIManagerComponent) SnackHeightUIManagerComponent.AddSnack(SnackInstance);
 
+            if(AnnounceComponent) AnnounceComponent.DisplayMessage();
 
             currentCount++;
         }
