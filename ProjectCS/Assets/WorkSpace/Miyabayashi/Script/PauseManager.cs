@@ -15,6 +15,8 @@ using UnityEngine.InputSystem;
 
 public class PauseManager : MonoBehaviour
 {
+    [SerializeField] private GameObject PlayerObject;
+
     //ポーズメニューのUIオブジェクト
     [SerializeField] private GameObject pauseUI;
 
@@ -41,6 +43,7 @@ public class PauseManager : MonoBehaviour
 
     private PlayerInput playerInput;
     private InputAction pauseAction;
+    private InputAction PlayerDecelerationAction;
 
     [Header("Reference to Countdown")]
     [SerializeField] private GameStartCountdown gameStartCountdown;
@@ -62,6 +65,11 @@ public class PauseManager : MonoBehaviour
         else
         {
             Debug.LogError("PlayerInputが見つかりません！");
+        }
+
+        if (PlayerObject != null)
+        {
+            PlayerDecelerationAction = PlayerObject.GetComponent<PlayerInput>().actions["Deceleration"];
         }
     }
 
@@ -132,6 +140,9 @@ public class PauseManager : MonoBehaviour
                     PlaySE(OpenSE);
                 }
             }
+
+            if (PlayerDecelerationAction != null)
+                PlayerDecelerationAction.Disable(); // ポーズ中は減速アクションを無効化
         }
         else
         {
@@ -205,6 +216,9 @@ public class PauseManager : MonoBehaviour
 
         pauseUI.SetActive(false);
         isPaused = false;
+
+        if (PlayerDecelerationAction != null)
+            PlayerDecelerationAction.Enable(); // ポーズ解除時に減速アクションを有効化
 
         PlaySE(CloseSE);
     }
