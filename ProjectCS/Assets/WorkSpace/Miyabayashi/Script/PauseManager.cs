@@ -128,7 +128,7 @@ public class PauseManager : MonoBehaviour
             }
             else
             {
-                if (!targetSnack.isHitStopActive)
+                //if (!targetSnack.isHitStopActive)
                 {
                     Time.timeScale = 0f;
                     if (playerAnimator != null)
