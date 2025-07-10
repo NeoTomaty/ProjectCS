@@ -34,6 +34,8 @@ public class FallPointCalculator : MonoBehaviour
     [SerializeField] private LayerMask BaseGroundLayerMask; // ベースとなる地面のレイヤー
 
     private BlownAway_Ver3 BAV3;
+    private int ReCalculateCount = 3;
+    private int CurrentReCalculateCount = 0;
 
     void Start()
     {
@@ -65,8 +67,14 @@ public class FallPointCalculator : MonoBehaviour
 
         if(!LAManager.GetIsTargetContacting())
         {
+            CurrentReCalculateCount++;
+
+            if (CurrentReCalculateCount < ReCalculateCount) return;
+
             CalculateGroundPoint(transform.position); // リフティングエリアのポイントを再計算
             Debug.Log("リフティングエリア再計算実行");
+
+            CurrentReCalculateCount = 0;
         }
     }
 
@@ -82,6 +90,7 @@ public class FallPointCalculator : MonoBehaviour
         if (!collision.gameObject.CompareTag(GroundTag)) return;
 
         IsGround = false; // 地面に着いていない
+        CurrentReCalculateCount = 0;
     }
 
     public void CalculateGroundPoint(Vector3 originPos)
