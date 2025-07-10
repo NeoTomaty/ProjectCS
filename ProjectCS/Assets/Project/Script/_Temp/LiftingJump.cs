@@ -29,6 +29,7 @@
 // 06/07　荒井　カウントダウン中にリフティングジャンプを発動しないように修正
 // 06/13  高下　ターゲットを変更する関数を追加
 // 06/20  森脇　アニメーターの不要な部分コメントアウト
+// 07/10　竹内　インスペクターから直接TerminateHeightを設定できるように
 //======================================================
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -67,7 +68,7 @@ public class LiftingJump : MonoBehaviour
     public bool IsLiftingPart => IsJumping; // リフティングジャンプ中かどうか
 
     private float OnStartedPlayerHeight = 0f; // リフティングジャンプ開始時のプレイヤーの高さ
-    private float TerminateHeight = 200f; // リフティングジャンプを強制的に終了させる高度
+    public float TerminateHeight = 200f; // リフティングジャンプを強制的に終了させる高度
 
     public void SetJumpPower(float Power)
     {
