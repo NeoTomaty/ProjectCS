@@ -11,16 +11,26 @@ using UnityEngine;
 public class TutorialDisplayTexts : MonoBehaviour
 {
     [Header("チュートリアル用のUI")]
-    [SerializeField] private GameObject OnStartUI;
-    [SerializeField] private GameObject OnCollideUI;
 
-    public bool IsDisplayUI = false;
+    [SerializeField] private GameObject[] TutorialUI;
+    private int TutorialIndex = 0;
+
+    [System.NonSerialized] public bool IsDisplayUI = false;
+
+    [Header("参照")]
+    [SerializeField] private PlayerStateManager PlayerStateManagerComponent;
+    private bool IsLiftingPart = false; // リフティングパートになったか
+
+    private bool IsWarp = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        OnStartUI.SetActive(false);
-        OnCollideUI.SetActive(false);
+        // チュートリアルUIを非表示にする
+        foreach (var UI in TutorialUI)
+        {
+            UI.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -30,24 +40,85 @@ public class TutorialDisplayTexts : MonoBehaviour
         {
             if (Input.anyKeyDown)
             {
-                OnStartUI.SetActive(false);
-                OnCollideUI.SetActive(false);
+                TutorialUI[TutorialIndex].SetActive(false);
+                TutorialIndex++;
                 IsDisplayUI = false;
                 Time.timeScale = 1f;
+
+
+                switch(TutorialIndex)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        DisplayTutorialUI4();
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        DisplayTutorialUI6();
+                        break;
+                    case 6:
+                        DisplayTutorialUI7();
+                        break;
+                    default:
+                        break;
+                }
+
             }
+        }
+
+        if (!IsLiftingPart && PlayerStateManagerComponent.GetLiftingState() == PlayerStateManager.LiftingState.LiftingPart)
+        {
+            IsLiftingPart = true;
+            DisplayTutorialUI3();
         }
     }
 
     public void DisplayTutorialUI1()
     {
-        OnStartUI.SetActive(true);
+        TutorialUI[0].SetActive(true);
         IsDisplayUI = true;
         Time.timeScale = 0f;
     }
 
     public void DisplayTutorialUI2()
     {
-        OnCollideUI.SetActive(true);
+        TutorialUI[1].SetActive(true);
+        IsDisplayUI = true;
+        Time.timeScale = 0f;
+    }
+    public void DisplayTutorialUI3()
+    {
+        TutorialUI[2].SetActive(true);
+        IsDisplayUI = true;
+        Time.timeScale = 0f;
+    }
+    public void DisplayTutorialUI4()
+    {
+        TutorialUI[3].SetActive(true);
+        IsDisplayUI = true;
+        Time.timeScale = 0f;
+    }
+    public void DisplayTutorialUI5()
+    {
+        if (IsWarp) return;
+        IsWarp = true;
+        TutorialUI[4].SetActive(true);
+        IsDisplayUI = true;
+        Time.timeScale = 0f;
+    }
+    public void DisplayTutorialUI6()
+    {
+        TutorialUI[5].SetActive(true);
+        IsDisplayUI = true;
+        Time.timeScale = 0f;
+    }
+    public void DisplayTutorialUI7()
+    {
+        TutorialUI[6].SetActive(true);
         IsDisplayUI = true;
         Time.timeScale = 0f;
     }

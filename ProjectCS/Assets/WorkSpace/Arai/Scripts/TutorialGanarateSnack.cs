@@ -20,7 +20,17 @@ public class TutorialGanarateSnack : MonoBehaviour
 
     [SerializeField] private TutorialDisplayTexts TutorialDisplayTextsComponent;
 
+    [Header("開始時に非表示にするオブジェクトの参照")]
+    [SerializeField] private GameObject ArrowObject;
+    [SerializeField] private GameObject SnackHeightGaugeObject;
+
     private int CollidedIndex = 0;
+
+    private void Start()
+    {
+        ArrowObject.SetActive(false);
+        SnackHeightGaugeObject.SetActive(false);
+    }
 
     public void OnCollided()
     {
@@ -31,6 +41,8 @@ public class TutorialGanarateSnack : MonoBehaviour
         if (SnackObject != null)
         {
             SnackObject.SetActive(true);
+            ArrowObject.SetActive(true);
+            SnackHeightGaugeObject.SetActive(true);
 
             TutorialDisplayTextsComponent.DisplayTutorialUI2();
         }
