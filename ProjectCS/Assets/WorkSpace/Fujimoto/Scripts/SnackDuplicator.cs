@@ -46,6 +46,9 @@ public class SnackDuplicator : MonoBehaviour
     [SerializeField] private SnackHeightUIManager_Ver2 SnackHeightUIManagerVer2Component;
     [SerializeField] private SnackHeightUIManager SnackHeightUIManagerComponent;
     [SerializeField] private AnimationFinishTrigger AnimationFinishComponent;
+    [SerializeField] private float FirstTargetHeight = 500f;
+    [SerializeField] private float MaxTargetHeight = 1000f;
+    [SerializeField] private float LaunchMultiplier = 1.1f;
 
     private int currentCount = 0;
 
@@ -85,7 +88,10 @@ public class SnackDuplicator : MonoBehaviour
                 LiftingJumpComponent,
                 SnackRespawnPoint,
                 GroundArea,
-                PlayerAnimationController
+                PlayerAnimationController,
+                FirstTargetHeight,
+                MaxTargetHeight,
+                LaunchMultiplier
                 );
 
             if(SnackHeightUIManagerVer2Component) SnackHeightUIManagerVer2Component.SetSnackObject(SnackInstance);

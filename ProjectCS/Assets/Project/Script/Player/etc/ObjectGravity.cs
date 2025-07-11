@@ -91,4 +91,9 @@ public class ObjectGravity : MonoBehaviour
         //次の落下に備えてフラグをリセット
         HasPlayedFallSE = false;
     }
+
+    public float GetGravityScaleY()
+    {
+        return GravityScale.y;
+    }
 }
