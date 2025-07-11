@@ -47,11 +47,6 @@ public class FallPointCalculator : MonoBehaviour
 
         BAV3 = GetComponent<BlownAway_Ver3>();
 
-        // クローンで複製されたスナックのみ初回の落下地点の計算を行う
-        if (gameObject.name.EndsWith("(Clone)"))
-        {
-            CalculateGroundPoint(BAV3.NextWarpPosition);
-        }
     }
 
     public void SetTarget(LiftingAreaManager LAM)
