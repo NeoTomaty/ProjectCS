@@ -6,6 +6,7 @@
 // 06/13　森脇 カメラの制御フラグ追加
 // 06/19　森脇  SE再生機能を追加
 // 06/27  高下　ターゲットを変更する関数を追加
+// 07/11　森脇  タグによる追加ターゲットへの処理機能を追加
 //====================================================
 
 using UnityEngine;
@@ -41,6 +42,10 @@ public class AnimationFinishTrigger : MonoBehaviour
     [Tooltip("停止対象のAnimator（例：プレイヤー）")]
     [SerializeField] private Animator playerAnimator;
 
+    [Header("追加ターゲット")]
+    [Tooltip("snackObject以外にヒットストップを解除するオブジェクトのタグ")]
+    [SerializeField] private string additionalTargetTag = "Snack";
+
     public void OnKickImpact()
     {
         Debug.Log("キックが当たったタイミングで呼び出された");
@@ -49,42 +54,49 @@ public class AnimationFinishTrigger : MonoBehaviour
 
     private IEnumerator HitStopRoutine()
     {
-        // SE再生とエフェクト生成
-        // SE再生
         if (audioSource != null && hitSound != null)
         {
             audioSource.PlayOneShot(hitSound);
         }
 
-        // エフェクト生成
         if (hitEffectPrefab != null && effectSpawnPoint != null)
         {
             Instantiate(hitEffectPrefab, effectSpawnPoint.position, Quaternion.identity);
         }
 
-        // アニメーション停止（player）
         if (playerAnimator != null)
         {
             playerAnimator.speed = 0f;
         }
 
-        // ヒットストップ
         Time.timeScale = 0f;
-
-        // リアルタイムで待つ（タイムスケール0でも動くように）
         yield return new WaitForSecondsRealtime(hitStopDuration);
-
-        // ヒットストップ解除
         Time.timeScale = 1f;
 
-        // アニメーション再開
         if (playerAnimator != null)
         {
             playerAnimator.speed = 1f;
         }
 
-        // snack 側のヒットストップ解除
-        snackObject.GetComponent<BlownAway_Ver3>()?.EndHitStop();
+        // 1. インスペクターで設定した主要ターゲットのヒットストップを解除
+        if (snackObject != null)
+        {
+            snackObject.GetComponent<BlownAway_Ver3>()?.EndHitStop();
+        }
+
+        // 2. 追加で、指定タグを持つ全てのオブジェクトのヒットストップを解除
+        if (!string.IsNullOrEmpty(additionalTargetTag))
+        {
+            GameObject[] additionalTargets = GameObject.FindGameObjectsWithTag(additionalTargetTag);
+            foreach (var target in additionalTargets)
+            {
+                // 主要ターゲットと重複して処理しないようにチェック
+                if (target != snackObject)
+                {
+                    target.GetComponent<BlownAway_Ver3>()?.EndHitStop();
+                }
+            }
+        }
 
         // カメラの特殊視点解除
         cameraFunction?.StopSpecialView();

@@ -8,6 +8,7 @@
 // 6/26　森脇 フィニッシュ時のポーズ適応
 // 6/27　荒井　チュートリアル用の処理を追加
 // 6/27　中町 メニュー開閉SE音量調整実装
+// 07/11　森脇  タグによる追加ターゲットへの処理機能を追加
 //======================================================
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -31,8 +32,10 @@ public class PauseManager : MonoBehaviour
 
     [Header("SE Settings")]
     [SerializeField] private AudioSource audioSource;
+
     [SerializeField] private AudioClip OpenSE;
     [SerializeField] private AudioClip CloseSE;
+
     [Range(0.0f, 1.0f)]
     [SerializeField] private float SEVolume = 0.5f;
 
@@ -49,7 +52,7 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private GameStartCountdown gameStartCountdown;
 
     [SerializeField] private Animator playerAnimator;
-    [SerializeField] private BlownAway_Ver3 targetSnack;
+    // [SerializeField] private BlownAway_Ver3 targetSnack; // [変更] この行は不要になったためコメントアウト
 
     [Header("チュートリアル用（チュートリアル以外では割り当てNG）")]
     [SerializeField] private TutorialDisplayTexts TutorialDisplayTexts;
@@ -128,7 +131,23 @@ public class PauseManager : MonoBehaviour
             }
             else
             {
-                //if (!targetSnack.isHitStopActive)
+                // "Snack"タグがついた全てのオブジェクトを検索
+                GameObject[] snackObjects = GameObject.FindGameObjectsWithTag("Snack");
+                bool isAnySnackInHitStop = false;
+
+                // いずれか1つでもHitStop中かチェックする
+                foreach (var snackObj in snackObjects)
+                {
+                    BlownAway_Ver3 snackScript = snackObj.GetComponent<BlownAway_Ver3>();
+                    if (snackScript != null && snackScript.isHitStopActive)
+                    {
+                        isAnySnackInHitStop = true;
+                        break; // 1つでも見つかったらループを抜ける
+                    }
+                }
+
+                // [変更] ヒットストップの判定を、検索した結果を利用するように変更
+                if (!isAnySnackInHitStop)
                 {
                     Time.timeScale = 0f;
                     if (playerAnimator != null)
@@ -149,6 +168,7 @@ public class PauseManager : MonoBehaviour
             ResumeGame();
         }
     }
+
     private void OnCancelPerformed(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
@@ -207,6 +227,7 @@ public class PauseManager : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(firstOptionButton);
         }
     }
+
     public void ResumeGame()
     {
         Time.timeScale = 1f;
