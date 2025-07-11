@@ -8,6 +8,9 @@ public class TitleOptionManager : MonoBehaviour
     [SerializeField] private GameObject optionUI;
     [SerializeField] private GameObject firstOptionButton;
 
+    [Header("タイトルのUIルート（全体を無効化）")]
+    [SerializeField] private GameObject titleUIRoot;
+
     [Header("効果音")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip openSE;
@@ -68,9 +71,12 @@ public class TitleOptionManager : MonoBehaviour
 
     public void OpenOption()
     {
-        if (optionUI == null || isOpen == true) return;
+        if (optionUI == null ) return;
 
         optionUI.SetActive(true);
+        if (titleUIRoot != null)
+            titleUIRoot.SetActive(false); // ← タイトルUI無効化
+
         isOpen = true;
 
         if (firstOptionButton != null)
@@ -87,6 +93,9 @@ public class TitleOptionManager : MonoBehaviour
         if (optionUI == null) return;
 
         optionUI.SetActive(false);
+        if (titleUIRoot != null)
+            titleUIRoot.SetActive(true); // ← タイトルUI再有効化
+
         isOpen = false;
 
         PlaySE(closeSE);
@@ -94,7 +103,7 @@ public class TitleOptionManager : MonoBehaviour
 
     public bool IsOpen()
     {
-        return isOpen;
+        return optionUI.activeSelf;
     }
 
     private void PlaySE(AudioClip clip)

@@ -29,27 +29,27 @@ public class SceneTransition : MonoBehaviour
 
     private void Update()
     {
-        if (isTransitioning) return;
+        //if (isTransitioning) return;
 
-        if (OptionManager != null && OptionManager.IsOpen())
-        {
-            return;
-        }
+        //if (OptionManager != null && OptionManager.IsOpen())
+        //{
+        //    return;
+        //}
 
-        // Xbox コントローラーの A ボタン
-        if (Gamepad.current != null && Gamepad.current.aButton.wasPressedThisFrame)
-        {
-            StartSceneTransition();
-        }
+        //// Xbox コントローラーの A ボタン
+        //if (Gamepad.current != null && Gamepad.current.aButton.wasPressedThisFrame)
+        //{
+        //    StartSceneTransition();
+        //}
 
-        // キーボードの Enter キー
-        if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
-        {
-            StartSceneTransition();
-        }
+        //// キーボードの Enter キー
+        //if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
+        //{
+        //    StartSceneTransition();
+        //}
     }
 
-    private void StartSceneTransition()
+    public  void StartSceneTransition()
     {
         isTransitioning = true;
 
