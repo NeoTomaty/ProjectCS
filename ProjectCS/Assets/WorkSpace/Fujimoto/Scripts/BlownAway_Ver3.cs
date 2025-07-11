@@ -19,47 +19,22 @@ using System.Collections;
 
 public class BlownAway_Ver3 : MonoBehaviour
 {
-    [SerializeField] private float hitStopTime = 0.5f;
-    [SerializeField] private float baseForce = 100f;
 
-    [SerializeField] private float forcePerLift = 100f;
+    [SerializeField] private float MaxFallSpeed = 30.0f;
 
-    [SerializeField]
-    private float MinUpwardForce = 50.0f;
+    [SerializeField] private Transform RespawnArea;
 
-    [SerializeField]
-    private float MaxUpwardForce = 200.0f;
+    [SerializeField] private LiftingJump LiftingJump;
 
-    [SerializeField]
-    private float MinRandomXYRange = 0.0f;
+    [SerializeField] private Transform GroundArea;
 
-    [SerializeField]
-    private float MaxRandomXYRange = 0.0f;
+    [SerializeField] private CameraFunction CameraFunction;
 
-    [SerializeField]
-    private float MinFallSpeed = 0.0f;
+    [SerializeField] private FlyingPoint flyingPoint;
 
-    [SerializeField]
-    private float MaxFallSpeed = 30.0f;
-
-    [SerializeField]
-    private Transform RespawnArea;
-
-    [SerializeField]
-    private LiftingJump LiftingJump;
-
-    [SerializeField]
-    private Transform GroundArea;
-
-    [SerializeField]
-    private CameraFunction CameraFunction;
-
-    [SerializeField]
-    private FlyingPoint flyingPoint;
+    [SerializeField] private ClearConditions ClearConditionsScript;
 
     private FallPointCalculator FallPoint;
-
-    private float previousVerticalVelocity = 0f;
 
     private bool HitNextFallArea = true;
 
@@ -72,9 +47,6 @@ public class BlownAway_Ver3 : MonoBehaviour
     public bool isHitStopActive = false;
 
     private bool shouldEndHitStop = false;
-
-    [SerializeField]
-    private ClearConditions ClearConditionsScript;
 
     private bool IsRespawn = true;
 
@@ -111,7 +83,19 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     public Vector3 NextWarpPosition => nextWarpPosition;
 
-    private bool IsWaiting = false;
+    private bool IsWaiting = true;
+
+    [Header("スナック打ち上げ関連の数値")]
+    private bool IsLaunch = false;
+    [SerializeField] private float FirstTargetHeight = 500f;
+    [SerializeField] private float MaxTargetHeight = 1000f;
+    [SerializeField] private float LaunchMultiplier = 1.1f;
+    private float CurrentTargetHeight = 500f;
+    private float InitialVelocity;            // 初速
+    private float CurrentVelocity;            // 現在の速度
+    private float ElapsedLaunchTime = 0f;
+    private float StartY = 0f;
+    private float GravityScaleY = 9.8f;
 
     private void Start()
     {
@@ -123,10 +107,25 @@ public class BlownAway_Ver3 : MonoBehaviour
         {
             MoveToRandomXZInRespawnArea();
         }
+
+        CurrentTargetHeight = FirstTargetHeight;
+        GravityScaleY = Mathf.Abs(GetComponent<ObjectGravity>().GetGravityScaleY());
+
     }
 
     // 複製時に引数で渡されたコンポーネントを設定する
-    public void SetTarget(CameraFunction CF, FlyingPoint FP, ClearConditions CC, LiftingJump LJ, Transform respawnArea, Transform groundArea, PlayerAnimationController PAC)
+    public void SetTarget(
+        CameraFunction CF, 
+        FlyingPoint FP, 
+        ClearConditions CC, 
+        LiftingJump LJ,
+        Transform respawnArea, 
+        Transform groundArea, 
+        PlayerAnimationController PAC,
+        float firstTargetHeight,
+        float maxTargetHeight,
+        float launchMultiplier
+        )
     {
         CameraFunction = CF;
         flyingPoint = FP;
@@ -136,18 +135,9 @@ public class BlownAway_Ver3 : MonoBehaviour
         GroundArea = groundArea;
         playerAnimController = PAC;
         nextWarpPosition = transform.position;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        //if (other.CompareTag("Respawn") && HitNextFallArea == true)
-        //{
-        //    HitNextFallArea = false;
-
-        //    previousVerticalVelocity = Rb.linearVelocity.y;
-
-        //    MoveToRandomXZInRespawnArea();
-        //}
+        FirstTargetHeight = firstTargetHeight;
+        MaxTargetHeight = maxTargetHeight;
+        LaunchMultiplier = launchMultiplier;
     }
 
     private void Update()
@@ -189,28 +179,49 @@ public class BlownAway_Ver3 : MonoBehaviour
             }
         }
 
+        // 1フレーム停止
         if (IsWaiting)
         {
             IsWaiting = false;
             return;
         }
 
-        if (RespawnArea && Rb.linearVelocity.y < 0f && HitNextFallArea == true)
+        // 打ち上げ中
+        if (IsLaunch)
         {
-            HitNextFallArea = false;
-            previousVerticalVelocity = Rb.linearVelocity.y;
+            ElapsedLaunchTime += Time.deltaTime;
 
-            if (IsRespawn)
+            // 現在の高さと速度を計算
+            float newY = StartY + (InitialVelocity * ElapsedLaunchTime) - (0.5f * GravityScaleY * ElapsedLaunchTime * ElapsedLaunchTime);
+            CurrentVelocity = InitialVelocity - GravityScaleY * ElapsedLaunchTime;
+
+            // 床より下に落ちるのを防ぐ
+            if (newY <= StartY + CurrentTargetHeight && CurrentVelocity >= 0f)
             {
-                Debug.Log($"落下が始まったため、ワープしました");
-                DoWarp();
+                transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+            }
+            else
+            {
+                IsLaunch = false; // 頂点に達したら止める
+                Rb.isKinematic = false;
+                CurrentTargetHeight *= LaunchMultiplier;
+                CurrentTargetHeight = Mathf.Min(CurrentTargetHeight, MaxTargetHeight);
             }
         }
-
-        Vector3 tempVelocity = Rb.linearVelocity;
-        tempVelocity.x = 0f;
-        tempVelocity.z = 0f;
-        Rb.linearVelocity = tempVelocity;
+        // 打ち上げ以外（落下中など）
+        else
+        {
+            if(HitNextFallArea)
+            {
+                HitNextFallArea = false;
+                Rb.linearVelocity = Vector3.zero;
+                if (IsRespawn)
+                {
+                    Debug.Log($"落下が始まったため、ワープしました");
+                    DoWarp();
+                }
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -247,12 +258,6 @@ public class BlownAway_Ver3 : MonoBehaviour
                 audioSource.PlayOneShot(HitSE,SEVolume);
             }
 
-            //Collider snackCollider = GetComponent<Collider>();
-            //Collider playerCollider = collision.collider;
-
-            //Physics.IgnoreCollision(snackCollider, playerCollider, true);
-            //StartCoroutine(EnableCollisionLater(snackCollider, playerCollider, 1.0f));
-
             if (!HitSnack) return;
 
             HitSnack = false;
@@ -263,17 +268,6 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             //ClearConditionsScript.
             HitNextFallArea = true;
-
-            liftingCount++;
-
-            float force = baseForce + (liftingCount * forcePerLift);
-
-            if (force > MaxUpwardForce)
-            {
-                force = MaxUpwardForce;
-            }
-
-            Debug.Log(liftingCount);
 
             if (LiftingJump != null)
             {
@@ -308,11 +302,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             CameraFunction.StartLockOn(true);
 
-            Rb.linearVelocity = Vector3.zero;
-            Rb.angularVelocity = Vector3.zero;
-
-            Vector3 forceDir = Vector3.up * force;
-            Rb.AddForce(forceDir, ForceMode.Impulse);
+            Launch(); // 打ち上げを開始させる
         }
     }
 
@@ -335,8 +325,6 @@ public class BlownAway_Ver3 : MonoBehaviour
         isHitStopActive = false;
 
         snackEffectController.PlayFlyingEffect();
-
-        // StartCoroutine(AddForceUpwardDelayed());
     }
 
     private IEnumerator HitStopManual()
@@ -358,8 +346,6 @@ public class BlownAway_Ver3 : MonoBehaviour
         isHitStopActive = false;
 
         snackEffectController.PlayFlyingEffect();
-
-        //StartCoroutine(AddForceUpwardDelayed());
     }
 
     public void EndHitStop()
@@ -418,36 +404,17 @@ public class BlownAway_Ver3 : MonoBehaviour
         {
             nextWarpPosition.y = transform.position.y;
         }
-
         transform.position = nextWarpPosition;
-        Rb.linearVelocity = new Vector3(0f, previousVerticalVelocity, 0f);
-
-        // 稀にスナックの落下地点とリフティングエリアのXZ座標がずれるときが
-        // あるので、念のため再調整する
-        //FallPoint.CalculateGroundPoint(nextWarpPosition);
-        //FallPoint.AdjustXZAreaPosition(nextWarpPosition);
     }
 
-    //private IEnumerator EnableCollisionLater(Collider colA, Collider colB, float delay)
-    //{
-    //    yield return new WaitForSeconds(delay);
-    //    Physics.IgnoreCollision(colA, colB, false);
-    //}
-
-    //private IEnumerator AddForceUpwardDelayed()
-    //{
-    //    yield return new WaitForFixedUpdate();
-
-    //    Rb.linearVelocity = Vector3.zero;
-    //    Rb.angularVelocity = Vector3.zero;
-
-    //    float force = baseForce + (liftingCount * forcePerLift);
-    //    if (force > MaxUpwardForce) force = MaxUpwardForce;
-
-    //    Debug.Log($"Delayed AddForce: {force}");
-
-    //    Vector3 forceDir = Vector3.up * force;
-    //    Rb.AddForce(forceDir, ForceMode.Impulse);
-
-    //}
+    public void Launch()
+    {
+        // 必要な初速を計算：v = sqrt(2gh)
+        InitialVelocity = Mathf.Sqrt(2f * GravityScaleY * CurrentTargetHeight);
+        CurrentVelocity = InitialVelocity;
+        ElapsedLaunchTime = 0f;
+        IsLaunch = true;
+        Rb.isKinematic = true;
+        StartY = transform.position.y;
+    }
 }

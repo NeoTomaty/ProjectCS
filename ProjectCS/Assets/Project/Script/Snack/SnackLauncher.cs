@@ -7,30 +7,36 @@
 //====================================================
 
 using UnityEngine;
+using System.Collections;
 
 public class SnackLauncher : MonoBehaviour
 {
-    [Header("打ち上げる力")]
-    [SerializeField] private float launchForce = 300f;
-
-    private Rigidbody rb;
-
     private BlownAway_Ver3 BAV3;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
         BAV3 = GetComponent<BlownAway_Ver3>();
+
+        if (!gameObject.name.EndsWith("(Clone)"))
+        {
+            BAV3.enabled = false;
+        }
     }
 
     // Snackを打ち上げる関数
     public void Launch()
     {
-        if (rb != null)
-        {
-            rb.AddForce(Vector3.up * launchForce, ForceMode.Impulse);
-            BAV3.MoveToRandomXZInRespawnArea();
-            Debug.Log("Snackを打ち上げました！");
-        }
+        StartCoroutine(EnableAndLaunch());
+    }
+
+    private IEnumerator EnableAndLaunch()
+    {
+        BAV3.enabled = true;
+
+        yield return null; // ここで1フレーム待つ
+
+        BAV3.MoveToRandomXZInRespawnArea();
+        BAV3.Launch();
+        Debug.Log("Snackを打ち上げました！");
     }
 }
