@@ -3113,9 +3113,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2581601592503768132, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2581601592503768132, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: SnackSound
       value: 
-      objectReference: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
+      objectReference: {fileID: 8300000, guid: 073c7dbaae9fada469ac560e900eee9a, type: 3}
     - target: {fileID: 3109540996412661342, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 23.05
@@ -6228,9 +6232,9 @@ MonoBehaviour:
   ScoreDecreasePoint: 100
   snackEffectController: {fileID: 2458149672258910622}
   audioSource: {fileID: 1717145082}
-  HitSE: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
+  HitSE: {fileID: 8300000, guid: 073c7dbaae9fada469ac560e900eee9a, type: 3}
   playerAnimController: {fileID: 1717145076}
-  SEVolume: 0.5
+  SEVolume: 1
   FirstTargetHeight: 500
   MaxTargetHeight: 1000
   LaunchMultiplier: 1.1
