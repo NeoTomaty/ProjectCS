@@ -4983,6 +4983,8 @@ MonoBehaviour:
   - {fileID: 1784731519}
   - {fileID: 1448861202}
   PlayerStateManagerComponent: {fileID: 1717145102}
+  TutorialSE: {fileID: 8300000, guid: 35cce50c6c413b1469d7f21d853219ab, type: 3}
+  SEVolume: 1
 --- !u!1 &1837899229
 GameObject:
   m_ObjectHideFlags: 0
@@ -6208,7 +6210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321b60a12d3698f4e87a587064b56429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 550
 --- !u!33 &3727769750302757853
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6229,22 +6230,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c803b94a1ae1442b5ddfc64869f531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitStopTime: 0.5
-  baseForce: 200
-  forcePerLift: 20
-  MinUpwardForce: 200
-  MaxUpwardForce: 200
-  MinRandomXYRange: 0
-  MaxRandomXYRange: 0
-  MinFallSpeed: 0
   MaxFallSpeed: 30
   RespawnArea: {fileID: 949123409}
   LiftingJump: {fileID: 1717145085}
   GroundArea: {fileID: 949123409}
   CameraFunction: {fileID: 594655328}
   flyingPoint: {fileID: 1717145075}
-  isHitStopActive: 0
   ClearConditionsScript: {fileID: 1731900030}
+  isHitStopActive: 0
   ScorePenaltyStartTime: 40
   ScoreDecreaseInterval: 10
   ScoreDecreasePoint: 100
@@ -6253,6 +6246,9 @@ MonoBehaviour:
   HitSE: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
   playerAnimController: {fileID: 1717145076}
   SEVolume: 0.5
+  FirstTargetHeight: 500
+  MaxTargetHeight: 1000
+  LaunchMultiplier: 1.1
 --- !u!114 &4635551290519178661
 MonoBehaviour:
   m_ObjectHideFlags: 0
