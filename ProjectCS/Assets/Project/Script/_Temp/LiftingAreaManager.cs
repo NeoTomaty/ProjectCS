@@ -116,15 +116,16 @@ public class LiftingAreaManager : MonoBehaviour
         // 両方のオブジェクトが入っている場合、リフティングパートに移行する
         if(IsPlayerContacting && IsTargetContacting)
         {
+            if (AnimationFinishComponent) AnimationFinishComponent.SetTargetObject(Target);
+            if (LiftingJumpComponent) LiftingJumpComponent.SetTargetObject(Target);
+            ClearSequenceComponent.SetSnackObject(Target);
+
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.LiftingPart);
             ObjectRenderer.material.SetColor("_Color", LiftingPartColor);
             if (ParticleColorChanger) ParticleColorChanger.SetColor(LiftingPartColor);
 
             LiftingJump LJ = Player.GetComponent<LiftingJump>();
-           
-            if (LiftingJumpComponent) LiftingJumpComponent.SetTargetObject(Target);
-            ClearSequenceComponent.SetSnackObject(Target);
-            if(AnimationFinishComponent) AnimationFinishComponent.SetTargetObject(Target);
+          
         }
     }
 

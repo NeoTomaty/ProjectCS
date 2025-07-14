@@ -203,6 +203,7 @@ public class BlownAway_Ver3 : MonoBehaviour
             else
             {
                 IsLaunch = false; // ’¸“_‚É’B‚µ‚½‚çŽ~‚ß‚é
+                HitSnack = true;
                 Rb.isKinematic = false;
                 CurrentTargetHeight *= LaunchMultiplier;
                 CurrentTargetHeight = Mathf.Min(CurrentTargetHeight, MaxTargetHeight);
@@ -231,8 +232,6 @@ public class BlownAway_Ver3 : MonoBehaviour
             Vector3 clampedVelocity = Rb.linearVelocity;
             clampedVelocity.y = -MaxFallSpeed;
             Rb.linearVelocity = clampedVelocity;
-
-            HitSnack = true;
 
             snackEffectController.StopFlyingEffect();
         }

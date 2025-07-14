@@ -10,8 +10,8 @@
 // 5/24 荒井　コンボボーナスを追加
 // 6/19 荒井　スコア表示の更新処理を追加
 // 6/20 荒井　スコア減少処理を追加
+// 7/14 高下　スコアの計算の仕方を変更
 //======================================================
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +34,8 @@ public class FlyingPoint : MonoBehaviour
     [Header("コンボボーナス設定")]
     [SerializeField] private float ComboBonusUpValue = 0.2f; // コンボボーナスの増加量
     private float ComboBonusRate = 1.0f; // コンボボーナス倍率
+    [Header("ベースとなるスコア増加量")]
+    [SerializeField] private float BaseScore = 100;
 
     public void ResetComboBonus()
     {
@@ -48,6 +50,10 @@ public class FlyingPoint : MonoBehaviour
         {
             totalScore = 0;
         }
+        if (ScoreUI != null)
+        {
+            ScoreUI.text = "Score: " + totalScore.ToString();
+        }
         Debug.Log($"PlayerScore：放置ペナルティによりスコア -{score}");
     }
 
@@ -61,10 +67,10 @@ public class FlyingPoint : MonoBehaviour
         }
 
         float jumpPower = LiftingJump.GetJumpPower;
-        float speed = PlayerSpeed.GetPlayerSpeed;
+        float speedRatio = PlayerSpeed.GetSpeedRatio();
 
         // スコア計算
-        float rawScore = jumpPower * speed;
+        float rawScore = jumpPower * (speedRatio * BaseScore);
         rawScore *= ComboBonusRate; // コンボボーナス
         Score = Mathf.Floor(rawScore); // 小数点以下を切り捨て
         totalScore += Score;
@@ -75,7 +81,7 @@ public class FlyingPoint : MonoBehaviour
             ScoreUI.text = "Score: " + totalScore.ToString();
         }
 
-        Debug.Log($"スコア加算: {jumpPower} × {speed} = {Score} → 合計: {totalScore}");
+        Debug.Log($"スコア加算: {jumpPower} × ({speedRatio} × {BaseScore}) = {Score} → 合計: {totalScore}");
         Debug.Log($"コンボボーナス: {ComboBonusRate}");
 
         // コンボボーナスの更新
