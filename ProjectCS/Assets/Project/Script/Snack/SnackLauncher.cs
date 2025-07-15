@@ -37,6 +37,7 @@ public class SnackLauncher : MonoBehaviour
 
         BAV3.MoveToRandomXZInRespawnArea();
         BAV3.Launch();
+        BAV3.PlayLaunchEffect();
         Debug.Log("SnackÇë≈Çøè„Ç∞Ç‹ÇµÇΩÅI");
     }
 }

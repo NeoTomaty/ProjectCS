@@ -105,6 +105,7 @@ public class BlownAway_Ver3 : MonoBehaviour
 
         if (gameObject.name.EndsWith("(Clone)"))
         {
+            snackEffectController.PlayFlyingEffect();
             MoveToRandomXZInRespawnArea();
         }
 
@@ -233,7 +234,7 @@ public class BlownAway_Ver3 : MonoBehaviour
             clampedVelocity.y = -MaxFallSpeed;
             Rb.linearVelocity = clampedVelocity;
 
-            snackEffectController.StopFlyingEffect();
+            
         }
     }
 
@@ -248,6 +249,8 @@ public class BlownAway_Ver3 : MonoBehaviour
                 ClearConditionsScript.CheckLiftingCount(gameObject);
 
                 IsFlyingAway = false;
+
+                snackEffectController.StopFlyingEffect();
             }
         }
         else if (collision.gameObject.CompareTag("Player"))
@@ -267,6 +270,8 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             //ClearConditionsScript.
             HitNextFallArea = true;
+
+            snackEffectController.StopFlyingEffect();
 
             if (LiftingJump != null)
             {
@@ -415,5 +420,10 @@ public class BlownAway_Ver3 : MonoBehaviour
         IsLaunch = true;
         Rb.isKinematic = true;
         StartY = transform.position.y;
+    }
+
+    public void PlayLaunchEffect()
+    {
+        snackEffectController.PlayFlyingEffect();
     }
 }
