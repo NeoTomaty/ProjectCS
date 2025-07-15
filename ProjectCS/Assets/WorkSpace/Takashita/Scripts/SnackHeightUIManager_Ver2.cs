@@ -40,16 +40,20 @@ public class SnackHeightUIManager_Ver2 : MonoBehaviour
 
     [SerializeField] private GameObject MeterObject;    // メーターオブジェクト
     private GameObject[] PointerObject;  // ポインターオブジェクト
+    private GameObject[] IndicatorObject;
     [SerializeField] private GameObject BarObject;      // バーオブジェクト
     [SerializeField] private GameObject TextObject;     // テキストオブジェクト
     [SerializeField] private GameObject SnackObject;    // スナックオブジェクト
     private GameObject[] SnackObjects;
     [SerializeField] private float MaxHeight = 500.0f;  // ゲージ最大時の高さ
     [SerializeField] private float AddLimitUnlock = 0f; // ポインターの上限解放の加算値
+    [SerializeField] private float ExtraYMargin = 30f;
     [SerializeField] private bool IsTextVisible = true; // テキストを表示するかどうか
     [SerializeField] private GameObject OriginalSnackPointer;
+    [SerializeField] private GameObject OriginalOffscreenIndicator;
 
-    [Header("表示関連")]
+
+   [Header("表示関連")]
     [SerializeField] private GaugeDisplayMethod DisplayMethod = GaugeDisplayMethod.AlwaysVisible;
     [SerializeField] private GaugeDisplayType DisplayType = GaugeDisplayType.Bar;
 
@@ -63,6 +67,7 @@ public class SnackHeightUIManager_Ver2 : MonoBehaviour
     private float PointMaxY = 200f;                        // 最大Y位置（ポイント表示のときに使用）
     private RectTransform MeterRect;                       // メーターのRectTransform
     private RectTransform[] PointerRect;                     // ポインターのRectTransform
+    private RectTransform[] IndicatorRect;
     private Image BarImage;                                // バー画像
     private GameObject PointerImage;                       // ポインター画像
     private GameObject DisplayObject;                      // 実際に表示させるバーかポインターのオブジェクトを入れておく
@@ -73,6 +78,7 @@ public class SnackHeightUIManager_Ver2 : MonoBehaviour
     private AllSnackManager ASM;
     private SnackDuplicator SD;
     private int CurrentPointerCount = 0;
+    private Vector3[] corners = new Vector3[4];
 
     void Start()
     {
@@ -83,6 +89,8 @@ public class SnackHeightUIManager_Ver2 : MonoBehaviour
         {
             PointerObject = new GameObject[SD.GetMaxSnackCount()];
             PointerRect = new RectTransform[SD.GetMaxSnackCount()];
+            IndicatorObject = new GameObject[SD.GetMaxSnackCount()];
+            IndicatorRect = new RectTransform[SD.GetMaxSnackCount()];
             SnackObjects = new GameObject[SD.GetMaxSnackCount()];
             FPCalculator = new FallPointCalculator[SD.GetMaxSnackCount()];
         }
@@ -90,6 +98,8 @@ public class SnackHeightUIManager_Ver2 : MonoBehaviour
         {
             PointerObject = new GameObject[1];
             PointerRect = new RectTransform[1];
+            IndicatorObject = new GameObject[1];
+            IndicatorRect = new RectTransform[1];
             SnackObjects = new GameObject[1];
             FPCalculator = new FallPointCalculator[1];
         }
@@ -100,6 +110,18 @@ public class SnackHeightUIManager_Ver2 : MonoBehaviour
 
         float OffsetX = 0f;
 
+        for (int i = 0; i < IndicatorRect.Length; i++)
+        {
+            IndicatorObject[i] = Instantiate(OriginalOffscreenIndicator, new Vector3(0f, 0f, 0f), Quaternion.identity, gameObject.transform);
+            IndicatorObject[i].SetActive(false);
+            IndicatorRect[i] = IndicatorObject[i].GetComponent<RectTransform>();
+            IndicatorRect[i].anchoredPosition3D = new Vector3(OffsetX, 630f, 0f);
+            IndicatorRect[i].localRotation = Quaternion.identity;
+            IndicatorRect[i].localScale = Vector3.one;
+            OffsetX += 20.0f;
+        }
+
+        OffsetX = 0f;
         for (int i = 0; i < PointerRect.Length; i++)
         {
             PointerObject[i] = Instantiate(OriginalSnackPointer, new Vector3(0f, 0f, 0f), Quaternion.identity, gameObject.transform);
@@ -112,10 +134,10 @@ public class SnackHeightUIManager_Ver2 : MonoBehaviour
         }
 
         PointerObject[0].SetActive(true);
+        IndicatorObject[0].SetActive(true);
         BarObject.SetActive(false);
         MeterObject.SetActive(false);
         TextObject.SetActive(false);
-
 
         SnackOffsetY = SnackObjects[0].GetComponent<Collider>().bounds.extents.y;
         SnackRb = SnackObjects[0].GetComponent<Rigidbody>();
@@ -190,9 +212,30 @@ public class SnackHeightUIManager_Ver2 : MonoBehaviour
                     // Y座標を割合に応じて変化させる
                     TempRectPosition.y = Mathf.Lerp(PointMinY, PointMaxY, HeightRatio);
                     PointerRect[i].anchoredPosition = TempRectPosition;
+
+                    bool isCompletelyOutOfScreen = true;
+
+                    PointerRect[i].GetWorldCorners(corners);
+
+                    foreach (Vector3 corner in corners)
+                    {
+                        Vector3 screenPoint = RectTransformUtility.WorldToScreenPoint(null, corner);
+                        if (screenPoint.x >= 0 && screenPoint.x <= Screen.width &&
+                            screenPoint.y >= 0 && screenPoint.y <= Screen.height + ExtraYMargin)
+                        {
+                            isCompletelyOutOfScreen = false; // 少しでも画面内に入っている
+                        }
+                    }
+
+                    if (isCompletelyOutOfScreen)
+                    {
+                        IndicatorObject[i].SetActive(true);
+                    }
+                    else
+                    {
+                        IndicatorObject[i].SetActive(false);
+                    }
                 }
-
-
                 break;
         }
 

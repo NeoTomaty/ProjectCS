@@ -75,6 +75,11 @@ public class FlyingPoint : MonoBehaviour
         Score = Mathf.Floor(rawScore); // 小数点以下を切り捨て
         totalScore += Score;
 
+        if (totalScore > 99999)
+        {
+            totalScore = 99999;
+        }
+
         // テキストUI更新
         if (ScoreUI != null)
         {
