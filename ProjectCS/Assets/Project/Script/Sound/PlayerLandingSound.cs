@@ -12,6 +12,7 @@ public class PlayerLandingSound : MonoBehaviour
 {
     //着地音のAudioClipを設定するための変数
     public AudioClip LandingSound;
+    [SerializeField] private float SeVolume = 0.5f;
 
     //AudioSourceコンポーネントを保持するための変数
     private AudioSource AudioSource;
@@ -26,6 +27,6 @@ public class PlayerLandingSound : MonoBehaviour
     public void PlayLandingSound()
     {
         //着地音を再生
-        AudioSource.PlayOneShot(LandingSound);
+        AudioSource.PlayOneShot(LandingSound, SeVolume);
     }
 }

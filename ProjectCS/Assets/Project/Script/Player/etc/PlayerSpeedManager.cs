@@ -53,8 +53,7 @@ public class PlayerSpeedManager : MonoBehaviour
         if(PlayerSpeed > PreviousSpeed && AccelerationSE != null && audioSource != null)
         {
             //âπó Çê›íË
-            audioSource.volume = SEVolume;
-            audioSource.PlayOneShot(AccelerationSE);
+            audioSource.PlayOneShot(AccelerationSE, SEVolume);
         }
     }
 

@@ -125,7 +125,8 @@ public class BlownAway_Ver3 : MonoBehaviour
         PlayerAnimationController PAC,
         float firstTargetHeight,
         float maxTargetHeight,
-        float launchMultiplier
+        float launchMultiplier,
+        float maxFallSpeed
         )
     {
         CameraFunction = CF;
@@ -139,6 +140,7 @@ public class BlownAway_Ver3 : MonoBehaviour
         FirstTargetHeight = firstTargetHeight;
         MaxTargetHeight = maxTargetHeight;
         LaunchMultiplier = launchMultiplier;
+        MaxFallSpeed = maxFallSpeed;
     }
 
     private void Update()

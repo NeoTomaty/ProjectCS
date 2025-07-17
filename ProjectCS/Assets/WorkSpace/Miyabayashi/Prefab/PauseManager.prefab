@@ -46,10 +46,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8579ab8e9be84324ea6611478dadcb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerActions: {fileID: 0}
+  inputActions: {fileID: -944628639613478452, guid: 17cf4205b2f86dc44a3298d2a6780800, type: 3}
   pauseUI: {fileID: 0}
   optionUI: {fileID: 0}
   firstPauseButton: {fileID: 0}
   firstOptionButton: {fileID: 0}
+  audioSource: {fileID: 0}
+  OpenSE: {fileID: 0}
+  CloseSE: {fileID: 0}
+  SEVolume: 0.5
+  cancelAction: {fileID: 0}
+  gameStartCountdown: {fileID: 0}
+  playerAnimator: {fileID: 0}
+  TutorialDisplayTexts: {fileID: 0}
 --- !u!114 &8202955524992788224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +109,26 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 562217a3-21ad-4b4d-a740-2aee5329107e
     m_ActionName: 'Option/Pause[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 40101708-0f8f-47c0-8467-d3fb4f9952a5
+    m_ActionName: 'StageSelect/Confirm[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0eb84fef-53d0-4d20-8d31-9c3a382b3cc3
+    m_ActionName: 'StageSelect/Cancel[/Keyboard/backspace]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2dffe1c3-a4de-4109-980d-7030938d5ee1
+    m_ActionName: 'StageSelect/LeftMove[/Keyboard/a]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f9591cd5-4798-49db-b13b-9eade7d058ed
+    m_ActionName: 'StageSelect/RightMove[/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 50b97f8c-9ae3-449a-918d-0941fc5985a5
+    m_ActionName: 'StageSelect/Option[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Option
@@ -116,3 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bb27cd06dbf744a8e577b72e026a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  MoveSE: {fileID: 0}
+  DecideSE: {fileID: 0}
+  SEVolume: 0.5

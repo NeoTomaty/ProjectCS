@@ -38,7 +38,7 @@ public class BGMManager : MonoBehaviour
         audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("BGM")[0];
     }
 
-    public void PlayBGM(AudioClip clip)
+    public void PlayBGM(AudioClip clip, float volume)
     {
         if (clip == null) return;
 
@@ -46,7 +46,9 @@ public class BGMManager : MonoBehaviour
             return;
 
         audioSource.clip = clip;
+        audioSource.volume = volume;
         audioSource.Play();
+        
     }
 
     public void StopBGM()

@@ -58,7 +58,7 @@ public class SpeedEffectArea : MonoBehaviour
     private bool isPlayerInside = false;    // B/C用：エリア内判定
 
     //SE再生用のAudioSource
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
 
     private PlayerSpeedManager SpeedManager; // プレイヤーのPlayerSpeedManagerコンポーネント
     private float TempPlayerSpeed = 0f;      // 減速前の速度
@@ -79,10 +79,6 @@ public class SpeedEffectArea : MonoBehaviour
         //プレイヤーの速度管理コンポーネントを取得
         SpeedManager = Player.GetComponent<PlayerSpeedManager>();
 
-        //AudioSourceをこのオブジェクトに追加し、SE再生用に設定
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.playOnAwake = false;
-        audioSource.volume = SEVolume;
     }
 
     void Update()
@@ -141,7 +137,7 @@ public class SpeedEffectArea : MonoBehaviour
             Debug.Log("エリアに入りました");
 
             // SEが設定されていれば再生
-            if (DecelerationSE != null) audioSource.PlayOneShot(DecelerationSE);
+            if (DecelerationSE != null) audioSource.PlayOneShot(DecelerationSE, SEVolume);
 
             // プレイヤーがエリア内にいる状態に設定
             isPlayerInside = true;

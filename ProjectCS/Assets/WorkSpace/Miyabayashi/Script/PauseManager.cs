@@ -47,6 +47,7 @@ public class PauseManager : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction pauseAction;
     private InputAction PlayerDecelerationAction;
+    private InputAction PlayerJumpAction;
 
     [Header("Reference to Countdown")]
     [SerializeField] private GameStartCountdown gameStartCountdown;
@@ -73,6 +74,7 @@ public class PauseManager : MonoBehaviour
         if (PlayerActions != null)
         {
             PlayerDecelerationAction = PlayerActions.actions["Deceleration"];
+            PlayerJumpAction = PlayerActions.actions["Jump"];
         }
     }
 
@@ -162,6 +164,10 @@ public class PauseManager : MonoBehaviour
 
             if (PlayerDecelerationAction != null)
                 PlayerDecelerationAction.Disable(); // ポーズ中は減速アクションを無効化
+
+            if (PlayerJumpAction != null)
+                PlayerJumpAction.Disable();
+            
         }
         else
         {
@@ -240,6 +246,9 @@ public class PauseManager : MonoBehaviour
 
         if (PlayerDecelerationAction != null)
             PlayerDecelerationAction.Enable(); // ポーズ解除時に減速アクションを有効化
+
+        if (PlayerJumpAction != null)
+            PlayerJumpAction.Enable();
 
         PlaySE(CloseSE);
     }

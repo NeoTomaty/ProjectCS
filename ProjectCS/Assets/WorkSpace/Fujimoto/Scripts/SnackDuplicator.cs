@@ -49,6 +49,9 @@ public class SnackDuplicator : MonoBehaviour
     [SerializeField] private float FirstTargetHeight = 500f;
     [SerializeField] private float MaxTargetHeight = 1000f;
     [SerializeField] private float LaunchMultiplier = 1.1f;
+    [SerializeField] private float AreaHeight = 50f;
+    [SerializeField] private float AreaRadius = 30f;
+    [SerializeField] private float MaxFallSpeed = 30f;
 
     private int currentCount = 0;
 
@@ -91,7 +94,8 @@ public class SnackDuplicator : MonoBehaviour
                 PlayerAnimationController,
                 FirstTargetHeight,
                 MaxTargetHeight,
-                LaunchMultiplier
+                LaunchMultiplier,
+                MaxFallSpeed
                 );
 
             if(SnackHeightUIManagerVer2Component) SnackHeightUIManagerVer2Component.SetSnackObject(SnackInstance);
@@ -99,7 +103,7 @@ public class SnackDuplicator : MonoBehaviour
            
             GameObject LiftingAreaInstance = Instantiate(LiftingAreaObject, new Vector3(0f, -1000f, 0f), Quaternion.identity, SceneObjectTransform);
             LiftingAreaManager LAM = LiftingAreaInstance.GetComponent<LiftingAreaManager>();
-            LAM.SetTarget(PlayerObject, SnackInstance, ClearSequenceComponent, AnimationFinishComponent);
+            LAM.SetTarget(PlayerObject, SnackInstance, ClearSequenceComponent, AnimationFinishComponent, AreaRadius, AreaHeight);
 
             FallPointCalculator FPC = SnackInstance.GetComponent<FallPointCalculator>();
             FPC.SetTarget(LAM);

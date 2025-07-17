@@ -8,7 +8,7 @@ public class VolumeSetting : MonoBehaviour
     public Slider BgmVolumeSlider;
     public Slider SeVolumeSlider;
 
-    void Start()
+    void Awake()
     {
         // 初期値の読み込み（例：最大音量）
         BgmVolumeSlider.value = PlayerPrefs.GetFloat("BGMVolume", 1f);

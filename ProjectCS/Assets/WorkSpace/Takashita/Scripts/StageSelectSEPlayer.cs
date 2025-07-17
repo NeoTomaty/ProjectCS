@@ -35,7 +35,11 @@ public class StageSelectSEPlayer : MonoBehaviour
     //SEの音量調整
     [Header("SE音量(0.0～1.0)")]
     [Range(0.0f, 1.0f)]
-    [SerializeField] private float SEVolume = 0.5f;
+    [SerializeField] private float ConfirmVolume = 0.5f;
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float CancelVolume = 0.5f;
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float SelectVolume = 0.5f;
 
     //SE再生用のAudioSourceコンポーネント
     private AudioSource AudioSourceComponent;
@@ -45,12 +49,6 @@ public class StageSelectSEPlayer : MonoBehaviour
     {
         //このGameObjectにアタッチされているAudioSourceを取得
         AudioSourceComponent = GetComponent<AudioSource>();
-
-        //AudioSourceが取得できていれば、音量を設定
-        if (AudioSourceComponent != null)
-        {
-            AudioSourceComponent.volume = SEVolume;
-        }
     }
 
     //指定された種類のSEを再生する関数
@@ -59,38 +57,26 @@ public class StageSelectSEPlayer : MonoBehaviour
         switch(se)
         {
             case StageSelectSE.Confirm:
-                PlaySE(ConfirmSE); //決定SEを再生
+                PlaySE(ConfirmSE, ConfirmVolume); //決定SEを再生
                 break;
             case StageSelectSE.Cancel:
-                PlaySE(CancelSE); //戻るSEを再生
+                PlaySE(CancelSE, CancelVolume); //戻るSEを再生
                 break;
             case StageSelectSE.Select:
-                PlaySE(SelectSE); //カーソル移動SEを再生
+                PlaySE(SelectSE, SelectVolume); //カーソル移動SEを再生
                 break;
         }
         
     }
 
     //実際にAudioClipを再生する内部関数
-    private void PlaySE(AudioClip clip)
+    private void PlaySE(AudioClip clip, float volume)
     {
         //AudioClipとAudioSourceが有効であれば、指定音量で再生
         if (clip != null && AudioSourceComponent != null)
         {
-            AudioSourceComponent.PlayOneShot(clip,SEVolume);
+            AudioSourceComponent.PlayOneShot(clip, volume);
         }
     }
 
-    //外部からSE音量を変更するための関数
-    public void SetSEVolume(float volume)
-    {
-        //0.0～1.0の範囲に制限
-        SEVolume = Mathf.Clamp01(volume);
-
-        //AudioSourceが有効であれば、音量を更新
-        if (AudioSourceComponent != null)
-        {
-            AudioSourceComponent.volume = SEVolume;
-        }
-    }
 }

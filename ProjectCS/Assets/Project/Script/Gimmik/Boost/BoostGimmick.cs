@@ -40,8 +40,7 @@ public class BoostGimmick : MonoBehaviour
             //Œø‰Ê‰¹‚ğÄ¶
             if(SeAudioSource != null && BoostSE != null)
             {
-                SeAudioSource.volume = BoostSEVolume;
-                SeAudioSource.PlayOneShot(BoostSE);
+                SeAudioSource.PlayOneShot(BoostSE, BoostSEVolume);
             }
 
             // ƒMƒ~ƒbƒN‚ğ–³Œø‰»

@@ -801,7 +801,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 292, y: -215}
+  m_AnchoredPosition: {x: 353, y: -223.5}
   m_SizeDelta: {x: 130, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8014597467394019316
@@ -858,7 +858,7 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 3783865936673902037}
-    m_SelectOnDown: {fileID: 2624965035249938933}
+    m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -1948,7 +1948,7 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 5622443038697124796}
+    m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 1959167630838814420}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -2299,7 +2299,7 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 3073521682869147563}
+    m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 8615663412608242965}
   m_Transition: 1
   m_Colors:
@@ -2979,7 +2979,7 @@ MonoBehaviour:
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 3439448094237277234}
-    m_SelectOnRight: {fileID: 1090700538776081510}
+    m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3029,11 +3029,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8579ab8e9be84324ea6611478dadcb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerObject: {fileID: 0}
+  PlayerActions: {fileID: 0}
   pauseUI: {fileID: 7240666081728109388}
   optionUI: {fileID: 7304746577604286139}
   firstPauseButton: {fileID: 5295922302004893524}
-  firstOptionButton: {fileID: 2030390049224502425}
+  firstOptionButton: {fileID: 4516045192165290661}
   audioSource: {fileID: 0}
   OpenSE: {fileID: 0}
   CloseSE: {fileID: 0}
@@ -3041,7 +3041,6 @@ MonoBehaviour:
   cancelAction: {fileID: 0}
   gameStartCountdown: {fileID: 0}
   playerAnimator: {fileID: 0}
-  targetSnack: {fileID: 0}
   TutorialDisplayTexts: {fileID: 0}
 --- !u!114 &5971336279335713354
 MonoBehaviour:

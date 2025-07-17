@@ -42,16 +42,12 @@ public class InputPlayerManager : MonoBehaviour
 
     //‰¹—Ê’²®(0.0`1.0)
     [Range(0.0f, 1.0f)]
-    [SerializeField] private float SEVolume = 0.5f;
+    [SerializeField] private float MoveVolume = 0.5f;
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float DecideVolume = 0.5f;
 
     void Start()
     {
-        //AudioSource‚Ì‰¹—Ê‚ğ‰Šú’l‚Éİ’è
-        if (audioSource != null)
-        {
-            audioSource.volume = SEVolume;
-        }
-
         // PlayerInputComponent‚ğæ“¾
         PlayerInput PlayerInputComponent = gameObject.GetComponent<PlayerInput>();
        
@@ -126,7 +122,7 @@ public class InputPlayerManager : MonoBehaviour
             if(audioSource != null && MoveSE != null)
             {
                 //ˆê‰ñ‚¾‚¯Œø‰Ê‰¹‚ğÄ¶‚·‚é
-                audioSource.PlayOneShot(MoveSE);
+                audioSource.PlayOneShot(MoveSE, MoveVolume);
             }
         }
     }
@@ -136,7 +132,7 @@ public class InputPlayerManager : MonoBehaviour
     {
         if(audioSource != null && DecideSE != null)
         {
-            audioSource.PlayOneShot(DecideSE);
+            audioSource.PlayOneShot(DecideSE, DecideVolume);
         }
     }
 

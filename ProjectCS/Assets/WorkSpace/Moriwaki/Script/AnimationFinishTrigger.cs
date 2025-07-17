@@ -50,7 +50,9 @@ public class AnimationFinishTrigger : MonoBehaviour
     [Tooltip("snackObject以外にヒットストップを解除するオブジェクトのタグ")]
     [SerializeField] private string additionalTargetTag = "Snack";
 
-    public void OnKickImpact()
+    [SerializeField] private float SeVolume = 0.5f;
+
+   public void OnKickImpact()
     {
         Debug.Log("キックが当たったタイミングで呼び出された");
         StartCoroutine(HitStopRoutine());
@@ -60,7 +62,7 @@ public class AnimationFinishTrigger : MonoBehaviour
     {
         if (audioSource != null && hitSound != null)
         {
-            audioSource.PlayOneShot(hitSound);
+            audioSource.PlayOneShot(hitSound, SeVolume);
         }
 
         if (hitEffectPrefab != null && effectSpawnPoint != null)

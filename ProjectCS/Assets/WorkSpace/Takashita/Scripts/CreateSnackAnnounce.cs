@@ -16,6 +16,8 @@ public class CreateSnackAnnounce : MonoBehaviour
     [SerializeField] private float TextStopTime = 1f;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip AnnounceSE;
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float AnnounceVolume = 1.0f;
     private float leftX = -1500f;
     private float rightX = 1500f;
     private int direction = -1;
@@ -76,7 +78,7 @@ public class CreateSnackAnnounce : MonoBehaviour
         pos.x = rightX;
         TextRectTransform.anchoredPosition = pos;
 
-        if (AnnounceSE) audioSource.PlayOneShot(AnnounceSE);
+        if (AnnounceSE) audioSource.PlayOneShot(AnnounceSE, AnnounceVolume);
 
     }
 }

@@ -1799,6 +1799,7 @@ MonoBehaviour:
   hitStopDuration: 1
   playerAnimator: {fileID: 7491256374663754645}
   additionalTargetTag: Snack
+  SeVolume: 0.5
 --- !u!114 &5134761857107816169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2183,7 +2184,8 @@ MonoBehaviour:
   audioSource: {fileID: 6702316114717174668}
   MoveSE: {fileID: 8300000, guid: c3737dbb0df70cf4db274ca0707acc6d, type: 3}
   DecideSE: {fileID: 8300000, guid: aa4c1a94c601acf468e74f0c2c7df32b, type: 3}
-  SEVolume: 0.5
+  MoveVolume: 0.3
+  DecideVolume: 0.2
 --- !u!114 &163882227025291501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2229,7 +2231,7 @@ MonoBehaviour:
   HitStopDuration: 0.02
   audioSource: {fileID: 6702316114717174668}
   MoveStartSE: {fileID: 8300000, guid: ba134a053cb72824e84bb6951baca5e3, type: 3}
-  MoveStartSEVolume: 0.5
+  MoveStartSEVolume: 0.35
 --- !u!114 &8724982865499982231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2495,7 +2497,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 3669471345324840153, guid: 57d2f61693dcc5c44a6398adf951dd3f, type: 2}
   m_audioClip: {fileID: 8300000, guid: c577216a2b3f81a4b84e32f33a3ece55, type: 3}
   m_Resource: {fileID: 8300000, guid: c577216a2b3f81a4b84e32f33a3ece55, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -2607,7 +2609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpSound: {fileID: 8300000, guid: 54d84d5cffbd8734ab271657a304b411, type: 3}
-  JumpVolume: 0.5
+  JumpVolume: 0.6
 --- !u!114 &2581601592503768132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2620,8 +2622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9548f2eb319d4874a8f138f1bbabc2bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SnackSound: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
-  volume: 0.5
+  SnackSound: {fileID: 8300000, guid: 073c7dbaae9fada469ac560e900eee9a, type: 3}
+  volume: 0.6
 --- !u!114 &8355876325621931706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2635,6 +2637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LandingSound: {fileID: 8300000, guid: a9a96c6a067800d4bacd90cbeef65fc4, type: 3}
+  SeVolume: 0.5
 --- !u!114 &1270225974752964239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2750,7 +2753,7 @@ MonoBehaviour:
   Score: 0
   totalScore: 0
   ComboBonusUpValue: 0.2
-  BaseScore: 100
+  BaseScore: 300
 --- !u!114 &8166748469896893238
 MonoBehaviour:
   m_ObjectHideFlags: 0

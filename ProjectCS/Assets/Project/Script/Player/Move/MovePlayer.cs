@@ -16,6 +16,7 @@
 // 06/27 中町 移動開始音SE音量調整実装
 //====================================================
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class MovePlayer : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class MovePlayer : MonoBehaviour
 
     //SEを再生するためのAudioSource
     [SerializeField] private AudioSource audioSource;
-
+    
     //移動開始後に鳴らすSE
     [SerializeField] private AudioClip MoveStartSE;
 
@@ -139,7 +140,7 @@ public class MovePlayer : MonoBehaviour
                     if(audioSource != null && MoveStartSE != null)
                     {
                         //指定した音量でSEを一度だけ再生
-                        audioSource.PlayOneShot(MoveStartSE,MoveStartSEVolume);
+                        audioSource.PlayOneShot(MoveStartSE, MoveStartSEVolume);
 
                         //再生済みフラグを立てる
                         HasPlayedSE = true;

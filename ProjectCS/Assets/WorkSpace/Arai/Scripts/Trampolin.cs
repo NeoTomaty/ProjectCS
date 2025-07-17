@@ -30,8 +30,7 @@ public class Trampolin : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        //âπó Çê›íË
-        audioSource.volume = JumpSEVolume;
+
     }
 
     private void OnCollisionEnter(Collision collision)

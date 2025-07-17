@@ -1973,6 +1973,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
+      propertyPath: SeGroup
+      value: 
+      objectReference: {fileID: 3669471345324840153, guid: 57d2f61693dcc5c44a6398adf951dd3f, type: 2}
+    - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
       propertyPath: FadeInSE
       value: 
       objectReference: {fileID: 8300000, guid: 2e9c2ead948238a428fcea6d9185fd1b, type: 3}
@@ -1994,11 +1998,11 @@ PrefabInstance:
       objectReference: {fileID: 1533310291}
     - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
       propertyPath: FadeInSEVolume
-      value: 0.5
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 957349527013174728, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
       propertyPath: FadeOutSEVolume
-      value: 0.5
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7902525595534074878, guid: 6c44a1dc267bda847ab02dc324ef1451, type: 3}
       propertyPath: m_SortingOrder
@@ -2361,6 +2365,10 @@ PrefabInstance:
       propertyPath: BGMClip
       value: 
       objectReference: {fileID: 8300000, guid: 368486d338801c3488cf11568cd8aac2, type: 3}
+    - target: {fileID: -4824517571176065220, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
+      propertyPath: BGMVolume
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 3038314023033373163, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: m_Name
       value: BGMPlayer
@@ -12647,8 +12655,10 @@ MonoBehaviour:
   - {fileID: 1796737234}
   NavigationSE: {fileID: 8300000, guid: 04bded0f9b99df04a8c09fbf30dcefd0, type: 3}
   DecisionSE: {fileID: 8300000, guid: aa4c1a94c601acf468e74f0c2c7df32b, type: 3}
-  SEVolume: 0.5
+  NavigationVolume: 0.3
+  DicisionVolume: 0.2
   optionUI: {fileID: 2074209265}
+  SeGroup: {fileID: 3669471345324840153, guid: 57d2f61693dcc5c44a6398adf951dd3f, type: 2}
 --- !u!114 &1546346910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18016,8 +18026,8 @@ SceneRoots:
   - {fileID: 2006205939}
   - {fileID: 599188392}
   - {fileID: 738765706}
-  - {fileID: 159295820}
   - {fileID: 1533310293}
+  - {fileID: 159295820}
   - {fileID: 6293994553398079005}
   - {fileID: 209761899}
   - {fileID: 66660614}

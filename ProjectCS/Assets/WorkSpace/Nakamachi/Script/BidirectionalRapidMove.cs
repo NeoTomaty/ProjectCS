@@ -48,11 +48,6 @@ public class BidirectionalRapidMove : MonoBehaviour
         PlayerController = GetComponent<MovePlayer>();
         audioSource = GetComponent<AudioSource>();
 
-        if(audioSource != null)
-        {
-            audioSource.volume = MoveSEVolume;
-        }
-
         //ForwardPointsとBackwardPointsのコライダーを無視設定
         IgnoreCollisions(ForwardPoints);
         IgnoreCollisions(BackwardPoints);

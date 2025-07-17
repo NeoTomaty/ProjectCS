@@ -214,8 +214,9 @@ public class GameClearSequence : MonoBehaviour
         //効果音(SE)が設定されていて、AudioSourceも存在するときに再生する
         if (ClearSE != null && audioSource != null)
         {
+            if (BGMManager.Instance) BGMManager.Instance.StopBGM();
             //一回だけ効果音を再生する(重ねて再生可能)
-            audioSource.PlayOneShot(ClearSE);
+            audioSource.PlayOneShot(ClearSE, SEVolume);
         }
 
         // クリア演出中フラグを立てる
@@ -228,11 +229,7 @@ public class GameClearSequence : MonoBehaviour
     {
         PlayerInput = PlayerObject.GetComponent<PlayerInput>();
 
-        //AudioSourceコンポーネントをこのGameObjectに追加し、効果音再生用に保持しておく
-        audioSource = gameObject.AddComponent<AudioSource>();
-
-        //音量を設定
-        audioSource.volume = SEVolume;
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
     private void Start()
     {

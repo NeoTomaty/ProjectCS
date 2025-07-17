@@ -14,6 +14,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Audio;
 
 public class FadeManager : MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class FadeManager : MonoBehaviour
     public AudioClip FadeOutSE;
 
     //SE再生用のAudioSource
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
 
     //フェードイン時のSE音量(0.0～1.0)
     [Range(0.0f, 1.0f)]
@@ -53,13 +54,9 @@ public class FadeManager : MonoBehaviour
     [Range(0.0f, 1.0f)]
     public float FadeOutSEVolume = 0.5f;
 
-    //初期化処理(シングルトンの設定とAudioSourceの追加)
+  //初期化処理(シングルトンの設定とAudioSourceの追加)
     void Awake()
     {
-        //AudioSourceを追加し、SE再生に使用
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.playOnAwake = false;
-
         //すでにインスタンスが存在するときは破棄
         if (instance != null)
         {
@@ -72,6 +69,7 @@ public class FadeManager : MonoBehaviour
 
         //シーンをまたいでも破棄されないようにする
         DontDestroyOnLoad(gameObject);
+
     }
 
     //ゲーム開始時の処理
@@ -108,7 +106,6 @@ public class FadeManager : MonoBehaviour
     {
         RefreshPlayerInputs();
         RefreshUIInputModule();
-
         //新しいシーンでフェードイン
         StartCoroutine(FadeIn());
         isFading = false;
@@ -141,11 +138,13 @@ public class FadeManager : MonoBehaviour
     //フェードイン処理(画面を徐々に明るくする)
     private IEnumerator FadeIn()
     {
+        Debug.Log("フェードイン開始");
         float t = fadeDuration;
 
         //入力を有効化
         EnableInput();
 
+        yield return null;
         //フェードインSEを再生
         PlaySE(FadeInSE,FadeInSEVolume);
 

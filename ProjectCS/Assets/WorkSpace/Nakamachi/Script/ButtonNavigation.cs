@@ -12,6 +12,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Audio;
 
 public class ButtonNavigation : MonoBehaviour
 {
@@ -44,17 +45,22 @@ public class ButtonNavigation : MonoBehaviour
 
     //効果音の音量
     [Range(0.0f, 1.0f)]
-    public float SEVolume = 0.5f;
+    public float NavigationVolume = 0.5f;
+    [Range(0.0f, 1.0f)]
+    public float DicisionVolume = 0.5f;
 
     //オプション画面が開いているときは操作を無効化
     [Header("UI Blocks Input")]
     [SerializeField] private GameObject optionUI;
 
+    [SerializeField]
+    private AudioMixerGroup SeGroup;
+
     void Start()
     {
         //AudioSourceを追加して音量を設定
         audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.volume = SEVolume;
+        audioSource.outputAudioMixerGroup = SeGroup;
 
         //各ボタンの元のサイズを保存
         OriginalScales = new Vector3[Buttons.Length];
@@ -170,7 +176,7 @@ public class ButtonNavigation : MonoBehaviour
     {
         if (NavigationSE != null && audioSource != null)
         {
-            audioSource.PlayOneShot(NavigationSE, SEVolume);
+            audioSource.PlayOneShot(NavigationSE, NavigationVolume);
         }
     }
 
@@ -179,7 +185,7 @@ public class ButtonNavigation : MonoBehaviour
     {
         if (DecisionSE != null && audioSource != null)
         {
-            audioSource.PlayOneShot(DecisionSE, SEVolume);
+            audioSource.PlayOneShot(DecisionSE, DicisionVolume);
         }
     }
 

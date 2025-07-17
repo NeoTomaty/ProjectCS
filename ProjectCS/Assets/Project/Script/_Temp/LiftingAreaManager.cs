@@ -92,12 +92,14 @@ public class LiftingAreaManager : MonoBehaviour
       
     }
 
-    public void SetTarget(GameObject PlayerObj, GameObject SnackObj, GameClearSequence GCS, AnimationFinishTrigger AFT)
+    public void SetTarget(GameObject PlayerObj, GameObject SnackObj, GameClearSequence GCS, AnimationFinishTrigger AFT, float radius, float height)
     {
         Player = PlayerObj;
         Target = SnackObj;
         ClearSequenceComponent = GCS;
         AnimationFinishComponent = AFT;
+        Radius = radius;
+        Height = height;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -156,16 +158,7 @@ public class LiftingAreaManager : MonoBehaviour
     // ターゲットの落下地点にエリアを配置する
     public void SetFallPoint(Vector3 fallPoint, Vector3 areaPoint)
     {
-        // エリアのY座標を調整
-        float newHeight = Height + Math.Abs(areaPoint.y - fallPoint.y);
-        Debug.Log("落下予測地点：" + fallPoint);
-       
-        Debug.Log("BaseGroundとGroundの差：" + Math.Abs(areaPoint.y - fallPoint.y));
-        Vector3 newScale = transform.localScale;
-        newScale.y = newHeight;
-        transform.localScale = newScale;
-
-        areaPoint.y += newHeight - 0.1f;
+        areaPoint.y += Height - 0.1f;
         Debug.Log("エリア着地地点：" + areaPoint);
         transform.position = areaPoint;
     }

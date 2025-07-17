@@ -61,8 +61,7 @@ public class TutorialDisplayTexts : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        //âπó ê›íË
-        audioSource.volume = SEVolume;
+
     }
 
     // Update is called once per frame
@@ -124,8 +123,7 @@ public class TutorialDisplayTexts : MonoBehaviour
     {
         if(TutorialSE != null && audioSource != null)
         {
-            audioSource.volume = SEVolume;
-            audioSource.PlayOneShot(TutorialSE);
+            audioSource.PlayOneShot(TutorialSE, SEVolume);
         }
     }
 

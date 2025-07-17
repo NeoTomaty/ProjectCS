@@ -102,7 +102,6 @@ public class IsHitAny : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        audioSource.volume = RespawnSEVolume;
     }
 
     private void Update()

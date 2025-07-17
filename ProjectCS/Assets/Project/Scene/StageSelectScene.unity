@@ -1530,7 +1530,9 @@ MonoBehaviour:
   ConfirmSE: {fileID: 8300000, guid: aa4c1a94c601acf468e74f0c2c7df32b, type: 3}
   CancelSE: {fileID: 8300000, guid: fc58efd9d0397e847a08fc2618f49d73, type: 3}
   SelectSE: {fileID: 8300000, guid: c3737dbb0df70cf4db274ca0707acc6d, type: 3}
-  SEVolume: 0.5
+  ConfirmVolume: 0.2
+  CancelVolume: 0.5
+  SelectVolume: 0.3
 --- !u!1 &403510777
 GameObject:
   m_ObjectHideFlags: 0
@@ -3283,6 +3285,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5276782478068285355, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
+      propertyPath: optionUI
+      value: 
+      objectReference: {fileID: 438783932}
     - target: {fileID: 6509577494637460327, guid: e5e2b263fb389394d880b0f7fb838aba, type: 3}
       propertyPath: m_RenderMode
       value: 0
@@ -4718,7 +4724,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 768d22c3ec5cda3458a043b024971ac6, type: 3}
   - {fileID: 21300000, guid: 1fb97d17ad0bcad4099a131786fb3dba, type: 3}
   - {fileID: 21300000, guid: 125e7237ccc64944c8c7cc6e4ed5b9ef, type: 3}
-  - {fileID: 21300000, guid: 75980b0a69d5883419f68e6c3da66e68, type: 3}
+  - {fileID: 21300000, guid: 63871f541c3fcd749b0f7c334980f5fe, type: 3}
   - {fileID: 21300000, guid: fe0a65f8d40d1a64b8dd717c8003da15, type: 3}
   ScaleChangeDuration: 0.2
   SmallStageModelSize: {x: 1.5, y: 1.5, z: 1.5}
@@ -4951,6 +4957,10 @@ PrefabInstance:
       propertyPath: BGMClip
       value: 
       objectReference: {fileID: 8300000, guid: 1cf140f65daf2fb4b9440d9e465baef3, type: 3}
+    - target: {fileID: -4824517571176065220, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
+      propertyPath: BGMVolume
+      value: 0.65
+      objectReference: {fileID: 0}
     - target: {fileID: 3038314023033373163, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: m_Name
       value: BGMPlayer
