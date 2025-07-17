@@ -52,6 +52,7 @@ public class GameSettingsManager : MonoBehaviour
     public void LoadSettings()
     {
         BgmVolume = PlayerPrefs.GetFloat(BgmVolumeKey, 1.0f);
+        SeVolume = PlayerPrefs.GetFloat(SeVolumeKey, 1.0f);
         Sensitivity = PlayerPrefs.GetFloat(SensitivityKey, 1.0f);
         Debug.Log($"[GameSettingsManager] İ’è‚ğƒ[ƒh: ‰¹—Ê = {BgmVolume}, Š´“x = {Sensitivity}");
     }

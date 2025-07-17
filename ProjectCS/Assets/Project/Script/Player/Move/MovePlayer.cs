@@ -36,7 +36,12 @@ public class MovePlayer : MonoBehaviour
     public bool GetIsHitStopActive => IsHitStopActive;
 
     // 移動速度の倍率
-    [System.NonSerialized] public float MoveSpeedMultiplier = 1f; // PlayerSpeedManagerのスピード値を変えずに速度を変えたいため追加
+    [System.NonSerialized] private float _MoveSpeedMultiplier = 1f; // PlayerSpeedManagerのスピード値を変えずに速度を変えたいため追加
+    public float MoveSpeedMultiplier
+    {
+        get => _MoveSpeedMultiplier;
+        set => _MoveSpeedMultiplier = Mathf.Min(value, 3f);
+    }
 
     private Rigidbody Rb;
 
@@ -71,6 +76,7 @@ public class MovePlayer : MonoBehaviour
 
     void Start()
     {
+       
         MoveDirection = transform.forward;
 
         if (PlayerSpeedManager == null)

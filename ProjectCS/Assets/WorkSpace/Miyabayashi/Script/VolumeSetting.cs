@@ -16,7 +16,7 @@ public class VolumeSetting : MonoBehaviour
         BgmVolumeSlider.onValueChanged.AddListener(SetBGMVolume);
 
         SeVolumeSlider.value = PlayerPrefs.GetFloat("SEVolume", 1f);
-        SetSEVolume(BgmVolumeSlider.value);
+        SetSEVolume(SeVolumeSlider.value);
         SeVolumeSlider.onValueChanged.AddListener(SetSEVolume);
     }
 

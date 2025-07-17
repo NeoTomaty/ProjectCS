@@ -1730,9 +1730,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 84185482}
     m_Modifications:
     - target: {fileID: 3483751354678742879, guid: e4f6825c938f5ba48bca00b731be3eb1, type: 3}
+      propertyPath: MainCamera
+      value: 
+      objectReference: {fileID: 594655331}
+    - target: {fileID: 3483751354678742879, guid: e4f6825c938f5ba48bca00b731be3eb1, type: 3}
       propertyPath: SnackObject
       value: 
       objectReference: {fileID: 5488207771516596298}
+    - target: {fileID: 3483751354678742879, guid: e4f6825c938f5ba48bca00b731be3eb1, type: 3}
+      propertyPath: IsTextVisible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3483751354678742879, guid: e4f6825c938f5ba48bca00b731be3eb1, type: 3}
       propertyPath: AddLimitUnlock
       value: 500
@@ -2206,6 +2214,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: c577216a2b3f81a4b84e32f33a3ece55, type: 3}
+    - target: {fileID: 6702316114717174668, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3669471345324840153, guid: 57d2f61693dcc5c44a6398adf951dd3f, type: 2}
     - target: {fileID: 6803385135700698291, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: PauseInput
       value: 
@@ -2214,6 +2226,10 @@ PrefabInstance:
       propertyPath: TargetObject
       value: 
       objectReference: {fileID: 5488207771516596298}
+    - target: {fileID: 6803385135700698291, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: TerminateHeight
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 6803385135700698291, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: GameStartCountdownScript
       value: 
@@ -2911,7 +2927,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8430590474807452371, guid: ae565f7e8ee4c204693d8494a771b31d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 8430590474807452371, guid: ae565f7e8ee4c204693d8494a771b31d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2919,7 +2935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8430590474807452371, guid: ae565f7e8ee4c204693d8494a771b31d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 8430590474807452371, guid: ae565f7e8ee4c204693d8494a771b31d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4008,6 +4024,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MinimapCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 3377067273872202159, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5982959382606716176, guid: e7a6bb1d13e67a04daecb95ce85639e5, type: 3}
       propertyPath: target
       value: 
@@ -4292,7 +4312,7 @@ MonoBehaviour:
     prefab: {fileID: 389821699222927281, guid: 856f1f18fb8861d4499813c38a5963ae, type: 3}
     offset: {fileID: 8441760888139906047}
     duration: 1
-    rotationEuler: {x: 90, y: 0, z: 0}
+    rotationEuler: {x: 270, y: 0, z: 0}
 --- !u!114 &2620302148520845965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4381,7 +4401,7 @@ GameObject:
   - component: {fileID: 2458149672258910622}
   m_Layer: 0
   m_Name: Snack
-  m_TagString: Untagged
+  m_TagString: Snack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
