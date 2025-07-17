@@ -106,7 +106,7 @@ public class FallPointCalculator : MonoBehaviour
                     GroundPoint = hit.point;
 
                     // リフティングエリアオブジェクトを移動させる
-                    LAManager.SetFallPoint(GroundPoint);
+                    LAManager.SetFallPoint(FallPoint, GroundPoint);
 
                     return true;
                 }

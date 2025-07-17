@@ -19,6 +19,7 @@
 // 2. Playerにプレイヤーオブジェクトを設定
 // 3. Targetにリフティング対象オブジェクトを設定
 
+using System;
 using UnityEngine;
 
 public class LiftingAreaManager : MonoBehaviour
@@ -64,7 +65,7 @@ public class LiftingAreaManager : MonoBehaviour
         float Diameter = Radius * 2.0f;
         transform.localScale = new Vector3(Diameter, Height, Diameter);
 
-        AllSnackManager ASM = Object.FindFirstObjectByType<AllSnackManager>();
+        AllSnackManager ASM = FindFirstObjectByType<AllSnackManager>();
         if(ASM)
         {
             // データの追加
@@ -153,11 +154,20 @@ public class LiftingAreaManager : MonoBehaviour
     }
 
     // ターゲットの落下地点にエリアを配置する
-    public void SetFallPoint(Vector3 fallPoint)
+    public void SetFallPoint(Vector3 fallPoint, Vector3 areaPoint)
     {
         // エリアのY座標を調整
-        fallPoint.y += Height - 0.1f;
-        transform.position = fallPoint;
+        float newHeight = Height + Math.Abs(areaPoint.y - fallPoint.y);
+        Debug.Log("落下予測地点：" + fallPoint);
+       
+        Debug.Log("BaseGroundとGroundの差：" + Math.Abs(areaPoint.y - fallPoint.y));
+        Vector3 newScale = transform.localScale;
+        newScale.y = newHeight;
+        transform.localScale = newScale;
+
+        areaPoint.y += newHeight - 0.1f;
+        Debug.Log("エリア着地地点：" + areaPoint);
+        transform.position = areaPoint;
     }
 
     // 対象オブジェクトが範囲外にあるかどうかを返す

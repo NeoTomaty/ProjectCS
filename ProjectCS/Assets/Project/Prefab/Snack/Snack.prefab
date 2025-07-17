@@ -154,22 +154,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c803b94a1ae1442b5ddfc64869f531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitStopTime: 0.5
-  baseForce: 350
-  forcePerLift: 20
-  MinUpwardForce: 350
-  MaxUpwardForce: 1000
-  MinRandomXYRange: 0
-  MaxRandomXYRange: 0
-  MinFallSpeed: 0
   MaxFallSpeed: 30
   RespawnArea: {fileID: 0}
   LiftingJump: {fileID: 0}
   GroundArea: {fileID: 0}
   CameraFunction: {fileID: 0}
   flyingPoint: {fileID: 0}
-  isHitStopActive: 0
   ClearConditionsScript: {fileID: 0}
+  isHitStopActive: 0
   ScorePenaltyStartTime: 40
   ScoreDecreaseInterval: 10
   ScoreDecreasePoint: 100
@@ -178,6 +170,9 @@ MonoBehaviour:
   HitSE: {fileID: 8300000, guid: 43a76e02d45f7274db7f2e9a15fe2aec, type: 3}
   playerAnimController: {fileID: 0}
   SEVolume: 0.5
+  FirstTargetHeight: 500
+  MaxTargetHeight: 1000
+  LaunchMultiplier: 1.1
 --- !u!114 &-1825022298241199866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,7 +230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321b60a12d3698f4e87a587064b56429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 600
 --- !u!114 &-9214584986695595477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,4 +246,4 @@ MonoBehaviour:
     prefab: {fileID: 389821699222927281, guid: 856f1f18fb8861d4499813c38a5963ae, type: 3}
     offset: {fileID: 7554536379738216804}
     duration: 1
-    rotationEuler: {x: 0, y: 50, z: 0}
+    rotationEuler: {x: 270, y: 0, z: 0}

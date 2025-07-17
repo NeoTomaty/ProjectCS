@@ -1798,6 +1798,7 @@ MonoBehaviour:
   audioSource: {fileID: 6702316114717174668}
   hitStopDuration: 1
   playerAnimator: {fileID: 7491256374663754645}
+  additionalTargetTag: Snack
 --- !u!114 &5134761857107816169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1850,6 +1851,7 @@ MonoBehaviour:
   GameStartCountdownScript: {fileID: 0}
   JumpSpeed: 2
   IgnoreNonTargetCollisions: 0
+  TerminateHeight: 200
 --- !u!1 &4451444497042982840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2344,6 +2346,7 @@ MonoBehaviour:
   GameStartCountdownScript: {fileID: 0}
   JumpSpeed: 2
   IgnoreNonTargetCollisions: 0
+  TerminateHeight: 200
 --- !u!96 &924197299234803573
 TrailRenderer:
   serializedVersion: 3
@@ -2489,7 +2492,7 @@ AudioSource:
   m_GameObject: {fileID: 4874249585817461011}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 57d2f61693dcc5c44a6398adf951dd3f, type: 2}
+  OutputAudioMixerGroup: {fileID: 3669471345324840153, guid: 57d2f61693dcc5c44a6398adf951dd3f, type: 2}
   m_audioClip: {fileID: 8300000, guid: c577216a2b3f81a4b84e32f33a3ece55, type: 3}
   m_Resource: {fileID: 8300000, guid: c577216a2b3f81a4b84e32f33a3ece55, type: 3}
   m_PlayOnAwake: 1
@@ -2747,6 +2750,7 @@ MonoBehaviour:
   Score: 0
   totalScore: 0
   ComboBonusUpValue: 0.2
+  BaseScore: 100
 --- !u!114 &8166748469896893238
 MonoBehaviour:
   m_ObjectHideFlags: 0

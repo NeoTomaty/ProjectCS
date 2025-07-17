@@ -240,6 +240,8 @@ public class BlownAway_Ver3 : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        snackEffectController.StopFlyingEffect();
+
         if (collision.gameObject.CompareTag("Ground"))
         {
             if (IsFlyingAway)
@@ -249,8 +251,6 @@ public class BlownAway_Ver3 : MonoBehaviour
                 ClearConditionsScript.CheckLiftingCount(gameObject);
 
                 IsFlyingAway = false;
-
-                snackEffectController.StopFlyingEffect();
             }
         }
         else if (collision.gameObject.CompareTag("Player"))
@@ -270,8 +270,6 @@ public class BlownAway_Ver3 : MonoBehaviour
 
             //ClearConditionsScript.
             HitNextFallArea = true;
-
-            snackEffectController.StopFlyingEffect();
 
             if (LiftingJump != null)
             {
