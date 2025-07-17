@@ -29,6 +29,7 @@ public class TutorialGanarateSnack : MonoBehaviour
     private void Start()
     {
         ArrowObject.SetActive(false);
+        SnackObject.SetActive(false);
         SnackHeightGaugeObject.SetActive(false);
     }
 

@@ -38,11 +38,24 @@ public class GameStartCountdown : MonoBehaviour
     [Header("カウントダウン中に再生するアニメーショントリガー名")]
     [SerializeField] private string countdownAnimTrigger = "CountdownIdle";
 
+    [Header("プレイヤーアクション")]
+    [SerializeField] private PlayerInput PlayerActions;
+    private InputAction PlayerDecelerationAction;
+
     [Header("チュートリアル用（チュートリアル以外では割り当てNG）")]
     [SerializeField] private TutorialDisplayTexts TutorialDisplayTexts;
 
     private bool isCountingDown = false;
     public bool IsCountingDown => isCountingDown;
+
+    private void Awake()
+    {
+        // PlayerInputの初期化
+        if (PlayerActions != null)
+        {
+            PlayerDecelerationAction = PlayerActions.actions["Deceleration"];
+        }
+    }
 
     private void Start()
     {
@@ -59,6 +72,8 @@ public class GameStartCountdown : MonoBehaviour
     {
         isCountingDown = true;  // カウントダウン開始
 
+        if (PlayerActions != null) PlayerDecelerationAction.Disable(); // カウントダウン中は操作を無効化
+
         Time.timeScale = 0f;
         countdownCanvas.gameObject.SetActive(true);
 
@@ -70,6 +85,8 @@ public class GameStartCountdown : MonoBehaviour
         countdownCanvas.gameObject.SetActive(false);
 
         Time.timeScale = 1f;
+
+        if (PlayerActions != null) PlayerDecelerationAction.Enable(); // カウントダウン終了後に操作を有効化
 
         // model非表示 or 通常状態に戻す
         if (playerAnimController != null)

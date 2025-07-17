@@ -146,21 +146,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d30efb1b6d21145a779d08bd857cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionUI: {fileID: 7929386102323417175}
-  firstOptionButton: {fileID: 3526192076026800037}
-  CurrentOptionButton: {fileID: 82545236650177308}
-  firstPauseButton: {fileID: 0}
-  bgmVolumeButton: {fileID: 3671378459846382434}
-  seVolumeButton: {fileID: 3186453286798332364}
-  sensitivityButton: {fileID: 82545236650177308}
   bgmVolumeSlider: {fileID: 524124592275024501}
   sensitivitySlider: {fileID: 6060240847439978762}
   seVolumeSlider: {fileID: 127129279884710123}
-  pauseManager: {fileID: 0}
   cameraFunction: {fileID: 0}
   volumeSetting: {fileID: 0}
-  adjustAction: {fileID: -8784545083839296357, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  cancelAction: {fileID: 7727032971491509709, guid: 289c1b55c9541489481df5cc06664110, type: 3}
 --- !u!1 &383653474114278790
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,21 +968,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d30efb1b6d21145a779d08bd857cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionUI: {fileID: 7929386102323417175}
-  firstOptionButton: {fileID: 3526192076026800037}
-  CurrentOptionButton: {fileID: 3186453286798332364}
-  firstPauseButton: {fileID: 0}
-  bgmVolumeButton: {fileID: 3671378459846382434}
-  seVolumeButton: {fileID: 3186453286798332364}
-  sensitivityButton: {fileID: 82545236650177308}
   bgmVolumeSlider: {fileID: 524124592275024501}
   sensitivitySlider: {fileID: 6060240847439978762}
   seVolumeSlider: {fileID: 127129279884710123}
-  pauseManager: {fileID: 0}
   cameraFunction: {fileID: 0}
   volumeSetting: {fileID: 0}
-  adjustAction: {fileID: -8784545083839296357, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  cancelAction: {fileID: 7727032971491509709, guid: 289c1b55c9541489481df5cc06664110, type: 3}
 --- !u!1 &3361842683794845617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1289,21 +1269,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d30efb1b6d21145a779d08bd857cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionUI: {fileID: 7929386102323417175}
-  firstOptionButton: {fileID: 3526192076026800037}
-  CurrentOptionButton: {fileID: 3526192076026800037}
-  firstPauseButton: {fileID: 0}
-  bgmVolumeButton: {fileID: 3671378459846382434}
-  seVolumeButton: {fileID: 3186453286798332364}
-  sensitivityButton: {fileID: 82545236650177308}
   bgmVolumeSlider: {fileID: 524124592275024501}
   sensitivitySlider: {fileID: 6060240847439978762}
   seVolumeSlider: {fileID: 127129279884710123}
-  pauseManager: {fileID: 0}
   cameraFunction: {fileID: 0}
   volumeSetting: {fileID: 1984497887297718973, guid: 116de4429214a9a40832273c179d98f2, type: 3}
-  adjustAction: {fileID: -8784545083839296357, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  cancelAction: {fileID: 7727032971491509709, guid: 289c1b55c9541489481df5cc06664110, type: 3}
 --- !u!1 &3631365715615973385
 GameObject:
   m_ObjectHideFlags: 0
@@ -1525,21 +1495,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d30efb1b6d21145a779d08bd857cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionUI: {fileID: 7929386102323417175}
-  firstOptionButton: {fileID: 3526192076026800037}
-  CurrentOptionButton: {fileID: 3671378459846382434}
-  firstPauseButton: {fileID: 0}
-  bgmVolumeButton: {fileID: 3671378459846382434}
-  seVolumeButton: {fileID: 3186453286798332364}
-  sensitivityButton: {fileID: 82545236650177308}
   bgmVolumeSlider: {fileID: 524124592275024501}
   sensitivitySlider: {fileID: 6060240847439978762}
   seVolumeSlider: {fileID: 127129279884710123}
-  pauseManager: {fileID: 0}
   cameraFunction: {fileID: 0}
   volumeSetting: {fileID: 0}
-  adjustAction: {fileID: -8784545083839296357, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  cancelAction: {fileID: 7727032971491509709, guid: 289c1b55c9541489481df5cc06664110, type: 3}
 --- !u!1 &3953504118774940546
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,6 +1647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8579ab8e9be84324ea6611478dadcb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerActions: {fileID: 0}
   pauseUI: {fileID: 5149087011742517647}
   optionUI: {fileID: 0}
   firstPauseButton: {fileID: 4710431160877490182}
@@ -1694,6 +1655,11 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   OpenSE: {fileID: 0}
   CloseSE: {fileID: 0}
+  SEVolume: 0.5
+  cancelAction: {fileID: 0}
+  gameStartCountdown: {fileID: 0}
+  playerAnimator: {fileID: 0}
+  TutorialDisplayTexts: {fileID: 0}
 --- !u!114 &4266435239669371998
 MonoBehaviour:
   m_ObjectHideFlags: 0

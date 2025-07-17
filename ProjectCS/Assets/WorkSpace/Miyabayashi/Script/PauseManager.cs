@@ -16,7 +16,7 @@ using UnityEngine.InputSystem;
 
 public class PauseManager : MonoBehaviour
 {
-    [SerializeField] private GameObject PlayerObject;
+    [SerializeField] private PlayerInput PlayerActions;
 
     //ポーズメニューのUIオブジェクト
     [SerializeField] private GameObject pauseUI;
@@ -70,9 +70,9 @@ public class PauseManager : MonoBehaviour
             Debug.LogError("PlayerInputが見つかりません！");
         }
 
-        if (PlayerObject != null)
+        if (PlayerActions != null)
         {
-            PlayerDecelerationAction = PlayerObject.GetComponent<PlayerInput>().actions["Deceleration"];
+            PlayerDecelerationAction = PlayerActions.actions["Deceleration"];
         }
     }
 
