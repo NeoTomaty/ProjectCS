@@ -4282,8 +4282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a903f177bda2fb4f80388f9927a7376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDirection: {x: 1, y: 0, z: 0}
-  speed: 30
+  moveDirection: {x: 0, y: 0, z: 1}
+  speed: 100
   travelTime: 2
 --- !u!1 &167296924
 GameObject:
@@ -34216,9 +34216,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a903f177bda2fb4f80388f9927a7376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDirection: {x: 1, y: 0, z: 0}
+  moveDirection: {x: -1, y: 0, z: 0}
   speed: 30
-  travelTime: 2
+  travelTime: 1
 --- !u!1 &1138209454
 GameObject:
   m_ObjectHideFlags: 0
@@ -35376,9 +35376,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a903f177bda2fb4f80388f9927a7376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDirection: {x: 1, y: 0, z: 0}
+  moveDirection: {x: -1, y: 0, z: 0}
   speed: 30
-  travelTime: 2
+  travelTime: 1
 --- !u!1 &1167213602
 GameObject:
   m_ObjectHideFlags: 0
@@ -40210,9 +40210,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a903f177bda2fb4f80388f9927a7376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDirection: {x: 1, y: 0, z: 0}
+  moveDirection: {x: -1, y: 0, z: 0}
   speed: 30
-  travelTime: 2
+  travelTime: 1
 --- !u!1 &1333799029
 GameObject:
   m_ObjectHideFlags: 0
@@ -45072,7 +45072,7 @@ PrefabInstance:
     - target: {fileID: -4824517571176065220, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: BGMClip
       value: 
-      objectReference: {fileID: 8300000, guid: c38f8e71c018c324b99af71426b76025, type: 3}
+      objectReference: {fileID: 8300000, guid: c7f5889e3c2b5b34cbef3729ea1041df, type: 3}
     - target: {fileID: 3038314023033373163, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: m_Name
       value: BGMPlayer
@@ -46795,9 +46795,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a903f177bda2fb4f80388f9927a7376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDirection: {x: 1, y: 0, z: 0}
+  moveDirection: {x: -1, y: 0, z: 0}
   speed: 30
-  travelTime: 2
+  travelTime: 1
 --- !u!1 &1569626547
 GameObject:
   m_ObjectHideFlags: 0
@@ -47259,7 +47259,7 @@ PrefabInstance:
       objectReference: {fileID: 1717145073}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: MaxTargetHeight
-      value: 600
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: LaunchMultiplier
@@ -47269,6 +47269,10 @@ PrefabInstance:
       propertyPath: AnnounceComponent
       value: 
       objectReference: {fileID: 1429351558}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: FirstTargetHeight
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: SnackRespawnPoint
       value: 
@@ -49307,7 +49311,7 @@ Transform:
   m_GameObject: {fileID: 1641595069}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.51, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -64457,7 +64461,7 @@ Transform:
   m_GameObject: {fileID: 919132149292249042}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.7, y: -103.35, z: -220.3}
+  m_LocalPosition: {x: -36.6, y: -103.35, z: -220.3}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -65554,8 +65558,8 @@ MonoBehaviour:
   HitSE: {fileID: 8300000, guid: 5c5de228247c462419371259ce036236, type: 3}
   playerAnimController: {fileID: 1717145076}
   SEVolume: 0.4
-  FirstTargetHeight: 500
-  MaxTargetHeight: 600
+  FirstTargetHeight: 300
+  MaxTargetHeight: 500
   LaunchMultiplier: 1.01
 --- !u!1 &3948933247696619464
 GameObject:
@@ -66183,9 +66187,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a903f177bda2fb4f80388f9927a7376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDirection: {x: 0, y: 1, z: 0}
-  speed: 50
-  travelTime: 1
+  moveDirection: {x: 1, y: 0, z: 0}
+  speed: 100
+  travelTime: 0.5
 --- !u!4 &5901452235124107243
 Transform:
   m_ObjectHideFlags: 0

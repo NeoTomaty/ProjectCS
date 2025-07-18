@@ -2983,7 +2983,7 @@ PrefabInstance:
     - target: {fileID: -4824517571176065220, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: BGMClip
       value: 
-      objectReference: {fileID: 8300000, guid: b87f0295ce393214a8c08e014faf813c, type: 3}
+      objectReference: {fileID: 8300000, guid: 7769b524d3e20cb43a7437515714496d, type: 3}
     - target: {fileID: 3038314023033373163, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: m_Name
       value: BGMPlayer
@@ -3099,9 +3099,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1717145073}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: MaxTargetHeight
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: AnnounceComponent
       value: 
       objectReference: {fileID: 1802092475}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: FirstTargetHeight
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: SnackRespawnPoint
       value: 
@@ -5083,8 +5091,8 @@ MonoBehaviour:
   HitSE: {fileID: 8300000, guid: 5c5de228247c462419371259ce036236, type: 3}
   playerAnimController: {fileID: 1717145076}
   SEVolume: 0.4
-  FirstTargetHeight: 500
-  MaxTargetHeight: 1000
+  FirstTargetHeight: 300
+  MaxTargetHeight: 800
   LaunchMultiplier: 1.1
 --- !u!114 &4635551290519178661
 MonoBehaviour:

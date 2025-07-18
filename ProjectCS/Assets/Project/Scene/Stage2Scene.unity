@@ -973,6 +973,14 @@ PrefabInstance:
       value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: MaxTargetHeight
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: FirstTargetHeight
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: playerAnimController
       value: 
       objectReference: {fileID: 1949489339}
@@ -4524,9 +4532,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1508862957}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: MaxTargetHeight
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: AnnounceComponent
       value: 
       objectReference: {fileID: 428466629}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: FirstTargetHeight
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: SnackRespawnPoint
       value: 
@@ -5806,7 +5822,7 @@ PrefabInstance:
     - target: {fileID: -4824517571176065220, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: BGMClip
       value: 
-      objectReference: {fileID: 8300000, guid: b87f0295ce393214a8c08e014faf813c, type: 3}
+      objectReference: {fileID: 8300000, guid: 46365eaf9ad7b9948a196e7110f8b937, type: 3}
     - target: {fileID: -4824517571176065220, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: BGMVolume
       value: 0.65
@@ -6029,7 +6045,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 262f03875cc530e4694fa53ef22a0e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearCondition: 5
+  clearCondition: 4
   nextSceneName: StageSelectScene
   liftingCounterText: {fileID: 1939299863}
   GameClearSequence: {fileID: 2102485835}
