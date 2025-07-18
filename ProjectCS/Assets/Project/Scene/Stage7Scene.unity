@@ -3553,7 +3553,7 @@ PrefabInstance:
     - target: {fileID: -4824517571176065220, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: BGMClip
       value: 
-      objectReference: {fileID: 8300000, guid: d8c1f71c6cf98c94d861437124a592d7, type: 3}
+      objectReference: {fileID: 8300000, guid: 46365eaf9ad7b9948a196e7110f8b937, type: 3}
     - target: {fileID: 3038314023033373163, guid: a67625e3d7546e948824e8c067b4d563, type: 3}
       propertyPath: m_Name
       value: BGMPlayer
@@ -4317,6 +4317,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1192303164}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: FirstTargetHeight
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: SnackRespawnPoint
       value: 
       objectReference: {fileID: 949123409}
@@ -4687,7 +4691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 262f03875cc530e4694fa53ef22a0e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearCondition: 4
+  clearCondition: 3
   nextSceneName: StageSelectScene
   liftingCounterText: {fileID: 1759429679}
   GameClearSequence: {fileID: 1797112511}
@@ -6362,7 +6366,7 @@ MonoBehaviour:
   HitSE: {fileID: 8300000, guid: 5c5de228247c462419371259ce036236, type: 3}
   playerAnimController: {fileID: 1717145076}
   SEVolume: 0.4
-  FirstTargetHeight: 500
+  FirstTargetHeight: 250
   MaxTargetHeight: 1000
   LaunchMultiplier: 1.1
 --- !u!114 &4635551290519178661

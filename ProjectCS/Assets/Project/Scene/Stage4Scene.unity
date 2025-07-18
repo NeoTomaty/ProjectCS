@@ -347,7 +347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticlePrefab: {fileID: 3062108453646055557, guid: eb53f828e1a17524b9607c85c912ee90, type: 3}
   playerSpeedManager: {fileID: 1554103563}
-  RequiredSpeed: 150
+  RequiredSpeed: 100
   MovePlayerScript: {fileID: 1554103582}
   Acceleration: 15
   IsPenetration: 1
@@ -1868,6 +1868,14 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: MaxTargetHeight
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
+      propertyPath: FirstTargetHeight
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115812461998457897, guid: 2d0a8b3096330484fae3e8caa5d78c02, type: 3}
       propertyPath: playerAnimController
       value: 
       objectReference: {fileID: 1554103568}
@@ -3160,7 +3168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticlePrefab: {fileID: 3062108453646055557, guid: eb53f828e1a17524b9607c85c912ee90, type: 3}
   playerSpeedManager: {fileID: 1554103563}
-  RequiredSpeed: 150
+  RequiredSpeed: 100
   MovePlayerScript: {fileID: 1554103582}
   Acceleration: 15
   IsPenetration: 1
@@ -4723,7 +4731,7 @@ PrefabInstance:
       objectReference: {fileID: 1305985656}
     - target: {fileID: 8166748469896893238, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: time
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5855,7 +5863,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticlePrefab: {fileID: 3062108453646055557, guid: eb53f828e1a17524b9607c85c912ee90, type: 3}
   playerSpeedManager: {fileID: 1554103563}
-  RequiredSpeed: 150
+  RequiredSpeed: 100
   MovePlayerScript: {fileID: 1554103582}
   Acceleration: 15
   IsPenetration: 1
@@ -6245,7 +6253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticlePrefab: {fileID: 3062108453646055557, guid: eb53f828e1a17524b9607c85c912ee90, type: 3}
   playerSpeedManager: {fileID: 1554103563}
-  RequiredSpeed: 150
+  RequiredSpeed: 100
   MovePlayerScript: {fileID: 1554103582}
   Acceleration: 15
   IsPenetration: 1
@@ -7836,9 +7844,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1554103560}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: MaxTargetHeight
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: AnnounceComponent
       value: 
       objectReference: {fileID: 1871441867}
+    - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
+      propertyPath: FirstTargetHeight
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 1235434134932593644, guid: f18887da2c37de547983f2da52e7a6ab, type: 3}
       propertyPath: SnackRespawnPoint
       value: 
@@ -8706,6 +8722,10 @@ PrefabInstance:
       propertyPath: SpeedAmount
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1554103562}
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: TickInterval
       value: 0.3
@@ -11062,6 +11082,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1554103562}
+    - target: {fileID: 1428957296383475592, guid: d388b080b1b34e54fb436c897cbf0513, type: 3}
       propertyPath: TickInterval
       value: 0.1
       objectReference: {fileID: 0}
@@ -13266,7 +13290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticlePrefab: {fileID: 3062108453646055557, guid: eb53f828e1a17524b9607c85c912ee90, type: 3}
   playerSpeedManager: {fileID: 1554103563}
-  RequiredSpeed: 150
+  RequiredSpeed: 100
   MovePlayerScript: {fileID: 1554103582}
   Acceleration: 15
   IsPenetration: 1
@@ -13350,7 +13374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticlePrefab: {fileID: 3062108453646055557, guid: eb53f828e1a17524b9607c85c912ee90, type: 3}
   playerSpeedManager: {fileID: 1554103563}
-  RequiredSpeed: 150
+  RequiredSpeed: 100
   MovePlayerScript: {fileID: 1554103582}
   Acceleration: 15
   IsPenetration: 1
@@ -14959,7 +14983,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticlePrefab: {fileID: 3062108453646055557, guid: eb53f828e1a17524b9607c85c912ee90, type: 3}
   playerSpeedManager: {fileID: 1554103563}
-  RequiredSpeed: 150
+  RequiredSpeed: 100
   MovePlayerScript: {fileID: 1554103582}
   Acceleration: 15
   IsPenetration: 1
