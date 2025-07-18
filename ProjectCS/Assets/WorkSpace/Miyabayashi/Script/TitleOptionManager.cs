@@ -22,8 +22,6 @@ public class TitleOptionManager : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction pauseAction;
 
-    private bool isOpen = false;
-
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -59,7 +57,8 @@ public class TitleOptionManager : MonoBehaviour
     {
         if (!context.performed) return;
 
-        if (isOpen)
+        // 状態確認に isOpen ではなく optionUI.activeSelf を使用
+        if (optionUI != null && optionUI.activeSelf)
         {
             CloseOption();
         }
@@ -71,13 +70,11 @@ public class TitleOptionManager : MonoBehaviour
 
     public void OpenOption()
     {
-        if (optionUI == null ) return;
+        if (optionUI == null || optionUI.activeSelf) return;
 
         optionUI.SetActive(true);
         if (titleUIRoot != null)
-            titleUIRoot.SetActive(false); // ← タイトルUI無効化
-
-        isOpen = true;
+            titleUIRoot.SetActive(false); // タイトルUIを無効化
 
         if (firstOptionButton != null)
         {
@@ -90,20 +87,20 @@ public class TitleOptionManager : MonoBehaviour
 
     public void CloseOption()
     {
-        if (optionUI == null) return;
+        if (optionUI == null || !optionUI.activeSelf) return;
 
         optionUI.SetActive(false);
         if (titleUIRoot != null)
-            titleUIRoot.SetActive(true); // ← タイトルUI再有効化
+            titleUIRoot.SetActive(true); // タイトルUIを有効化
 
-        isOpen = false;
+        EventSystem.current.SetSelectedGameObject(null);
 
         PlaySE(closeSE);
     }
 
     public bool IsOpen()
     {
-        return optionUI.activeSelf;
+        return optionUI != null && optionUI.activeSelf;
     }
 
     private void PlaySE(AudioClip clip)
