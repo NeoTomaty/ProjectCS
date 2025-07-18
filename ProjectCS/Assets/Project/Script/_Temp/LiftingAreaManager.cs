@@ -49,6 +49,7 @@ public class LiftingAreaManager : MonoBehaviour
     [SerializeField] private GameObject Effect;
     private ParticleColorChanger ParticleColorChanger;
 
+    private ChargeJumpPlayer ChargeJumpPlayer;
 
     void Start()
     {
@@ -57,6 +58,8 @@ public class LiftingAreaManager : MonoBehaviour
 
         PlayerState = Player.GetComponent<PlayerStateManager>();
         if(!PlayerState) Debug.LogError("プレイヤーオブジェクトにPlayerStateManagerがアタッチされていません");
+
+        ChargeJumpPlayer = Player.GetComponent<ChargeJumpPlayer>();
 
         ObjectRenderer = GetComponent<Renderer>();
         ObjectRenderer.material.SetColor("_Color", NormalColor);
@@ -128,7 +131,8 @@ public class LiftingAreaManager : MonoBehaviour
             if (ParticleColorChanger) ParticleColorChanger.SetColor(LiftingPartColor);
 
             LiftingJump LJ = Player.GetComponent<LiftingJump>();
-          
+
+            ChargeJumpPlayer.IsAreaJump = true;
         }
     }
 
@@ -152,6 +156,8 @@ public class LiftingAreaManager : MonoBehaviour
             PlayerState.SetLiftingState(PlayerStateManager.LiftingState.Normal);
             ObjectRenderer.material.SetColor("_Color", NormalColor);
             if (ParticleColorChanger) ParticleColorChanger.SetColor(NormalColor);
+
+            ChargeJumpPlayer.IsAreaJump = true;
         }
     }
 

@@ -80,6 +80,14 @@ public class ChargeJumpPlayer : MonoBehaviour
 
     private bool requestStartCharging = false;//空中でジャンプボタンの長押しを始めたとき用
 
+    private bool isAreaJump = false;
+
+    public bool IsAreaJump
+    {
+        get => isAreaJump;
+        set => isAreaJump = value;
+    }
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -159,6 +167,13 @@ public class ChargeJumpPlayer : MonoBehaviour
             }
 
             UpdateChargeEffect();
+        }
+
+        if(!isGrounded && IsAreaJump && isJumpButtonPressed && PlayerStateManager.GetLiftingState() == PlayerStateManager.LiftingState.LiftingPart)
+        {
+            LiftingJump.SetJumpPower(1f);
+            LiftingJump.StartLiftingJump();
+            IsAreaJump = false;
         }
     }
 
