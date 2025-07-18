@@ -319,6 +319,8 @@ public class ChargeJumpPlayer : MonoBehaviour
         if (isCharging && isGrounded)
         {
             Jump(); // チャージジャンプ
+            var soundScript = GetComponent<PlayerJumpSound>();
+            soundScript?.PlayJumpSound();
         }
         else if (!isCharging && isGrounded && jumpButtonHoldTime < chargeThresholdTime)
         {
@@ -336,11 +338,13 @@ public class ChargeJumpPlayer : MonoBehaviour
                     LiftingJump.StartLiftingJump();
                     break;
             }
+            var soundScript = GetComponent<PlayerJumpSound>();
+            soundScript?.PlayJumpSound();
         }
 
         // SE
-        var soundScript = GetComponent<PlayerJumpSound>();
-        soundScript?.PlayJumpSound();
+        //var soundScript = GetComponent<PlayerJumpSound>();
+        //soundScript?.PlayJumpSound();
 
         ResetChargeState();
     }
