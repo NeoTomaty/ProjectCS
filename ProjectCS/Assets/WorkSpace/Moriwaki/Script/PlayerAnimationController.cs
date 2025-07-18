@@ -49,6 +49,16 @@ public class PlayerAnimationController : MonoBehaviour
     [Tooltip("これに衝突するとrotationModelに戻るオブジェクト")]
     [SerializeField] private GameObject resetTriggerObject;
 
+    private bool isInitialized = false; // 初期化が完了したかどうかのフラグ
+
+    private void Start()
+    {
+        // 起動時のモデル表示を確定させる
+        UpdateModelVisibility();
+        // 初期化完了フラグを立てる
+        isInitialized = true;
+    }
+
     public void ReturnToRotationModel()
     {
         // すでに rotationModel が表示されている場合は何もしない
@@ -167,6 +177,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void PlayTransformEffect()
     {
+        if (!isInitialized)
+        {
+            return;
+        }
+
         if (transformEffectPrefab != null)
         {
             Vector3 spawnPos = effectSpawnPoint != null ? effectSpawnPoint.position : transform.position;
@@ -174,20 +189,17 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
-        // "Ground" タグと衝突したか、またはインスペクターで指定したオブジェクトと衝突したか判定
+        // "Ground" タグと衝突し続けているか、または指定オブジェクトと衝突し続けているか判定
         bool isGround = collision.gameObject.CompareTag("Ground");
         bool isTriggerObject = (resetTriggerObject != null && collision.gameObject == resetTriggerObject);
 
+        // modelが表示されている（useNormalModelがtrue）かつ、地面かリセット用オブジェクトに触れている場合
         if (useNormalModel && (isGround || isTriggerObject))
         {
-            PlayTransformEffect();
-
-            useNormalModel = false;
-            waitingForAnimFinish = false;
-            UpdateModelVisibility();
-            EndSpecialCameraView(); // カメラを通常視点に戻す
+            // rotationModelに戻す共通処理を呼び出す
+            ReturnToRotationModel();
         }
     }
 
