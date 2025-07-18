@@ -5335,6 +5335,10 @@ PrefabInstance:
       propertyPath: GameStartCountdownScript
       value: 
       objectReference: {fileID: 1470448485}
+    - target: {fileID: 6803385135700698291, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
+      propertyPath: IgnoreNonTargetCollisions
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7133867208789182892, guid: bf2a7a3694e16d6488faa2f7a54f2fcf, type: 3}
       propertyPath: FallSE
       value: 
@@ -5962,7 +5966,7 @@ MonoBehaviour:
   PauseInput: {fileID: 2103750996}
   playerAnimController: {fileID: 1949489339}
   countdownAnimTrigger: Idol
-  PlayerActions: {fileID: 0}
+  PlayerActions: {fileID: 1949489336}
   TutorialDisplayTexts: {fileID: 0}
 --- !u!1 &1472415896 stripped
 GameObject:
